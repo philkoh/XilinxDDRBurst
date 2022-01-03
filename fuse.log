@@ -1,0 +1,39 @@
+Running: C:\Xilinx\14.7\ISE_DS\ISE\bin\nt64\unwrapped\fuse.exe -intstyle ise -incremental -lib secureip -o C:/VM/D125MHZA/Stim14_isim_beh.exe -prj C:/VM/D125MHZA/Stim14_beh.prj work.Stim14 
+ISim P.20131013 (signature 0x7708f090)
+Number of CPUs detected in this system: 8
+Turning on mult-threading, number of parallel sub-compilation jobs: 16 
+Determining compilation order of HDL files
+Parsing VHDL file "C:/VM/D125MHZA/ipcore_dir/PhilClock.vhd" into library work
+Parsing VHDL file "C:/VM/D125MHZA/bl.vhd" into library work
+Parsing VHDL file "C:/VM/D125MHZA/Stim14.vhd" into library work
+Parsing VHDL file "C:/VM/D125MHZA/ipcore_dir/PhilData2/example_design/PhilData2_exdes.vhd" into library work
+Starting static elaboration
+Completed static elaboration
+Compiling package standard
+Compiling package std_logic_1164
+Compiling package numeric_std
+Compiling package vcomponents
+Compiling package std_logic_arith
+Compiling package std_logic_unsigned
+Compiling package textio
+Compiling package vital_timing
+Compiling package vital_primitives
+Compiling package vpkg
+Compiling architecture ibufg_v of entity IBUFG [\IBUFG("DONT_CARE","0",true,"DEF...]
+Compiling architecture dcm_sp_clock_divide_by_2_v of entity dcm_sp_clock_divide_by_2 [dcm_sp_clock_divide_by_2_default]
+Compiling architecture dcm_sp_maximum_period_check_v of entity dcm_sp_maximum_period_check [\dcm_sp_maximum_period_check("*"...]
+Compiling architecture dcm_sp_maximum_period_check_v of entity dcm_sp_maximum_period_check [\dcm_sp_maximum_period_check("*"...]
+Compiling architecture dcm_sp_clock_lost_v of entity dcm_sp_clock_lost [dcm_sp_clock_lost_default]
+Compiling architecture dcm_sp_v of entity DCM_SP [\DCM_SP(true,"*",true,false,2.0,...]
+Compiling architecture bufg_v of entity BUFG [bufg_default]
+Compiling architecture xilinx of entity PhilClock [philclock_default]
+Compiling architecture iobufds_v of entity IOBUFDS [\IOBUFDS("DONT_CARE",false,"FALS...]
+Compiling architecture obufds_v of entity OBUFDS [\OBUFDS("DONT_CARE","DIFF_SSTL15...]
+Compiling architecture behavioral of entity bl [bl_default]
+Compiling architecture behavior of entity stim14
+Time Resolution for simulation is 1ps.
+Waiting for 1 sub-compilation(s) to finish...
+Compiled 33 VHDL Units
+Built simulation executable C:/VM/D125MHZA/Stim14_isim_beh.exe
+Fuse Memory Usage: 58324 KB
+Fuse CPU Usage: 1140 ms
