@@ -139,8 +139,7 @@ end component;
 	signal nextData :   std_logic_vector(15 downto 0):= "1111111111111111";
 	signal inData :   std_logic_vector(15 downto 0);
 	signal inDataB :   std_logic_vector(15 downto 0);
-	signal nextShouldWrite : std_logic := '0';
-	signal shouldWrite : std_logic := '0';
+	
 
 	signal capturedData1 :   std_logic_vector(15 downto 0);
 	signal capturedData2 :   std_logic_vector(15 downto 0);
@@ -190,11 +189,15 @@ end component;
 	signal weRequest : std_logic := '1';
 	signal nextWeRequest : std_logic := '1';
 
+	
+	signal writeRequest : std_logic := '0';
+	signal nextWriteRequest : std_logic := '0';
+	
 	signal saveRequest : std_logic := '0';
 	signal nextSaveRequest : std_logic := '0';
 	signal saveRequest2 : std_logic := '0';
 	signal nextSaveRequest2 : std_logic := '0';
-		signal saveRequest3 : std_logic := '0';
+	signal saveRequest3 : std_logic := '0';
 	signal nextSaveRequest3 : std_logic := '0';
 	signal saveRequest4 : std_logic := '0';
 	signal nextSaveRequest4 : std_logic := '0';
@@ -607,11 +610,11 @@ I => clk125MHz -- Buffer input
 			ba <= nextBa;
 			addr <= nextAddr;
 			data <= nextData;  --note, this is a massive fudge; the data for a write is presented through the entire cycle of 32 count2 increments
-			shouldWrite <= nextShouldWrite;
-			casRequest <= nextCasRequest;
+				casRequest <= nextCasRequest;
 			rasRequest <= nextRasRequest;
 			weRequest <= nextWeRequest;
-			saveRequest <= nextSaveRequest;
+writeRequest <= nextWriteRequest;		
+		saveRequest <= nextSaveRequest;
 			saveRequest2 <= nextSaveRequest2;
 			saveRequest3 <= nextSaveRequest3;
 			saveRequest4 <= nextSaveRequest4;
@@ -669,6 +672,7 @@ I => clk125MHz -- Buffer input
 			nextCasRequest <= '1';
 			nextRasRequest <= '1';
 			nextWeRequest <= '1';
+			nextWriteRequest <= '0';  -- unless overridden below
 			nextSaveRequest <= '0';
 			nextSaveRequest2 <= '0';
 			nextSaveRequest3 <= '0';
@@ -677,7 +681,7 @@ I => clk125MHz -- Buffer input
 			nextBa <= (others => '0');
 			nextAddr <= (others => '0');
 			nextData <= (others => 'Z');
-			nextShouldWrite <= '0'; --unless overridden below
+			
 			
 			nextTristateData <= '1';
 
@@ -768,7 +772,7 @@ I => clk125MHz -- Buffer input
 
 			if count = 20229 then--20228 --WRITE
 				nextData <= "1010101010100110"; -- the last four digits of this will show up on the LEDs
-				nextShouldWrite <= '1';
+				nextWriteRequest <= '1';
 				
 				nextDqsTristate <= '0';
 				nextTristateData <= '0';
