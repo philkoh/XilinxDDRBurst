@@ -142,6 +142,23 @@ end component;
 	signal inData :   std_logic_vector(15 downto 0);
 	signal inDataB :   std_logic_vector(15 downto 0);
 	
+	signal requestedDataToWrite1 : std_logic_vector(15 downto 0);
+	signal requestedDataToWrite2 : std_logic_vector(15 downto 0);
+	signal requestedDataToWrite3 : std_logic_vector(15 downto 0);
+	signal requestedDataToWrite4 : std_logic_vector(15 downto 0);
+	signal requestedDataToWrite5 : std_logic_vector(15 downto 0);
+	signal requestedDataToWrite6 : std_logic_vector(15 downto 0);
+	signal requestedDataToWrite7 : std_logic_vector(15 downto 0);
+	signal requestedDataToWrite8 : std_logic_vector(15 downto 0);
+		signal nextRequestedDataToWrite1 : std_logic_vector(15 downto 0);
+	signal nextRequestedDataToWrite2 : std_logic_vector(15 downto 0);
+	signal nextRequestedDataToWrite3 : std_logic_vector(15 downto 0);
+	signal nextRequestedDataToWrite4 : std_logic_vector(15 downto 0);
+	signal nextRequestedDataToWrite5 : std_logic_vector(15 downto 0);
+	signal nextRequestedDataToWrite6 : std_logic_vector(15 downto 0);
+	signal nextRequestedDataToWrite7 : std_logic_vector(15 downto 0);
+	signal nextRequestedDataToWrite8 : std_logic_vector(15 downto 0);
+
 	signal dataToWrite1 : std_logic_vector(15 downto 0);
 	signal dataToWrite2 : std_logic_vector(15 downto 0);
 	signal dataToWrite3 : std_logic_vector(15 downto 0);
@@ -360,6 +377,21 @@ I => clk125MHz -- Buffer input
 			capturedData6 <= nextCapturedData6;
 			capturedData7 <= nextCapturedData7;
 			capturedData8 <= nextCapturedData8;
+		capturedData9 <= nextCapturedData9;
+		capturedData10 <= nextCapturedData10;
+		capturedData11 <= nextCapturedData11;
+			
+			dataToWrite1 <= nextDataToWrite1;
+			dataToWrite2 <= nextDataToWrite2;
+			dataToWrite3 <= nextDataToWrite3;
+			dataToWrite4 <= nextDataToWrite4;
+			dataToWrite5 <= nextDataToWrite5;
+			dataToWrite6 <= nextDataToWrite6;
+			dataToWrite7 <= nextDataToWrite7;
+			dataToWrite8 <= nextDataToWrite8;
+			dataToWrite9 <= nextDataToWrite9;
+			dataToWrite10 <= nextDataToWrite10;
+			dataToWrite11 <= nextDataToWrite11;
 
 		end if;
  end process;
@@ -385,7 +417,7 @@ I => clk125MHz -- Buffer input
 		nextCapturedData10 <= capturedData10;
 		nextCapturedData10 <= capturedData11;
 			
-		nextDataToWrite1 <= dataToWrite1;
+		nextDataToWrite1 <= dataToWrite1;--unless overridden below, hold and remember the loaded values
 		nextDataToWrite2 <= dataToWrite2;
 		nextDataToWrite3 <= dataToWrite3;
 		nextDataToWrite4 <= dataToWrite4;
@@ -393,21 +425,41 @@ I => clk125MHz -- Buffer input
 		nextDataToWrite6 <= dataToWrite6;
 		nextDataToWrite7 <= dataToWrite7;
 		nextDataToWrite8 <= dataToWrite8;
-		
-		
-			if clockEnableRead = '1' and saveRequest = '1' then --capture data, actually captures 8 times, I think, 4 cycles of count2 at 125MHz, but two rising edges of 250 MHz per count2 incremena
-				nextCapturedData1 <= inData;
-				nextCapturedData2 <= capturedData1;
-				nextCapturedData3 <= capturedData2;
-				nextCapturedData4 <= capturedData3;
-				nextCapturedData5 <= capturedData4;
-				nextCapturedData6 <= capturedData5;
-				nextCapturedData7 <= capturedData6;
-				nextCapturedData8 <= capturedData7;
-				nextCapturedData9 <= capturedData8;
-				nextCapturedData10 <= capturedData9;
-				nextCapturedData11 <= capturedData10;
-			end if;
+		nextDataToWrite9 <= dataToWrite9;
+		nextDataToWrite10 <= dataToWrite10;
+		nextDataToWrite11 <= dataToWrite11;
+	
+	
+		if clockEnableRead = '1' and saveRequest = '1' then --capture data, actually captures 8 times, I think, 4 cycles of count2 at 125MHz, but two rising edges of 250 MHz per count2 incremena
+			nextCapturedData1 <= inData;
+			nextCapturedData2 <= capturedData1;
+			nextCapturedData3 <= capturedData2;
+			nextCapturedData4 <= capturedData3;
+			nextCapturedData5 <= capturedData4;
+			nextCapturedData6 <= capturedData5;
+			nextCapturedData7 <= capturedData6;
+			nextCapturedData8 <= capturedData7;
+			nextCapturedData9 <= capturedData8;
+			nextCapturedData10 <= capturedData9;
+			nextCapturedData11 <= capturedData10;
+		end if;
+
+	
+	
+		if clockEnableWrite = '1' and writeRequest = '1' then --write data, and pull down the stack of registers
+				dataPort (15 downTo 0) <= dataToWrite1 (15 downTo 0);	
+			nextdataToWrite1 <= dataToWrite2;
+			nextdataToWrite2 <= dataToWrite3;
+			nextdataToWrite3 <= dataToWrite4;
+			nextdataToWrite4 <= dataToWrite5;
+			nextdataToWrite5 <= dataToWrite6;
+			nextdataToWrite6 <= dataToWrite7;
+			nextdataToWrite7 <= dataToWrite8;
+			nextdataToWrite8 <= dataToWrite9;
+			nextdataToWrite9 <= dataToWrite10;
+			nextdataToWrite10 <= dataToWrite11;
+			
+		end if;
 
 
 	
@@ -633,7 +685,7 @@ I => clk125MHz -- Buffer input
 			blinker <= nextBlinker;
 			ba <= nextBa;
 			addr <= nextAddr;
-			data <= nextData;  --note, this is a massive fudge; the data for a write is presented through the entire cycle of 32 count2 increments
+	--		data <= nextData;  --note, this is a massive fudge; the data for a write is presented through the entire cycle of 32 count2 increments
 				casRequest <= nextCasRequest;
 			rasRequest <= nextRasRequest;
 			weRequest <= nextWeRequest;
@@ -647,6 +699,16 @@ writeRequest <= nextWriteRequest;
 			dqsTristate <= nextDqsTristate;
 			odt <= nextODT;
 			tristateData <= nextTristateData;
+			
+			requestedDataToWrite1  <= nextRequestedDataToWrite1;
+			requestedDataToWrite2  <= nextRequestedDataToWrite2;
+			requestedDataToWrite3  <= nextRequestedDataToWrite3;
+			requestedDataToWrite4  <= nextRequestedDataToWrite4;
+			requestedDataToWrite5  <= nextRequestedDataToWrite5;
+			requestedDataToWrite6  <= nextRequestedDataToWrite6;
+			requestedDataToWrite7  <= nextRequestedDataToWrite7;
+			requestedDataToWrite8  <= nextRequestedDataToWrite8;
+		
 			end if;
    end process;
 
@@ -685,7 +747,7 @@ writeRequest <= nextWriteRequest;
 	--			dataPort (1) <= dataCount (1);			
 	--			dataPort (2) <= dataCount (2);			
 	--			dataPort (3) <= dataCount (3);			
-				dataPort (15 downTo 0) <= data (15 downTo 0);			
+	--			dataPort (15 downTo 0) <= data (15 downTo 0);			
 			end if;
 
 
@@ -701,6 +763,19 @@ writeRequest <= nextWriteRequest;
 			nextSaveRequest2 <= '0';
 			nextSaveRequest3 <= '0';
 			nextSaveRequest4 <= '0';
+			
+			
+			nextRequestedDataToWrite1  <= requestedDataToWrite1;
+			nextRequestedDataToWrite2  <= requestedDataToWrite2;
+			nextRequestedDataToWrite3  <= requestedDataToWrite3;
+			nextRequestedDataToWrite4  <= requestedDataToWrite4;
+			nextRequestedDataToWrite5  <= requestedDataToWrite5;
+			nextRequestedDataToWrite6  <= requestedDataToWrite6;
+			nextRequestedDataToWrite7  <= requestedDataToWrite7;
+			nextRequestedDataToWrite8  <= requestedDataToWrite8;
+		
+			
+			
 			nextODT <= '1';  -- On Die Termination is normally on
 			nextBa <= (others => '0');
 			nextAddr <= (others => '0');
@@ -796,6 +871,16 @@ writeRequest <= nextWriteRequest;
 
 			if count = 20229 then--20228 --WRITE
 				nextData <= "1010101010100110"; -- the last four digits of this will show up on the LEDs
+				nextRequestedDataToWrite1 <= "1010101010100001";
+				nextRequestedDataToWrite2  <= "1010101010100010";
+				nextRequestedDataToWrite3 <= "1010101010100100";
+				nextRequestedDataToWrite4 <= "1010101010101000";
+				nextRequestedDataToWrite5 <= "1010101010100100";
+				nextRequestedDataToWrite6 <= "1010101010100010";
+				nextRequestedDataToWrite7 <= "1010101010100001";
+				nextRequestedDataToWrite8 <= "1010101010100010";
+				 
+
 				nextWriteRequest <= '1';
 				
 				nextDqsTristate <= '0';
