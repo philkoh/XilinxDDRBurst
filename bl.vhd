@@ -108,9 +108,11 @@ end component;
 	signal clockEnableBeginning : std_logic := '0';
 	signal clockEnableMidpoint : std_logic := '0';
 	signal clockEnableRead : std_logic := '0';
+	signal clockEnableWrite : std_logic := '0';
 	signal nextClockEnableBeginning : std_logic := '0';
 	signal nextClockEnableMidpoint : std_logic := '0';
 	signal nextClockEnableRead : std_logic := '0';
+	signal nextClockEnableWrite : std_logic := '0';
    signal count2 : unsigned (4 downto 0) := "00000";
    signal count : unsigned (17 downto 0) := "000000000000000000";
    signal nextCount2 : unsigned (4 downto 0);
@@ -377,24 +379,7 @@ I => clk125MHz -- Buffer input
 			end if;
 
 
-			if clockEnableRead = '1' and saveRequest2 = '1' then --shift in new data
-				nextCapturedData2 <= inData;
-			end if;
-
-
-
-			if clockEnableRead = '1' and saveRequest3 = '1' then --shift in new data
-				nextCapturedData3 <= inData;
-			end if;
-
-
-
-
-
-			if clockEnableRead = '1' and saveRequest4 = '1' then --shift in new data
-				nextCapturedData4 <= inData;
-			end if;
-
+	
 
 		
 	end process;
@@ -417,6 +402,7 @@ I => clk125MHz -- Buffer input
 			clockEnableBeginning <= nextClockEnableBeginning;
 			clockEnableMidpoint <= nextClockEnableMidpoint;
 			clockEnableRead <= nextClockEnableRead;
+			clockEnableWrite <= nextClockEnableWrite;
 			cas <= nextCas;
 			ras <= nextRas;
 			we <= nextWe;
@@ -490,6 +476,13 @@ I => clk125MHz -- Buffer input
 				nextClockEnableRead <= '1';
 			else
 				nextClockEnableRead <= '0';
+			end if;
+			
+	
+      	if (count2 = 24 or count2 = 25 or count2 = 26 or count2 = 27)   then  --writes for 4 cycles of 125MHz count2
+				nextClockEnableWrite <= '1';
+			else
+				nextClockEnableWrite <= '0';
 			end if;
 			
  			nextCas <= cas;
