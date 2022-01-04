@@ -142,28 +142,32 @@ end component;
 	signal inData :   std_logic_vector(15 downto 0);
 	signal inDataB :   std_logic_vector(15 downto 0);
 	
-	signal requestedDataToWrite1 : std_logic_vector(15 downto 0);
-	signal requestedDataToWrite2 : std_logic_vector(15 downto 0);
-	signal requestedDataToWrite3 : std_logic_vector(15 downto 0);
-	signal requestedDataToWrite4 : std_logic_vector(15 downto 0);
-	signal requestedDataToWrite5 : std_logic_vector(15 downto 0);
-	signal requestedDataToWrite6 : std_logic_vector(15 downto 0);
-	signal requestedDataToWrite7 : std_logic_vector(15 downto 0);
-	signal requestedDataToWrite8 : std_logic_vector(15 downto 0);
-	signal requestedDataToWrite9 : std_logic_vector(15 downto 0);
-	signal requestedDataToWrite10 : std_logic_vector(15 downto 0);
-	signal requestedDataToWrite11 : std_logic_vector(15 downto 0);
-	signal nextRequestedDataToWrite1 : std_logic_vector(15 downto 0);
-	signal nextRequestedDataToWrite2 : std_logic_vector(15 downto 0);
-	signal nextRequestedDataToWrite3 : std_logic_vector(15 downto 0);
-	signal nextRequestedDataToWrite4 : std_logic_vector(15 downto 0);
-	signal nextRequestedDataToWrite5 : std_logic_vector(15 downto 0);
-	signal nextRequestedDataToWrite6 : std_logic_vector(15 downto 0);
-	signal nextRequestedDataToWrite7 : std_logic_vector(15 downto 0);
-	signal nextRequestedDataToWrite8 : std_logic_vector(15 downto 0);
-signal nextRequestedDataToWrite9 : std_logic_vector(15 downto 0);
-signal nextRequestedDataToWrite10 : std_logic_vector(15 downto 0);
-signal nextRequestedDataToWrite11 : std_logic_vector(15 downto 0);
+	type philArr is array (15 downto 0) of std_logic_vector(15 downto 0);
+	signal requestedDataToWrite : philArr;
+signal nextRequestedDataToWrite : philArr;
+	
+--	signal requestedDataToWrite1 : std_logic_vector(15 downto 0);
+--	signal requestedDataToWrite2 : std_logic_vector(15 downto 0);
+--	signal requestedDataToWrite3 : std_logic_vector(15 downto 0);
+--	signal requestedDataToWrite4 : std_logic_vector(15 downto 0);
+--	signal requestedDataToWrite5 : std_logic_vector(15 downto 0);
+--	signal requestedDataToWrite6 : std_logic_vector(15 downto 0);
+--	signal requestedDataToWrite7 : std_logic_vector(15 downto 0);
+--	signal requestedDataToWrite8 : std_logic_vector(15 downto 0);
+--	signal requestedDataToWrite9 : std_logic_vector(15 downto 0);
+--	signal requestedDataToWrite10 : std_logic_vector(15 downto 0);
+--	signal requestedDataToWrite11 : std_logic_vector(15 downto 0);
+--	signal nextRequestedDataToWrite1 : std_logic_vector(15 downto 0);
+--	signal nextRequestedDataToWrite2 : std_logic_vector(15 downto 0);
+--	signal nextRequestedDataToWrite3 : std_logic_vector(15 downto 0);
+--	signal nextRequestedDataToWrite4 : std_logic_vector(15 downto 0);
+--	signal nextRequestedDataToWrite5 : std_logic_vector(15 downto 0);
+--	signal nextRequestedDataToWrite6 : std_logic_vector(15 downto 0);
+--	signal nextRequestedDataToWrite7 : std_logic_vector(15 downto 0);
+--	signal nextRequestedDataToWrite8 : std_logic_vector(15 downto 0);
+--signal nextRequestedDataToWrite9 : std_logic_vector(15 downto 0);
+--signal nextRequestedDataToWrite10 : std_logic_vector(15 downto 0);
+--signal nextRequestedDataToWrite11 : std_logic_vector(15 downto 0);
 
 	signal dataToWrite1 : std_logic_vector(15 downto 0);
 	signal dataToWrite2 : std_logic_vector(15 downto 0);
@@ -451,17 +455,17 @@ I => clk125MHz -- Buffer input
 		end if;
 
 		if clockEnableMidpoint = '1' and writeRequest = '1' then  -- a bit before the write, load the data to write from the request register to the write register
-			nextDataToWrite1 <= requestedDataToWrite1; 
-			nextDataToWrite2 <= requestedDataToWrite2; 
-			nextDataToWrite3 <= requestedDataToWrite3; 
-			nextDataToWrite4 <= requestedDataToWrite4; 
-			nextDataToWrite5 <= requestedDataToWrite5; 
-			nextDataToWrite6 <= requestedDataToWrite6; 
-			nextDataToWrite7 <= requestedDataToWrite7; 
-			nextDataToWrite8 <= requestedDataToWrite8; 
-			nextDataToWrite9 <= requestedDataToWrite9; 
-			nextDataToWrite10 <= requestedDataToWrite10; 
-			nextDataToWrite11 <= requestedDataToWrite11; 
+			nextDataToWrite1 <= requestedDataToWrite(1); 
+			nextDataToWrite2 <= requestedDataToWrite(2); 
+			nextDataToWrite3 <= requestedDataToWrite(3); 
+			nextDataToWrite4 <= requestedDataToWrite(4); 
+			nextDataToWrite5 <= requestedDataToWrite(5); 
+			nextDataToWrite6 <= requestedDataToWrite(6); 
+			nextDataToWrite7 <= requestedDataToWrite(7); 
+			nextDataToWrite8 <= requestedDataToWrite(8); 
+			nextDataToWrite9 <= requestedDataToWrite(9); 
+			nextDataToWrite10 <= requestedDataToWrite(10); 
+			nextDataToWrite11 <= requestedDataToWrite(11); 
 		end if;
 	
 		dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');
@@ -726,17 +730,17 @@ writeRequest <= nextWriteRequest;
 			odt <= nextODT;
 			tristateData <= nextTristateData;
 			
-			requestedDataToWrite1  <= nextRequestedDataToWrite1;
-			requestedDataToWrite2  <= nextRequestedDataToWrite2;
-			requestedDataToWrite3  <= nextRequestedDataToWrite3;
-			requestedDataToWrite4  <= nextRequestedDataToWrite4;
-			requestedDataToWrite5  <= nextRequestedDataToWrite5;
-			requestedDataToWrite6  <= nextRequestedDataToWrite6;
-			requestedDataToWrite7  <= nextRequestedDataToWrite7;
-			requestedDataToWrite8  <= nextRequestedDataToWrite8;
-			requestedDataToWrite9  <= nextRequestedDataToWrite9;
-			requestedDataToWrite10  <= nextRequestedDataToWrite10;
-			requestedDataToWrite11  <= nextRequestedDataToWrite11;
+			requestedDataToWrite(1)  <= nextRequestedDataToWrite(1);
+			requestedDataToWrite(2)  <= nextRequestedDataToWrite(2);
+			requestedDataToWrite(3)  <= nextRequestedDataToWrite(3);
+			requestedDataToWrite(4)  <= nextRequestedDataToWrite(4);
+			requestedDataToWrite(5)  <= nextRequestedDataToWrite(5);
+			requestedDataToWrite(6)  <= nextRequestedDataToWrite(6);
+			requestedDataToWrite(7)  <= nextRequestedDataToWrite(7);
+			requestedDataToWrite(8)  <= nextRequestedDataToWrite(8);
+			requestedDataToWrite(9)  <= nextRequestedDataToWrite(9);
+			requestedDataToWrite(10)  <= nextRequestedDataToWrite(10);
+			requestedDataToWrite(11)  <= nextRequestedDataToWrite(11);
 		
 			end if;
    end process;
@@ -794,17 +798,17 @@ writeRequest <= nextWriteRequest;
 			nextSaveRequest4 <= '0';
 			
 			
-			nextRequestedDataToWrite1  <= requestedDataToWrite1;
-			nextRequestedDataToWrite2  <= requestedDataToWrite2;
-			nextRequestedDataToWrite3  <= requestedDataToWrite3;
-			nextRequestedDataToWrite4  <= requestedDataToWrite4;
-			nextRequestedDataToWrite5  <= requestedDataToWrite5;
-			nextRequestedDataToWrite6  <= requestedDataToWrite6;
-			nextRequestedDataToWrite7  <= requestedDataToWrite7;
-			nextRequestedDataToWrite8  <= requestedDataToWrite8;
-			nextRequestedDataToWrite9  <= requestedDataToWrite9;
-			nextRequestedDataToWrite10  <= requestedDataToWrite10;
-			nextRequestedDataToWrite11  <= requestedDataToWrite11;
+			nextRequestedDataToWrite(1)  <= requestedDataToWrite(1);
+			nextRequestedDataToWrite(2)  <= requestedDataToWrite(2);
+			nextRequestedDataToWrite(3)  <= requestedDataToWrite(3);
+			nextRequestedDataToWrite(4)  <= requestedDataToWrite(4);
+			nextRequestedDataToWrite(5)  <= requestedDataToWrite(5);
+			nextRequestedDataToWrite(6)  <= requestedDataToWrite(6);
+			nextRequestedDataToWrite(7)  <= requestedDataToWrite(7);
+			nextRequestedDataToWrite(8)  <= requestedDataToWrite(8);
+			nextRequestedDataToWrite(9)  <= requestedDataToWrite(9);
+			nextRequestedDataToWrite(10)  <= requestedDataToWrite(10);
+			nextRequestedDataToWrite(11)  <= requestedDataToWrite(11);
 		
 			
 			
@@ -903,17 +907,17 @@ writeRequest <= nextWriteRequest;
 
 			if count = 20229 then--20228 --WRITE
 				nextData <= "1010101010100110"; -- the last four digits of this will show up on the LEDs
-				nextRequestedDataToWrite1 <= "0000000000000000";
-				nextRequestedDataToWrite2 <= "1010101010100010";
-				nextRequestedDataToWrite3 <= "1010101010100100";
-				nextRequestedDataToWrite4 <= "1010101010101000";
-				nextRequestedDataToWrite5 <= "1010101010101100";
-				nextRequestedDataToWrite6 <= "1010101010100110";
-				nextRequestedDataToWrite7 <= "1010101010100011";
-				nextRequestedDataToWrite8 <= "1010101010100111";
-				nextRequestedDataToWrite9 <= "1010101010101110";
-				nextRequestedDataToWrite10 <= "0000000000000000";
- 				nextRequestedDataToWrite11 <= "0000000000000000";
+				nextRequestedDataToWrite(1) <= "0000000000000000";
+				nextRequestedDataToWrite(2) <= "1010101010100010";
+				nextRequestedDataToWrite(3) <= "1010101010100100";
+				nextRequestedDataToWrite(4) <= "1010101010101000";
+				nextRequestedDataToWrite(5) <= "1010101010101100";
+				nextRequestedDataToWrite(6) <= "1010101010100110";
+				nextRequestedDataToWrite(7) <= "1010101010100011";
+				nextRequestedDataToWrite(8) <= "1010101010100111";
+				nextRequestedDataToWrite(9) <= "1010101010101110";
+				nextRequestedDataToWrite(10) <= "0000000000000000";
+ 				nextRequestedDataToWrite(11) <= "0000000000000000";
 
 
 				nextWriteRequest <= '1';
