@@ -560,6 +560,12 @@ I => clk125MHz -- Buffer input
 
 		if initializationMode = '1' then --initializationMode is always '1', so this is always true
 			nextCount2 <= count2 + 1;  -- count2 increments at 125 MHz, not 250 MHz
+			if count2 = 1 then 
+				nextCount2 <= count2 + 14;  --skip ahead to shorten the cycle
+			end if;
+			if count2 = 28 then
+				nextCount2 <= count2 + 2;--skip ahead to shorten the cycle
+			end if;
 			
 			if count2 = 0    then
 				nextClockEnableBeginning <= '1';  -- this flag executes all the block of code below that changes signals on the count2 = 0 edge 
