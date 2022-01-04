@@ -484,8 +484,8 @@ I => clk125MHz -- Buffer input
 				nextClockEnableMidpoint <= '0';
 			end if;
 				
-			if (count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26)   then  --reads for 4 cycles of 125MHz count2
---			if (count2 = 24 or count2 = 25 or count2 = 26 or count2 = 27)   then  --reads for 4 cycles of 125MHz count2
+--			if (count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26)   then  --reads for 4 cycles of 125MHz count2
+			if (count2 = 24 or count2 = 25 or count2 = 26 or count2 = 27)   then  --reads for 4 cycles of 125MHz count2
 --			if count2 = 26 or count2 = 27 or count2 = 28 or count2 = 29 then
 				nextClockEnableRead <= '1';
 			else
