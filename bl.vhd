@@ -145,53 +145,10 @@ end component;
 	type philArr is array (15 downto 0) of std_logic_vector(15 downto 0);
 	signal requestedDataToWrite : philArr;
 signal nextRequestedDataToWrite : philArr;
-	
---	signal requestedDataToWrite1 : std_logic_vector(15 downto 0);
---	signal requestedDataToWrite2 : std_logic_vector(15 downto 0);
---	signal requestedDataToWrite3 : std_logic_vector(15 downto 0);
---	signal requestedDataToWrite4 : std_logic_vector(15 downto 0);
---	signal requestedDataToWrite5 : std_logic_vector(15 downto 0);
---	signal requestedDataToWrite6 : std_logic_vector(15 downto 0);
---	signal requestedDataToWrite7 : std_logic_vector(15 downto 0);
---	signal requestedDataToWrite8 : std_logic_vector(15 downto 0);
---	signal requestedDataToWrite9 : std_logic_vector(15 downto 0);
---	signal requestedDataToWrite10 : std_logic_vector(15 downto 0);
---	signal requestedDataToWrite11 : std_logic_vector(15 downto 0);
---	signal nextRequestedDataToWrite1 : std_logic_vector(15 downto 0);
---	signal nextRequestedDataToWrite2 : std_logic_vector(15 downto 0);
---	signal nextRequestedDataToWrite3 : std_logic_vector(15 downto 0);
---	signal nextRequestedDataToWrite4 : std_logic_vector(15 downto 0);
---	signal nextRequestedDataToWrite5 : std_logic_vector(15 downto 0);
---	signal nextRequestedDataToWrite6 : std_logic_vector(15 downto 0);
---	signal nextRequestedDataToWrite7 : std_logic_vector(15 downto 0);
---	signal nextRequestedDataToWrite8 : std_logic_vector(15 downto 0);
---signal nextRequestedDataToWrite9 : std_logic_vector(15 downto 0);
---signal nextRequestedDataToWrite10 : std_logic_vector(15 downto 0);
---signal nextRequestedDataToWrite11 : std_logic_vector(15 downto 0);
-
-	signal dataToWrite1 : std_logic_vector(15 downto 0);
-	signal dataToWrite2 : std_logic_vector(15 downto 0);
-	signal dataToWrite3 : std_logic_vector(15 downto 0);
-	signal dataToWrite4 : std_logic_vector(15 downto 0);
-	signal dataToWrite5 : std_logic_vector(15 downto 0);
-	signal dataToWrite6 : std_logic_vector(15 downto 0);
-	signal dataToWrite7 : std_logic_vector(15 downto 0);
-	signal dataToWrite8 : std_logic_vector(15 downto 0);
-	signal dataToWrite9 : std_logic_vector(15 downto 0);
-	signal dataToWrite10 : std_logic_vector(15 downto 0);
-	signal dataToWrite11 : std_logic_vector(15 downto 0);
-	signal nextDataToWrite1 : std_logic_vector(15 downto 0);
-	signal nextDataToWrite2 : std_logic_vector(15 downto 0);
-	signal nextDataToWrite3 : std_logic_vector(15 downto 0);
-	signal nextDataToWrite4 : std_logic_vector(15 downto 0);
-	signal nextDataToWrite5 : std_logic_vector(15 downto 0);
-	signal nextDataToWrite6 : std_logic_vector(15 downto 0);
-	signal nextDataToWrite7 : std_logic_vector(15 downto 0);
-	signal nextDataToWrite8 : std_logic_vector(15 downto 0);
-	signal nextDataToWrite9 : std_logic_vector(15 downto 0);
-	signal nextDataToWrite10 : std_logic_vector(15 downto 0);
-	signal nextDataToWrite11 : std_logic_vector(15 downto 0);
-
+	signal dataToWrite : philArr;
+	signal nextDataToWrite : philArr;
+ 
+	 
 
 	signal capturedData1 :   std_logic_vector(15 downto 0);
 	signal capturedData2 :   std_logic_vector(15 downto 0);
@@ -391,18 +348,8 @@ I => clk125MHz -- Buffer input
 		capturedData10 <= nextCapturedData10;
 		capturedData11 <= nextCapturedData11;
 			
-			dataToWrite1 <= nextDataToWrite1;
-			dataToWrite2 <= nextDataToWrite2;
-			dataToWrite3 <= nextDataToWrite3;
-			dataToWrite4 <= nextDataToWrite4;
-			dataToWrite5 <= nextDataToWrite5;
-			dataToWrite6 <= nextDataToWrite6;
-			dataToWrite7 <= nextDataToWrite7;
-			dataToWrite8 <= nextDataToWrite8;
-			dataToWrite9 <= nextDataToWrite9;
-			dataToWrite10 <= nextDataToWrite10;
-			dataToWrite11 <= nextDataToWrite11;
-
+			dataToWrite(11 downto 1) <= nextDataToWrite(11 downto 1);
+			
 		end if;
  end process;
 
@@ -427,17 +374,8 @@ I => clk125MHz -- Buffer input
 		nextCapturedData10 <= capturedData10;
 		nextCapturedData10 <= capturedData11;
 			
-		nextDataToWrite1 <= dataToWrite1;--unless overridden below, hold and remember the loaded values
-		nextDataToWrite2 <= dataToWrite2;
-		nextDataToWrite3 <= dataToWrite3;
-		nextDataToWrite4 <= dataToWrite4;
-		nextDataToWrite5 <= dataToWrite5;
-		nextDataToWrite6 <= dataToWrite6;
-		nextDataToWrite7 <= dataToWrite7;
-		nextDataToWrite8 <= dataToWrite8;
-		nextDataToWrite9 <= dataToWrite9;
-		nextDataToWrite10 <= dataToWrite10;
-		nextDataToWrite11 <= dataToWrite11;
+		nextDataToWrite(11 downto 1) <= dataToWrite(11 downto 1);--unless overridden below, hold and remember the loaded values
+		
 	
 	
 		if clockEnableRead = '1' and saveRequest = '1' then --capture data, actually captures 8 times, I think, 4 cycles of count2 at 125MHz, but two rising edges of 250 MHz per count2 incremena
@@ -455,32 +393,17 @@ I => clk125MHz -- Buffer input
 		end if;
 
 		if clockEnableMidpoint = '1' and writeRequest = '1' then  -- a bit before the write, load the data to write from the request register to the write register
-			nextDataToWrite1 <= requestedDataToWrite(1); 
-			nextDataToWrite2 <= requestedDataToWrite(2); 
-			nextDataToWrite3 <= requestedDataToWrite(3); 
-			nextDataToWrite4 <= requestedDataToWrite(4); 
-			nextDataToWrite5 <= requestedDataToWrite(5); 
-			nextDataToWrite6 <= requestedDataToWrite(6); 
-			nextDataToWrite7 <= requestedDataToWrite(7); 
-			nextDataToWrite8 <= requestedDataToWrite(8); 
-			nextDataToWrite9 <= requestedDataToWrite(9); 
-			nextDataToWrite10 <= requestedDataToWrite(10); 
-			nextDataToWrite11 <= requestedDataToWrite(11); 
+			nextDataToWrite(11 downto 1) <= requestedDataToWrite(11 downto 1); 
 		end if;
 	
 		dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');
 		
 	
 		if clockEnableWrite = '1' and writeRequest = '1' then --write data, and pull down the stack of registers
-				dataPort (15 downTo 0) <= dataToWrite1 (15 downTo 0);	
-			nextDataToWrite1 <= dataToWrite2;
-			nextDataToWrite2 <= dataToWrite3;
-			nextDataToWrite3 <= dataToWrite4;
-			nextDataToWrite4 <= dataToWrite5;
-			nextDataToWrite5 <= dataToWrite6;
-			nextDataToWrite6 <= dataToWrite7;
-			nextDataToWrite7 <= dataToWrite8;
-			nextDataToWrite8 <= dataToWrite9;
+				dataPort(15 downto 0)   <= dataToWrite(1)(15 downto 0)  ;	
+					nextDataToWrite(8 downto 1) <= dataToWrite(9 downto 2);
+		
+		 
 			
 			
 		end if;
@@ -568,7 +491,7 @@ I => clk125MHz -- Buffer input
 				nextCount2 <= count2 + 14;  --skip ahead to shorten the cycle
 			end if;
 			if count2 = 28 then
-				nextCount2 <= count2 + 2;--skip ahead to shorten the cycle
+				nextCount2 <= count2 + 1;--skip ahead to shorten the cycle
 			end if;
 			
 			if count2 = 0    then
@@ -733,18 +656,7 @@ writeRequest <= nextWriteRequest;
 	
 			requestedDataToWrite(11 downto 1)  <= nextRequestedDataToWrite(11 downto 1);
 	
---			requestedDataToWrite(1)  <= nextRequestedDataToWrite(1);
---			requestedDataToWrite(2)  <= nextRequestedDataToWrite(2);
---			requestedDataToWrite(3)  <= nextRequestedDataToWrite(3);
---			requestedDataToWrite(4)  <= nextRequestedDataToWrite(4);
---			requestedDataToWrite(5)  <= nextRequestedDataToWrite(5);
---			requestedDataToWrite(6)  <= nextRequestedDataToWrite(6);
---			requestedDataToWrite(7)  <= nextRequestedDataToWrite(7);
---			requestedDataToWrite(8)  <= nextRequestedDataToWrite(8);
---			requestedDataToWrite(9)  <= nextRequestedDataToWrite(9);
---			requestedDataToWrite(10)  <= nextRequestedDataToWrite(10);
---			requestedDataToWrite(11)  <= nextRequestedDataToWrite(11);
-		
+	
 			end if;
    end process;
 
