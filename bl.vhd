@@ -620,7 +620,7 @@ writeRequest <= nextWriteRequest;
    end process;
 
 ------------------------------------------COMBINATORIAL:
-	process (count,blinker,ba,addr,casRequest,rasRequest,weRequest,reset,cke,data,capturedData1,capturedData2,capturedData3,capturedData4,odt,tristateData)
+	process (count)
 
 		begin
 	--		dummyOut <= capturedData(4) and  capturedData(5) and capturedData(6) and capturedData(7) and capturedData(8) and capturedData(9) and capturedData(10) and capturedData(11) and capturedData(12) and capturedData(13) and capturedData(14) and capturedData(15);
