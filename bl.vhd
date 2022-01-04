@@ -730,17 +730,20 @@ writeRequest <= nextWriteRequest;
 			odt <= nextODT;
 			tristateData <= nextTristateData;
 			
-			requestedDataToWrite(1)  <= nextRequestedDataToWrite(1);
-			requestedDataToWrite(2)  <= nextRequestedDataToWrite(2);
-			requestedDataToWrite(3)  <= nextRequestedDataToWrite(3);
-			requestedDataToWrite(4)  <= nextRequestedDataToWrite(4);
-			requestedDataToWrite(5)  <= nextRequestedDataToWrite(5);
-			requestedDataToWrite(6)  <= nextRequestedDataToWrite(6);
-			requestedDataToWrite(7)  <= nextRequestedDataToWrite(7);
-			requestedDataToWrite(8)  <= nextRequestedDataToWrite(8);
-			requestedDataToWrite(9)  <= nextRequestedDataToWrite(9);
-			requestedDataToWrite(10)  <= nextRequestedDataToWrite(10);
-			requestedDataToWrite(11)  <= nextRequestedDataToWrite(11);
+	
+			requestedDataToWrite(11 downto 1)  <= nextRequestedDataToWrite(11 downto 1);
+	
+--			requestedDataToWrite(1)  <= nextRequestedDataToWrite(1);
+--			requestedDataToWrite(2)  <= nextRequestedDataToWrite(2);
+--			requestedDataToWrite(3)  <= nextRequestedDataToWrite(3);
+--			requestedDataToWrite(4)  <= nextRequestedDataToWrite(4);
+--			requestedDataToWrite(5)  <= nextRequestedDataToWrite(5);
+--			requestedDataToWrite(6)  <= nextRequestedDataToWrite(6);
+--			requestedDataToWrite(7)  <= nextRequestedDataToWrite(7);
+--			requestedDataToWrite(8)  <= nextRequestedDataToWrite(8);
+--			requestedDataToWrite(9)  <= nextRequestedDataToWrite(9);
+--			requestedDataToWrite(10)  <= nextRequestedDataToWrite(10);
+--			requestedDataToWrite(11)  <= nextRequestedDataToWrite(11);
 		
 			end if;
    end process;
@@ -798,17 +801,7 @@ writeRequest <= nextWriteRequest;
 			nextSaveRequest4 <= '0';
 			
 			
-			nextRequestedDataToWrite(1)  <= requestedDataToWrite(1);
-			nextRequestedDataToWrite(2)  <= requestedDataToWrite(2);
-			nextRequestedDataToWrite(3)  <= requestedDataToWrite(3);
-			nextRequestedDataToWrite(4)  <= requestedDataToWrite(4);
-			nextRequestedDataToWrite(5)  <= requestedDataToWrite(5);
-			nextRequestedDataToWrite(6)  <= requestedDataToWrite(6);
-			nextRequestedDataToWrite(7)  <= requestedDataToWrite(7);
-			nextRequestedDataToWrite(8)  <= requestedDataToWrite(8);
-			nextRequestedDataToWrite(9)  <= requestedDataToWrite(9);
-			nextRequestedDataToWrite(10)  <= requestedDataToWrite(10);
-			nextRequestedDataToWrite(11)  <= requestedDataToWrite(11);
+			nextRequestedDataToWrite(11 downto 1)  <= requestedDataToWrite(11 downto 1);
 		
 			
 			
