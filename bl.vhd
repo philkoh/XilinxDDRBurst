@@ -444,20 +444,31 @@ I => clk125MHz -- Buffer input
 			nextCapturedData11 <= capturedData10;
 		end if;
 
+		if clockEnableMidpoint = '1' and writeRequest = '1' then  -- a bit before the write, load the data to write from the request register to the write register
+			nextDataToWrite1 <= requestedDataToWrite1; 
+			nextDataToWrite2 <= requestedDataToWrite2; 
+			nextDataToWrite3 <= requestedDataToWrite3; 
+			nextDataToWrite4 <= requestedDataToWrite4; 
+			nextDataToWrite5 <= requestedDataToWrite5; 
+			nextDataToWrite6 <= requestedDataToWrite6; 
+			nextDataToWrite7 <= requestedDataToWrite7; 
+			nextDataToWrite8 <= requestedDataToWrite8; 
+		end if;
 	
+		dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');
+		
 	
 		if clockEnableWrite = '1' and writeRequest = '1' then --write data, and pull down the stack of registers
 				dataPort (15 downTo 0) <= dataToWrite1 (15 downTo 0);	
-			nextdataToWrite1 <= dataToWrite2;
-			nextdataToWrite2 <= dataToWrite3;
-			nextdataToWrite3 <= dataToWrite4;
-			nextdataToWrite4 <= dataToWrite5;
-			nextdataToWrite5 <= dataToWrite6;
-			nextdataToWrite6 <= dataToWrite7;
-			nextdataToWrite7 <= dataToWrite8;
-			nextdataToWrite8 <= dataToWrite9;
-			nextdataToWrite9 <= dataToWrite10;
-			nextdataToWrite10 <= dataToWrite11;
+			nextDataToWrite1 <= dataToWrite2;
+			nextDataToWrite2 <= dataToWrite3;
+			nextDataToWrite3 <= dataToWrite4;
+			nextDataToWrite4 <= dataToWrite5;
+			nextDataToWrite5 <= dataToWrite6;
+			nextDataToWrite6 <= dataToWrite7;
+			nextDataToWrite7 <= dataToWrite8;
+			nextDataToWrite8 <= dataToWrite9;
+			
 			
 		end if;
 
@@ -741,7 +752,7 @@ writeRequest <= nextWriteRequest;
 			end if;
 		
 			if tristateData = '1' then
-				dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');
+	--			dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');
 			else
 	--			dataPort (0) <= dataCount (0);			
 	--			dataPort (1) <= dataCount (1);			
