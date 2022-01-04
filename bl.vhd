@@ -150,7 +150,10 @@ end component;
 	signal requestedDataToWrite6 : std_logic_vector(15 downto 0);
 	signal requestedDataToWrite7 : std_logic_vector(15 downto 0);
 	signal requestedDataToWrite8 : std_logic_vector(15 downto 0);
-		signal nextRequestedDataToWrite1 : std_logic_vector(15 downto 0);
+	signal requestedDataToWrite9 : std_logic_vector(15 downto 0);
+	signal requestedDataToWrite10 : std_logic_vector(15 downto 0);
+	signal requestedDataToWrite11 : std_logic_vector(15 downto 0);
+	signal nextRequestedDataToWrite1 : std_logic_vector(15 downto 0);
 	signal nextRequestedDataToWrite2 : std_logic_vector(15 downto 0);
 	signal nextRequestedDataToWrite3 : std_logic_vector(15 downto 0);
 	signal nextRequestedDataToWrite4 : std_logic_vector(15 downto 0);
@@ -158,6 +161,9 @@ end component;
 	signal nextRequestedDataToWrite6 : std_logic_vector(15 downto 0);
 	signal nextRequestedDataToWrite7 : std_logic_vector(15 downto 0);
 	signal nextRequestedDataToWrite8 : std_logic_vector(15 downto 0);
+signal nextRequestedDataToWrite9 : std_logic_vector(15 downto 0);
+signal nextRequestedDataToWrite10 : std_logic_vector(15 downto 0);
+signal nextRequestedDataToWrite11 : std_logic_vector(15 downto 0);
 
 	signal dataToWrite1 : std_logic_vector(15 downto 0);
 	signal dataToWrite2 : std_logic_vector(15 downto 0);
@@ -453,6 +459,9 @@ I => clk125MHz -- Buffer input
 			nextDataToWrite6 <= requestedDataToWrite6; 
 			nextDataToWrite7 <= requestedDataToWrite7; 
 			nextDataToWrite8 <= requestedDataToWrite8; 
+			nextDataToWrite9 <= requestedDataToWrite9; 
+			nextDataToWrite10 <= requestedDataToWrite10; 
+			nextDataToWrite11 <= requestedDataToWrite11; 
 		end if;
 	
 		dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');
@@ -573,7 +582,7 @@ I => clk125MHz -- Buffer input
 			end if;
 			
 	
-      	if (count2 = 24 or count2 = 25 or count2 = 26 or count2 = 27)   then  --writes for 4 cycles of 125MHz count2
+      	if (count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26)   then  --writes for 4 cycles of 125MHz count2
 				nextClockEnableWrite <= '1';
 			else
 				nextClockEnableWrite <= '0';
@@ -719,6 +728,9 @@ writeRequest <= nextWriteRequest;
 			requestedDataToWrite6  <= nextRequestedDataToWrite6;
 			requestedDataToWrite7  <= nextRequestedDataToWrite7;
 			requestedDataToWrite8  <= nextRequestedDataToWrite8;
+			requestedDataToWrite9  <= nextRequestedDataToWrite9;
+			requestedDataToWrite10  <= nextRequestedDataToWrite10;
+			requestedDataToWrite11  <= nextRequestedDataToWrite11;
 		
 			end if;
    end process;
@@ -784,6 +796,9 @@ writeRequest <= nextWriteRequest;
 			nextRequestedDataToWrite6  <= requestedDataToWrite6;
 			nextRequestedDataToWrite7  <= requestedDataToWrite7;
 			nextRequestedDataToWrite8  <= requestedDataToWrite8;
+			nextRequestedDataToWrite9  <= requestedDataToWrite9;
+			nextRequestedDataToWrite10  <= requestedDataToWrite10;
+			nextRequestedDataToWrite11  <= requestedDataToWrite11;
 		
 			
 			
@@ -882,15 +897,18 @@ writeRequest <= nextWriteRequest;
 
 			if count = 20229 then--20228 --WRITE
 				nextData <= "1010101010100110"; -- the last four digits of this will show up on the LEDs
-				nextRequestedDataToWrite1 <= "1010101010100001";
-				nextRequestedDataToWrite2  <= "1010101010100010";
+				nextRequestedDataToWrite1 <= "0000000000000000";
+				nextRequestedDataToWrite2 <= "1010101010100010";
 				nextRequestedDataToWrite3 <= "1010101010100100";
 				nextRequestedDataToWrite4 <= "1010101010101000";
-				nextRequestedDataToWrite5 <= "1010101010100100";
-				nextRequestedDataToWrite6 <= "1010101010100010";
-				nextRequestedDataToWrite7 <= "1010101010100001";
-				nextRequestedDataToWrite8 <= "1010101010100010";
-				 
+				nextRequestedDataToWrite5 <= "1010101010101100";
+				nextRequestedDataToWrite6 <= "1010101010100110";
+				nextRequestedDataToWrite7 <= "1010101010100011";
+				nextRequestedDataToWrite8 <= "1010101010100111";
+				nextRequestedDataToWrite9 <= "1010101010101110";
+				nextRequestedDataToWrite10 <= "0000000000000000";
+ 				nextRequestedDataToWrite11 <= "0000000000000000";
+
 
 				nextWriteRequest <= '1';
 				
