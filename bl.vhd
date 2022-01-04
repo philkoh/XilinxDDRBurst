@@ -148,6 +148,9 @@ end component;
 	signal capturedData6 :   std_logic_vector(15 downto 0);
 	signal capturedData7 :   std_logic_vector(15 downto 0);
 	signal capturedData8 :   std_logic_vector(15 downto 0);
+	signal capturedData9 :   std_logic_vector(15 downto 0);
+	signal capturedData10 :   std_logic_vector(15 downto 0);
+	signal capturedData11 :   std_logic_vector(15 downto 0);
 	signal nextCapturedData1 :   std_logic_vector(15 downto 0);
 	signal nextCapturedData2 :   std_logic_vector(15 downto 0);
 	signal nextCapturedData3 :   std_logic_vector(15 downto 0);
@@ -156,6 +159,9 @@ end component;
 	signal nextCapturedData6 :   std_logic_vector(15 downto 0);
 	signal nextCapturedData7 :   std_logic_vector(15 downto 0);
 	signal nextCapturedData8 :   std_logic_vector(15 downto 0);
+	signal nextCapturedData9 :   std_logic_vector(15 downto 0);
+	signal nextCapturedData10 :   std_logic_vector(15 downto 0);
+	signal nextCapturedData11 :   std_logic_vector(15 downto 0);
 	signal tristateData : std_logic := '1';
 	signal tristateDataFromDDR : std_logic := '1';
 	signal nextTristateData : std_logic := '1';
@@ -199,8 +205,8 @@ end component;
 	signal nextSwitchRegister : std_logic := '0';
    signal lastSwitchRegister : std_logic := '0';
 
-   signal switchCount : unsigned (2 downto 0) := "000";
-   signal nextSwitchCount : unsigned (2 downto 0) := "000";
+   signal switchCount : unsigned (3 downto 0) := "0000";
+   signal nextSwitchCount : unsigned (3 downto 0) := "0000";
    
 	
 begin
@@ -226,10 +232,10 @@ IOBUFDS_dqs0 : IOBUFDS
 generic map (
 IOSTANDARD => "DIFF_SSTL15_II")
 port map (
-O => dqs0Incoming, -- Buffer output
+O => dqs0Incoming, -- received dqs from DRAM
 IO => dqs0_pPORT, -- Diff_p inout (connect directly to top-level port)
 IOB => dqs0_nPORT, -- Diff_n inout (connect directly to top-level port)
-I => clk125MHz, -- Buffer input
+I => clk125MHz, -- outgoing dqs is just always the 125MHz clock
 T => dqsTristate -- 3-state enable input, high=input, low=output
 );
 
@@ -341,6 +347,16 @@ I => clk125MHz -- Buffer input
 		
 			if clockEnableRead = '1' and saveRequest = '1' then --capture data, actually captures 8 times, I think, 4 cycles of count2 at 125MHz, but two rising edges of 250 MHz per count2 incremena
 				nextCapturedData1 <= inData;
+				nextCapturedData2 <= capturedData1;
+				nextCapturedData3 <= capturedData2;
+				nextCapturedData4 <= capturedData3;
+				nextCapturedData5 <= capturedData4;
+				nextCapturedData6 <= capturedData5;
+				nextCapturedData7 <= capturedData6;
+				nextCapturedData8 <= capturedData7;
+				nextCapturedData9 <= capturedData8;
+				nextCapturedData10 <= capturedData9;
+	
 			else  -- save captured data
 				nextCapturedData1 <= capturedData1;
 			end if;
@@ -442,7 +458,7 @@ I => clk125MHz -- Buffer input
  		LED0 <= switchCount(0);
 		LED1 <= switchCount(1);
  		LED2 <= switchCount(2);
---		LED3 <= switchCount(3);
+		LED3 <= switchCount(3);
 
 		if initializationMode = '1' then --initializationMode is always '1', so this is always true
 			nextCount2 <= count2 + 1;  -- count2 increments at 125 MHz, not 250 MHz
@@ -506,14 +522,52 @@ I => clk125MHz -- Buffer input
 				
 		 end if;
 		 if switchCount = 3 then
-					LED0 <=   capturedData4(0);
+				LED0 <=   capturedData4(0);
 				LED1 <=    capturedData4(1);
 				LED2 <=    capturedData4(2);
 				LED3 <=    capturedData4(3);
-				
-	
 		 end if;
 		 if switchCount = 4 then
+				LED0 <=   capturedData5(0);
+				LED1 <=    capturedData5(1);
+				LED2 <=    capturedData5(2);
+				LED3 <=    capturedData5(3);
+		 end if;
+		 if switchCount = 5 then
+				LED0 <=   capturedData6(0);
+				LED1 <=    capturedData6(1);
+				LED2 <=    capturedData6(2);
+				LED3 <=    capturedData6(3);
+		 end if;
+		 if switchCount = 6 then
+				LED0 <=   capturedData7(0);
+				LED1 <=    capturedData7(1);
+				LED2 <=    capturedData7(2);
+				LED3 <=    capturedData7(3);
+		 end if;
+		 if switchCount = 7 then
+				LED0 <=   capturedData8(0);
+				LED1 <=    capturedData8(1);
+				LED2 <=    capturedData8(2);
+				LED3 <=    capturedData8(3);
+		 end if;
+
+		 if switchCount = 8 then
+				LED0 <=   capturedData9(0);
+				LED1 <=    capturedData9(1);
+				LED2 <=    capturedData9(2);
+				LED3 <=    capturedData9(3);
+		 end if;
+
+	 if switchCount = 9 then
+				LED0 <=   capturedData10(0);
+				LED1 <=    capturedData10(1);
+				LED2 <=    capturedData10(2);
+				LED3 <=    capturedData10(3);
+		 end if;
+
+
+	if switchCount = 4 then
 			LED3 <= capturedData5(0);
 		 end if;
 		 if switchCount = 5 then
