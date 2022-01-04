@@ -52,6 +52,9 @@ set_input_jitter CLK_IN 0.1
 
 
 
+create_clock -name CLK_IN1 -period 10 [get_ports CLK_IN1]
+set_propagated_clock CLK_IN1
+set_input_jitter CLK_IN1 0.1 
 
 
 # FALSE PATH constraints 

@@ -313,7 +313,7 @@ I => clk125MHz -- Buffer input
 	
 ------------------------------------------SEQUENTIAL :	
 		if rising_edge(clk250MHz) then
-			clk125MHz <=  nextClk125MHz  ;
+			clk125MHz <=  nextClk125MHz  ;  --clk125MHz changes on rising edge of 250MHz clock; this is sent out as external clock *and* as dqs
 			inData (15 downTo 0) <= dataPort (15 downTo 0);  -- data uses the 250 MHz clock
 
 

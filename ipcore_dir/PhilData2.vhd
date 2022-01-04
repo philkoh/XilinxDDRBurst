@@ -65,43 +65,42 @@ generic
  (-- width of the data for the system
   sys_w       : integer := 16;
   -- width of the data for the device
-  dev_w       : integer := 48);
+  dev_w       : integer := 16);
 port
  (
-  -- From the system into the device
-  DATA_IN_FROM_PINS       : in    std_logic_vector(sys_w-1 downto 0);
+  DATA_TO_AND_FROM_PINS   : inout std_logic_vector(sys_w-1 downto 0);
   DATA_IN_TO_DEVICE       : out   std_logic_vector(dev_w-1 downto 0);
+  -- From the device out to the system
+  DATA_OUT_FROM_DEVICE    : in    std_logic_vector(dev_w-1 downto 0);
 
+  TRISTATE_OUTPUT         : in    std_logic;
 -- Clock and reset signals
-  CLK_IN                  : in    std_logic;                    -- Fast clock from PLL/MMCM 
-  CLK_DIV_IN              : in    std_logic;                    -- Slow clock from PLL/MMCM
-  LOCKED_IN               : in    std_logic;
-  LOCKED_OUT              : out   std_logic;
+  CLK_IN                  : in    std_logic;                    -- Single ended Fast clock from IOB
+  CLK_OUT                 : out   std_logic;
   IO_RESET                : in    std_logic);                   -- Reset signal for IO circuit
 end PhilData2;
 
 architecture xilinx of PhilData2 is
   attribute CORE_GENERATION_INFO            : string;
-  attribute CORE_GENERATION_INFO of xilinx  : architecture is "PhilData2,selectio_wiz_v4_1,{component_name=PhilData2,bus_dir=INPUTS,bus_sig_type=SINGLE,bus_io_std=SSTL15_II,use_serialization=true,use_phase_detector=false,serialization_factor=3,enable_bitslip=false,enable_train=false,system_data_width=16,bus_in_delay=NONE,bus_out_delay=NONE,clk_sig_type=SINGLE,clk_io_std=SSTL15_II,clk_buf=BUFPLL,active_edge=RISING,clk_delay=NONE,v6_bus_in_delay=NONE,v6_bus_out_delay=NONE,v6_clk_buf=BUFIO,v6_active_edge=NOT_APP,v6_ddr_alignment=SAME_EDGE_PIPELINED,v6_oddr_alignment=SAME_EDGE,ddr_alignment=C0,v6_interface_type=NETWORKING,interface_type=RETIMED,v6_bus_in_tap=0,v6_bus_out_tap=0,v6_clk_io_std=LVCMOS18,v6_clk_sig_type=SINGLE}";
+  attribute CORE_GENERATION_INFO of xilinx  : architecture is "PhilData2,selectio_wiz_v4_1,{component_name=PhilData2,bus_dir=BIDIR,bus_sig_type=SINGLE,bus_io_std=SSTL15_II,use_serialization=false,use_phase_detector=false,serialization_factor=4,enable_bitslip=false,enable_train=false,system_data_width=16,bus_in_delay=FIXED,bus_out_delay=FIXED,clk_sig_type=SINGLE,clk_io_std=SSTL15_II,clk_buf=BUFG,active_edge=NONE,clk_delay=NONE,v6_bus_in_delay=NONE,v6_bus_out_delay=NONE,v6_clk_buf=BUFIO,v6_active_edge=NOT_APP,v6_ddr_alignment=SAME_EDGE_PIPELINED,v6_oddr_alignment=SAME_EDGE,ddr_alignment=C0,v6_interface_type=NETWORKING,interface_type=NETWORKING,v6_bus_in_tap=0,v6_bus_out_tap=0,v6_clk_io_std=LVCMOS18,v6_clk_sig_type=SINGLE}";
   constant clock_enable            : std_logic := '1';
   signal unused : std_logic;
+  signal clk_in_int                : std_logic;
   signal clk_in_int_buf            : std_logic;
-  signal clk_div_in_int            : std_logic;
 
 
   -- After the buffer
   signal data_in_from_pins_int     : std_logic_vector(sys_w-1 downto 0);
   -- Between the delay and serdes
   signal data_in_from_pins_delay   : std_logic_vector(sys_w-1 downto 0);
-  constant num_serial_bits         : integer := dev_w/sys_w;
-  type serdarr is array (0 to 7) of std_logic_vector(sys_w-1 downto 0);
-  -- Array to use intermediately from the serdes to the internal
-  --  devices. bus "0" is the leftmost bus
-  -- * fills in starting with 0
-  signal iserdes_q                 : serdarr := (( others => (others => '0')));
-  signal serdesstrobe             : std_logic;
-  signal icascade                 : std_logic_vector(sys_w-1 downto 0);
-
+  -- Before the buffer
+  signal data_out_to_pins_int      : std_logic_vector(sys_w-1 downto 0);
+  -- Between the delay and serdes
+  signal data_out_to_pins_predelay : std_logic_vector(sys_w-1 downto 0);
+  -- Before the buffer
+  signal tristate_int              : std_logic_vector(sys_w-1 downto 0);
+  -- Between the delay and serdes
+  signal tristate_predelay         : std_logic_vector(sys_w-1 downto 0);
 
 
 begin
@@ -110,94 +109,78 @@ begin
 
 
   -- Create the clock logic
-   bufpll_inst : BUFPLL
+  ibufg_clk_inst : IBUFG
     generic map (
-      DIVIDE        => 3)
+      IOSTANDARD => "SSTL15_II")
     port map (
-      IOCLK        => clk_in_int_buf,
-      LOCK         => LOCKED_OUT,
-      SERDESSTROBE => serdesstrobe,
-      GCLK         => CLK_DIV_IN,  -- GCLK pin must be driven by BUFG
-      LOCKED       => LOCKED_IN,
-      PLLIN        => CLK_IN);
+      I          => CLK_IN,
+      O          => clk_in_int);
 
+   clkin_buf_inst : BUFG
+     port map (
+       O => clk_in_int_buf,
+       I => clk_in_int);
+
+
+   -- Forward the buffered version of the input clock
+   CLK_OUT <= clk_in_int_buf;
   
   -- We have multiple bits- step over every bit, instantiating the required elements
-  pins: for pin_count in 0 to sys_w-1 generate 
+  pins: for pin_count in 0 to sys_w-1 generate
   begin
     -- Instantiate the buffers
     ----------------------------------
     -- Instantiate a buffer for every bit of the data bus
-     ibuf_inst : IBUF
+     iobuf_inst : IOBUF
        generic map (
          IOSTANDARD => "SSTL15_II")
-       port map (     
-         I          => DATA_IN_FROM_PINS    (pin_count),
-         O          => data_in_from_pins_int(pin_count));
-
-
-    -- Pass through the delay
-    -----------------------------------
-   data_in_from_pins_delay(pin_count) <= data_in_from_pins_int(pin_count);
-
-     -- Instantiate the serdes primitive
-     ----------------------------------
-     -- declare the iserdes
-     iserdes2_master : ISERDES2
-       generic map (
-         BITSLIP_ENABLE => FALSE,
-         DATA_RATE      => "SDR",
-         DATA_WIDTH     => 3,
-         INTERFACE_TYPE => "RETIMED",
-         SERDES_MODE    => "NONE")
        port map (
-         Q1         => iserdes_q(3)(pin_count),
-         Q2         => iserdes_q(2)(pin_count),
-         Q3         => iserdes_q(1)(pin_count),
-         Q4         => iserdes_q(0)(pin_count),
-         SHIFTOUT   => open,
-         INCDEC     => open,
-         VALID      => open,
-         BITSLIP    => '0',
-         CE0        => clock_enable,   -- 1-bit Clock enable input
-         CLK0       => clk_in_int_buf, -- 1-bit IO Clock network input. Optionally Invertible. This is the primary clock
-                                       -- input used when the clock doubler circuit is not engaged (see DATA_RATE
-                                       -- attribute).
-         CLK1       => '0',
-         CLKDIV     => CLK_DIV_IN,
-         D          => data_in_from_pins_delay(pin_count), -- 1-bit Input signal from IOB.
-         IOCE       => serdesstrobe,                       -- 1-bit Data strobe signal derived from BUFIO CE. Strobes data capture for
-                                                          -- NETWORKING and NETWORKING_PIPELINES alignment modes.
+         IO         => DATA_TO_AND_FROM_PINS(pin_count),
+         I          => data_out_to_pins_int (pin_count),
+         O          => data_in_from_pins_int(pin_count),
+         T          => tristate_int         (pin_count));
 
-         RST        => IO_RESET,        -- 1-bit Asynchronous reset only.
-         SHIFTIN    => '0',
+    -- Instantiate the delay primitive
+    -----------------------------------
+  iodelay2_bus : IODELAY2
+    generic map (
+      DATA_RATE                => "SDR",
+      IDELAY_VALUE             => 3,
+      ODELAY_VALUE             => 3,
+      IDELAY_TYPE              => "FIXED",
+      COUNTER_WRAPAROUND       => "STAY_AT_LIMIT",
+      DELAY_SRC                => "IO",
+      SERDES_MODE              => "NONE",
+      SIM_TAPDELAY_VALUE       => 75)
+    port map (
+      -- required datapath
+      IDATAIN                => data_in_from_pins_int    (pin_count),
+      DATAOUT2               => data_in_from_pins_delay  (pin_count),
+      DOUT                   => data_out_to_pins_int     (pin_count),
+      ODATAIN                => data_out_to_pins_predelay(pin_count),
+      T                      => tristate_predelay        (pin_count),
+      TOUT                   => tristate_int             (pin_count),
+      -- inactive data connections
+      DATAOUT                => open,
+       -- connect up the clocks
+      IOCLK0                => '0',                 -- No calibration needed
+      IOCLK1                => '0',                 -- No calibration needed
+      -- Tie of the variable delay programming
+      CLK                   => '0',
+      CAL                   => '0',
+      INC                   => '0',
+      CE                    => '0',
+      BUSY                  => open,
+      RST                   => '0');
 
 
-        -- unused connections
-         FABRICOUT  => open,
-         CFB0       => open,
-         CFB1       => open,
-         DFB        => open);
 
-
-
-
-     -- Concatenate the serdes outputs together. Keep the timesliced
-     --   bits together, and placing the earliest bits on the right
-     --   ie, if data comes in 0, 1, 2, 3, 4, 5, 6, 7, ...
-     --       the output will be 3210, 7654, ...
-     -------------------------------------------------------------
-
-     in_slices: for slice_count in 0 to num_serial_bits-1 generate begin
-        -- This places the first data in time on the right
-        DATA_IN_TO_DEVICE(slice_count*sys_w+sys_w-1 downto slice_count*sys_w) <=
-          iserdes_q(num_serial_bits-slice_count-1);
-        -- To place the first data in time on the left, use the
-        --   following code, instead
-        -- DATA_IN_TO_DEVICE(slice_count*sys_w+sys_w-1 downto sys_w) <=
-        --   iserdes_q(slice_count);
-     end generate in_slices;
-
+    -- Connect the delayed data to the fabric
+    ------------------------------------------
+    -- No clock edge
+    DATA_IN_TO_DEVICE        (pin_count) <= data_in_from_pins_delay(pin_count);
+    data_out_to_pins_predelay(pin_count) <= DATA_OUT_FROM_DEVICE   (pin_count);
+    tristate_predelay(pin_count)      <= TRISTATE_OUTPUT;
 
   end generate pins;
 

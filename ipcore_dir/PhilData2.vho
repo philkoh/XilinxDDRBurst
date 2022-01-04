@@ -52,18 +52,18 @@ generic
  (-- width of the data for the system
   sys_w       : integer := 16;
   -- width of the data for the device
-  dev_w       : integer := 48);
+  dev_w       : integer := 16);
 port
  (
-  -- From the system into the device
-  DATA_IN_FROM_PINS       : in    std_logic_vector(sys_w-1 downto 0);
+  DATA_TO_AND_FROM_PINS   : inout std_logic_vector(sys_w-1 downto 0);
   DATA_IN_TO_DEVICE       : out   std_logic_vector(dev_w-1 downto 0);
+  -- From the device out to the system
+  DATA_OUT_FROM_DEVICE    : in    std_logic_vector(dev_w-1 downto 0);
 
+  TRISTATE_OUTPUT         : in    std_logic;
 -- Clock and reset signals
-  CLK_IN                  : in    std_logic;                    -- Fast clock from PLL/MMCM 
-  CLK_DIV_IN              : in    std_logic;                    -- Slow clock from PLL/MMCM
-  LOCKED_IN               : in    std_logic;
-  LOCKED_OUT              : out   std_logic;
+  CLK_IN                  : in    std_logic;                    -- Single ended Fast clock from IOB
+  CLK_OUT                 : out   std_logic;
   IO_RESET                : in    std_logic);                   -- Reset signal for IO circuit
 end component;
 
@@ -78,16 +78,16 @@ end component;
 your_instance_name : PhilData2
   port map
    (
-  -- From the system into the device
-  DATA_IN_FROM_PINS =>   DATA_IN_FROM_PINS, --Input pins
+  DATA_TO_AND_FROM_PINS =>   DATA_TO_AND_FROM_PINS, --Bi-Directional Pins
   DATA_IN_TO_DEVICE =>   DATA_IN_TO_DEVICE, --Output pins
+  -- From the device out to the system
+  DATA_OUT_FROM_DEVICE =>   DATA_OUT_FROM_DEVICE, --Input pins
 
+  TRISTATE_OUTPUT =>   TRISTATE_OUTPUT,  --Output pin
   
 -- Clock and reset signals
-  CLK_IN =>   CLK_IN,      -- Fast clock input from PLL/MMCM
-  CLK_DIV_IN =>   CLK_DIV_IN,    -- Slow clock input from PLL/MMCM
-  LOCKED_IN =>   LOCKED_IN,      --Input pin
-  LOCKED_OUT =>   LOCKED_OUT,    --Output pin
+  CLK_IN =>   CLK_IN,      -- Single ended clock from IOB
+  CLK_OUT =>   CLK_OUT,    --Fast clock ouput
   CLK_RESET =>   CLK_RESET,         --clocking logic reset
   IO_RESET =>   IO_RESET);          --system reset
 

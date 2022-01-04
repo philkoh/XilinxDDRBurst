@@ -53,10 +53,10 @@ add wave -noupdate -format Literal -radix unsigned /PhilData2_tb/dut/dev_w
 add wave -noupdate -format Logic   /PhilData2_tb/IO_RESET
 add wave -noupdate -format Logic   /PhilData2_tb/CLK_RESET
 add wave -noupdate -format Logic   /PhilData2_tb/CLK_IN
-add wave -noupdate -format Logic   /PhilData2_tb/dut/CLK_DIV_IN
-add wave -noupdate -format Literal /PhilData2_tb/DATA_IN_FROM_PINS
-add wave -noupdate -format Literal /PhilData2_tb/dut/io_inst/iserdes_q
+add wave -noupdate -format Logic   /PhilData2_tb/TRISTATE_OUTPUT
+add wave -noupdate -format Literal /PhilData2_tb/DATA_TO_AND_FROM_PINS
 add wave -noupdate -format Literal /PhilData2_tb/dut/DATA_IN_TO_DEVICE
+add wave -noupdate -format Literal /PhilData2_tb/dut/DATA_OUT_FROM_DEVICE
 add wave -noupdate -format Logic   /PhilData2_tb/dut/IO_RESET
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors {{Cursor 1} {370825 ps} 0}

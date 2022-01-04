@@ -73,22 +73,27 @@ architecture test of PhilData2_tb is
 component PhilData2_exdes
 port (
   PATTERN_COMPLETED_OUT     : out   std_logic_vector (1 downto 0);
-  -- From the system into the device
-  DATA_IN_FROM_PINS        : in    std_logic_vector(15 downto 0);
-  DATA_OUT_TO_PINS         : out   std_logic_vector(15 downto 0);
+  DATA_TO_AND_FROM_PINS1    : inout std_logic_vector(15 downto 0);
+  DATA_TO_AND_FROM_PINS2    : inout std_logic_vector(15 downto 0);
 
+  TRISTATE_OUTPUT          : in    std_logic;
+  TRISTATE_OUTPUT_INV      : in    std_logic;
   CLK_IN                   : in    std_logic;
-  CLK_RESET                : in    std_logic;
+  CLK_IN1                   : in    std_logic;
   IO_RESET                 : in    std_logic);
 end component;
   constant clk_per         : time    :=  10 ns; -- 100 MHz clk
   constant sys_w           : integer := 16;
-  constant dev_w           : integer := 48;
+  constant dev_w           : integer := 16;
   constant num_serial_bits : integer := dev_w/sys_w;
-  -- From the system into the device
-  signal   data_in_from_pins   : std_logic_vector(sys_w-1 downto 0);
-  signal   data_out_to_pins    : std_logic_vector(sys_w-1 downto 0);
+  signal   tristate_output : std_logic;
+  signal   tristate_output_inv : std_logic;
+  signal   sim_over : std_logic_vector (1 downto 0);
+  signal   sim_check : std_logic := '0';
+  signal   data_to_and_from_pins1   : std_logic_vector(sys_w-1 downto 0);
+  signal   data_to_and_from_pins2   : std_logic_vector(sys_w-1 downto 0);
   signal   clk_in             : std_logic := '0';
+  signal   clk_in1             : std_logic := '0';
   signal   clk_reset          : std_logic;
   signal   io_reset           : std_logic;
   signal   io_reset1           : std_logic;
@@ -111,6 +116,10 @@ begin
     clk_in <= not clk_in;
   end process;
 
+  process begin
+    wait for (clk_per/2);
+    clk_in1 <= not clk_in1;
+  end process;
 
 
 
@@ -119,7 +128,9 @@ begin
   -- Test sequence
   process 
   begin
-   -- data_in_from_pins <= (others => '0');
+    tristate_output <= '1';
+    tristate_output_inv <= '0';
+    sim_over <= "00";
     -- reset the logic
     report "Timing checks are not valid" severity note;
     clk_reset   <= '1';
@@ -136,6 +147,26 @@ begin
     wait for (2.5*clk_per);
     io_reset1    <= '0';
     report "Timing checks are valid" severity note;
+    wait until (pattern_completed_out = "11"); 
+    sim_over <= "01";
+
+    wait for (9*clk_per);
+    report "Timing checks are not valid" severity note;
+    wait for (clk_per);
+    tristate_output <= '1';
+    tristate_output_inv <= '1';
+    wait for (clk_per);
+    report "Timing checks are valid" severity note;
+
+    wait for (49*clk_per);
+    report "Timing checks are not valid" severity note;
+    wait for (clk_per);
+    tristate_output <= '0';
+    tristate_output_inv <= '1';
+    wait for (clk_per);
+    report "Timing checks are valid" severity note;
+    wait for (200*clk_per);
+    sim_over <= "11";
     wait;
   end process;
 
@@ -152,10 +183,9 @@ begin
     if(clk_in'event and clk_in = '0') then
     if (io_reset = '0') then
        timeout_counter <= timeout_counter + '1';
-       if (timeout_counter = "00000110000") then
+       if ((timeout_counter = "11111010000") and (pattern_completed_out = "00") and (sim_over = "00")) then
          simtimeprint;
-         report "BITSLIP not enabled, please turn it on (S6)" severity note;
-         report "SIMULATION STOPPED." severity failure;
+         report "ERROR : SIMULATION TIMED OUT" severity failure;
        end if;
     end if; 
     end if;
@@ -174,25 +204,32 @@ process (clk_in)
 begin
     if (clk_in'event and clk_in = '0') then
     if (io_reset1 = '0') then
+    if (sim_check = '0') then
     if (pattern_completed_out = "00") then
        report "SIMULATION started" severity note;
     elsif (pattern_completed_out = "10") then
        simtimeprint;
-       report "ERROR : SIMULATION FAILED. SERDES design" severity failure;
+       report "ERROR : SIMULATION FAILED. SDR, DDR Design" severity failure;
     elsif (pattern_completed_out = "01") then
        bitslip_timeout <= bitslip_timeout + '1'; 
        if (bitslip_timeout = "11111111111111111") then
        simtimeprint;
-       report "ERROR: TOO LONG A TIME FOR BITSLIP" severity failure; 
+       report "ERROR: TOO LONG. SDR, DDR Design" severity failure; 
        end if;
-       report "SIMULATION in progress: BITSLIPS found, data checking in progress" severity note;
+       report "SIMULATION in progress: data checking in progress" severity note;
     elsif (pattern_completed_out = "11") then
-         simtimeprint;
-         report "BITSLIP not enabled, please turn it on (S6)" severity note;
-         report "SIMULATION STOPPED." severity failure;
+       bitslip_timeout <= (others => '0');
+       sim_check <= '1';
     else
        simtimeprint;
-       report "ERROR : Unknown state (SERDES design)" severity failure;
+       report "ERROR : Unknown state (SDR, DDR Design)" severity failure;
+    end if;
+    else
+      if (sim_over = "11") then
+         simtimeprint;
+         report "Test Completed Successfully" severity note;
+         report "SIMULATION STOPPED." severity failure;
+      end if;
     end if;
     end if;
     end if;
@@ -200,11 +237,12 @@ end process;
 
 
 
-    data_in_from_pins <= transport data_out_to_pins after 1.60 ns;
 
 
    pattern_completed_out <= pattern_completed_out1 after (0.4*clk_per);
  
+  data_to_and_from_pins2 <= data_to_and_from_pins1 after 1.00 ns when tristate_output = '0' else (others => 'Z') ;
+  data_to_and_from_pins1 <= data_to_and_from_pins2 after 1.00 ns when tristate_output = '1' else (others => 'Z') ;
 
   -- Instantiation of the example design
 
@@ -212,10 +250,11 @@ end process;
   port map
   (
    PATTERN_COMPLETED_OUT      => pattern_completed_out1,
-   -- From the system into the device
-   DATA_IN_FROM_PINS         => data_in_from_pins,
-   DATA_OUT_TO_PINS          => data_out_to_pins,
+   DATA_TO_AND_FROM_PINS1     => data_to_and_from_pins1,
+   DATA_TO_AND_FROM_PINS2     => data_to_and_from_pins2,
+   TRISTATE_OUTPUT           => tristate_output,
+   TRISTATE_OUTPUT_INV       => tristate_output_inv,
    CLK_IN                    => clk_in,
-   CLK_RESET                 => clk_reset,
+   CLK_IN1                    => clk_in1,
    IO_RESET                  => io_reset);
 end test;

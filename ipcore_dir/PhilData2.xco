@@ -1,7 +1,7 @@
 ##############################################################
 #
 # Xilinx Core Generator version 14.7
-# Date: Tue Jun 23 16:20:39 2020
+# Date: Tue Jan 04 17:32:47 2022
 #
 ##############################################################
 #
@@ -39,17 +39,17 @@ SET vhdlsim = true
 SELECT SelectIO_Interface_Wizard xilinx.com:ip:selectio_wiz:4.1
 # END Select
 # BEGIN Parameters
-CSET active_edge=RISING
-CSET bus_dir=INPUTS
-CSET bus_in_delay=NONE
-CSET bus_in_tap=0
+CSET active_edge=NONE
+CSET bus_dir=BIDIR
+CSET bus_in_delay=FIXED
+CSET bus_in_tap=3
 CSET bus_io_std=SSTL15_II
-CSET bus_out_delay=NONE
-CSET bus_out_tap=0
+CSET bus_out_delay=FIXED
+CSET bus_out_tap=3
 CSET bus_sig_type=SINGLE
 CSET bus_tap_reset=NOT_APP
 CSET bus_tap_wrap=NOT_APP
-CSET clk_buf=BUFPLL
+CSET clk_buf=BUFG
 CSET clk_delay=NONE
 CSET clk_fwd=false
 CSET clk_io_std=SSTL15_II
@@ -60,13 +60,13 @@ CSET ddr_alignment=C0
 CSET enable_bitslip=false
 CSET enable_train=false
 CSET iddr_rst_type=ASYNC
-CSET interface_type=RETIMED
+CSET interface_type=NETWORKING
 CSET notes=None
-CSET serialization_factor=3
+CSET serialization_factor=4
 CSET system_data_width=16
 CSET train_constant=0
 CSET use_phase_detector=false
-CSET use_serialization=true
+CSET use_serialization=false
 CSET use_template=Custom
 CSET v6_active_edge=SDR
 CSET v6_bus_in_delay=NONE
@@ -85,4 +85,4 @@ CSET v6_oddr_alignment=SAME_EDGE
 MISC pkg_timestamp=2012-03-26T12:54:40Z
 # END Extra information
 GENERATE
-# CRC: b48b1f57
+# CRC: a7c55ff0
