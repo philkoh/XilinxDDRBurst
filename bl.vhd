@@ -822,41 +822,7 @@ I => clk125MHz -- Buffer input
 				nextWeRequest <= '1';
 			end if;
 			
-				if count = 20237 then--20232   --READ
-				nextODT <= '0';  -- turn On Die Termination off for read
-
-				nextSaveRequest2 <= '1';	
-				
-				nextBa <= "000";
-				nextAddr <= "000000000010000";
-				nextRasRequest <= '1';
-				nextCasRequest <= '0';
-				nextWeRequest <= '1';
-			end if;
-		
-			if count = 20238 then--20232   --READ
-				nextODT <= '0';  -- turn On Die Termination off for read
-
-				nextSaveRequest3 <= '1';	
-				
-				nextBa <= "000";
-				nextAddr <= "000000000011000";
-				nextRasRequest <= '1';
-				nextCasRequest <= '0';
-				nextWeRequest <= '1';
-			end if;
 			
-				if count = 20239 then--20232   --READ
-				nextODT <= '0';  -- turn On Die Termination off for read
-
-				nextSaveRequest4 <= '1';	
-				
-				nextBa <= "000";
-				nextAddr <= "000000000100000";
-				nextRasRequest <= '1';
-				nextCasRequest <= '0';
-				nextWeRequest <= '1';
-			end if;
 		
    end process;
 		
