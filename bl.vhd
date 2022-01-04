@@ -149,29 +149,10 @@ signal nextRequestedDataToWrite : philArr;
 	signal nextDataToWrite : philArr;
  
 	 
+	signal capturedData :   philArr;
+	signal nextCapturedData :   philArr;
 
-	signal capturedData1 :   std_logic_vector(15 downto 0);
-	signal capturedData2 :   std_logic_vector(15 downto 0);
-	signal capturedData3 :   std_logic_vector(15 downto 0);
-	signal capturedData4 :   std_logic_vector(15 downto 0);
-	signal capturedData5 :   std_logic_vector(15 downto 0);
-	signal capturedData6 :   std_logic_vector(15 downto 0);
-	signal capturedData7 :   std_logic_vector(15 downto 0);
-	signal capturedData8 :   std_logic_vector(15 downto 0);
-	signal capturedData9 :   std_logic_vector(15 downto 0);
-	signal capturedData10 :   std_logic_vector(15 downto 0);
-	signal capturedData11 :   std_logic_vector(15 downto 0);
-	signal nextCapturedData1 :   std_logic_vector(15 downto 0);
-	signal nextCapturedData2 :   std_logic_vector(15 downto 0);
-	signal nextCapturedData3 :   std_logic_vector(15 downto 0);
-	signal nextCapturedData4 :   std_logic_vector(15 downto 0);
-	signal nextCapturedData5 :   std_logic_vector(15 downto 0);
-	signal nextCapturedData6 :   std_logic_vector(15 downto 0);
-	signal nextCapturedData7 :   std_logic_vector(15 downto 0);
-	signal nextCapturedData8 :   std_logic_vector(15 downto 0);
-	signal nextCapturedData9 :   std_logic_vector(15 downto 0);
-	signal nextCapturedData10 :   std_logic_vector(15 downto 0);
-	signal nextCapturedData11 :   std_logic_vector(15 downto 0);
+
 	signal tristateData : std_logic := '1';
 	signal tristateDataFromDDR : std_logic := '1';
 	signal nextTristateData : std_logic := '1';
@@ -336,17 +317,7 @@ I => clk125MHz -- Buffer input
 			inData (15 downTo 0) <= dataPort (15 downTo 0);  -- data uses the 250 MHz clock
 
 
-			capturedData1 <= nextCapturedData1;
-			capturedData2 <= nextCapturedData2;
-			capturedData3 <= nextCapturedData3;
-			capturedData4 <= nextCapturedData4;
-			capturedData5 <= nextCapturedData5;
-			capturedData6 <= nextCapturedData6;
-			capturedData7 <= nextCapturedData7;
-			capturedData8 <= nextCapturedData8;
-		capturedData9 <= nextCapturedData9;
-		capturedData10 <= nextCapturedData10;
-		capturedData11 <= nextCapturedData11;
+			capturedData(11 downto 1) <= nextCapturedData(11 downto 1);
 			
 			dataToWrite(11 downto 1) <= nextDataToWrite(11 downto 1);
 			
@@ -354,7 +325,7 @@ I => clk125MHz -- Buffer input
  end process;
 
 		------------------------------------------COMBINATORIAL:
-	process (clk125MHz,count2,   clockEnableMidpoint,clockEnableRead,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData,capturedData1,capturedData2,capturedData3,capturedData4)
+	process (clk125MHz,count2,   clockEnableMidpoint,clockEnableRead,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData)
 	
 	
 		begin
@@ -362,34 +333,17 @@ I => clk125MHz -- Buffer input
 
 		nextClk125MHz <= not clk125MHz;
 		
-		nextCapturedData1 <= capturedData1; --unless overridden below, hold and remember the captured values
-		nextCapturedData2 <= capturedData2;
-		nextCapturedData3 <= capturedData3;
-		nextCapturedData4 <= capturedData4;
-		nextCapturedData5 <= capturedData5;
-		nextCapturedData6 <= capturedData6;
-		nextCapturedData7 <= capturedData7;
-		nextCapturedData8 <= capturedData8;
-		nextCapturedData9 <= capturedData9;
-		nextCapturedData10 <= capturedData10;
-		nextCapturedData10 <= capturedData11;
+		nextCapturedData(11 downto 1) <= capturedData(11 downto 1); --unless overridden below, hold and remember the captured values
 			
 		nextDataToWrite(11 downto 1) <= dataToWrite(11 downto 1);--unless overridden below, hold and remember the loaded values
 		
 	
 	
 		if clockEnableRead = '1' and saveRequest = '1' then --capture data, actually captures 8 times, I think, 4 cycles of count2 at 125MHz, but two rising edges of 250 MHz per count2 incremena
-			nextCapturedData1 <= inData;
-			nextCapturedData2 <= capturedData1;
-			nextCapturedData3 <= capturedData2;
-			nextCapturedData4 <= capturedData3;
-			nextCapturedData5 <= capturedData4;
-			nextCapturedData6 <= capturedData5;
-			nextCapturedData7 <= capturedData6;
-			nextCapturedData8 <= capturedData7;
-			nextCapturedData9 <= capturedData8;
-			nextCapturedData10 <= capturedData9;
-			nextCapturedData11 <= capturedData10;
+			nextCapturedData(1) <= inData;
+			
+			nextCapturedData(11 downto 2) <= capturedData(10 downto 1);
+			
 		end if;
 
 		if clockEnableMidpoint = '1' and writeRequest = '1' then  -- a bit before the write, load the data to write from the request register to the write register
@@ -449,7 +403,7 @@ I => clk125MHz -- Buffer input
    end process;
 	
 ------------------------------------------COMBINATORIAL:
-	process (count2,dqs0incoming,switchregister,switch2port,switch3port,switchCount,lastSwitchRegister,tristateData, initializationmode,inDataB, captureddata5,captureddata6,captureddata7,captureddata8, clockEnableMidpoint,clockEnableRead,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData,capturedData1,capturedData2,capturedData3,capturedData4)
+	process (count2,dqs0incoming,switchregister,switch2port,switch3port,switchCount,lastSwitchRegister,tristateData, initializationmode,inDataB, clockEnableMidpoint,clockEnableRead,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData)
 	
 	
 		begin
@@ -540,77 +494,77 @@ I => clk125MHz -- Buffer input
 	
 
 		 if switchCount = 0 then
-				LED0 <=   capturedData1(0);
-				LED1 <=    capturedData1(1);
-				LED2 <=    capturedData1(2);
-				LED3 <=    capturedData1(3);
+				LED0 <=   capturedData(1)(0);
+				LED1 <=    capturedData(1)(1);
+				LED2 <=    capturedData(1)(2);
+				LED3 <=    capturedData(1)(3);
 		end if;
 		 if switchCount = 1 then
  
-				LED0 <=   capturedData2(0);
-				LED1 <=    capturedData2(1);
-				LED2 <=    capturedData2(2);
-				LED3 <=    capturedData2(3);
+				LED0 <=   capturedData(2)(0);
+				LED1 <=    capturedData(2)(1);
+				LED2 <=    capturedData(2)(2);
+				LED3 <=    capturedData(2)(3);
 				
 		end if;
 		 if switchCount = 2 then
-				LED0 <=   capturedData3(0);
-				LED1 <=    capturedData3(1);
-				LED2 <=    capturedData3(2);
-				LED3 <=    capturedData3(3);
+				LED0 <=   capturedData(3)(0);
+				LED1 <=    capturedData(3)(1);
+				LED2 <=    capturedData(3)(2);
+				LED3 <=    capturedData(3)(3);
 				
 		 end if;
 		 if switchCount = 3 then
-				LED0 <=   capturedData4(0);
-				LED1 <=    capturedData4(1);
-				LED2 <=    capturedData4(2);
-				LED3 <=    capturedData4(3);
+				LED0 <=   capturedData(4)(0);
+				LED1 <=    capturedData(4)(1);
+				LED2 <=    capturedData(4)(2);
+				LED3 <=    capturedData(4)(3);
 		 end if;
 		 if switchCount = 4 then
-				LED0 <=   capturedData5(0);
-				LED1 <=    capturedData5(1);
-				LED2 <=    capturedData5(2);
-				LED3 <=    capturedData5(3);
+				LED0 <=   capturedData(5)(0);
+				LED1 <=    capturedData(5)(1);
+				LED2 <=    capturedData(5)(2);
+				LED3 <=    capturedData(5)(3);
 		 end if;
 		 if switchCount = 5 then
-				LED0 <=   capturedData6(0);
-				LED1 <=    capturedData6(1);
-				LED2 <=    capturedData6(2);
-				LED3 <=    capturedData6(3);
+				LED0 <=   capturedData(6)(0);
+				LED1 <=    capturedData(6)(1);
+				LED2 <=    capturedData(6)(2);
+				LED3 <=    capturedData(6)(3);
 		 end if;
 		 if switchCount = 6 then
-				LED0 <=   capturedData7(0);
-				LED1 <=    capturedData7(1);
-				LED2 <=    capturedData7(2);
-				LED3 <=    capturedData7(3);
+				LED0 <=   capturedData(7)(0);
+				LED1 <=    capturedData(7)(1);
+				LED2 <=    capturedData(7)(2);
+				LED3 <=    capturedData(7)(3);
 		 end if;
 		 if switchCount = 7 then
-				LED0 <=   capturedData8(0);
-				LED1 <=    capturedData8(1);
-				LED2 <=    capturedData8(2);
-				LED3 <=    capturedData8(3);
+				LED0 <=   capturedData(8)(0);
+				LED1 <=    capturedData(8)(1);
+				LED2 <=    capturedData(8)(2);
+				LED3 <=    capturedData(8)(3);
 		 end if;
 
 		 if switchCount = 8 then
-				LED0 <=   capturedData9(0);
-				LED1 <=    capturedData9(1);
-				LED2 <=    capturedData9(2);
-				LED3 <=    capturedData9(3);
+				LED0 <=   capturedData(9)(0);
+				LED1 <=    capturedData(9)(1);
+				LED2 <=    capturedData(9)(2);
+				LED3 <=    capturedData(9)(3);
 		 end if;
 
 	   if switchCount = 9 then
-				LED0 <=   capturedData10(0);
-				LED1 <=    capturedData10(1);
-				LED2 <=    capturedData10(2);
-				LED3 <=    capturedData10(3);
+				LED0 <=   capturedData(10)(0);
+				LED1 <=    capturedData(10)(1);
+				LED2 <=    capturedData(10)(2);
+				LED3 <=    capturedData(10)(3);
 		 end if;
 
 
 		    if switchCount = 10 then
-				LED0 <=   capturedData11(0);
-				LED1 <=    capturedData11(1);
-				LED2 <=    capturedData11(2);
-				LED3 <=    capturedData11(3);
+				LED0 <=   capturedData(11)(0);
+				LED1 <=    capturedData(11)(1);
+				LED2 <=    capturedData(11)(2);
+				LED3 <=    capturedData(11)(3);
 		 end if;
 
 			
