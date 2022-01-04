@@ -142,6 +142,29 @@ end component;
 	signal inData :   std_logic_vector(15 downto 0);
 	signal inDataB :   std_logic_vector(15 downto 0);
 	
+	signal dataToWrite1 : std_logic_vector(15 downto 0);
+	signal dataToWrite2 : std_logic_vector(15 downto 0);
+	signal dataToWrite3 : std_logic_vector(15 downto 0);
+	signal dataToWrite4 : std_logic_vector(15 downto 0);
+	signal dataToWrite5 : std_logic_vector(15 downto 0);
+	signal dataToWrite6 : std_logic_vector(15 downto 0);
+	signal dataToWrite7 : std_logic_vector(15 downto 0);
+	signal dataToWrite8 : std_logic_vector(15 downto 0);
+	signal dataToWrite9 : std_logic_vector(15 downto 0);
+	signal dataToWrite10 : std_logic_vector(15 downto 0);
+	signal dataToWrite11 : std_logic_vector(15 downto 0);
+	signal nextDataToWrite1 : std_logic_vector(15 downto 0);
+	signal nextDataToWrite2 : std_logic_vector(15 downto 0);
+	signal nextDataToWrite3 : std_logic_vector(15 downto 0);
+	signal nextDataToWrite4 : std_logic_vector(15 downto 0);
+	signal nextDataToWrite5 : std_logic_vector(15 downto 0);
+	signal nextDataToWrite6 : std_logic_vector(15 downto 0);
+	signal nextDataToWrite7 : std_logic_vector(15 downto 0);
+	signal nextDataToWrite8 : std_logic_vector(15 downto 0);
+	signal nextDataToWrite9 : std_logic_vector(15 downto 0);
+	signal nextDataToWrite10 : std_logic_vector(15 downto 0);
+	signal nextDataToWrite11 : std_logic_vector(15 downto 0);
+
 
 	signal capturedData1 :   std_logic_vector(15 downto 0);
 	signal capturedData2 :   std_logic_vector(15 downto 0);
@@ -362,6 +385,15 @@ I => clk125MHz -- Buffer input
 		nextCapturedData10 <= capturedData10;
 		nextCapturedData10 <= capturedData11;
 			
+		nextDataToWrite1 <= dataToWrite1;
+		nextDataToWrite2 <= dataToWrite2;
+		nextDataToWrite3 <= dataToWrite3;
+		nextDataToWrite4 <= dataToWrite4;
+		nextDataToWrite5 <= dataToWrite5;
+		nextDataToWrite6 <= dataToWrite6;
+		nextDataToWrite7 <= dataToWrite7;
+		nextDataToWrite8 <= dataToWrite8;
+		
 		
 			if clockEnableRead = '1' and saveRequest = '1' then --capture data, actually captures 8 times, I think, 4 cycles of count2 at 125MHz, but two rising edges of 250 MHz per count2 incremena
 				nextCapturedData1 <= inData;
@@ -375,7 +407,6 @@ I => clk125MHz -- Buffer input
 				nextCapturedData9 <= capturedData8;
 				nextCapturedData10 <= capturedData9;
 				nextCapturedData11 <= capturedData10;
-		
 			end if;
 
 
