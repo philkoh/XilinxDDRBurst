@@ -343,7 +343,18 @@ I => clk125MHz -- Buffer input
 
 		nextClk125MHz <= not clk125MHz;
 		
-		
+		nextCapturedData1 <= capturedData1; --unless overridden below, hold and remember the captured values
+		nextCapturedData2 <= capturedData2;
+		nextCapturedData3 <= capturedData3;
+		nextCapturedData4 <= capturedData4;
+		nextCapturedData5 <= capturedData5;
+		nextCapturedData6 <= capturedData6;
+		nextCapturedData7 <= capturedData7;
+		nextCapturedData8 <= capturedData8;
+		nextCapturedData9 <= capturedData9;
+		nextCapturedData10 <= capturedData10;
+		nextCapturedData10 <= capturedData11;
+			
 		
 			if clockEnableRead = '1' and saveRequest = '1' then --capture data, actually captures 8 times, I think, 4 cycles of count2 at 125MHz, but two rising edges of 250 MHz per count2 incremena
 				nextCapturedData1 <= inData;
@@ -356,24 +367,19 @@ I => clk125MHz -- Buffer input
 				nextCapturedData8 <= capturedData7;
 				nextCapturedData9 <= capturedData8;
 				nextCapturedData10 <= capturedData9;
-	
-			else  -- save captured data
-				nextCapturedData1 <= capturedData1;
+				nextCapturedData11 <= capturedData10;
+		
 			end if;
 
 
 			if clockEnableRead = '1' and saveRequest2 = '1' then --shift in new data
 				nextCapturedData2 <= inData;
-			else  -- save captured data
-				nextCapturedData2 <= capturedData2;
 			end if;
 
 
 
 			if clockEnableRead = '1' and saveRequest3 = '1' then --shift in new data
 				nextCapturedData3 <= inData;
-			else  -- save captured data
-				nextCapturedData3 <= capturedData3;
 			end if;
 
 
@@ -382,8 +388,6 @@ I => clk125MHz -- Buffer input
 
 			if clockEnableRead = '1' and saveRequest4 = '1' then --shift in new data
 				nextCapturedData4 <= inData;
-			else  -- save captured data
-				nextCapturedData4 <= capturedData4;
 			end if;
 
 
@@ -559,7 +563,7 @@ I => clk125MHz -- Buffer input
 				LED3 <=    capturedData9(3);
 		 end if;
 
-	 if switchCount = 9 then
+	   if switchCount = 9 then
 				LED0 <=   capturedData10(0);
 				LED1 <=    capturedData10(1);
 				LED2 <=    capturedData10(2);
@@ -567,19 +571,13 @@ I => clk125MHz -- Buffer input
 		 end if;
 
 
-	if switchCount = 4 then
-			LED3 <= capturedData5(0);
+		    if switchCount = 10 then
+				LED0 <=   capturedData11(0);
+				LED1 <=    capturedData11(1);
+				LED2 <=    capturedData11(2);
+				LED3 <=    capturedData11(3);
 		 end if;
-		 if switchCount = 5 then
-			LED3 <= capturedData6(0);
-		 end if;
-		 if switchCount = 6 then
-			LED3 <= capturedData7(0);
-		 end if;
-		 if switchCount = 7 then
-			LED3 <= capturedData8(0);
-		 end if;
-		 
+
 			
 			 
 		
