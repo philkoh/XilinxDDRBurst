@@ -771,7 +771,7 @@ writeRequest <= nextWriteRequest;
 
 			if count = 20229 then--20228 --WRITE
 				nextData <= "1010101010100110"; -- the last four digits of this will show up on the LEDs
-				nextRequestedDataToWrite(1) <= "0000000000000000";
+				nextRequestedDataToWrite(1) <= "0000000000000001";
 				nextRequestedDataToWrite(2) <= "1010101010100010";
 				nextRequestedDataToWrite(3) <= "1010101010100100";
 				nextRequestedDataToWrite(4) <= "1010101010101000";
@@ -780,7 +780,7 @@ writeRequest <= nextWriteRequest;
 				nextRequestedDataToWrite(7) <= "1010101010100011";
 				nextRequestedDataToWrite(8) <= "1010101010100111";
 				nextRequestedDataToWrite(9) <= "1010101010101110";
-				nextRequestedDataToWrite(10) <= "0000000000000000";
+				nextRequestedDataToWrite(10) <= "0000000000001111";
  				nextRequestedDataToWrite(11) <= "0000000000000000";
 
 
