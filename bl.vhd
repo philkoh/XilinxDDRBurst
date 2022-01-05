@@ -108,6 +108,7 @@ end component;
 	signal clockEnableBeginning : std_logic := '0';
 	signal clockEnableCommand : std_logic := '0';
 	signal clockEnableLoadWriteData : std_logic := '0';
+	signal clockEnableRefillWriteData : std_logic := '0';
 	signal clockEnableLoadAddress : std_logic := '0';
 	signal clockEnableRead : std_logic := '0';
 	signal clockEnableWrite : std_logic := '0';
@@ -115,6 +116,7 @@ end component;
 	signal nextClockEnableBeginning : std_logic := '0';
 	signal nextClockEnableCommand : std_logic := '0';
 	signal nextClockEnableLoadWriteData : std_logic := '0';
+	signal nextClockEnableRefillWriteData : std_logic := '0';
 	signal nextClockEnableLoadAddress : std_logic := '0';
 	signal nextClockEnableRead : std_logic := '0';
 	signal nextClockEnableWrite : std_logic := '0';
@@ -156,10 +158,10 @@ end component;
 	signal dataToWrite : philArr;
 	signal nextDataToWrite : philArr;
 	
-	type fourWordArray is array (3 downto 0) of std_logic_vector(15 downto 0);
-	signal writeRefill :  fourWordArray;
+	type eightWordArray is array (7 downto 0) of std_logic_vector(15 downto 0);
+	signal writeRefill :  eightWordArray;
 	signal writeRefillIsAvailable : std_logic := '0';
-	signal nextWriteRefill :  fourWordArray;
+	signal nextWriteRefill :  eightWordArray;
 	signal nextWriteRefillIsAvailable : std_logic ;
  
 	 
@@ -598,7 +600,7 @@ I => clk125MHz -- Buffer input
 		end if;
 		
 		if clockEnableAddrIncrement = '1' then
-				nextAddrOut <= 			std_logic_vector(to_unsigned((to_integer(unsigned(addrOut)) + 64),15));
+				nextAddrOut <= 			std_logic_vector(to_unsigned((to_integer(unsigned(addrOut)) + 8),15)); -- increment column address by 8
 		end if;
 	
 		if dqsTristate = '1' then
@@ -639,6 +641,7 @@ I => clk125MHz -- Buffer input
 			clockEnableBeginning <= nextClockEnableBeginning;
 			clockEnableCommand <= nextClockEnableCommand;
 			clockEnableLoadWriteData <= nextClockEnableLoadWriteData;
+			clockEnableRefillWriteData <= nextClockEnableRefillWriteData;
 			clockEnableLoadAddress <= nextClockEnableLoadAddress;
 			clockEnableRead <= nextClockEnableRead;
 			clockEnableWrite <= nextClockEnableWrite;
@@ -728,7 +731,13 @@ I => clk125MHz -- Buffer input
 			else
 				nextClockEnableLoadWriteData<= '0';
 			end if;
-		
+			
+			if count2 = 32 and writeRequest = '1'   then   -- this refills more write data onto the outgoing stack
+				nextClockEnableRefillWriteData <= '1';
+			else
+				nextClockEnableRefillWriteData <= '0';
+			end if;
+
 			if count2 = 1   then   -- this loads address  
 				nextClockEnableLoadAddress <= '1';
 			else
