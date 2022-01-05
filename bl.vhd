@@ -281,17 +281,28 @@ T => dqsTristate -- 1-bit input: 3-state input signal
 
 
 
+
 IODELAY2_inst1 : IODELAY2
 generic map (
 COUNTER_WRAPAROUND => "WRAPAROUND", -- "STAY_AT_LIMIT" or "WRAPAROUND"
 DATA_RATE => "SDR", -- "SDR" or "DDR"
-DELAY_SRC => "ODATAIN", -- "IO", "ODATAIN" or "IDATAIN"
+DELAY_SRC => "IO", -- "IO", "ODATAIN" or "IDATAIN"
 IDELAY2_VALUE => 0, -- Delay value when IDELAY_MODE="PCI" (0-255)
 IDELAY_MODE => "NORMAL", -- "NORMAL" or "PCI"
 IDELAY_TYPE => "FIXED", -- "FIXED", "DEFAULT", "VARIABLE_FROM_ZERO", "VARIABLE_FROM_HALF_MAX"
 -- or "DIFF_PHASE_DETECTOR"
-IDELAY_VALUE => 0, -- Amount of taps for fixed input delay (0-255)
+IDELAY_VALUE => 40, -- Amount of taps for fixed input delay (0-255)
 ODELAY_VALUE => 40, -- Amount of taps fixed output delay (0-255)
+--IDELAY:
+-- 0 gives no change
+-- 60 gives no change
+-- 90 gives no change
+-- 95 gives no change
+-- 100 is flickering borderline 1 bit delay
+-- 105 gives 1 bit delay
+-- 120 gives 1 bit delay
+
+--ODELAY:
 -- 0 gives no change
 -- 1 gives 1 bit delay
 -- 5 gives 1 bit delay
@@ -308,22 +319,21 @@ SERDES_MODE => "NONE", -- "NONE", "MASTER" or "SLAVE"
 SIM_TAPDELAY_VALUE => 75) -- Per tap delay used for simulation in ps
 port map (
 --BUSY => BUSY, -- 1-bit output: Busy output after CAL
---DATAOUT => DATAOUT, -- 1-bit output: Delayed data output to ISERDES/input register
+DATAOUT => delayedDataPort(1), -- 1-bit output: Delayed data output to ISERDES/input register
 --DATAOUT2 => DATAOUT2, -- 1-bit output: Delayed data output to general FPGA fabric
 DOUT => delayedDataForOutput(1), -- 1-bit output: Delayed data output
 --TOUT => TOUT, -- 1-bit output: Delayed 3-state output
 CAL => '0', -- 1-bit input: Initiate calibration input
 CE => '0', -- 1-bit input: Enable INC input
 CLK => '0', -- 1-bit input: Clock input
-IDATAIN => '0', -- 1-bit input: Data input (connect to top-level port or I/O buffer)
+IDATAIN => dataPort(1), -- 1-bit input: Data input (connect to top-level port or I/O buffer)
 INC => '0', -- 1-bit input: Increment / decrement input
 IOCLK0 => '0', -- 1-bit input: Input from the I/O clock network
 IOCLK1 => '0', -- 1-bit input: Input from the I/O clock network
 ODATAIN => dataWaitingForOutput(1), -- 1-bit input: Output data input from output register or OSERDES2.
 RST => '0', -- 1-bit input: Reset to zero or 1/2 of total delay period
-T => '0' -- 1-bit input: 3-state input signal
+T => dqsTristate -- 1-bit input: 3-state input signal
 );
-
 
 
 
@@ -331,13 +341,23 @@ IODELAY2_inst2 : IODELAY2
 generic map (
 COUNTER_WRAPAROUND => "WRAPAROUND", -- "STAY_AT_LIMIT" or "WRAPAROUND"
 DATA_RATE => "SDR", -- "SDR" or "DDR"
-DELAY_SRC => "ODATAIN", -- "IO", "ODATAIN" or "IDATAIN"
+DELAY_SRC => "IO", -- "IO", "ODATAIN" or "IDATAIN"
 IDELAY2_VALUE => 0, -- Delay value when IDELAY_MODE="PCI" (0-255)
 IDELAY_MODE => "NORMAL", -- "NORMAL" or "PCI"
 IDELAY_TYPE => "FIXED", -- "FIXED", "DEFAULT", "VARIABLE_FROM_ZERO", "VARIABLE_FROM_HALF_MAX"
 -- or "DIFF_PHASE_DETECTOR"
-IDELAY_VALUE => 0, -- Amount of taps for fixed input delay (0-255)
+IDELAY_VALUE => 40, -- Amount of taps for fixed input delay (0-255)
 ODELAY_VALUE => 40, -- Amount of taps fixed output delay (0-255)
+--IDELAY:
+-- 0 gives no change
+-- 60 gives no change
+-- 90 gives no change
+-- 95 gives no change
+-- 100 is flickering borderline 1 bit delay
+-- 105 gives 1 bit delay
+-- 120 gives 1 bit delay
+
+--ODELAY:
 -- 0 gives no change
 -- 1 gives 1 bit delay
 -- 5 gives 1 bit delay
@@ -354,22 +374,21 @@ SERDES_MODE => "NONE", -- "NONE", "MASTER" or "SLAVE"
 SIM_TAPDELAY_VALUE => 75) -- Per tap delay used for simulation in ps
 port map (
 --BUSY => BUSY, -- 1-bit output: Busy output after CAL
---DATAOUT => DATAOUT, -- 1-bit output: Delayed data output to ISERDES/input register
+DATAOUT => delayedDataPort(2), -- 1-bit output: Delayed data output to ISERDES/input register
 --DATAOUT2 => DATAOUT2, -- 1-bit output: Delayed data output to general FPGA fabric
 DOUT => delayedDataForOutput(2), -- 1-bit output: Delayed data output
 --TOUT => TOUT, -- 1-bit output: Delayed 3-state output
 CAL => '0', -- 1-bit input: Initiate calibration input
 CE => '0', -- 1-bit input: Enable INC input
 CLK => '0', -- 1-bit input: Clock input
-IDATAIN => '0', -- 1-bit input: Data input (connect to top-level port or I/O buffer)
+IDATAIN => dataPort(2), -- 1-bit input: Data input (connect to top-level port or I/O buffer)
 INC => '0', -- 1-bit input: Increment / decrement input
 IOCLK0 => '0', -- 1-bit input: Input from the I/O clock network
 IOCLK1 => '0', -- 1-bit input: Input from the I/O clock network
 ODATAIN => dataWaitingForOutput(2), -- 1-bit input: Output data input from output register or OSERDES2.
 RST => '0', -- 1-bit input: Reset to zero or 1/2 of total delay period
-T => '0' -- 1-bit input: 3-state input signal
+T => dqsTristate -- 1-bit input: 3-state input signal
 );
-
 
 
 
@@ -377,13 +396,23 @@ IODELAY2_inst3 : IODELAY2
 generic map (
 COUNTER_WRAPAROUND => "WRAPAROUND", -- "STAY_AT_LIMIT" or "WRAPAROUND"
 DATA_RATE => "SDR", -- "SDR" or "DDR"
-DELAY_SRC => "ODATAIN", -- "IO", "ODATAIN" or "IDATAIN"
+DELAY_SRC => "IO", -- "IO", "ODATAIN" or "IDATAIN"
 IDELAY2_VALUE => 0, -- Delay value when IDELAY_MODE="PCI" (0-255)
 IDELAY_MODE => "NORMAL", -- "NORMAL" or "PCI"
 IDELAY_TYPE => "FIXED", -- "FIXED", "DEFAULT", "VARIABLE_FROM_ZERO", "VARIABLE_FROM_HALF_MAX"
 -- or "DIFF_PHASE_DETECTOR"
-IDELAY_VALUE => 0, -- Amount of taps for fixed input delay (0-255)
+IDELAY_VALUE => 40, -- Amount of taps for fixed input delay (0-255)
 ODELAY_VALUE => 40, -- Amount of taps fixed output delay (0-255)
+--IDELAY:
+-- 0 gives no change
+-- 60 gives no change
+-- 90 gives no change
+-- 95 gives no change
+-- 100 is flickering borderline 1 bit delay
+-- 105 gives 1 bit delay
+-- 120 gives 1 bit delay
+
+--ODELAY:
 -- 0 gives no change
 -- 1 gives 1 bit delay
 -- 5 gives 1 bit delay
@@ -400,21 +429,22 @@ SERDES_MODE => "NONE", -- "NONE", "MASTER" or "SLAVE"
 SIM_TAPDELAY_VALUE => 75) -- Per tap delay used for simulation in ps
 port map (
 --BUSY => BUSY, -- 1-bit output: Busy output after CAL
---DATAOUT => DATAOUT, -- 1-bit output: Delayed data output to ISERDES/input register
+DATAOUT => delayedDataPort(3), -- 1-bit output: Delayed data output to ISERDES/input register
 --DATAOUT2 => DATAOUT2, -- 1-bit output: Delayed data output to general FPGA fabric
 DOUT => delayedDataForOutput(3), -- 1-bit output: Delayed data output
 --TOUT => TOUT, -- 1-bit output: Delayed 3-state output
 CAL => '0', -- 1-bit input: Initiate calibration input
 CE => '0', -- 1-bit input: Enable INC input
 CLK => '0', -- 1-bit input: Clock input
-IDATAIN => '0', -- 1-bit input: Data input (connect to top-level port or I/O buffer)
+IDATAIN => dataPort(3), -- 1-bit input: Data input (connect to top-level port or I/O buffer)
 INC => '0', -- 1-bit input: Increment / decrement input
 IOCLK0 => '0', -- 1-bit input: Input from the I/O clock network
 IOCLK1 => '0', -- 1-bit input: Input from the I/O clock network
 ODATAIN => dataWaitingForOutput(3), -- 1-bit input: Output data input from output register or OSERDES2.
 RST => '0', -- 1-bit input: Reset to zero or 1/2 of total delay period
-T => '0' -- 1-bit input: 3-state input signal
+T => dqsTristate -- 1-bit input: 3-state input signal
 );
+
 
 
 
@@ -510,8 +540,8 @@ I => clk125MHz -- Buffer input
 ------------------------------------------SEQUENTIAL :	
 		if rising_edge(clk250MHz) then
 			clk125MHz <=  nextClk125MHz  ;  --clk125MHz changes on rising edge of 250MHz clock; this is sent out as external clock *and* as dqs
-			inData (15 downTo 1) <= dataPort (15 downTo 1);  -- data uses the 250 MHz clock
-inData (0) <= delayedDataPort ( 0);  -- data uses the 250 MHz clock
+			inData (15 downTo 4) <= dataPort (15 downTo 4);  -- data uses the 250 MHz clock
+			inData (3 downto 0) <= delayedDataPort (3 downto 0);  -- data uses the 250 MHz clock
 
 
 			capturedData(11 downto 1) <= nextCapturedData(11 downto 1);
@@ -967,15 +997,15 @@ writeRequest <= nextWriteRequest;
 
 			if count = 20229 then--20228 --WRITE
 				nextData <= "1010101010100110"; -- the last four digits of this will show up on the LEDs
-				nextRequestedDataToWrite(1) <= "0000000000000000";
-				nextRequestedDataToWrite(2) <= "1010101010100000";
-				nextRequestedDataToWrite(3) <= "1010101010100000";
-				nextRequestedDataToWrite(4) <= "1010101010100000";
-				nextRequestedDataToWrite(5) <= "1010101010100000";
-				nextRequestedDataToWrite(6) <= "1010101010101111";
-				nextRequestedDataToWrite(7) <= "1010101010101111";
-				nextRequestedDataToWrite(8) <= "1010101010101111";
-				nextRequestedDataToWrite(9) <= "1010101010101111";
+				nextRequestedDataToWrite(1) <= "0000000000000001";
+				nextRequestedDataToWrite(2) <= "1010101010100010";
+				nextRequestedDataToWrite(3) <= "1010101010100100";
+				nextRequestedDataToWrite(4) <= "1010101010101000";
+				nextRequestedDataToWrite(5) <= "1010101010101100";
+				nextRequestedDataToWrite(6) <= "1010101010100110";
+				nextRequestedDataToWrite(7) <= "1010101010100011";
+				nextRequestedDataToWrite(8) <= "1010101010100111";
+				nextRequestedDataToWrite(9) <= "1010101010101110";
 				nextRequestedDataToWrite(10) <= "0000000000001111";
  				nextRequestedDataToWrite(11) <= "0000000000000000";
 
