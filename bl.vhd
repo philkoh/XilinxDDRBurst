@@ -605,7 +605,8 @@ I => clk125MHz -- Buffer input
 		end if;
 		
 		if clockEnableAddrIncrement = '1' then
-				nextAddrOut <= 			std_logic_vector(to_unsigned((to_integer(unsigned(addrOut)) + 8),15)); -- increment column address by 8
+		--		nextAddrOut <= 			std_logic_vector(to_unsigned((to_integer(unsigned(addrOut)) + 8),15)); -- increment column address by 8
+				nextAddrOut <= "000000001110000"; 
 		end if;
 	
 		if dqsTristate = '1' then
@@ -728,10 +729,10 @@ I => clk125MHz -- Buffer input
 			end if;
 			
 			if count2 = 32 and  writeRequest = '1' then  -- during a write cycle, pulse a second write command
-				nextClockEnableCommand <= '1';
+		   	nextClockEnableCommand <= '1';
 			end if;
 				
-			if count2 = 18   then   -- this increments the address
+			if count2 = 24   then   -- this increments the address
 					nextClockEnableAddrIncrement <= '1';
 			else
 				nextClockEnableAddrIncrement <= '0';
@@ -746,7 +747,8 @@ I => clk125MHz -- Buffer input
 			end if;
 			
 			if count2 = 48 and writeRequest = '1'   then   -- this refills more write data onto the outgoing stack, now pushed too late to do anything
-				nextClockEnableRefillWriteData <= '1';
+		--		nextClockEnableRefillWriteData <= '1';
+				nextClockEnableRefillWriteData <= '0';
 			else
 				nextClockEnableRefillWriteData <= '0';
 			end if;
@@ -1105,7 +1107,7 @@ writeRequest <= nextWriteRequest;
 				nextTristateData <= '0';
 			
 				nextBa <= "000";
-				nextAddrRequest <= "000000011110000"; -- A10 must be LOW to turn off AutoPrecharge
+				nextAddrRequest <= "000000111110000"; -- A10 must be LOW to turn off AutoPrecharge
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '0';
@@ -1119,7 +1121,7 @@ writeRequest <= nextWriteRequest;
 				nextSaveRequest <= '1';	
 				
 				nextBa <= "000";
-				nextAddrRequest <= "000000000010000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
+				nextAddrRequest <= "000000001110000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '1';
