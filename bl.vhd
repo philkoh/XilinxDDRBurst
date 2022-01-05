@@ -135,6 +135,8 @@ end component;
 	signal nextOdt : std_logic := '1';
 	signal ba :   std_logic_vector(2 downto 0);
 	signal nextBa :   std_logic_vector(2 downto 0);
+	signal addrOut :   std_logic_vector(14 downto 0);
+	signal nextAddrOut :   std_logic_vector(14 downto 0);
 	signal addrRequest :   std_logic_vector(14 downto 0);
 	signal nextAddrRequest :   std_logic_vector(14 downto 0);
 	signal dataCount :   unsigned (3 downto 0)  := "1111";
@@ -549,7 +551,7 @@ I => clk125MHz -- Buffer input
 			capturedData(11 downto 1) <= nextCapturedData(11 downto 1);
 			
 			dataToWrite <= nextDataToWrite;
-			
+		   addrOut <= nextAddrOut;
 			dataWaitingForOutput <= nextDataWaitingForOutput;
 		end if;
  end process;
@@ -566,8 +568,9 @@ I => clk125MHz -- Buffer input
 		nextCapturedData(11 downto 1) <= capturedData(11 downto 1); --unless overridden below, hold and remember the captured values
 			
 		nextDataToWrite <= dataToWrite;--unless overridden below, hold and remember the loaded values
-		
-	
+		nextAddrOut <= addrOut;--unless overridden below, hold and remember the loaded values
+		addrPort <= addrOut;
+			
 	
 		if clockEnableRead = '1' and saveRequest = '1' then --capture data, actually captures 8 times, I think, 4 cycles of count2 at 125MHz, but two rising edges of 250 MHz per count2 incremena
 			nextCapturedData(1) <= inData;
@@ -579,6 +582,11 @@ I => clk125MHz -- Buffer input
 		if clockEnableLoad = '1' and writeRequest = '1' then  -- a bit before the write, load the data to write from the request register to the write register
 			nextDataToWrite <= requestedDataToWrite; 
 		end if;
+		
+		if clockEnableLoad = '1'  then  -- a bit before the write, assert the address
+			nextAddrOut <= addrRequest;
+		end if;
+		
 	
 		if dqsTristate = '1' then
 			dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');	
@@ -867,8 +875,7 @@ writeRequest <= nextWriteRequest;
 			dqm1PORT  <= '0';
 			odtPORT <= odt;
 			baPort <= ba;
-			addrPort <= addrRequest;
-			
+		
 			resetPort <= reset;
 			ckePort <= cke;
 	
