@@ -656,7 +656,8 @@ I => clk125MHz -- Buffer input
 			end if;
 			
 	
-      	if (count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26)   then  --writes for 4 cycles of 125MHz count2
+      	if (count2 = 22 or count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26)   then  --writes for 4 cycles of 125MHz count2
+   -- 	if (count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26)   then  --writes for 4 cycles of 125MHz count2
 				nextClockEnableWrite <= '1';
 			else
 				nextClockEnableWrite <= '0';
@@ -953,16 +954,16 @@ writeRequest <= nextWriteRequest;
 
 			if count = 20229 then--20228 --WRITE
 				nextData <= "1010101010100110"; -- the last four digits of this will show up on the LEDs
-				nextRequestedDataToWrite(1) <= "0000000000001111";
-				nextRequestedDataToWrite(2) <= "1010101010101111";
-				nextRequestedDataToWrite(3) <= "1010101010101111";
-				nextRequestedDataToWrite(4) <= "1010101010101111";
-				nextRequestedDataToWrite(5) <= "1010101010100000";
-				nextRequestedDataToWrite(6) <= "1010101010100000";
-				nextRequestedDataToWrite(7) <= "1010101010100000";
-				nextRequestedDataToWrite(8) <= "1010101010100000";
-				nextRequestedDataToWrite(9) <= "1010101010100000";
-				nextRequestedDataToWrite(10) <= "0000000000000000";
+				nextRequestedDataToWrite(1) <= "0000000000000001";
+				nextRequestedDataToWrite(2) <= "1010101010100010";
+				nextRequestedDataToWrite(3) <= "1010101010100100";
+				nextRequestedDataToWrite(4) <= "1010101010101000";
+				nextRequestedDataToWrite(5) <= "1010101010101100";
+				nextRequestedDataToWrite(6) <= "1010101010100110";
+				nextRequestedDataToWrite(7) <= "1010101010100011";
+				nextRequestedDataToWrite(8) <= "1010101010100111";
+				nextRequestedDataToWrite(9) <= "1010101010101110";
+				nextRequestedDataToWrite(10) <= "0000000000001111";
  				nextRequestedDataToWrite(11) <= "0000000000000000";
 
 
