@@ -152,6 +152,10 @@ signal nextRequestedDataToWrite : philArr;
 	signal capturedData :   philArr;
 	signal nextCapturedData :   philArr;
 
+	
+	signal dataWaitingForOutput : std_logic_vector(15 downto 0);
+	signal nextDataWaitingForOutput : std_logic_vector(15 downto 0);
+
 
 	signal tristateData : std_logic := '1';
 	signal tristateDataFromDDR : std_logic := '1';
@@ -321,6 +325,7 @@ I => clk125MHz -- Buffer input
 			
 			dataToWrite(11 downto 1) <= nextDataToWrite(11 downto 1);
 			
+			dataWaitingForOutput <= nextDataWaitingForOutput;
 		end if;
  end process;
 
@@ -350,16 +355,16 @@ I => clk125MHz -- Buffer input
 			nextDataToWrite(11 downto 1) <= requestedDataToWrite(11 downto 1); 
 		end if;
 	
-		dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');
-		
+		if dqsTristate = '1' then
+			dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');	
+		else
+			dataPort <= dataWaitingForOutput;
+		end if;
 	
 		if clockEnableWrite = '1' and writeRequest = '1' then --write data, and pull down the stack of registers
-				dataPort(15 downto 0)   <= dataToWrite(1)(15 downto 0)  ;	
-					nextDataToWrite(8 downto 1) <= dataToWrite(9 downto 2);
-		
-		 
-			
-			
+				nextDataWaitingForOutput  <= dataToWrite(1)(15 downto 0)  ;	
+				nextDataToWrite(8 downto 1) <= dataToWrite(9 downto 2);
+					
 		end if;
 
 
