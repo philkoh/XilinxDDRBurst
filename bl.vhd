@@ -160,9 +160,11 @@ end component;
 	
 	type eightWordArray is array (7 downto 0) of std_logic_vector(15 downto 0);
 	signal writeRefill :  eightWordArray;
-	signal writeRefillIsAvailable : std_logic := '0';
 	signal nextWriteRefill :  eightWordArray;
+	signal writeRefillIsAvailable : std_logic := '0';
 	signal nextWriteRefillIsAvailable : std_logic ;
+	signal writeRefillWasConsumed : std_logic := '0';
+	signal nextWriteRefillWasConsumed : std_logic ;
  
 	 
 	signal capturedData :   philArr;
@@ -565,6 +567,9 @@ I => clk125MHz -- Buffer input
 			dataToWrite <= nextDataToWrite;
 		   addrOut <= nextAddrOut;
 			dataWaitingForOutput <= nextDataWaitingForOutput;
+			
+			writeRefillWasConsumed <= nextWriteRefillWasConsumed  ;
+			
 		end if;
  end process;
 
@@ -580,9 +585,9 @@ I => clk125MHz -- Buffer input
 		nextCapturedData(11 downto 1) <= capturedData(11 downto 1); --unless overridden below, hold and remember the captured values
 			
 		nextDataToWrite <= dataToWrite;--unless overridden below, hold and remember the loaded values
+		nextWriteRefillWasConsumed <= writeRefillWasConsumed ;
 		nextAddrOut <= addrOut;--unless overridden below, hold and remember the loaded values
 		addrPort <= addrOut;
-			
 	
 		if clockEnableRead = '1'  then --capture data, actually captures 8 times, I think, 4 cycles of count2 at 125MHz, but two rising edges of 250 MHz per count2 incremena
 			nextCapturedData(1) <= inData;
@@ -654,8 +659,9 @@ I => clk125MHz -- Buffer input
 			switchCount <= nextSwitchCount;
 			lastSwitchRegister <= switchRegister;
 
-
-
+			writeRefill  <= nextWriteRefill ;
+			writeRefillIsAvailable <= nextWriteRefillIsAvailable  ;
+ 
 		
 		end if;
 		
@@ -672,6 +678,9 @@ I => clk125MHz -- Buffer input
 		wePORT <= we;
 		
 		
+		nextWriteRefill <=	writeRefill     ;
+		nextWriteRefillIsAvailable <=	writeRefillIsAvailable   ;
+ 
 		
 		monitor2 <= dqs0Incoming;
 		monitor3 <= '0';
