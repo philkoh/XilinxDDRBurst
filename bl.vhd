@@ -81,18 +81,24 @@ end bl;
 
 
 architecture Behavioral of bl is
+
+
 component PhilClock
 port
  (-- Clock in ports
   CLK_IN1           : in     std_logic;
   -- Clock out ports
-  CLK_OUT1          : out    std_logic
-  
+  CLK_OUT1          : out    std_logic;
+  CLK_OUT2          : out    std_logic
  );
 end component;
 
 
+
+
+
 	signal clk250MHz : std_logic := '0';
+	signal clk250MHzB : std_logic := '0';
 	signal clk125MHz : std_logic := '0';
 	signal clk125MHz_n : std_logic := '0';
 	signal nextClk125MHz : std_logic := '0';
@@ -204,6 +210,11 @@ signal nextRequestedDataToWrite : philArr;
    signal nextSwitchCount : unsigned (3 downto 0) := "0000";
    
 	
+	
+	
+	signal dataFromSDRAM :  std_logic_vector(15 downto 0);
+	signal dataToSDRAM :  std_logic_vector(15 downto 0);
+	signal TRISTATE_OUTPUT : std_logic := '1';
 begin
 
 
@@ -213,9 +224,9 @@ your_instance_name : PhilClock
    (-- Clock in ports
     CLK_IN1 => clk,
     -- Clock out ports
-    CLK_OUT1 => clk250MHz);
+    CLK_OUT1 => clk250MHz,
+	 CLK_OUT2 => clk250MHzB);
 -- INST_TAG_END ------ End INSTANTIATION Template ------------
-
 
 
 
@@ -270,6 +281,36 @@ I => clk125MHz -- Buffer input
 
 
 
+IODELAY2_inst : IODELAY2
+generic map (
+COUNTER_WRAPAROUND => "WRAPAROUND", -- "STAY_AT_LIMIT" or "WRAPAROUND"
+DATA_RATE => "SDR", -- "SDR" or "DDR"
+DELAY_SRC => "ODATAIN", -- "IO", "ODATAIN" or "IDATAIN"
+IDELAY2_VALUE => 0, -- Delay value when IDELAY_MODE="PCI" (0-255)
+IDELAY_MODE => "NORMAL", -- "NORMAL" or "PCI"
+IDELAY_TYPE => "FIXED", -- "FIXED", "DEFAULT", "VARIABLE_FROM_ZERO", "VARIABLE_FROM_HALF_MAX"
+-- or "DIFF_PHASE_DETECTOR"
+IDELAY_VALUE => 0, -- Amount of taps for fixed input delay (0-255)
+ODELAY_VALUE => 0, -- Amount of taps fixed output delay (0-255)
+SERDES_MODE => "NONE", -- "NONE", "MASTER" or "SLAVE"
+SIM_TAPDELAY_VALUE => 75 -- Per tap delay used for simulation in ps
+)
+port map (
+--DATAOUT => DATAOUT, -- 1-bit output: Delayed data output to ISERDES/input register
+--DATAOUT2 => dataFromSDRAM, -- 1-bit output: Delayed data output to general FPGA fabric
+DOUT => DOUT, -- 1-bit output: Delayed data output
+--TOUT => TOUT, -- 1-bit output: Delayed 3-state output
+--CAL => CAL, -- 1-bit input: Initiate calibration input
+--CE => CE, -- 1-bit input: Enable INC input
+--CLK => CLK, -- 1-bit input: Clock input
+--IDATAIN => IDATAIN, -- 1-bit input: Data input (connect to top-level port or I/O buffer)
+--INC => INC, -- 1-bit input: Increment / decrement input
+--IOCLK0 => IOCLK0, -- 1-bit input: Input from the I/O clock network
+--IOCLK1 => IOCLK1, -- 1-bit input: Input from the I/O clock network
+ODATAIN => dataToSDRAM -- 1-bit input: Output data input from output register or OSERDES2.
+--RST => RST, -- 1-bit input: Reset to zero or 1/2 of total delay period
+--T => TRISTATE_OUTPUT -- 1-bit input: 3-state input signal
+);
 
 
 
@@ -314,7 +355,7 @@ I => clk125MHz -- Buffer input
 ------------------------------------------SEQUENTIAL :	
 		if rising_edge(clk250MHz) then
 			clk125MHz <=  nextClk125MHz  ;  --clk125MHz changes on rising edge of 250MHz clock; this is sent out as external clock *and* as dqs
-			inData (15 downTo 0) <= dataPort (15 downTo 0);  -- data uses the 250 MHz clock
+			inData   <= dataFromSDRAM;  -- data uses the 250 MHz clock
 
 
 			capturedData(11 downto 1) <= nextCapturedData(11 downto 1);
@@ -350,13 +391,13 @@ I => clk125MHz -- Buffer input
 			nextDataToWrite(11 downto 1) <= requestedDataToWrite(11 downto 1); 
 		end if;
 	
-		dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');
-		
+--		dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');
+		TRISTATE_OUTPUT <= '1';
 	
 		if clockEnableWrite = '1' and writeRequest = '1' then --write data, and pull down the stack of registers
-				dataPort(15 downto 0)   <= dataToWrite(1)(15 downto 0)  ;	
+				 dataToSDRAM  <= dataToWrite(1)   ;	
 					nextDataToWrite(8 downto 1) <= dataToWrite(9 downto 2);
-		
+				TRISTATE_OUTPUT <= '0';
 		 
 			
 			
@@ -417,8 +458,7 @@ I => clk125MHz -- Buffer input
 		monitor2 <= dqs0Incoming;
 		monitor3 <= '0';
 		monitor4 <= '0';
---		monitor3 <= dataPORT(0);
---		monitor4 <= dataPORT(1);
+
 
 		nextInitializationMode <= initializationMode;
 	
@@ -642,16 +682,7 @@ writeRequest <= nextWriteRequest;
 				nextBlinker <= blinker;
 			end if;
 		
-			if tristateData = '1' then
-	--			dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');
-			else
-	--			dataPort (0) <= dataCount (0);			
-	--			dataPort (1) <= dataCount (1);			
-	--			dataPort (2) <= dataCount (2);			
-	--			dataPort (3) <= dataCount (3);			
-	--			dataPort (15 downTo 0) <= data (15 downTo 0);			
-			end if;
-
+	
 
 
 			nextDqsTristate <= '1';

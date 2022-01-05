@@ -55,6 +55,7 @@
 -- "Clock    Freq (MHz) (degrees) Cycle (%) Jitter (ps)  Error (ps)"
 ------------------------------------------------------------------------------
 -- CLK_OUT1___250.000______0.000______50.0______280.000____150.000
+-- CLK_OUT2___250.000______0.000______50.0______280.000____150.000
 --
 ------------------------------------------------------------------------------
 -- "Input Clock   Freq (MHz)    Input Jitter (UI)"
@@ -69,7 +70,8 @@ port
  (-- Clock in ports
   CLK_IN1           : in     std_logic;
   -- Clock out ports
-  CLK_OUT1          : out    std_logic
+  CLK_OUT1          : out    std_logic;
+  CLK_OUT2          : out    std_logic
  );
 end component;
 
@@ -82,5 +84,6 @@ your_instance_name : PhilClock
    (-- Clock in ports
     CLK_IN1 => CLK_IN1,
     -- Clock out ports
-    CLK_OUT1 => CLK_OUT1);
+    CLK_OUT1 => CLK_OUT1,
+    CLK_OUT2 => CLK_OUT2);
 -- INST_TAG_END ------ End INSTANTIATION Template ------------
