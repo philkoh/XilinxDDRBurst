@@ -144,7 +144,7 @@ end component;
 	signal inData :   std_logic_vector(15 downto 0);
 	signal inDataB :   std_logic_vector(15 downto 0);
 	
-	type philArr is array (15 downto 0) of std_logic_vector(15 downto 0);
+	type philArr is array (20 downto 0) of std_logic_vector(15 downto 0);
 	signal requestedDataToWrite : philArr;
 signal nextRequestedDataToWrite : philArr;
 	signal dataToWrite : philArr;
@@ -548,7 +548,7 @@ I => clk125MHz -- Buffer input
 
 			capturedData(11 downto 1) <= nextCapturedData(11 downto 1);
 			
-			dataToWrite(11 downto 1) <= nextDataToWrite(11 downto 1);
+			dataToWrite(20 downto 1) <= nextDataToWrite(20 downto 1);
 			
 			dataWaitingForOutput <= nextDataWaitingForOutput;
 		end if;
@@ -565,7 +565,7 @@ I => clk125MHz -- Buffer input
 		
 		nextCapturedData(11 downto 1) <= capturedData(11 downto 1); --unless overridden below, hold and remember the captured values
 			
-		nextDataToWrite(11 downto 1) <= dataToWrite(11 downto 1);--unless overridden below, hold and remember the loaded values
+		nextDataToWrite(20 downto 1) <= dataToWrite(20 downto 1);--unless overridden below, hold and remember the loaded values
 		
 	
 	
@@ -577,7 +577,7 @@ I => clk125MHz -- Buffer input
 		end if;
 
 		if clockEnableLoad = '1' and writeRequest = '1' then  -- a bit before the write, load the data to write from the request register to the write register
-			nextDataToWrite(11 downto 1) <= requestedDataToWrite(11 downto 1); 
+			nextDataToWrite(20 downto 1) <= requestedDataToWrite(20 downto 1); 
 		end if;
 	
 		if dqsTristate = '1' then
@@ -590,7 +590,7 @@ I => clk125MHz -- Buffer input
 	
 		if clockEnableWrite = '1' and writeRequest = '1' then --write data, and pull down the stack of registers
 				nextDataWaitingForOutput  <= dataToWrite(1)(15 downto 0)  ;	
-				nextDataToWrite(8 downto 1) <= dataToWrite(9 downto 2);
+				nextDataToWrite(19 downto 1) <= dataToWrite(20 downto 2);
 					
 		end if;
 
@@ -850,7 +850,7 @@ writeRequest <= nextWriteRequest;
 			tristateData <= nextTristateData;
 			
 	
-			requestedDataToWrite(11 downto 1)  <= nextRequestedDataToWrite(11 downto 1);
+			requestedDataToWrite(20 downto 1)  <= nextRequestedDataToWrite(20 downto 1);
 	
 	
 			end if;
@@ -909,7 +909,7 @@ writeRequest <= nextWriteRequest;
 			nextSaveRequest4 <= '0';
 			
 			
-			nextRequestedDataToWrite(11 downto 1)  <= requestedDataToWrite(11 downto 1);
+			nextRequestedDataToWrite(20 downto 1)  <= requestedDataToWrite(20 downto 1);
 		
 			
 			
@@ -1018,8 +1018,17 @@ writeRequest <= nextWriteRequest;
 				nextRequestedDataToWrite(8) <= "1010101010100111";
 				nextRequestedDataToWrite(9) <= "1010101010101110";
 				nextRequestedDataToWrite(10) <= "0000000000001111";
- 				nextRequestedDataToWrite(11) <= "0000000000000000";
-
+ 				nextRequestedDataToWrite(11) <= "0000000000000001";
+				nextRequestedDataToWrite(12) <= "1010101010100010";
+				nextRequestedDataToWrite(13) <= "1010101010100100";
+				nextRequestedDataToWrite(14) <= "1010101010101000";
+				nextRequestedDataToWrite(15) <= "1010101010101100";
+				nextRequestedDataToWrite(16) <= "1010101010100110";
+				nextRequestedDataToWrite(17) <= "1010101010100011";
+				nextRequestedDataToWrite(18) <= "1010101010100111";
+				nextRequestedDataToWrite(19) <= "1010101010101110";
+				nextRequestedDataToWrite(20) <= "0000000000001111";
+ 				
 
 				nextWriteRequest <= '1';
 				
