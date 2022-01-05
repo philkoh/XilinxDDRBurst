@@ -107,13 +107,15 @@ end component;
 	signal nextBlinker  : std_logic := '0';
 	signal clockEnableBeginning : std_logic := '0';
 	signal clockEnableCommand : std_logic := '0';
-	signal clockEnableLoad : std_logic := '0';
+	signal clockEnableLoadWriteData : std_logic := '0';
+	signal clockEnableLoadAddress : std_logic := '0';
 	signal clockEnableRead : std_logic := '0';
 	signal clockEnableWrite : std_logic := '0';
 	signal clockEnableAddrIncrement : std_logic := '0';
 	signal nextClockEnableBeginning : std_logic := '0';
 	signal nextClockEnableCommand : std_logic := '0';
-	signal nextClockEnableLoad : std_logic := '0';
+	signal nextClockEnableLoadWriteData : std_logic := '0';
+	signal nextClockEnableLoadAddress : std_logic := '0';
 	signal nextClockEnableRead : std_logic := '0';
 	signal nextClockEnableWrite : std_logic := '0';
 	signal nextClockEnableAddrIncrement : std_logic := '0';
@@ -587,11 +589,11 @@ I => clk125MHz -- Buffer input
 			
 		end if;
 
-		if clockEnableLoad = '1' and writeRequest = '1' then  -- a bit before the write, load the data to write from the request register to the write register
+		if ClockEnableLoadWriteData = '1'  then  -- a bit before the write, load the data to write from the request register to the write register
 			nextDataToWrite <= requestedDataToWrite; 
 		end if;
 		
-		if clockEnableLoad = '1'  then  -- a bit before the write, assert the address
+		if clockEnableLoadAddress = '1'  then  -- a bit before the write, assert the address
 			nextAddrOut <= addrRequest;
 		end if;
 		
@@ -636,7 +638,8 @@ I => clk125MHz -- Buffer input
 			count2 <= nextCount2;    -- count2 runs at 125 MHz
 			clockEnableBeginning <= nextClockEnableBeginning;
 			clockEnableCommand <= nextClockEnableCommand;
-			clockEnableLoad <= nextClockEnableLoad;
+			clockEnableLoadWriteData <= nextClockEnableLoadWriteData;
+			clockEnableLoadAddress <= nextClockEnableLoadAddress;
 			clockEnableRead <= nextClockEnableRead;
 			clockEnableWrite <= nextClockEnableWrite;
 			clockEnableAddrIncrement <= nextClockEnableAddrIncrement;
@@ -720,10 +723,16 @@ I => clk125MHz -- Buffer input
 		
 				
 				
-			if count2 = 1   then   -- this loads requested write data onto the outgoing stack
-					nextClockEnableLoad <= '1';
+			if count2 = 16 and writeRequest = '1'   then   -- this loads requested write data onto the outgoing stack
+				nextClockEnableLoadWriteData <= '1';
 			else
-				nextClockEnableLoad <= '0';
+				nextClockEnableLoadWriteData<= '0';
+			end if;
+		
+			if count2 = 1   then   -- this loads address  
+				nextClockEnableLoadAddress <= '1';
+			else
+				nextClockEnableLoadAddress<= '0';
 			end if;
 	
 				
