@@ -548,7 +548,7 @@ I => clk125MHz -- Buffer input
 
 			capturedData(11 downto 1) <= nextCapturedData(11 downto 1);
 			
-			dataToWrite(20 downto 1) <= nextDataToWrite(20 downto 1);
+			dataToWrite <= nextDataToWrite;
 			
 			dataWaitingForOutput <= nextDataWaitingForOutput;
 		end if;
@@ -565,7 +565,7 @@ I => clk125MHz -- Buffer input
 		
 		nextCapturedData(11 downto 1) <= capturedData(11 downto 1); --unless overridden below, hold and remember the captured values
 			
-		nextDataToWrite(20 downto 1) <= dataToWrite(20 downto 1);--unless overridden below, hold and remember the loaded values
+		nextDataToWrite <= dataToWrite;--unless overridden below, hold and remember the loaded values
 		
 	
 	
@@ -577,7 +577,7 @@ I => clk125MHz -- Buffer input
 		end if;
 
 		if clockEnableLoad = '1' and writeRequest = '1' then  -- a bit before the write, load the data to write from the request register to the write register
-			nextDataToWrite(20 downto 1) <= requestedDataToWrite(20 downto 1); 
+			nextDataToWrite <= requestedDataToWrite; 
 		end if;
 	
 		if dqsTristate = '1' then
@@ -850,7 +850,7 @@ writeRequest <= nextWriteRequest;
 			tristateData <= nextTristateData;
 			
 	
-			requestedDataToWrite(20 downto 1)  <= nextRequestedDataToWrite(20 downto 1);
+			requestedDataToWrite  <= nextRequestedDataToWrite;
 	
 	
 			end if;
@@ -909,7 +909,7 @@ writeRequest <= nextWriteRequest;
 			nextSaveRequest4 <= '0';
 			
 			
-			nextRequestedDataToWrite(20 downto 1)  <= requestedDataToWrite(20 downto 1);
+			nextRequestedDataToWrite  <= requestedDataToWrite;
 		
 			
 			
