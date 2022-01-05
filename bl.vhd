@@ -135,8 +135,8 @@ end component;
 	signal nextOdt : std_logic := '1';
 	signal ba :   std_logic_vector(2 downto 0);
 	signal nextBa :   std_logic_vector(2 downto 0);
-	signal addr :   std_logic_vector(14 downto 0);
-	signal nextAddr :   std_logic_vector(14 downto 0);
+	signal addrRequest :   std_logic_vector(14 downto 0);
+	signal nextAddrRequest :   std_logic_vector(14 downto 0);
 	signal dataCount :   unsigned (3 downto 0)  := "1111";
 	signal nextDataCount :   unsigned (3 downto 0):= "1111";
 	signal data :   std_logic_vector(15 downto 0) := "1111111111111111";
@@ -833,7 +833,7 @@ I => clk125MHz -- Buffer input
 			count <= nextcount;  -- count is incrementing at 3.9MHz, or once every 32 count2 increments
 			blinker <= nextBlinker;
 			ba <= nextBa;
-			addr <= nextAddr;
+			addrRequest <= nextAddrRequest;
 	--		data <= nextData;  --note, this is a massive fudge; the data for a write is presented through the entire cycle of 32 count2 increments
 				casRequest <= nextCasRequest;
 			rasRequest <= nextRasRequest;
@@ -867,7 +867,7 @@ writeRequest <= nextWriteRequest;
 			dqm1PORT  <= '0';
 			odtPORT <= odt;
 			baPort <= ba;
-			addrPort <= addr;
+			addrPort <= addrRequest;
 			
 			resetPort <= reset;
 			ckePort <= cke;
@@ -915,7 +915,7 @@ writeRequest <= nextWriteRequest;
 			
 			nextODT <= '1';  -- On Die Termination is normally on
 			nextBa <= (others => '0');
-			nextAddr <= (others => '0');
+			nextAddrRequest <= (others => '0');
 			nextData <= (others => 'Z');
 			
 			
@@ -936,14 +936,14 @@ writeRequest <= nextWriteRequest;
 			
 			if count = 20100 then -- 20100 --do nothing (sets nextAddr to get rid of an annoying warking)
 				nextBa <= "111";
-				nextAddr <= "111111111111111";
+				nextAddrRequest <= "111111111111111";
 			end if;
 	
 
 			if count = 20200 then--20200 --MRS MR2
 				nextBa <= "010";
-				nextAddr <= "000000000001000";  --CWL = 6
---				nextAddr <= "000000000000000";  --CWL = 5
+				nextAddrRequest <= "000000000001000";  --CWL = 6
+--				nextAddrRequest <= "000000000000000";  --CWL = 5
 				nextRasRequest <= '0';
 				nextCasRequest <= '0';
 				nextWeRequest <= '0';
@@ -951,7 +951,7 @@ writeRequest <= nextWriteRequest;
 	
 			if count = 20201 then--20201 --MRS MR3
 				nextBa <= "011";
-				nextAddr <= "000000000000100"; -- MPR mode, outputs special pattern on reads
+				nextAddrRequest <= "000000000000100"; -- MPR mode, outputs special pattern on reads
 				nextRasRequest <= '0';
 				nextCasRequest <= '0';
 				nextWeRequest <= '0';
@@ -960,8 +960,8 @@ writeRequest <= nextWriteRequest;
 	
 			if count = 20202 then--20202 --MRS MR1  
 				nextBa <= "001";
-				nextAddr <= "000000000000101";  -- DLL disable     RZQ/4 (60O NOM)
---				nextAddr <= "000000000000100";  -- DLL enable     RZQ/4 (60O NOM)
+				nextAddrRequest <= "000000000000101";  -- DLL disable     RZQ/4 (60O NOM)
+--				nextAddrRequest <= "000000000000100";  -- DLL enable     RZQ/4 (60O NOM)
 				nextRasRequest <= '0';
 				nextCasRequest <= '0';
 				nextWeRequest <= '0';
@@ -970,8 +970,8 @@ writeRequest <= nextWriteRequest;
 	
 			if count = 20203 then--20203 --MRS MR0
 				nextBa <= "000";	
-				nextAddr <= (9 => '1', 8 => '0', 5 => '1', others => '0'); --CAS latency = 6, Don'treset DLL  , WriteRecovery = 5, FixedBurstLength = 8
---				nextAddr <= (9 => '1', 8 => '1', 4 => '1', others => '0'); --CAS latency = 5, reset DLL  , WriteRecovery = 5
+				nextAddrRequest <= (9 => '1', 8 => '0', 5 => '1', others => '0'); --CAS latency = 6, Don'treset DLL  , WriteRecovery = 5, FixedBurstLength = 8
+--				nextAddrRequest <= (9 => '1', 8 => '1', 4 => '1', others => '0'); --CAS latency = 5, reset DLL  , WriteRecovery = 5
 				nextRasRequest <= '0';
 				nextCasRequest <= '0';
 				nextWeRequest <= '0';
@@ -979,7 +979,7 @@ writeRequest <= nextWriteRequest;
 	
 			if count = 20204 then--20204 --ZQCL
 				nextBa <= "000";				
-				nextAddr <= (10 => '1', others => '0'); 
+				nextAddrRequest <= (10 => '1', others => '0'); 
 				nextRasRequest <= '1';
 				nextCasRequest <= '1';
 				nextWeRequest <= '0';
@@ -988,7 +988,7 @@ writeRequest <= nextWriteRequest;
 		
 			if count = 20224 then--20224 --MRS MR3
 				nextBa <= "011";
-				nextAddr <= "000000000000000"; 
+				nextAddrRequest <= "000000000000000"; 
 				nextRasRequest <= '0';
 				nextCasRequest <= '0';
 				nextWeRequest <= '0';
@@ -999,7 +999,7 @@ writeRequest <= nextWriteRequest;
 		
 			if count = 20226 then--20226 --ACTIVATE
 				nextBa <= "000";
-				nextAddr <= "000000000001000"; --Row Address 8  
+				nextAddrRequest <= "000000000001000"; --Row Address 8  
 				nextRasRequest <= '0';
 				nextCasRequest <= '1';
 				nextWeRequest <= '1';
@@ -1036,7 +1036,7 @@ writeRequest <= nextWriteRequest;
 				nextTristateData <= '0';
 			
 				nextBa <= "000";
-				nextAddr <= "000000000001000";
+				nextAddrRequest <= "000000000001000";
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '0';
@@ -1048,7 +1048,7 @@ writeRequest <= nextWriteRequest;
 				nextTristateData <= '0';
 			
 				nextBa <= "000";
-				nextAddr <= "000000000010000";
+				nextAddrRequest <= "000000000010000";
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '0';
@@ -1062,7 +1062,7 @@ writeRequest <= nextWriteRequest;
 				nextTristateData <= '0';
 			
 				nextBa <= "000";
-				nextAddr <= "000000000011000";
+				nextAddrRequest <= "000000000011000";
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '0';
@@ -1074,7 +1074,7 @@ writeRequest <= nextWriteRequest;
 				nextTristateData <= '0';
 			
 				nextBa <= "000";
-				nextAddr <= "000000000100000";
+				nextAddrRequest <= "000000000100000";
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '0';
@@ -1086,7 +1086,7 @@ writeRequest <= nextWriteRequest;
 				nextSaveRequest <= '1';	
 				
 				nextBa <= "000";
-				nextAddr <= "000000000001000";
+				nextAddrRequest <= "000000000001000";
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '1';
