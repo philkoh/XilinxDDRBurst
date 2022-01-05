@@ -106,11 +106,13 @@ end component;
 	signal blinker  : std_logic := '0';
 	signal nextBlinker  : std_logic := '0';
 	signal clockEnableBeginning : std_logic := '0';
-	signal clockEnableMidpoint : std_logic := '0';
+	signal clockEnableCommand : std_logic := '0';
+	signal clockEnableLoad : std_logic := '0';
 	signal clockEnableRead : std_logic := '0';
 	signal clockEnableWrite : std_logic := '0';
 	signal nextClockEnableBeginning : std_logic := '0';
-	signal nextClockEnableMidpoint : std_logic := '0';
+	signal nextClockEnableCommand : std_logic := '0';
+	signal nextClockEnableLoad : std_logic := '0';
 	signal nextClockEnableRead : std_logic := '0';
 	signal nextClockEnableWrite : std_logic := '0';
    signal count2 : unsigned (4 downto 0) := "00000";
@@ -553,7 +555,7 @@ I => clk125MHz -- Buffer input
  end process;
 
 		------------------------------------------COMBINATORIAL:
-	process (clk125MHz,count2,   clockEnableMidpoint,clockEnableRead,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData)
+	process (clk125MHz,count2,  clockEnableRead,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData)
 	
 	
 		begin
@@ -574,7 +576,7 @@ I => clk125MHz -- Buffer input
 			
 		end if;
 
-		if clockEnableMidpoint = '1' and writeRequest = '1' then  -- a bit before the write, load the data to write from the request register to the write register
+		if clockEnableLoad = '1' and writeRequest = '1' then  -- a bit before the write, load the data to write from the request register to the write register
 			nextDataToWrite(11 downto 1) <= requestedDataToWrite(11 downto 1); 
 		end if;
 	
@@ -610,11 +612,12 @@ I => clk125MHz -- Buffer input
 		
 		
 		
-		if rising_edge(clk250MHz) and clk125MHz = '1' then
+		if rising_edge(clk250MHz) and clk125MHz = '1' then  -- this is a falling edge of clk125MHz
 		
 			count2 <= nextCount2;    -- count2 runs at 125 MHz
 			clockEnableBeginning <= nextClockEnableBeginning;
-			clockEnableMidpoint <= nextClockEnableMidpoint;
+			clockEnableCommand <= nextClockEnableCommand;
+			clockEnableLoad <= nextClockEnableLoad;
 			clockEnableRead <= nextClockEnableRead;
 			clockEnableWrite <= nextClockEnableWrite;
 			cas <= nextCas;
@@ -633,7 +636,7 @@ I => clk125MHz -- Buffer input
    end process;
 	
 ------------------------------------------COMBINATORIAL:
-	process (count2,dqs0incoming,switchregister,switch2port,switch3port,switchCount,lastSwitchRegister,tristateData, initializationmode,inDataB, clockEnableMidpoint,clockEnableRead,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData)
+	process (count2,dqs0incoming,switchregister,switch2port,switch3port,switchCount,lastSwitchRegister,tristateData, initializationmode,inDataB,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData)
 	
 	
 		begin
@@ -685,10 +688,18 @@ I => clk125MHz -- Buffer input
 			end if;
 			
 			if count2 = 16   then   -- this pulses the CAS/RAS/WE command that must get sent on the midpoint instant of the read or write cycle
-					nextClockEnableMidpoint <= '1';
+					nextClockEnableCommand <= '1';
 			else
-				nextClockEnableMidpoint <= '0';
+				nextClockEnableCommand <= '0';
 			end if;
+				
+			if count2 = 16   then   -- this loads requested write data onto the outgoing stack
+					nextClockEnableLoad <= '1';
+			else
+				nextClockEnableLoad <= '0';
+			end if;
+	
+				
 				
 --			if (count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26)   then  --reads for 4 cycles of 125MHz count2
 			if (count2 = 24 or count2 = 25 or count2 = 26 or count2 = 27)   then  --reads for 4 cycles of 125MHz count2
@@ -710,7 +721,7 @@ I => clk125MHz -- Buffer input
 			nextRas <= ras;
 			nextWe <= we;
 			
-			if clockEnableMidpoint = '1' then  --the CAS/RAS/WE command is only applied for this one 125 MHz clock cycle when count2=16
+			if clockEnableCommand = '1' then  --the CAS/RAS/WE command is only applied for this one 125 MHz clock cycle when count2=16
 				nextCas <= casRequest;
 				nextRas <= rasRequest;
 				nextWe <= weRequest;
