@@ -685,9 +685,8 @@ I => clk125MHz -- Buffer input
 			if count2 = 1 then 
 				nextCount2 <= count2 + 14;  --skip ahead to shorten the cycle
 			end if;
-			if count2 = 28 then
-				nextCount2 <= count2 + 1;--skip ahead to shorten the cycle
-			end if;
+		
+		
 			
 			if count2 = 0    then
 				nextClockEnableBeginning <= '1';  -- this flag executes all the block of code below that changes signals on the count2 = 0 edge 
