@@ -163,8 +163,8 @@ end component;
 	signal nextWriteRefill :  eightWordArray;
 	signal writeRefillIsAvailable : std_logic := '0';
 	signal nextWriteRefillIsAvailable : std_logic ;
-	signal writeRefillWasConsumed : std_logic := '0';
-	signal nextWriteRefillWasConsumed : std_logic ;
+--	signal writeRefillWasConsumed : std_logic := '0';
+--	signal nextWriteRefillWasConsumed : std_logic ;
  
 	 
 	signal capturedData :   philArr;
@@ -568,7 +568,7 @@ I => clk125MHz -- Buffer input
 		   addrOut <= nextAddrOut;
 			dataAssertedToOutput <= nextdataAssertedToOutput;
 			
-			writeRefillWasConsumed <= nextWriteRefillWasConsumed  ;
+	--		writeRefillWasConsumed <= nextWriteRefillWasConsumed  ;
 			
 		end if;
  end process;
@@ -585,9 +585,16 @@ I => clk125MHz -- Buffer input
 		nextCapturedData(11 downto 1) <= capturedData(11 downto 1); --unless overridden below, hold and remember the captured values
 			
 		nextDataToWrite <= dataToWrite;--unless overridden below, hold and remember the loaded values
-		nextWriteRefillWasConsumed <= writeRefillWasConsumed ;
+	--	nextWriteRefillWasConsumed <= writeRefillWasConsumed ;
 		nextAddrOut <= addrOut;--unless overridden below, hold and remember the loaded values
 		addrPort <= addrOut;
+		
+		------------------------------------ NOTE: every clockEnable runs twice, on a rising then falling edge of the 125MHz clock, on two consecutive rising 250MHz edges
+		------------------------------------ NOTE: every clockEnable runs twice, on a rising then falling edge of the 125MHz clock, on two consecutive rising 250MHz edges
+		------------------------------------ NOTE: every clockEnable runs twice, on a rising then falling edge of the 125MHz clock, on two consecutive rising 250MHz edges
+		------------------------------------ NOTE: every clockEnable runs twice, on a rising then falling edge of the 125MHz clock, on two consecutive rising 250MHz edges
+		------------------------------------ NOTE: every clockEnable runs twice, on a rising then falling edge of the 125MHz clock, on two consecutive rising 250MHz edges
+		------------------------------------ NOTE: every clockEnable runs twice, on a rising then falling edge of the 125MHz clock, on two consecutive rising 250MHz edges
 	
 		if clockEnableRead = '1'  then --capture data, actually captures 8 times, I think, 4 cycles of count2 at 125MHz, but two rising edges of 250 MHz per count2 incremena
 			nextCapturedData(1) <= inData;
@@ -596,9 +603,10 @@ I => clk125MHz -- Buffer input
 			
 		end if;
 
-		if ClockEnableLoadWriteData = '1'  then  -- a bit before the write, load the data to write from the request register to the write register
+		if clockEnableLoadWriteData = '1'  then  -- at start of write, load the data to write from the request register to the write register
 			nextDataToWrite <= requestedDataToWrite; 
 		end if;
+		
 		
 		if clockEnableLoadAddress = '1'  then  -- a bit before the write, assert the address
 			nextAddrOut <= addrRequest;
@@ -644,7 +652,7 @@ I => clk125MHz -- Buffer input
 		if rising_edge(clk250MHz) and clk125MHz = '1' then  -- this is a falling edge of clk125MHz
 		
 			count2 <= nextCount2;    -- count2 runs at 125 MHz
-			clockEnableBeginning <= nextClockEnableBeginning;
+			clockEnableBeginning <= nextClockEnableBeginning;  --clockEnable registers change on falling edge of clk125MHz
 			clockEnableCommand <= nextClockEnableCommand;
 			clockEnableLoadWriteData <= nextClockEnableLoadWriteData;
 			clockEnableRefillWriteData <= nextClockEnableRefillWriteData;
@@ -722,7 +730,7 @@ I => clk125MHz -- Buffer input
 				nextClockEnableBeginning <= '0';
 			end if;
 			
-			if count2 = 16   then   -- this pulses the CAS/RAS/WE command that must get sent on the midpoint instant of the read or write cycle
+			if count2 = 16   then   -- this pulses the CAS/RAS/WE command that must get sent for the read or write cycle
 				nextClockEnableCommand <= '1';
 			else
 				nextClockEnableCommand <= '0';
@@ -781,7 +789,7 @@ I => clk125MHz -- Buffer input
 	--		nextRas <= ras;
 	--		nextWe <= we;
 			
-			if clockEnableCommand = '1' then  --the CAS/RAS/WE command is only applied for this one 125 MHz clock cycle when count2=16
+			if clockEnableCommand = '1' then  --the CAS/RAS/WE command is only applied for this one 125 MHz clock cycle just after count2=16
 				nextCas <= casRequest;
 				nextRas <= rasRequest;
 				nextWe <= weRequest;
