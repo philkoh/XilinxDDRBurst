@@ -693,7 +693,7 @@ I => clk125MHz -- Buffer input
 				nextClockEnableCommand <= '0';
 			end if;
 				
-			if count2 = 16   then   -- this loads requested write data onto the outgoing stack
+			if count2 = 1   then   -- this loads requested write data onto the outgoing stack
 					nextClockEnableLoad <= '1';
 			else
 				nextClockEnableLoad <= '0';
