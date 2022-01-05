@@ -171,8 +171,8 @@ end component;
 	signal nextCapturedData :   philArr;
 
 	
-	signal dataWaitingForOutput : std_logic_vector(15 downto 0);
-	signal nextDataWaitingForOutput : std_logic_vector(15 downto 0);
+	signal dataAssertedToOutput : std_logic_vector(15 downto 0);
+	signal nextdataAssertedToOutput : std_logic_vector(15 downto 0);
 	signal delayedDataForOutput : std_logic_vector(15 downto 0);
 	
 	signal delayedDataPort : std_logic_vector(15 downto 0);
@@ -292,7 +292,7 @@ IDATAIN => dataPort(0), -- 1-bit input: Data input (connect to top-level port or
 INC => '0', -- 1-bit input: Increment / decrement input
 IOCLK0 => '0', -- 1-bit input: Input from the I/O clock network
 IOCLK1 => '0', -- 1-bit input: Input from the I/O clock network
-ODATAIN => dataWaitingForOutput(0), -- 1-bit input: Output data input from output register or OSERDES2.
+ODATAIN => dataAssertedToOutput(0), -- 1-bit input: Output data input from output register or OSERDES2.
 RST => '0', -- 1-bit input: Reset to zero or 1/2 of total delay period
 T => dqsTristate -- 1-bit input: 3-state input signal
 );
@@ -348,7 +348,7 @@ IDATAIN => dataPort(1), -- 1-bit input: Data input (connect to top-level port or
 INC => '0', -- 1-bit input: Increment / decrement input
 IOCLK0 => '0', -- 1-bit input: Input from the I/O clock network
 IOCLK1 => '0', -- 1-bit input: Input from the I/O clock network
-ODATAIN => dataWaitingForOutput(1), -- 1-bit input: Output data input from output register or OSERDES2.
+ODATAIN => dataAssertedToOutput(1), -- 1-bit input: Output data input from output register or OSERDES2.
 RST => '0', -- 1-bit input: Reset to zero or 1/2 of total delay period
 T => dqsTristate -- 1-bit input: 3-state input signal
 );
@@ -403,7 +403,7 @@ IDATAIN => dataPort(2), -- 1-bit input: Data input (connect to top-level port or
 INC => '0', -- 1-bit input: Increment / decrement input
 IOCLK0 => '0', -- 1-bit input: Input from the I/O clock network
 IOCLK1 => '0', -- 1-bit input: Input from the I/O clock network
-ODATAIN => dataWaitingForOutput(2), -- 1-bit input: Output data input from output register or OSERDES2.
+ODATAIN => dataAssertedToOutput(2), -- 1-bit input: Output data input from output register or OSERDES2.
 RST => '0', -- 1-bit input: Reset to zero or 1/2 of total delay period
 T => dqsTristate -- 1-bit input: 3-state input signal
 );
@@ -458,7 +458,7 @@ IDATAIN => dataPort(3), -- 1-bit input: Data input (connect to top-level port or
 INC => '0', -- 1-bit input: Increment / decrement input
 IOCLK0 => '0', -- 1-bit input: Input from the I/O clock network
 IOCLK1 => '0', -- 1-bit input: Input from the I/O clock network
-ODATAIN => dataWaitingForOutput(3), -- 1-bit input: Output data input from output register or OSERDES2.
+ODATAIN => dataAssertedToOutput(3), -- 1-bit input: Output data input from output register or OSERDES2.
 RST => '0', -- 1-bit input: Reset to zero or 1/2 of total delay period
 T => dqsTristate -- 1-bit input: 3-state input signal
 );
@@ -566,7 +566,7 @@ I => clk125MHz -- Buffer input
 			
 			dataToWrite <= nextDataToWrite;
 		   addrOut <= nextAddrOut;
-			dataWaitingForOutput <= nextDataWaitingForOutput;
+			dataAssertedToOutput <= nextdataAssertedToOutput;
 			
 			writeRefillWasConsumed <= nextWriteRefillWasConsumed  ;
 			
@@ -612,12 +612,12 @@ I => clk125MHz -- Buffer input
 			dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');	
 		else
 			dataPort(3 downto 0) <= delayedDataForOutput(3 downto 0);
-			dataPort(15 downto 4) <= dataWaitingForOutput (15 downto 4);
+			dataPort(15 downto 4) <= dataAssertedToOutput (15 downto 4);
 			
 		end if;
 	
 		if clockEnableWrite = '1'  then --write data, and pull down the stack of registers
-				nextDataWaitingForOutput  <= dataToWrite(1)(15 downto 0)  ;	
+				nextdataAssertedToOutput  <= dataToWrite(1)(15 downto 0)  ;	
 				nextDataToWrite(19 downto 1) <= dataToWrite(20 downto 2);
 					
 		end if;
