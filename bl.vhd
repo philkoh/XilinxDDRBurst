@@ -589,6 +589,9 @@ I => clk125MHz -- Buffer input
 			nextAddrOut <= addrRequest;
 		end if;
 		
+		if clockEnableAddrIncrement = '1' then
+				nextAddrOut <= 			std_logic_vector(to_unsigned((to_integer(unsigned(addrOut)) + 64),15));
+		end if;
 	
 		if dqsTristate = '1' then
 			dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');	
@@ -1079,7 +1082,7 @@ writeRequest <= nextWriteRequest;
 				nextTristateData <= '0';
 			
 				nextBa <= "000";
-				nextAddrRequest <= "000000000011000";
+				nextAddrRequest <= "000000100011000";
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '0';
@@ -1091,7 +1094,7 @@ writeRequest <= nextWriteRequest;
 				nextTristateData <= '0';
 			
 				nextBa <= "000";
-				nextAddrRequest <= "000000000100000";
+				nextAddrRequest <= "000001000100000";
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '0';
