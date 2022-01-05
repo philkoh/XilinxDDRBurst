@@ -109,6 +109,8 @@ end component;
 	signal clockEnableCommand : std_logic := '0';
 	signal clockEnableLoadWriteData : std_logic := '0';
 	signal clockEnableRefillWriteData : std_logic := '0';
+	signal refill250MHzPulse : std_logic := '0';
+	signal nextRefill250MHzPulse : std_logic := '0';
 	signal clockEnableLoadAddress : std_logic := '0';
 	signal clockEnableRead : std_logic := '0';
 	signal clockEnableWrite : std_logic := '0';
@@ -158,14 +160,9 @@ end component;
 	signal dataToWrite : philArr;
 	signal nextDataToWrite : philArr;
 	
-	type eightWordArray is array (7 downto 0) of std_logic_vector(15 downto 0);
-	signal writeRefill :  eightWordArray;
-	signal nextWriteRefill :  eightWordArray;
-	signal writeRefillIsAvailable : std_logic := '0';
-	signal nextWriteRefillIsAvailable : std_logic ;
---	signal writeRefillWasConsumed : std_logic := '0';
---	signal nextWriteRefillWasConsumed : std_logic ;
- 
+	signal writeRefill :  philArr;
+	signal nextWriteRefill :  philArr;
+	
 	 
 	signal capturedData :   philArr;
 	signal nextCapturedData :   philArr;
@@ -567,8 +564,7 @@ I => clk125MHz -- Buffer input
 			dataToWrite <= nextDataToWrite;
 			dataAssertedToOutput <= nextdataAssertedToOutput;
 			
-	--		writeRefillWasConsumed <= nextWriteRefillWasConsumed  ;
-			
+			refill250MHzPulse <= nextRefill250MHzPulse;
 		end if;
  end process;
 
@@ -616,12 +612,23 @@ I => clk125MHz -- Buffer input
 		end if;
 	
 		if clockEnableWrite = '1'  then --write data, and pull down the stack of registers
-				nextdataAssertedToOutput  <= dataToWrite(1)(15 downto 0)  ;	
-				nextDataToWrite(19 downto 1) <= dataToWrite(20 downto 2);
+				if refill250MHzPulse = '1'  then
+					nextdataAssertedToOutput  <= dataToWrite(1)(15 downto 0)  ;	
+					nextDataToWrite(11 downto 1) <= dataToWrite(12 downto 2);
+					nextDataToWrite(19 downto 12) <= writeRefill(7 downto 0) ;
+				else
+					nextdataAssertedToOutput  <= dataToWrite(1)(15 downto 0)  ;	
+					nextDataToWrite(19 downto 1) <= dataToWrite(20 downto 2);
+				end if;
 					
 		end if;
 
-
+		if clockEnableRefillWriteData = '1' and clk125MHz = '0' then
+			nextRefill250MHzPulse <= '1';
+		else
+			nextRefill250MHzPulse  <= '0';
+		end if;
+		
 	
 
 		
@@ -659,7 +666,6 @@ I => clk125MHz -- Buffer input
 			lastSwitchRegister <= switchRegister;
 
 			writeRefill  <= nextWriteRefill ;
-			writeRefillIsAvailable <= nextWriteRefillIsAvailable  ;
  		   addrOut <= nextAddrOut;
 
 		
@@ -679,7 +685,6 @@ I => clk125MHz -- Buffer input
 		
 		
 		nextWriteRefill <=	writeRefill     ;
-		nextWriteRefillIsAvailable <=	writeRefillIsAvailable   ;
  	   nextAddrOut <= addrOut;--unless overridden below, hold and remember the loaded values
 		addrPort <= addrOut;
 	
@@ -1132,7 +1137,7 @@ writeRequest <= nextWriteRequest;
 				nextSaveRequest <= '1';	
 				
 				nextBa <= "000";
-				nextAddrRequest <= "000000001110000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
+				nextAddrRequest <= "000000000010000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '1';
