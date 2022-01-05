@@ -565,7 +565,6 @@ I => clk125MHz -- Buffer input
 			capturedData(11 downto 1) <= nextCapturedData(11 downto 1);
 			
 			dataToWrite <= nextDataToWrite;
-		   addrOut <= nextAddrOut;
 			dataAssertedToOutput <= nextdataAssertedToOutput;
 			
 	--		writeRefillWasConsumed <= nextWriteRefillWasConsumed  ;
@@ -586,8 +585,6 @@ I => clk125MHz -- Buffer input
 			
 		nextDataToWrite <= dataToWrite;--unless overridden below, hold and remember the loaded values
 	--	nextWriteRefillWasConsumed <= writeRefillWasConsumed ;
-		nextAddrOut <= addrOut;--unless overridden below, hold and remember the loaded values
-		addrPort <= addrOut;
 		
 		------------------------------------ NOTE: every clockEnable runs twice, on a rising then falling edge of the 125MHz clock, on two consecutive rising 250MHz edges
 		------------------------------------ NOTE: every clockEnable runs twice, on a rising then falling edge of the 125MHz clock, on two consecutive rising 250MHz edges
@@ -608,14 +605,7 @@ I => clk125MHz -- Buffer input
 		end if;
 		
 		
-		if clockEnableLoadAddress = '1'  then  -- a bit before the write, assert the address
-			nextAddrOut <= addrRequest;
-		end if;
-		
-		if clockEnableAddrIncrement = '1' then
-		--		nextAddrOut <= 			std_logic_vector(to_unsigned((to_integer(unsigned(addrOut)) + 8),15)); -- increment column address by 8
-				nextAddrOut <= "000000001110000"; 
-		end if;
+
 	
 		if dqsTristate = '1' then
 			dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');	
@@ -670,7 +660,8 @@ I => clk125MHz -- Buffer input
 
 			writeRefill  <= nextWriteRefill ;
 			writeRefillIsAvailable <= nextWriteRefillIsAvailable  ;
- 
+ 		   addrOut <= nextAddrOut;
+
 		
 		end if;
 		
@@ -689,7 +680,9 @@ I => clk125MHz -- Buffer input
 		
 		nextWriteRefill <=	writeRefill     ;
 		nextWriteRefillIsAvailable <=	writeRefillIsAvailable   ;
- 
+ 	   nextAddrOut <= addrOut;--unless overridden below, hold and remember the loaded values
+		addrPort <= addrOut;
+	
 		
 		monitor2 <= dqs0Incoming;
 		monitor3 <= '0';
@@ -740,12 +733,27 @@ I => clk125MHz -- Buffer input
 		   	nextClockEnableCommand <= '1';
 			end if;
 				
+				
+			if count2 = 5   then   -- this loads address  
+				nextClockEnableLoadAddress <= '1';
+			else
+				nextClockEnableLoadAddress<= '0';
+			end if;
+	
 			if count2 = 24   then   -- this increments the address
 					nextClockEnableAddrIncrement <= '1';
 			else
 				nextClockEnableAddrIncrement <= '0';
 			end if;
 		
+		if clockEnableLoadAddress = '1'  then  -- a bit before the write, assert the address
+			nextAddrOut <= addrRequest;
+		end if;
+		
+		if clockEnableAddrIncrement = '1' then
+		--		nextAddrOut <= 			std_logic_vector(to_unsigned((to_integer(unsigned(addrOut)) + 8),15)); -- increment column address by 8
+				nextAddrOut <= "000000001110000"; 
+		end if;
 				
 				
 			if count2 = 16 and writeRequest = '1'   then   -- this loads requested write data onto the outgoing stack
@@ -761,12 +769,7 @@ I => clk125MHz -- Buffer input
 				nextClockEnableRefillWriteData <= '0';
 			end if;
 
-			if count2 = 5   then   -- this loads address  
-				nextClockEnableLoadAddress <= '1';
-			else
-				nextClockEnableLoadAddress<= '0';
-			end if;
-	
+		
 				
 				
 --			if (count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26)   then  --reads for 4 cycles of 125MHz count2
