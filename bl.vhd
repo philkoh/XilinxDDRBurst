@@ -110,11 +110,13 @@ end component;
 	signal clockEnableLoad : std_logic := '0';
 	signal clockEnableRead : std_logic := '0';
 	signal clockEnableWrite : std_logic := '0';
+	signal clockEnableAddrIncrement : std_logic := '0';
 	signal nextClockEnableBeginning : std_logic := '0';
 	signal nextClockEnableCommand : std_logic := '0';
 	signal nextClockEnableLoad : std_logic := '0';
 	signal nextClockEnableRead : std_logic := '0';
 	signal nextClockEnableWrite : std_logic := '0';
+	signal nextClockEnableAddrIncrement : std_logic := '0';
    signal count2 : unsigned (5 downto 0) := "000000";
    signal count : unsigned (17 downto 0) := "000000000000000000";
    signal nextCount2 : unsigned (5 downto 0);
@@ -628,6 +630,7 @@ I => clk125MHz -- Buffer input
 			clockEnableLoad <= nextClockEnableLoad;
 			clockEnableRead <= nextClockEnableRead;
 			clockEnableWrite <= nextClockEnableWrite;
+			clockEnableAddrIncrement <= nextClockEnableAddrIncrement;
 			cas <= nextCas;
 			ras <= nextRas;
 			we <= nextWe;
@@ -699,6 +702,14 @@ I => clk125MHz -- Buffer input
 			else
 				nextClockEnableCommand <= '0';
 			end if;
+				
+			if count2 = 18   then   -- this increments the address
+					nextClockEnableAddrIncrement <= '1';
+			else
+				nextClockEnableAddrIncrement <= '0';
+			end if;
+		
+				
 				
 			if count2 = 1   then   -- this loads requested write data onto the outgoing stack
 					nextClockEnableLoad <= '1';
