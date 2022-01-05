@@ -710,7 +710,7 @@ I => clk125MHz -- Buffer input
 		if initializationMode = '1' then --initializationMode is always '1', so this is always true
 			nextCount2 <= count2 + 1;  -- count2 increments at 125 MHz, not 250 MHz
 			if count2 = 1 then 
-				nextCount2 <= count2 + 14;  --skip ahead to shorten the cycle
+		--		nextCount2 <= count2 + 14;  --skip ahead to shorten the cycle
 			end if;
 		
 		
@@ -751,7 +751,7 @@ I => clk125MHz -- Buffer input
 				nextClockEnableRefillWriteData <= '0';
 			end if;
 
-			if count2 = 1   then   -- this loads address  
+			if count2 = 5   then   -- this loads address  
 				nextClockEnableLoadAddress <= '1';
 			else
 				nextClockEnableLoadAddress<= '0';
@@ -1065,7 +1065,7 @@ writeRequest <= nextWriteRequest;
 
 			if count = 20229 then--20228 --WRITE
 				nextData <= "1010101010100110"; -- the last four digits of this will show up on the LEDs
-				nextRequestedDataToWrite(1) <= "0000000000000001";
+				nextRequestedDataToWrite(1) <= "0000000000000001"; 
 				nextRequestedDataToWrite(2) <= "1010101010100010";
 				nextRequestedDataToWrite(3) <= "1010101010100100";
 				nextRequestedDataToWrite(4) <= "1010101010101000";
@@ -1075,16 +1075,16 @@ writeRequest <= nextWriteRequest;
 				nextRequestedDataToWrite(8) <= "1010101010100111";
 				nextRequestedDataToWrite(9) <= "1010101010101110";
 				nextRequestedDataToWrite(10) <= "0000000000001111";
- 				nextRequestedDataToWrite(11) <= "0000000000000001";
-				nextRequestedDataToWrite(12) <= "1010101010100010";
-				nextRequestedDataToWrite(13) <= "1010101010100100";
-				nextRequestedDataToWrite(14) <= "1010101010101000";
-				nextRequestedDataToWrite(15) <= "1010101010101100";
-				nextRequestedDataToWrite(16) <= "1010101010100110";
-				nextRequestedDataToWrite(17) <= "1010101010100011";
-				nextRequestedDataToWrite(18) <= "1010101010100111";
-				nextRequestedDataToWrite(19) <= "1010101010101110";
-				nextRequestedDataToWrite(20) <= "0000000000001111";
+ 				nextRequestedDataToWrite(11) <= "0000000000001110";
+				nextRequestedDataToWrite(12) <= "1010101010101100";
+				nextRequestedDataToWrite(13) <= "1010101010101000";
+				nextRequestedDataToWrite(14) <= "1010101010101100";
+				nextRequestedDataToWrite(15) <= "1010101010101110";
+				nextRequestedDataToWrite(16) <= "1010101010101111";
+				nextRequestedDataToWrite(17) <= "1010101010100111";
+				nextRequestedDataToWrite(18) <= "1010101010100011";
+				nextRequestedDataToWrite(19) <= "1010101010100001";
+				nextRequestedDataToWrite(20) <= "0000000000000011";
  				
 
 				nextWriteRequest <= '1';
@@ -1093,7 +1093,7 @@ writeRequest <= nextWriteRequest;
 				nextTristateData <= '0';
 			
 				nextBa <= "000";
-				nextAddrRequest <= "000000000001000";
+				nextAddrRequest <= "000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '0';
@@ -1105,7 +1105,7 @@ writeRequest <= nextWriteRequest;
 				nextTristateData <= '0';
 			
 				nextBa <= "000";
-				nextAddrRequest <= "000000000010000";
+				nextAddrRequest <= "000000011110000"; -- A10 must be LOW to turn off AutoPrecharge
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '0';
@@ -1113,37 +1113,13 @@ writeRequest <= nextWriteRequest;
 
 	
 
-			if count = 20231 then  --WRITE
-				nextData <= "1010101010100111";  
-				nextDqsTristate <= '0';
-				nextTristateData <= '0';
-			
-				nextBa <= "000";
-				nextAddrRequest <= "000000100011000";
-				nextRasRequest <= '1';
-				nextCasRequest <= '0';
-				nextWeRequest <= '0';
-			end if;
-			
-			if count = 20232 then  --WRITE
-				nextData <= "1111111111110001";
-				nextDqsTristate <= '0';
-				nextTristateData <= '0';
-			
-				nextBa <= "000";
-				nextAddrRequest <= "000001000100000";
-				nextRasRequest <= '1';
-				nextCasRequest <= '0';
-				nextWeRequest <= '0';
-			end if;
-
 			if count = 20236 then--20232   --READ
 				nextODT <= '0';  -- turn On Die Termination off for read
 
 				nextSaveRequest <= '1';	
 				
 				nextBa <= "000";
-				nextAddrRequest <= "000000000001000";
+				nextAddrRequest <= "000000000010000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '1';
