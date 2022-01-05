@@ -50,7 +50,7 @@
 add wave -noupdate -divider {Input clocks}
 add wave -noupdate -format Logic /PhilClock_tb/CLK_IN1
 add wave -noupdate -divider {Output clocks}
-add wave -noupdate -format Literal -expand /PhilClock_tb/dut/clk
+add wave -noupdate -format Logic /PhilClock_tb/dut/clk
 add wave -noupdate -divider Counters
 add wave -noupdate -format Literal -radix hexadecimal /PhilClock_tb/COUNT
-add wave -noupdate -format Literal -radix hexadecimal -expand /PhilClock_tb/dut/counter
+add wave -noupdate -format Literal -radix hexadecimal /PhilClock_tb/dut/counter

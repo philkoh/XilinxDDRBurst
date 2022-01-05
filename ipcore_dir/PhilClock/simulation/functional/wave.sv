@@ -89,16 +89,16 @@ group set -comment {}
 group clear 0 end
 
 group insert \
-    {PhilClock_tb.dut.clk[1]} \
-    {PhilClock_tb.dut.clk[2]} 
+    {PhilClock_tb.dut.clk} \
+
 group using {Counters}
 group set -overlay 0
 group set -comment {}
 group clear 0 end
 
 group insert \
-    {PhilClock_tb.dut.counter[1]} \
-    {PhilClock_tb.dut.counter[2]} 
+    {PhilClock_tb.dut.counter} \
+
 
 set id [waveform add -signals [list {nc::PhilClock_tb.COUNT} ]]
 
