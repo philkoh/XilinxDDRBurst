@@ -612,15 +612,15 @@ I => clk125MHz -- Buffer input
 		end if;
 	
 		if clockEnableWrite = '1'  then --write data, and pull down the stack of registers
-				if refill250MHzPulse = '1'  then
-					nextdataAssertedToOutput  <= dataToWrite(1)(15 downto 0)  ;	
-					nextDataToWrite(11 downto 1) <= dataToWrite(12 downto 2);
-					nextDataToWrite(19 downto 12) <= writeRefill(7 downto 0) ;
-				else
-					nextdataAssertedToOutput  <= dataToWrite(1)(15 downto 0)  ;	
-					nextDataToWrite(19 downto 1) <= dataToWrite(20 downto 2);
-				end if;
-					
+			if refill250MHzPulse = '1'  then
+				nextdataAssertedToOutput  <= dataToWrite(1)  ;	
+				nextDataToWrite(2 downto 1) <= dataToWrite(3 downto 2);
+				nextDataToWrite(10 downto 3) <= writeRefill(7 downto 0) ;
+			else
+				nextdataAssertedToOutput  <= dataToWrite(1)  ;	
+				nextDataToWrite(19 downto 1) <= dataToWrite(20 downto 2);
+			end if;
+				
 		end if;
 
 		if clockEnableRefillWriteData = '1' and clk125MHz = '0' then
@@ -685,6 +685,14 @@ I => clk125MHz -- Buffer input
 		
 		
 		nextWriteRefill <=	writeRefill     ;
+		nextWriteRefill(0) <= "0000000000001001"; 
+ 		nextWriteRefill(1) <= "0000000000000110"; 
+ 		nextWriteRefill(2) <= "0000000000001100"; 
+ 		nextWriteRefill(3) <= "0000000000001010"; 
+ 		nextWriteRefill(4) <= "0000000000000101"; 
+ 		nextWriteRefill(5) <= "0000000000000111"; 
+ 		nextWriteRefill(6) <= "0000000000001111"; 
+ 		nextWriteRefill(7) <= "0000000000001011"; 
  	   nextAddrOut <= addrOut;--unless overridden below, hold and remember the loaded values
 		addrPort <= addrOut;
 	
@@ -760,53 +768,51 @@ I => clk125MHz -- Buffer input
 				nextAddrOut <= "000000001110000"; 
 		end if;
 				
-				
-			if count2 = 16 and writeRequest = '1'   then   -- this loads requested write data onto the outgoing stack
-				nextClockEnableLoadWriteData <= '1';
-			else
-				nextClockEnableLoadWriteData<= '0';
-			end if;
 			
-			if count2 = 48 and writeRequest = '1'   then   -- this refills more write data onto the outgoing stack, now pushed too late to do anything
-		--		nextClockEnableRefillWriteData <= '1';
-				nextClockEnableRefillWriteData <= '0';
-			else
-				nextClockEnableRefillWriteData <= '0';
-			end if;
+		if count2 = 16 and writeRequest = '1'   then   -- this loads requested write data onto the outgoing stack
+			nextClockEnableLoadWriteData <= '1';
+		else
+			nextClockEnableLoadWriteData<= '0';
+		end if;
+		
+		nextClockEnableRefillWriteData <= '0';
+		if count2 = 23 and writeRequest = '1'   then   -- this refills more write data onto the outgoing stack
+			nextClockEnableRefillWriteData <= '1';
+		end if;
 
-		
-				
-				
---			if (count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26)   then  --reads for 4 cycles of 125MHz count2
-			if (count2 = 24 or count2 = 25 or count2 = 26 or count2 = 27) and saveRequest = '1'   then  --reads for 4 cycles of 125MHz count2
---			if count2 = 26 or count2 = 27 or count2 = 28 or count2 = 29 then
-				nextClockEnableRead <= '1';
-			else
-				nextClockEnableRead <= '0';
-			end if;
-			
 	
-      	if (count2 = 22 or count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26 or count2 = 38 or count2 = 39 or count2 = 40 or count2 = 41 or count2 = 42  ) and writeRequest = '1'   then  --writes for 4 cycles of 125MHz count2
-   -- 	if (count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26)   then  --writes for 4 cycles of 125MHz count2
-				nextClockEnableWrite <= '1';
-			else
-				nextClockEnableWrite <= '0';
-			end if;
 			
- 	--		nextCas <= cas;
-	--		nextRas <= ras;
-	--		nextWe <= we;
 			
-			if clockEnableCommand = '1' then  --the CAS/RAS/WE command is only applied for this one 125 MHz clock cycle just after count2=16
-				nextCas <= casRequest;
-				nextRas <= rasRequest;
-				nextWe <= weRequest;
-			else                      -- otherwise, CAS/RAS/WE are held HIGH (which is the NOP, No Operation command)
-				nextCas <= '1';
-				nextRas <= '1';
-				nextWe <= '1';
-			end if;
+--			if (count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26)   then  --reads for 4 cycles of 125MHz count2
+		if (count2 = 24 or count2 = 25 or count2 = 26 or count2 = 27) and saveRequest = '1'   then  --reads for 4 cycles of 125MHz count2
+--			if count2 = 26 or count2 = 27 or count2 = 28 or count2 = 29 then
+			nextClockEnableRead <= '1';
+		else
+			nextClockEnableRead <= '0';
+		end if;
 		
+
+		if (count2 = 22 or count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26 or count2 = 38 or count2 = 39 or count2 = 40 or count2 = 41 or count2 = 42  ) and writeRequest = '1'   then  --writes for 4 cycles of 125MHz count2
+-- 	if (count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26)   then  --writes for 4 cycles of 125MHz count2
+			nextClockEnableWrite <= '1';
+		else
+			nextClockEnableWrite <= '0';
+		end if;
+		
+--		nextCas <= cas;
+--		nextRas <= ras;
+--		nextWe <= we;
+		
+		if clockEnableCommand = '1' then  --the CAS/RAS/WE command is only applied for this one 125 MHz clock cycle just after count2=16
+			nextCas <= casRequest;
+			nextRas <= rasRequest;
+			nextWe <= weRequest;
+		else                      -- otherwise, CAS/RAS/WE are held HIGH (which is the NOP, No Operation command)
+			nextCas <= '1';
+			nextRas <= '1';
+			nextWe <= '1';
+		end if;
+	
 
 		 	
 	
@@ -1103,6 +1109,7 @@ writeRequest <= nextWriteRequest;
 				nextRequestedDataToWrite(18) <= "1010101010100011";
 				nextRequestedDataToWrite(19) <= "1010101010100001";
 				nextRequestedDataToWrite(20) <= "0000000000000011";
+				
  				
 
 				nextWriteRequest <= '1';
