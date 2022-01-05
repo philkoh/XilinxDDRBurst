@@ -234,7 +234,20 @@ IDELAY_MODE => "NORMAL", -- "NORMAL" or "PCI"
 IDELAY_TYPE => "FIXED", -- "FIXED", "DEFAULT", "VARIABLE_FROM_ZERO", "VARIABLE_FROM_HALF_MAX"
 -- or "DIFF_PHASE_DETECTOR"
 IDELAY_VALUE => 0, -- Amount of taps for fixed input delay (0-255)
-ODELAY_VALUE => 0, -- Amount of taps fixed output delay (0-255)
+ODELAY_VALUE => 40, -- Amount of taps fixed output delay (0-255)
+-- 0 gives no change
+-- 1 gives 1 bit delay
+-- 5 gives 1 bit delay
+-- 10 gives 1 bit delay
+-- 20 gives 1 bit delay
+-- 40 gives  1 bit delay
+-- 80  gives  1 bit delay
+-- 120 gives 1 bit delay
+-- 125 gives 2 bit delay
+-- 130 gives 2 bit delay
+-- 140 gives 2 bit delay
+-- 160 gives 2 bit delay
+
 SERDES_MODE => "NONE", -- "NONE", "MASTER" or "SLAVE"
 SIM_TAPDELAY_VALUE => 75 -- Per tap delay used for simulation in ps
 )
@@ -804,16 +817,16 @@ writeRequest <= nextWriteRequest;
 
 			if count = 20229 then--20228 --WRITE
 				nextData <= "1010101010100110"; -- the last four digits of this will show up on the LEDs
-				nextRequestedDataToWrite(1) <= "0000000000000001";
-				nextRequestedDataToWrite(2) <= "1010101010100010";
-				nextRequestedDataToWrite(3) <= "1010101010100100";
-				nextRequestedDataToWrite(4) <= "1010101010101000";
-				nextRequestedDataToWrite(5) <= "1010101010101100";
-				nextRequestedDataToWrite(6) <= "1010101010100110";
-				nextRequestedDataToWrite(7) <= "1010101010100011";
-				nextRequestedDataToWrite(8) <= "1010101010100111";
-				nextRequestedDataToWrite(9) <= "1010101010101110";
-				nextRequestedDataToWrite(10) <= "0000000000001111";
+				nextRequestedDataToWrite(1) <= "0000000000001111";
+				nextRequestedDataToWrite(2) <= "1010101010101111";
+				nextRequestedDataToWrite(3) <= "1010101010101111";
+				nextRequestedDataToWrite(4) <= "1010101010101111";
+				nextRequestedDataToWrite(5) <= "1010101010100000";
+				nextRequestedDataToWrite(6) <= "1010101010100000";
+				nextRequestedDataToWrite(7) <= "1010101010100000";
+				nextRequestedDataToWrite(8) <= "1010101010100000";
+				nextRequestedDataToWrite(9) <= "1010101010100000";
+				nextRequestedDataToWrite(10) <= "0000000000000000";
  				nextRequestedDataToWrite(11) <= "0000000000000000";
 
 
