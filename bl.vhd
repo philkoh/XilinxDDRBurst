@@ -771,9 +771,9 @@ I => clk125MHz -- Buffer input
 				nextClockEnableWrite <= '0';
 			end if;
 			
- 			nextCas <= cas;
-			nextRas <= ras;
-			nextWe <= we;
+ 	--		nextCas <= cas;
+	--		nextRas <= ras;
+	--		nextWe <= we;
 			
 			if clockEnableCommand = '1' then  --the CAS/RAS/WE command is only applied for this one 125 MHz clock cycle when count2=16
 				nextCas <= casRequest;
