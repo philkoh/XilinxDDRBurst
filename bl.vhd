@@ -150,9 +150,15 @@ end component;
 	
 	type philArr is array (20 downto 0) of std_logic_vector(15 downto 0);
 	signal requestedDataToWrite : philArr;
-signal nextRequestedDataToWrite : philArr;
+	signal nextRequestedDataToWrite : philArr;
 	signal dataToWrite : philArr;
 	signal nextDataToWrite : philArr;
+	
+	type fourWordArray is array (3 downto 0) of std_logic_vector(15 downto 0);
+	signal writeRefill :  fourWordArray;
+	signal writeRefillIsAvailable : std_logic := '0';
+	signal nextWriteRefill :  fourWordArray;
+	signal nextWriteRefillIsAvailable : std_logic ;
  
 	 
 	signal capturedData :   philArr;
@@ -559,7 +565,7 @@ I => clk125MHz -- Buffer input
  end process;
 
 		------------------------------------------COMBINATORIAL:
-	process (clk125MHz,count2,  clockEnableRead,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData)
+	process (clk125MHz,count2,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData)
 	
 	
 		begin
@@ -574,7 +580,7 @@ I => clk125MHz -- Buffer input
 		addrPort <= addrOut;
 			
 	
-		if clockEnableRead = '1' and saveRequest = '1' then --capture data, actually captures 8 times, I think, 4 cycles of count2 at 125MHz, but two rising edges of 250 MHz per count2 incremena
+		if clockEnableRead = '1'  then --capture data, actually captures 8 times, I think, 4 cycles of count2 at 125MHz, but two rising edges of 250 MHz per count2 incremena
 			nextCapturedData(1) <= inData;
 			
 			nextCapturedData(11 downto 2) <= capturedData(10 downto 1);
@@ -601,7 +607,7 @@ I => clk125MHz -- Buffer input
 			
 		end if;
 	
-		if clockEnableWrite = '1' and writeRequest = '1' then --write data, and pull down the stack of registers
+		if clockEnableWrite = '1'  then --write data, and pull down the stack of registers
 				nextDataWaitingForOutput  <= dataToWrite(1)(15 downto 0)  ;	
 				nextDataToWrite(19 downto 1) <= dataToWrite(20 downto 2);
 					
@@ -723,7 +729,7 @@ I => clk125MHz -- Buffer input
 				
 				
 --			if (count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26)   then  --reads for 4 cycles of 125MHz count2
-			if (count2 = 24 or count2 = 25 or count2 = 26 or count2 = 27)   then  --reads for 4 cycles of 125MHz count2
+			if (count2 = 24 or count2 = 25 or count2 = 26 or count2 = 27) and saveRequest = '1'   then  --reads for 4 cycles of 125MHz count2
 --			if count2 = 26 or count2 = 27 or count2 = 28 or count2 = 29 then
 				nextClockEnableRead <= '1';
 			else
@@ -731,7 +737,7 @@ I => clk125MHz -- Buffer input
 			end if;
 			
 	
-      	if (count2 = 22 or count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26)   then  --writes for 4 cycles of 125MHz count2
+      	if (count2 = 22 or count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26) and writeRequest = '1'   then  --writes for 4 cycles of 125MHz count2
    -- 	if (count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26)   then  --writes for 4 cycles of 125MHz count2
 				nextClockEnableWrite <= '1';
 			else
