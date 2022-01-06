@@ -190,9 +190,9 @@ end component;
 	signal delayedDataPort : std_logic_vector(15 downto 0);
 
 
-	signal tristateData : std_logic := '1';
-	signal tristateDataFromDDR : std_logic := '1';
-	signal nextTristateData : std_logic := '1';
+--	signal tristateData : std_logic := '1';
+--	signal tristateDataFromDDR : std_logic := '1';
+--	signal nextTristateData : std_logic := '1';
 	
 	
 
@@ -623,8 +623,6 @@ process (clk250MHz, advanceTheShiftRegister)
 		
 		nextCapturedData(11 downto 1) <= capturedData(11 downto 1); --unless overridden below, hold and remember the captured values
 			
-	--	nextDataToWrite <= dataToWrite;--unless overridden below, hold and remember the loaded values
-	--	nextWriteRefillWasConsumed <= writeRefillWasConsumed ;
 		
 		------------------------------------ NOTE: every clockEnable runs twice, on a rising then falling edge of the 125MHz clock, on two consecutive rising 250MHz edges
 		------------------------------------ NOTE: every clockEnable runs twice, on a rising then falling edge of the 125MHz clock, on two consecutive rising 250MHz edges
@@ -640,13 +638,7 @@ process (clk250MHz, advanceTheShiftRegister)
 			
 		end if;
 
-	--	if clockEnableLoadWriteData = '1'  then  -- at start of write, load the data to write from the request register to the write register
-	--		nextDataToWrite <= requestedDataToWrite; 
-	--	end if;
 		
-		
-
-	
 		if dqsTristate = '1' then
 			dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');	
 		else
@@ -655,28 +647,6 @@ process (clk250MHz, advanceTheShiftRegister)
 			
 		end if;
 	
-	--	nextWriteThisCycle <= '0';
---		if clockEnableWrite = '1'  then --write data, and pull down the stack of registers
-	--		nextWriteThisCycle <= '1';
-	--	end if;
-		
---		nextwriteAndRefillThisCycle  <= '0';
-	--	if clockEnableRefillWriteData = '1' and writeAndRefillThisCycle = '0' then -- make pulse only 1 cycle long (the clockEnable pulse is two cycles)
---			nextwriteAndRefillThisCycle <= '1';
---			nextWriteThisCycle <= '0';  -- this will cancel out the earlier setting; make sure only one of these pulses fires, not both
---		end if;
-			
-		
-	--	if writeAndRefillThisCycle = '1'  then -- I think this is the timing problem
-	--		nextdataAssertedToOutput  <= dataToWrite(1)  ;	
-	--		nextDataToWrite(7 downto 1) <= dataToWrite(8 downto 2);
-	--		nextDataToWrite(15 downto 8) <= writeRefill(7 downto 0) ;
-	--	end if;
-		
-	--	if writeThisCycle = '1' then
-	--		nextdataAssertedToOutput  <= dataToWrite(1)  ;	
-		--	nextDataToWrite(19 downto 1) <= dataToWrite(20 downto 2);
-	--	end if;
 
 	 
 		nextAdvanceTheShiftRegister <= '0';
@@ -732,7 +702,7 @@ process (clk250MHz, advanceTheShiftRegister)
    end process;
 	
 ------------------------------------------COMBINATORIAL:
-	process (count2,dqs0incoming,switchregister,switch2port,switch3port,switchCount,lastSwitchRegister,tristateData, initializationmode,inDataB,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData)
+	process (count2,dqs0incoming,switchregister,switch2port,switch3port,switchCount,lastSwitchRegister, initializationmode,inDataB,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData)
 	
 	
 		begin
@@ -852,9 +822,7 @@ process (clk250MHz, advanceTheShiftRegister)
 			nextClockEnableWrite <= '0';
 		end if;
 		
---		nextCas <= cas;
---		nextRas <= ras;
---		nextWe <= we;
+
 		
 		if clockEnableCommand = '1' then  --the CAS/RAS/WE command is only applied for this one 125 MHz clock cycle just after count2=16
 			nextCas <= casRequest;
@@ -982,7 +950,7 @@ writeRequest <= nextWriteRequest;
 			cke <= nextCke;
 			dqsTristate <= nextDqsTristate;
 			odt <= nextODT;
-			tristateData <= nextTristateData;
+	--		tristateData <= nextTristateData;
 			
 	
 			requestedDataToWrite  <= nextRequestedDataToWrite;
@@ -1018,15 +986,15 @@ writeRequest <= nextWriteRequest;
 				nextBlinker <= blinker;
 			end if;
 		
-			if tristateData = '1' then
+	--		if tristateData = '1' then
 	--			dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');
-			else
+	--		else
 	--			dataPort (0) <= dataCount (0);			
 	--			dataPort (1) <= dataCount (1);			
 	--			dataPort (2) <= dataCount (2);			
 	--			dataPort (3) <= dataCount (3);			
 	--			dataPort (15 downTo 0) <= data (15 downTo 0);			
-			end if;
+	--		end if;
 
 
 
@@ -1053,7 +1021,7 @@ writeRequest <= nextWriteRequest;
 			nextData <= (others => 'Z');
 			
 			
-			nextTristateData <= '1';
+		--	nextTristateData <= '1';
 
 			nextReset <= reset;
 			nextCke <= cke;
@@ -1168,7 +1136,7 @@ writeRequest <= nextWriteRequest;
 				nextWriteRequest <= '1';
 				
 				nextDqsTristate <= '0';
-				nextTristateData <= '0';
+		--		nextTristateData <= '0';
 			
 				nextBa <= "000";
 				nextAddrRequest <= "000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
@@ -1180,7 +1148,7 @@ writeRequest <= nextWriteRequest;
 			if count = 20230 then--20230 --WRITE
 				nextData <= "1111111111111001";
 				nextDqsTristate <= '0';
-				nextTristateData <= '0';
+	--			nextTristateData <= '0';
 			
 				nextBa <= "000";
 				nextAddrRequest <= "000000111110000"; -- A10 must be LOW to turn off AutoPrecharge
