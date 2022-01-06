@@ -109,8 +109,8 @@ end component;
 	signal clockEnableCommand : std_logic := '0';
 	signal clockEnableLoadWriteData : std_logic := '0';
 	signal clockEnableRefillWriteData : std_logic := '0';
-	signal refill250MHzPulse : std_logic := '0';
-	signal nextRefill250MHzPulse : std_logic := '0';
+	signal writeAndRefillThisCycle : std_logic := '0';
+	signal nextwriteAndRefillThisCycle : std_logic := '0';
 	signal clockEnableLoadAddress : std_logic := '0';
 	signal clockEnableRead : std_logic := '0';
 	signal clockEnableWrite : std_logic := '0';
@@ -123,6 +123,10 @@ end component;
 	signal nextClockEnableRead : std_logic := '0';
 	signal nextClockEnableWrite : std_logic := '0';
 	signal nextClockEnableAddrIncrement : std_logic := '0';
+	
+	signal writeThisCycle : std_logic := '0';
+	signal nextWriteThisCycle : std_logic ;
+	
    signal count2 : unsigned (5 downto 0) := "000000";
    signal count : unsigned (17 downto 0) := "000000000000000000";
    signal nextCount2 : unsigned (5 downto 0);
@@ -564,7 +568,8 @@ I => clk125MHz -- Buffer input
 			dataToWrite <= nextDataToWrite;
 			dataAssertedToOutput <= nextdataAssertedToOutput;
 			
-			refill250MHzPulse <= nextRefill250MHzPulse;
+			writeAndRefillThisCycle <= nextwriteAndRefillThisCycle;
+		  writeThisCycle  <= nextWriteThisCycle   ;
 		end if;
  end process;
 
@@ -611,24 +616,31 @@ I => clk125MHz -- Buffer input
 			
 		end if;
 	
+		nextWriteThisCycle <= '0';
 		if clockEnableWrite = '1'  then --write data, and pull down the stack of registers
-			if refill250MHzPulse = '1'  then
-				nextdataAssertedToOutput  <= dataToWrite(1)  ;	
-				nextDataToWrite(7 downto 1) <= dataToWrite(8 downto 2);
-				nextDataToWrite(15 downto 8) <= writeRefill(7 downto 0) ;
-			else
-				nextdataAssertedToOutput  <= dataToWrite(1)  ;	
-				nextDataToWrite(19 downto 1) <= dataToWrite(20 downto 2);
-			end if;
-				
-		end if;
-
-		if clockEnableRefillWriteData = '1' and clk125MHz = '0' then
-			nextRefill250MHzPulse <= '1';
-		else
-			nextRefill250MHzPulse  <= '0';
+			nextWriteThisCycle <= '1';
 		end if;
 		
+		nextwriteAndRefillThisCycle  <= '0';
+		if clockEnableRefillWriteData = '1' and writeAndRefillThisCycle = '0' then -- make pulse only 1 cycle long (the clockEnable pulse is two cycles)
+			nextwriteAndRefillThisCycle <= '1';
+			nextWriteThisCycle <= '0';  -- this will cancel out the earlier setting; make sure only one of these pulses fires, not both
+		end if;
+			
+		
+		if writeAndRefillThisCycle = '1'  then -- I think this is the timing problem
+			nextdataAssertedToOutput  <= dataToWrite(1)  ;	
+			nextDataToWrite(7 downto 1) <= dataToWrite(8 downto 2);
+			nextDataToWrite(15 downto 8) <= writeRefill(7 downto 0) ;
+		end if;
+		
+		if writeThisCycle = '1' then
+			nextdataAssertedToOutput  <= dataToWrite(1)  ;	
+			nextDataToWrite(19 downto 1) <= dataToWrite(20 downto 2);
+		end if;
+
+
+	
 	
 
 		
