@@ -742,7 +742,7 @@ I => clk125MHz -- Buffer input
 				nextClockEnableCommand <= '0';
 			end if;
 			
-			if count2 = 32 and  writeRequest = '1' then  -- during a write cycle, pulse a second write command
+			if count2 = 24 and  writeRequest = '1' then  -- during a write cycle, pulse a second write command
 		   	nextClockEnableCommand <= '1';
 			end if;
 				
@@ -753,7 +753,7 @@ I => clk125MHz -- Buffer input
 				nextClockEnableLoadAddress<= '0';
 			end if;
 	
-			if count2 = 24   then   -- this increments the address
+			if count2 = 20   then   -- this increments the address
 					nextClockEnableAddrIncrement <= '1';
 			else
 				nextClockEnableAddrIncrement <= '0';
@@ -776,7 +776,7 @@ I => clk125MHz -- Buffer input
 		end if;
 		
 		nextClockEnableRefillWriteData <= '0';
-		if (count2 = 23 or count2 = 39) and writeRequest = '1'   then   -- this refills more write data onto the outgoing stack
+		if (count2 = 23 or count2 = 31) and writeRequest = '1'   then   -- this refills more write data onto the outgoing stack
 			nextClockEnableRefillWriteData <= '1';
 		end if;
 
@@ -792,7 +792,7 @@ I => clk125MHz -- Buffer input
 		end if;
 		
 
-		if (count2 = 22 or count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26 or count2 = 38 or count2 = 39 or count2 = 40 or count2 = 41 or count2 = 42  ) and writeRequest = '1'   then  --writes for 4 cycles of 125MHz count2
+		if (count2 = 22 or count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26 or count2 = 30 or count2 = 31 or count2 = 32 or count2 = 33 or count2 = 34  ) and writeRequest = '1'   then  --writes for 4 cycles of 125MHz count2
 -- 	if (count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26)   then  --writes for 4 cycles of 125MHz count2
 			nextClockEnableWrite <= '1';
 		else
