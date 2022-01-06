@@ -614,8 +614,8 @@ I => clk125MHz -- Buffer input
 		if clockEnableWrite = '1'  then --write data, and pull down the stack of registers
 			if refill250MHzPulse = '1'  then
 				nextdataAssertedToOutput  <= dataToWrite(1)  ;	
-				nextDataToWrite(2 downto 1) <= dataToWrite(3 downto 2);
-				nextDataToWrite(10 downto 3) <= writeRefill(7 downto 0) ;
+				nextDataToWrite(7 downto 1) <= dataToWrite(8 downto 2);
+				nextDataToWrite(15 downto 8) <= writeRefill(7 downto 0) ;
 			else
 				nextdataAssertedToOutput  <= dataToWrite(1)  ;	
 				nextDataToWrite(19 downto 1) <= dataToWrite(20 downto 2);
