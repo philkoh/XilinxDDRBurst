@@ -80,37 +80,18 @@ end bl;
 
 
 architecture Behavioral of bl is
-
 component PhilClock
 port
  (-- Clock in ports
   CLK_IN1           : in     std_logic;
   -- Clock out ports
-  CLK_OUT1          : out    std_logic;
-  CLK_OUT2          : out    std_logic
+  CLK_OUT1          : out    std_logic
+  
  );
 end component;
 
-------------- Begin Cut here for COMPONENT Declaration ------ COMP_TAG
-COMPONENT FIFO
-  PORT (
-    wr_clk : IN STD_LOGIC;
-    rd_clk : IN STD_LOGIC;
-    din : IN STD_LOGIC_VECTOR(128 DOWNTO 0);
-    wr_en : IN STD_LOGIC;
-    rd_en : IN STD_LOGIC;
-    dout : OUT STD_LOGIC_VECTOR(128 DOWNTO 0);
-    full : OUT STD_LOGIC;
-    empty : OUT STD_LOGIC
-  );
-END COMPONENT;
--- COMP_TAG_END ------ End COMPONENT Declaration ------------
-
-
-
 
 	signal clk250MHz : std_logic := '0';
-	signal clk50MHz : std_logic := '0';
 	signal clk125MHz : std_logic := '0';
 	signal clk125MHz_n : std_logic := '0';
 	signal nextClk125MHz : std_logic := '0';
@@ -252,12 +233,6 @@ END COMPONENT;
    signal nextSwitchCount : unsigned (3 downto 0) := "0000";
    
 	
-	signal FIFOinputEnable  : std_logic := '1';
-	signal FIFOoutputEnable : std_logic := '1';
-	signal FIFOoutput : std_logic_vector(128 downto 0);
-	signal FIFOinput : std_logic_vector(128 downto 0);
-	signal FIFOfull : std_logic;
-	signal FIFOempty : std_logic;
 begin
 
 
@@ -267,32 +242,8 @@ your_instance_name : PhilClock
    (-- Clock in ports
     CLK_IN1 => clk,
     -- Clock out ports
-    CLK_OUT1 => clk250MHz,
-    CLK_OUT2 => clk50MHz );
+    CLK_OUT1 => clk250MHz);
 -- INST_TAG_END ------ End INSTANTIATION Template ------------
-
-
-
-
-
-
-
-------------- Begin Cut here for INSTANTIATION Template ----- INST_TAG
-WriteFIFO : FIFO
-  PORT MAP (
-    wr_clk => clk50MHz,
-    rd_clk => clk250MHz,
-    din => FIFOinput,
-    wr_en => FIFOinputEnable,
-    rd_en => FIFOoutputEnable,
-    dout => FIFOoutput,
-    full => FIFOfull,
-    empty => FIFOempty
-  );
--- INST_TAG_END ------ End INSTANTIATION Template ------------
-
-
-
 
 
 
