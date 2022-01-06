@@ -109,8 +109,8 @@ end component;
 	signal clockEnableCommand : std_logic := '0';
 --	signal clockEnableLoadWriteData : std_logic := '0';
 	signal clockEnableRefillWriteData : std_logic := '0';
-	signal writeAndRefillThisCycle : std_logic := '0';
-	signal nextwriteAndRefillThisCycle : std_logic := '0';
+--	signal writeAndRefillThisCycle : std_logic := '0';
+--	signal nextwriteAndRefillThisCycle : std_logic := '0';
 	signal clockEnableLoadAddress : std_logic := '0';
 	signal clockEnableRead : std_logic := '0';
 	signal clockEnableWrite : std_logic := '0';
@@ -169,8 +169,8 @@ end component;
 	type philArr is array (20 downto 0) of std_logic_vector(15 downto 0);
 	signal requestedDataToWrite : philArr;
 	signal nextRequestedDataToWrite : philArr;
-	signal dataToWrite : philArr;
-	signal nextDataToWrite : philArr;
+--	signal dataToWrite : philArr;
+--	signal nextDataToWrite : philArr;
 	
 	signal writeRefill :  philArr;
 	signal nextWriteRefill :  philArr;
@@ -601,11 +601,11 @@ process (clk250MHz, advanceTheShiftRegister)
 
 			capturedData(11 downto 1) <= nextCapturedData(11 downto 1);
 			
-			dataToWrite <= nextDataToWrite;
+	--		dataToWrite <= nextDataToWrite;
 			dataAssertedToOutput <= nextdataAssertedToOutput;
 			
-			writeAndRefillThisCycle <= nextwriteAndRefillThisCycle;
-			writeThisCycle  <= nextWriteThisCycle   ;
+	--		writeAndRefillThisCycle <= nextwriteAndRefillThisCycle;
+	--		writeThisCycle  <= nextWriteThisCycle   ;
 		  
 			advanceTheShiftRegister <= nextAdvanceTheShiftRegister  ;
 			refillTheShiftRegister <= nextRefillTheShiftRegister  ;
@@ -623,7 +623,7 @@ process (clk250MHz, advanceTheShiftRegister)
 		
 		nextCapturedData(11 downto 1) <= capturedData(11 downto 1); --unless overridden below, hold and remember the captured values
 			
-		nextDataToWrite <= dataToWrite;--unless overridden below, hold and remember the loaded values
+	--	nextDataToWrite <= dataToWrite;--unless overridden below, hold and remember the loaded values
 	--	nextWriteRefillWasConsumed <= writeRefillWasConsumed ;
 		
 		------------------------------------ NOTE: every clockEnable runs twice, on a rising then falling edge of the 125MHz clock, on two consecutive rising 250MHz edges
@@ -655,28 +655,28 @@ process (clk250MHz, advanceTheShiftRegister)
 			
 		end if;
 	
-		nextWriteThisCycle <= '0';
-		if clockEnableWrite = '1'  then --write data, and pull down the stack of registers
-			nextWriteThisCycle <= '1';
-		end if;
+	--	nextWriteThisCycle <= '0';
+--		if clockEnableWrite = '1'  then --write data, and pull down the stack of registers
+	--		nextWriteThisCycle <= '1';
+	--	end if;
 		
-		nextwriteAndRefillThisCycle  <= '0';
-		if clockEnableRefillWriteData = '1' and writeAndRefillThisCycle = '0' then -- make pulse only 1 cycle long (the clockEnable pulse is two cycles)
-			nextwriteAndRefillThisCycle <= '1';
-			nextWriteThisCycle <= '0';  -- this will cancel out the earlier setting; make sure only one of these pulses fires, not both
-		end if;
+--		nextwriteAndRefillThisCycle  <= '0';
+	--	if clockEnableRefillWriteData = '1' and writeAndRefillThisCycle = '0' then -- make pulse only 1 cycle long (the clockEnable pulse is two cycles)
+--			nextwriteAndRefillThisCycle <= '1';
+--			nextWriteThisCycle <= '0';  -- this will cancel out the earlier setting; make sure only one of these pulses fires, not both
+--		end if;
 			
 		
-		if writeAndRefillThisCycle = '1'  then -- I think this is the timing problem
+	--	if writeAndRefillThisCycle = '1'  then -- I think this is the timing problem
 	--		nextdataAssertedToOutput  <= dataToWrite(1)  ;	
-			nextDataToWrite(7 downto 1) <= dataToWrite(8 downto 2);
-			nextDataToWrite(15 downto 8) <= writeRefill(7 downto 0) ;
-		end if;
+	--		nextDataToWrite(7 downto 1) <= dataToWrite(8 downto 2);
+	--		nextDataToWrite(15 downto 8) <= writeRefill(7 downto 0) ;
+	--	end if;
 		
-		if writeThisCycle = '1' then
+	--	if writeThisCycle = '1' then
 	--		nextdataAssertedToOutput  <= dataToWrite(1)  ;	
-			nextDataToWrite(19 downto 1) <= dataToWrite(20 downto 2);
-		end if;
+		--	nextDataToWrite(19 downto 1) <= dataToWrite(20 downto 2);
+	--	end if;
 
 	 
 		nextAdvanceTheShiftRegister <= '0';
@@ -827,11 +827,6 @@ process (clk250MHz, advanceTheShiftRegister)
 		end if;
 				
 			
-		if count2 = 16 and writeRequest = '1'   then   -- this loads requested write data onto the outgoing stack
-	--		nextClockEnableLoadWriteData <= '1';
-		else
-	--		nextClockEnableLoadWriteData<= '0';
-		end if;
 		
 		nextClockEnableRefillWriteData <= '0';
 		if (count2 = 22 or count2 = 26) and writeRequest = '1'   then   -- this refills more write data onto the outgoing stack
