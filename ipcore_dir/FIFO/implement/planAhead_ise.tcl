@@ -1,6 +1,4 @@
-# file: wave.sv
-# 
-# (c) Copyright 2008 - 2010 Xilinx, Inc. All rights reserved.
+# (c) Copyright 2009 - 2010 Xilinx, Inc. All rights reserved.
 # 
 # This file contains confidential and proprietary information
 # of Xilinx, Inc. and is protected under U.S. and
@@ -45,67 +43,25 @@
 # 
 # THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
 # PART OF THIS FILE AT ALL TIMES.
-#
-# Get the windows set up
-#
-if {[catch {window new WatchList -name "Design Browser 1" -geometry 1054x819+536+322}] != ""} {
-    window geometry "Design Browser 1" 1054x819+536+322
-}
-window target "Design Browser 1" on
-browser using {Design Browser 1}
-browser set \
-    -scope nc::PhilClock_tb
-browser yview see nc::PhilClock_tb
-browser timecontrol set -lock 0
 
-if {[catch {window new WaveWindow -name "Waveform 1" -geometry 1010x600+0+541}] != ""} {
-    window geometry "Waveform 1" 1010x600+0+541
-}
-window target "Waveform 1" on
-waveform using {Waveform 1}
-waveform sidebar visibility partial
-waveform set \
-    -primarycursor TimeA \
-    -signalnames name \
-    -signalwidth 175 \
-    -units ns \
-    -valuewidth 75
-cursor set -using TimeA -time 0
-waveform baseline set -time 0
-waveform xview limits 0 20000n
 
-#
-# Define signal groups
-#
-catch {group new -name {Output clocks} -overlay 0}
-catch {group new -name {Status/control} -overlay 0}
-catch {group new -name {Counters} -overlay 0}
-
-set id [waveform add -signals [list {nc::PhilClock_tb.CLK_IN1}]]
-
-group using {Output clocks}
-group set -overlay 0
-group set -comment {}
-group clear 0 end
-
-group insert \
-    {PhilClock_tb.dut.clk[1]} \
-    {PhilClock_tb.dut.clk[2]} 
-group using {Counters}
-group set -overlay 0
-group set -comment {}
-group clear 0 end
-
-group insert \
-    {PhilClock_tb.dut.counter[1]} \
-    {PhilClock_tb.dut.counter[2]} 
-
-set id [waveform add -signals [list {nc::PhilClock_tb.COUNT} ]]
-
-set id [waveform add -signals [list {nc::PhilClock_tb.test_phase} ]]
-waveform format $id -radix %a
-
-set groupId [waveform add -groups {{Input clocks}}]
-set groupId [waveform add -groups {{Output clocks}}]
-set groupId [waveform add -groups {{Status/control}}]
-set groupId [waveform add -groups {{Counters}}]
+set device xc6slx16ftg256-2
+set projName FIFO
+set design FIFO
+set projDir [file dirname [info script]]
+create_project $projName $projDir/results/$projName -part $device -force
+set_property design_mode RTL [current_fileset -srcset]
+set top_module FIFO_exdes
+add_files -norecurse {../../example_design/FIFO_exdes.vhd}
+add_files -norecurse {./FIFO.ngc}
+import_files -fileset [get_filesets constrs_1] -force -norecurse {../../example_design/FIFO_exdes.xdc}
+set_property top FIFO_exdes [get_property srcset [current_run]]
+synth_design
+opt_design 
+place_design 
+route_design 
+write_sdf -rename_top_module FIFO_exdes -file routed.sdf 
+write_vhdl -mode sim routed.vhd
+report_timing -nworst 30 -path_type full -file routed.twr
+report_drc -file report.drc
+write_bitstream -bitgen_options {-g UnconstrainedPins:Allow}

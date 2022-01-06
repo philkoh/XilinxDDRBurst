@@ -1,5 +1,10 @@
--- 
--- (c) Copyright 2008 - 2011 Xilinx, Inc. All rights reserved.
+--------------------------------------------------------------------------------
+--
+-- FIFO Generator Core Demo Testbench 
+--
+--------------------------------------------------------------------------------
+--
+-- (c) Copyright 2009 - 2010 Xilinx, Inc. All rights reserved.
 -- 
 -- This file contains confidential and proprietary information
 -- of Xilinx, Inc. and is protected under U.S. and
@@ -44,46 +49,52 @@
 -- 
 -- THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
 -- PART OF THIS FILE AT ALL TIMES.
--- 
-------------------------------------------------------------------------------
--- User entered comments
-------------------------------------------------------------------------------
--- None
+--------------------------------------------------------------------------------
 --
-------------------------------------------------------------------------------
--- "Output    Output      Phase     Duty      Pk-to-Pk        Phase"
--- "Clock    Freq (MHz) (degrees) Cycle (%) Jitter (ps)  Error (ps)"
-------------------------------------------------------------------------------
--- CLK_OUT1___250.000______0.000______50.0______280.000____150.000
--- CLK_OUT2____50.000______0.000______50.0______200.000____150.000
+-- Filename: FIFO_rng.vhd
 --
-------------------------------------------------------------------------------
--- "Input Clock   Freq (MHz)    Input Jitter (UI)"
-------------------------------------------------------------------------------
--- __primary__________50.000____________0.010
+-- Description:
+--   Used for generation of pseudo random numbers
+--
+--------------------------------------------------------------------------------
+-- Library Declarations
+--------------------------------------------------------------------------------
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.std_logic_unsigned.all;
+USE IEEE.std_logic_arith.all;
+USE IEEE.std_logic_misc.all;
 
+ENTITY FIFO_rng IS
+    GENERIC (
+      WIDTH        : integer :=  8;
+      SEED         : integer :=  3);
+    PORT (
+      CLK         : IN STD_LOGIC;
+      RESET       : IN STD_LOGIC;
+      ENABLE      : IN STD_LOGIC;
+      RANDOM_NUM  : OUT STD_LOGIC_VECTOR (WIDTH-1 DOWNTO 0));
+END ENTITY;
 
--- The following code must appear in the VHDL architecture header:
-------------- Begin Cut here for COMPONENT Declaration ------ COMP_TAG
-component PhilClock
-port
- (-- Clock in ports
-  CLK_IN1           : in     std_logic;
-  -- Clock out ports
-  CLK_OUT1          : out    std_logic;
-  CLK_OUT2          : out    std_logic
- );
-end component;
+ARCHITECTURE rg_arch OF FIFO_rng IS
+BEGIN
+PROCESS (CLK,RESET)
+  VARIABLE rand_temp : STD_LOGIC_VECTOR(width-1 DOWNTO 0):=conv_std_logic_vector(SEED,width);
+  VARIABLE temp      : STD_LOGIC := '0';
+BEGIN
+  IF(RESET = '1') THEN
+    rand_temp := conv_std_logic_vector(SEED,width);
+    temp      := '0';
+  ELSIF (CLK'event AND CLK = '1') THEN
+    IF (ENABLE = '1') THEN
+      temp := rand_temp(width-1) xnor rand_temp(width-3) xnor rand_temp(width-4) xnor rand_temp(width-5);
+      rand_temp(width-1 DOWNTO 1) := rand_temp(width-2 DOWNTO 0);
+      rand_temp(0) := temp;
+    END IF;
+  END IF;
 
--- COMP_TAG_END ------ End COMPONENT Declaration ------------
--- The following code must appear in the VHDL architecture
--- body. Substitute your own instance name and net names.
-------------- Begin Cut here for INSTANTIATION Template ----- INST_TAG
-your_instance_name : PhilClock
-  port map
-   (-- Clock in ports
-    CLK_IN1 => CLK_IN1,
-    -- Clock out ports
-    CLK_OUT1 => CLK_OUT1,
-    CLK_OUT2 => CLK_OUT2);
--- INST_TAG_END ------ End INSTANTIATION Template ------------
+  RANDOM_NUM <= rand_temp;
+
+END PROCESS;
+
+END ARCHITECTURE;

@@ -1,6 +1,4 @@
-# file: wave.sv
-# 
-# (c) Copyright 2008 - 2010 Xilinx, Inc. All rights reserved.
+# (c) Copyright 2009 - 2010 Xilinx, Inc. All rights reserved.
 # 
 # This file contains confidential and proprietary information
 # of Xilinx, Inc. and is protected under U.S. and
@@ -45,67 +43,30 @@
 # 
 # THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
 # PART OF THIS FILE AT ALL TIMES.
-#
-# Get the windows set up
-#
-if {[catch {window new WatchList -name "Design Browser 1" -geometry 1054x819+536+322}] != ""} {
-    window geometry "Design Browser 1" 1054x819+536+322
-}
-window target "Design Browser 1" on
-browser using {Design Browser 1}
-browser set \
-    -scope nc::PhilClock_tb
-browser yview see nc::PhilClock_tb
-browser timecontrol set -lock 0
+#--------------------------------------------------------------------------------
+mkdir work
+echo "Compiling Core VHDL UNISIM/Behavioral model"
+ncvhdl -v93  -work work ../../implement/results/routed.vhd
 
-if {[catch {window new WaveWindow -name "Waveform 1" -geometry 1010x600+0+541}] != ""} {
-    window geometry "Waveform 1" 1010x600+0+541
-}
-window target "Waveform 1" on
-waveform using {Waveform 1}
-waveform sidebar visibility partial
-waveform set \
-    -primarycursor TimeA \
-    -signalnames name \
-    -signalwidth 175 \
-    -units ns \
-    -valuewidth 75
-cursor set -using TimeA -time 0
-waveform baseline set -time 0
-waveform xview limits 0 20000n
+echo "Compiling Test Bench Files"
+ncvhdl -v93 -work work ../FIFO_pkg.vhd
+ncvhdl -v93 -work work ../FIFO_rng.vhd 
+ncvhdl -v93 -work work ../FIFO_dgen.vhd
+ncvhdl -v93 -work work ../FIFO_dverif.vhd
+ncvhdl -v93 -work work ../FIFO_pctrl.vhd 
+ncvhdl -v93 -work work ../FIFO_synth.vhd 
+ncvhdl -v93 -work work ../FIFO_tb.vhd
 
-#
-# Define signal groups
-#
-catch {group new -name {Output clocks} -overlay 0}
-catch {group new -name {Status/control} -overlay 0}
-catch {group new -name {Counters} -overlay 0}
+echo "Compiling SDF file"
+ncsdfc ../../implement/results/routed.sdf -output ./routed.sdf.X
 
-set id [waveform add -signals [list {nc::PhilClock_tb.CLK_IN1}]]
+echo "Generating SDF command file"
+echo 'COMPILED_SDF_FILE = "routed.sdf.X",' > sdf.cmd
+echo 'SCOPE = :FIFO_synth_inst:FIFO_inst,' >> sdf.cmd
+echo 'MTM_CONTROL = "MAXIMUM";' >> sdf.cmd
 
-group using {Output clocks}
-group set -overlay 0
-group set -comment {}
-group clear 0 end
+echo "Elaborating Design"
+ncelab -access +rwc -sdf_cmd_file sdf.cmd work.FIFO_tb
 
-group insert \
-    {PhilClock_tb.dut.clk[1]} \
-    {PhilClock_tb.dut.clk[2]} 
-group using {Counters}
-group set -overlay 0
-group set -comment {}
-group clear 0 end
-
-group insert \
-    {PhilClock_tb.dut.counter[1]} \
-    {PhilClock_tb.dut.counter[2]} 
-
-set id [waveform add -signals [list {nc::PhilClock_tb.COUNT} ]]
-
-set id [waveform add -signals [list {nc::PhilClock_tb.test_phase} ]]
-waveform format $id -radix %a
-
-set groupId [waveform add -groups {{Input clocks}}]
-set groupId [waveform add -groups {{Output clocks}}]
-set groupId [waveform add -groups {{Status/control}}]
-set groupId [waveform add -groups {{Counters}}]
+echo "Simulating Design"
+ncsim -gui -input @"simvision -input wave_ncsim.sv" work.FIFO_tb

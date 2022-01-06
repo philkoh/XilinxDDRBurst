@@ -1,5 +1,9 @@
--- 
--- (c) Copyright 2008 - 2011 Xilinx, Inc. All rights reserved.
+#--------------------------------------------------------------------------------
+#--
+#-- FIFO Generator Core Demo Testbench 
+#--
+#--------------------------------------------------------------------------------
+-- (c) Copyright 2009 - 2010 Xilinx, Inc. All rights reserved.
 -- 
 -- This file contains confidential and proprietary information
 -- of Xilinx, Inc. and is protected under U.S. and
@@ -44,46 +48,40 @@
 -- 
 -- THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
 -- PART OF THIS FILE AT ALL TIMES.
--- 
-------------------------------------------------------------------------------
--- User entered comments
-------------------------------------------------------------------------------
--- None
---
-------------------------------------------------------------------------------
--- "Output    Output      Phase     Duty      Pk-to-Pk        Phase"
--- "Clock    Freq (MHz) (degrees) Cycle (%) Jitter (ps)  Error (ps)"
-------------------------------------------------------------------------------
--- CLK_OUT1___250.000______0.000______50.0______280.000____150.000
--- CLK_OUT2____50.000______0.000______50.0______200.000____150.000
---
-------------------------------------------------------------------------------
--- "Input Clock   Freq (MHz)    Input Jitter (UI)"
-------------------------------------------------------------------------------
--- __primary__________50.000____________0.010
+# Filename: wave_mti.do
+#
+# Description:
+#   This is the modelsim wave form file.
+#
+#--------------------------------------------------------------------------------
 
+onerror {resume}
+quietly WaveActivateNextPane {} 0
+add wave -noupdate -divider WRITE
+add wave -noupdate /FIFO_tb/FIFO_synth_inst/FIFO_inst/WR_CLK
+add wave -noupdate /FIFO_tb/FIFO_synth_inst/FIFO_inst/WR_EN
+add wave -noupdate /FIFO_tb/FIFO_synth_inst/FIFO_inst/FULL
+add wave -noupdate -radix hexadecimal /FIFO_tb/FIFO_synth_inst/FIFO_inst/DIN
+add wave -noupdate -divider READ
+add wave -noupdate /FIFO_tb/FIFO_synth_inst/FIFO_inst/RD_CLK
+add wave -noupdate /FIFO_tb/FIFO_synth_inst/FIFO_inst/RD_EN
+add wave -noupdate /FIFO_tb/FIFO_synth_inst/FIFO_inst/EMPTY
+add wave -noupdate -radix hexadecimal /FIFO_tb/FIFO_synth_inst/FIFO_inst/DOUT
 
--- The following code must appear in the VHDL architecture header:
-------------- Begin Cut here for COMPONENT Declaration ------ COMP_TAG
-component PhilClock
-port
- (-- Clock in ports
-  CLK_IN1           : in     std_logic;
-  -- Clock out ports
-  CLK_OUT1          : out    std_logic;
-  CLK_OUT2          : out    std_logic
- );
-end component;
-
--- COMP_TAG_END ------ End COMPONENT Declaration ------------
--- The following code must appear in the VHDL architecture
--- body. Substitute your own instance name and net names.
-------------- Begin Cut here for INSTANTIATION Template ----- INST_TAG
-your_instance_name : PhilClock
-  port map
-   (-- Clock in ports
-    CLK_IN1 => CLK_IN1,
-    -- Clock out ports
-    CLK_OUT1 => CLK_OUT1,
-    CLK_OUT2 => CLK_OUT2);
--- INST_TAG_END ------ End INSTANTIATION Template ------------
+TreeUpdate [SetDefaultTree]
+WaveRestoreCursors {{Cursor 1} {2164886 ps} 0}
+configure wave -namecolwidth 197
+configure wave -valuecolwidth 106
+configure wave -justifyvalue left
+configure wave -signalnamewidth 1
+configure wave -snapdistance 10
+configure wave -datasetprefix 0
+configure wave -rowmargin 4
+configure wave -childrowmargin 2
+configure wave -gridoffset 0
+configure wave -gridperiod 1
+configure wave -griddelta 40
+configure wave -timeline 0
+configure wave -timelineunits ps
+update
+WaveRestoreZoom {0 ps} {9464063 ps}
