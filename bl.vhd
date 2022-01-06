@@ -36,7 +36,6 @@ entity bl is
 			baPORT : out std_logic_vector(2 downto 0);
 			addrPORT : out std_logic_vector(14 downto 0);
 		   dataPORT : inout std_logic_vector(15 downto 0);
---		   dataFAST : inout std_logic_vector(0 downto 0);
 
 			casPORT : out std_logic;
 			rasPORT : out std_logic;
@@ -169,8 +168,6 @@ end component;
 	type philArr is array (20 downto 0) of std_logic_vector(15 downto 0);
 	signal requestedDataToWrite : philArr;
 	signal nextRequestedDataToWrite : philArr;
---	signal dataToWrite : philArr;
---	signal nextDataToWrite : philArr;
 	
 	signal writeRefill :  philArr;
 	signal nextWriteRefill :  philArr;
@@ -189,11 +186,6 @@ end component;
 	
 	signal delayedDataPort : std_logic_vector(15 downto 0);
 
-
---	signal tristateData : std_logic := '1';
---	signal tristateDataFromDDR : std_logic := '1';
---	signal nextTristateData : std_logic := '1';
-	
 	
 
 	signal reset : std_logic := '1';
@@ -601,12 +593,9 @@ process (clk250MHz, advanceTheShiftRegister)
 
 			capturedData(11 downto 1) <= nextCapturedData(11 downto 1);
 			
-	--		dataToWrite <= nextDataToWrite;
 			dataAssertedToOutput <= nextdataAssertedToOutput;
 			
-	--		writeAndRefillThisCycle <= nextwriteAndRefillThisCycle;
-	--		writeThisCycle  <= nextWriteThisCycle   ;
-		  
+			  
 			advanceTheShiftRegister <= nextAdvanceTheShiftRegister  ;
 			refillTheShiftRegister <= nextRefillTheShiftRegister  ;
 		end if;
@@ -679,7 +668,6 @@ process (clk250MHz, advanceTheShiftRegister)
 			count2 <= nextCount2;    -- count2 runs at 125 MHz
 			clockEnableBeginning <= nextClockEnableBeginning;  --clockEnable registers change on falling edge of clk125MHz
 			clockEnableCommand <= nextClockEnableCommand;
---			clockEnableLoadWriteData <= nextClockEnableLoadWriteData;
 			clockEnableRefillWriteData <= nextClockEnableRefillWriteData;
 			clockEnableLoadAddress <= nextClockEnableLoadAddress;
 			clockEnableRead <= nextClockEnableRead;
@@ -937,7 +925,7 @@ process (clk250MHz, advanceTheShiftRegister)
 			blinker <= nextBlinker;
 			ba <= nextBa;
 			addrRequest <= nextAddrRequest;
-	--		data <= nextData;  --note, this is a massive fudge; the data for a write is presented through the entire cycle of 32 count2 increments
+
 				casRequest <= nextCasRequest;
 			rasRequest <= nextRasRequest;
 			weRequest <= nextWeRequest;
@@ -950,7 +938,6 @@ writeRequest <= nextWriteRequest;
 			cke <= nextCke;
 			dqsTristate <= nextDqsTristate;
 			odt <= nextODT;
-	--		tristateData <= nextTristateData;
 			
 	
 			requestedDataToWrite  <= nextRequestedDataToWrite;
@@ -963,8 +950,7 @@ writeRequest <= nextWriteRequest;
 	process (count)
 
 		begin
-	--		dummyOut <= capturedData(4) and  capturedData(5) and capturedData(6) and capturedData(7) and capturedData(8) and capturedData(9) and capturedData(10) and capturedData(11) and capturedData(12) and capturedData(13) and capturedData(14) and capturedData(15);
-
+	
 
 			dqm0PORT  <= '0';
 			dqm1PORT  <= '0';
@@ -986,18 +972,7 @@ writeRequest <= nextWriteRequest;
 				nextBlinker <= blinker;
 			end if;
 		
-	--		if tristateData = '1' then
-	--			dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');
-	--		else
-	--			dataPort (0) <= dataCount (0);			
-	--			dataPort (1) <= dataCount (1);			
-	--			dataPort (2) <= dataCount (2);			
-	--			dataPort (3) <= dataCount (3);			
-	--			dataPort (15 downTo 0) <= data (15 downTo 0);			
-	--		end if;
-
-
-
+	
 			nextDqsTristate <= '1';
 
 
@@ -1021,8 +996,7 @@ writeRequest <= nextWriteRequest;
 			nextData <= (others => 'Z');
 			
 			
-		--	nextTristateData <= '1';
-
+	
 			nextReset <= reset;
 			nextCke <= cke;
 			if count = 0 then
@@ -1136,7 +1110,6 @@ writeRequest <= nextWriteRequest;
 				nextWriteRequest <= '1';
 				
 				nextDqsTristate <= '0';
-		--		nextTristateData <= '0';
 			
 				nextBa <= "000";
 				nextAddrRequest <= "000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
@@ -1148,7 +1121,6 @@ writeRequest <= nextWriteRequest;
 			if count = 20230 then--20230 --WRITE
 				nextData <= "1111111111111001";
 				nextDqsTristate <= '0';
-	--			nextTristateData <= '0';
 			
 				nextBa <= "000";
 				nextAddrRequest <= "000000111110000"; -- A10 must be LOW to turn off AutoPrecharge
