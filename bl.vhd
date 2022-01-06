@@ -776,8 +776,8 @@ I => clk125MHz -- Buffer input
 		end if;
 		
 		nextClockEnableRefillWriteData <= '0';
-		if (count2 = 23 or count2 = 28) and writeRequest = '1'   then   -- this refills more write data onto the outgoing stack
-	--		nextClockEnableRefillWriteData <= '1';
+		if (count2 = 22) and writeRequest = '1'   then   -- this refills more write data onto the outgoing stack
+			nextClockEnableRefillWriteData <= '1';
 		end if;
 
 	
