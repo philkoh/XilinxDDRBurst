@@ -640,9 +640,9 @@ process (clk250MHz, advanceTheShiftRegister)
 			
 		end if;
 
-		if clockEnableLoadWriteData = '1'  then  -- at start of write, load the data to write from the request register to the write register
-			nextDataToWrite <= requestedDataToWrite; 
-		end if;
+	--	if clockEnableLoadWriteData = '1'  then  -- at start of write, load the data to write from the request register to the write register
+	--		nextDataToWrite <= requestedDataToWrite; 
+	--	end if;
 		
 		
 
