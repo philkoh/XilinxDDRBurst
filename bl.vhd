@@ -127,6 +127,14 @@ end component;
 	signal writeThisCycle : std_logic := '0';
 	signal nextWriteThisCycle : std_logic ;
 	
+	signal advanceTheShiftRegister : std_logic := '0';
+	signal nextAdvanceTheShiftRegister : std_logic;
+
+	signal refillTheShiftRegister : std_logic := '0';
+	signal nextRefillTheShiftRegister : std_logic;
+
+
+	
    signal count2 : unsigned (5 downto 0) := "000000";
    signal count : unsigned (17 downto 0) := "000000000000000000";
    signal nextCount2 : unsigned (5 downto 0);
@@ -170,7 +178,10 @@ end component;
 	 
 	signal capturedData :   philArr;
 	signal nextCapturedData :   philArr;
-
+	
+	signal shiftRegister : philArr;
+	signal nextShiftRegister : philArr;
+	
 	
 	signal dataAssertedToOutput : std_logic_vector(15 downto 0);
 	signal nextdataAssertedToOutput : std_logic_vector(15 downto 0);
@@ -548,6 +559,31 @@ I => clk125MHz -- Buffer input
 
 
 
+process (clk250MHz, advanceTheShiftRegister)
+		begin
+------------------------------------------SEQUENTIAL :			
+		if rising_edge(clk250MHz) and advanceTheShiftRegister = '1' then  
+			shiftRegister <= nextShiftRegister;
+		end if;
+   end process;
+	
+------------------------------------------COMBINATORIAL:
+	process (refillTheShiftRegister)
+		begin
+		if refillTheShiftRegister = '1' then
+			nextdataAssertedToOutput <= writeRefill(0);
+			nextShiftRegister(6 downto 0) <= writeRefill(7 downto 1);
+		else
+			nextdataAssertedToOutput <= shiftRegister(0);
+			nextShiftRegister(5 downto 0) <= shiftRegister(6 downto 1);
+			nextShiftRegister(6) <= (15 downTo 0 => '0');
+		end if;
+		
+	end process;
+
+		
+
+
 
 
 
@@ -569,7 +605,10 @@ I => clk125MHz -- Buffer input
 			dataAssertedToOutput <= nextdataAssertedToOutput;
 			
 			writeAndRefillThisCycle <= nextwriteAndRefillThisCycle;
-		  writeThisCycle  <= nextWriteThisCycle   ;
+			writeThisCycle  <= nextWriteThisCycle   ;
+		  
+			advanceTheShiftRegister <= nextAdvanceTheShiftRegister  ;
+			refillTheShiftRegister <= nextRefillTheShiftRegister  ;
 		end if;
  end process;
 
@@ -629,19 +668,26 @@ I => clk125MHz -- Buffer input
 			
 		
 		if writeAndRefillThisCycle = '1'  then -- I think this is the timing problem
-			nextdataAssertedToOutput  <= dataToWrite(1)  ;	
+	--		nextdataAssertedToOutput  <= dataToWrite(1)  ;	
 			nextDataToWrite(7 downto 1) <= dataToWrite(8 downto 2);
 			nextDataToWrite(15 downto 8) <= writeRefill(7 downto 0) ;
 		end if;
 		
 		if writeThisCycle = '1' then
-			nextdataAssertedToOutput  <= dataToWrite(1)  ;	
+	--		nextdataAssertedToOutput  <= dataToWrite(1)  ;	
 			nextDataToWrite(19 downto 1) <= dataToWrite(20 downto 2);
 		end if;
 
-
-	
-	
+	 
+		nextAdvanceTheShiftRegister <= '0';
+		if clockEnableWrite = '1'  then --write data, and pull down the stack of registers
+			nextAdvanceTheShiftRegister <= '1';
+		end if;
+		
+		nextRefillTheShiftRegister <= '0';
+		if clockEnableRefillWriteData = '1' and refillTheShiftRegister = '0' then -- make pulse only 1 cycle long (the clockEnable pulse is two cycles)
+			nextRefillTheShiftRegister <= '1';
+		end if;
 
 		
 	end process;
