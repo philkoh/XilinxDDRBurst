@@ -776,7 +776,7 @@ I => clk125MHz -- Buffer input
 		end if;
 		
 		nextClockEnableRefillWriteData <= '0';
-		if count2 = 23 and writeRequest = '1'   then   -- this refills more write data onto the outgoing stack
+		if (count2 = 23 or count2 = 39) and writeRequest = '1'   then   -- this refills more write data onto the outgoing stack
 			nextClockEnableRefillWriteData <= '1';
 		end if;
 
@@ -1144,7 +1144,7 @@ writeRequest <= nextWriteRequest;
 				nextSaveRequest <= '1';	
 				
 				nextBa <= "000";
-				nextAddrRequest <= "000000000010000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
+				nextAddrRequest <= "000000001110000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '1';
