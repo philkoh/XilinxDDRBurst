@@ -133,9 +133,6 @@ END COMPONENT;
 	signal clockEnableRead : std_logic := '0';
 	signal clockEnableWrite : std_logic := '0';
 	signal clockEnableAddrIncrement : std_logic := '0';
-	signal clockEnablePullFromFIFO : std_logic := '0';
-	signal nextClockEnablePullFromFIFO : std_logic  ;
-	
 	signal nextClockEnableBeginning : std_logic := '0';
 	signal nextClockEnableCommand : std_logic := '0';
 --	signal nextClockEnableLoadWriteData : std_logic := '0';
@@ -155,9 +152,7 @@ END COMPONENT;
 	signal nextRefillTheShiftRegister : std_logic;
 
 
-	signal count3 : unsigned (7 downto 0) := "00000000";
-	signal nextCount3 : unsigned (7 downto 0) ;
- 
+	
    signal count2 : unsigned (5 downto 0) := "000000";
    signal count : unsigned (17 downto 0) := "000000000000000000";
    signal nextCount2 : unsigned (5 downto 0);
@@ -258,20 +253,11 @@ END COMPONENT;
    
 	
 	signal FIFOinputEnable  : std_logic := '1';
-	signal nextFIFOinputEnable  : std_logic  ;
-	
 	signal FIFOoutputEnable : std_logic := '1';
-	signal nextFIFOoutputEnable : std_logic  ;
-	
 	signal FIFOoutput : std_logic_vector(128 downto 0);
 	signal FIFOinput : std_logic_vector(128 downto 0);
---	signal nextFIFOinput : std_logic_vector(128 downto 0);
 	signal FIFOfull : std_logic;
 	signal FIFOempty : std_logic;
-	
-	signal resetChain : std_logic_vector(7 downto 0) := "00000000" ;
-	signal nextResetChain : std_logic_vector(7 downto 0)  ;
-	
 begin
 
 
@@ -584,9 +570,6 @@ I => clk125MHz -- Buffer input
 
 
 
-	 
-
-
 
 
 
@@ -664,9 +647,6 @@ process (clk250MHz, advanceTheShiftRegister)
 			  
 			advanceTheShiftRegister <= nextAdvanceTheShiftRegister  ;
 			refillTheShiftRegister <= nextRefillTheShiftRegister  ;
-			FIFOoutputEnable <= nextFIFOoutputEnable;
-			nextWriteRefill <=	writeRefill     ;
-
 		end if;
  end process;
 
@@ -717,15 +697,6 @@ process (clk250MHz, advanceTheShiftRegister)
 			nextRefillTheShiftRegister <= '1';
 		end if;
 
-
-		if clockEnablePullFromFIFO = '1' and FIFOoutputEnable = '0' then -- make pulse only 1 cycle long (the clockEnable pulse is two cycles)
-			nextFIFOoutputEnable <= '1';
-		end if;
-		
-		if FIFOoutputEnable = '1' then
-			nextWriteRefill(0) <= FIFOoutput(15 downto 0);
-			
-		end if;
 		
 	end process;
 		
@@ -751,7 +722,6 @@ process (clk250MHz, advanceTheShiftRegister)
 			clockEnableRead <= nextClockEnableRead;
 			clockEnableWrite <= nextClockEnableWrite;
 			clockEnableAddrIncrement <= nextClockEnableAddrIncrement;
-			clockEnablePullFromFIFO <= nextClockEnablePullFromFIFO;
 			cas <= nextCas;
 			ras <= nextRas;
 			we <= nextWe;
@@ -760,7 +730,8 @@ process (clk250MHz, advanceTheShiftRegister)
 			switchCount <= nextSwitchCount;
 			lastSwitchRegister <= switchRegister;
 
-		   addrOut <= nextAddrOut;
+			writeRefill  <= nextWriteRefill ;
+ 		   addrOut <= nextAddrOut;
 
 		
 		end if;
@@ -778,16 +749,15 @@ process (clk250MHz, advanceTheShiftRegister)
 		wePORT <= we;
 		
 		
---		nextWriteRefill(0) <= "0000000000001001"; 
--- 		nextWriteRefill(1) <= "0000000000000110"; 
--- 		nextWriteRefill(2) <= "0000000000001100"; 
--- 		nextWriteRefill(3) <= "0000000000001010"; 
--- 		nextWriteRefill(4) <= "0000000000000101"; 
--- 		nextWriteRefill(5) <= "0000000000000111"; 
--- 		nextWriteRefill(6) <= "0000000000001111"; 
--- 		nextWriteRefill(7) <= "0000000000001011"; 
-	
-
+		nextWriteRefill <=	writeRefill     ;
+		nextWriteRefill(0) <= "0000000000001001"; 
+ 		nextWriteRefill(1) <= "0000000000000110"; 
+ 		nextWriteRefill(2) <= "0000000000001100"; 
+ 		nextWriteRefill(3) <= "0000000000001010"; 
+ 		nextWriteRefill(4) <= "0000000000000101"; 
+ 		nextWriteRefill(5) <= "0000000000000111"; 
+ 		nextWriteRefill(6) <= "0000000000001111"; 
+ 		nextWriteRefill(7) <= "0000000000001011"; 
  	   nextAddrOut <= addrOut;--unless overridden below, hold and remember the loaded values
 		addrPort <= addrOut;
 	
@@ -839,12 +809,6 @@ process (clk250MHz, advanceTheShiftRegister)
 			
 			if count2 = 20 and  writeRequest = '1' then  -- during a write cycle, pulse a second write command
 		   	nextClockEnableCommand <= '1';
-			end if;
-			
-			if count2 = 5 and writeRequest = '1' then
-				nextClockEnablePullFromFIFO <= '1';
-			else
-				nextClockEnablePullFromFIFO <= '0';			
 			end if;
 				
 				
@@ -1232,49 +1196,6 @@ writeRequest <= nextWriteRequest;
 		
    end process;
 		
-
-
-
-
-
-process (clk50MHz, reset)
-		begin
-------------------------------------------SEQUENTIAL :			
-		if rising_edge(clk50MHz)  then  
-			count3 <= nextCount3;
-			resetChain	<=	nextResetChain;
-			FIFOinputEnable <= nextFIFOinputEnable;
-		end if;
-   end process;
-	
-------------------------------------------COMBINATORIAL:
-	process (reset)
-		begin
-		nextResetChain(6 downto 0) <= resetChain(7 downto 1);
-		nextResetChain(7) <= reset;
-		if resetChain(0) = '0' then 
-			nextCount3 <= "00000000";
-		else
-			nextCount3 <= count3 + 1;
-		end if;
-		
-		
-		nextFIFOinputEnable <= '0';
-		
-		if count3 = 1 then
-			  FIFOinput(3 downto 0) <= "0001";
-			  FIFOinput(16+3 downto 16+0) <= "0010";
-			  FIFOinput(32+3 downto 32+0) <= "0100";
-			  FIFOinput(48+3 downto 48+0) <= "1000";
-			  FIFOinput(64+3 downto 64+0) <= "1100";
-			  FIFOinput(80+3 downto 80+0) <= "0110";
-			  FIFOinput(96+3 downto 96+0) <= "0011";
-			  FIFOinput(112+3 downto 112+0) <= "0111";
-			  nextFIFOinputEnable <= '1';
-	 
-   
-		end if;
-	end process;
 
 end Behavioral;
 
