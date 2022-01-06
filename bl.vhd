@@ -107,7 +107,7 @@ end component;
 	signal nextBlinker  : std_logic := '0';
 	signal clockEnableBeginning : std_logic := '0';
 	signal clockEnableCommand : std_logic := '0';
-	signal clockEnableLoadWriteData : std_logic := '0';
+--	signal clockEnableLoadWriteData : std_logic := '0';
 	signal clockEnableRefillWriteData : std_logic := '0';
 	signal writeAndRefillThisCycle : std_logic := '0';
 	signal nextwriteAndRefillThisCycle : std_logic := '0';
@@ -117,7 +117,7 @@ end component;
 	signal clockEnableAddrIncrement : std_logic := '0';
 	signal nextClockEnableBeginning : std_logic := '0';
 	signal nextClockEnableCommand : std_logic := '0';
-	signal nextClockEnableLoadWriteData : std_logic := '0';
+--	signal nextClockEnableLoadWriteData : std_logic := '0';
 	signal nextClockEnableRefillWriteData : std_logic := '0';
 	signal nextClockEnableLoadAddress : std_logic := '0';
 	signal nextClockEnableRead : std_logic := '0';
@@ -709,7 +709,7 @@ process (clk250MHz, advanceTheShiftRegister)
 			count2 <= nextCount2;    -- count2 runs at 125 MHz
 			clockEnableBeginning <= nextClockEnableBeginning;  --clockEnable registers change on falling edge of clk125MHz
 			clockEnableCommand <= nextClockEnableCommand;
-			clockEnableLoadWriteData <= nextClockEnableLoadWriteData;
+--			clockEnableLoadWriteData <= nextClockEnableLoadWriteData;
 			clockEnableRefillWriteData <= nextClockEnableRefillWriteData;
 			clockEnableLoadAddress <= nextClockEnableLoadAddress;
 			clockEnableRead <= nextClockEnableRead;
@@ -828,9 +828,9 @@ process (clk250MHz, advanceTheShiftRegister)
 				
 			
 		if count2 = 16 and writeRequest = '1'   then   -- this loads requested write data onto the outgoing stack
-			nextClockEnableLoadWriteData <= '1';
+	--		nextClockEnableLoadWriteData <= '1';
 		else
-			nextClockEnableLoadWriteData<= '0';
+	--		nextClockEnableLoadWriteData<= '0';
 		end if;
 		
 		nextClockEnableRefillWriteData <= '0';
