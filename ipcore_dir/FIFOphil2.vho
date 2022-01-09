@@ -59,10 +59,10 @@ COMPONENT FIFOphil2
   PORT (
     wr_clk : IN STD_LOGIC;
     rd_clk : IN STD_LOGIC;
-    din : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+    din : IN STD_LOGIC_VECTOR(143 DOWNTO 0);
     wr_en : IN STD_LOGIC;
     rd_en : IN STD_LOGIC;
-    dout : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+    dout : OUT STD_LOGIC_VECTOR(143 DOWNTO 0);
     full : OUT STD_LOGIC;
     empty : OUT STD_LOGIC
   );
