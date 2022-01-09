@@ -91,6 +91,43 @@ port
 end component;
 
 
+
+
+
+
+
+
+
+
+
+
+------------- Begin Cut here for COMPONENT Declaration ------ COMP_TAG
+COMPONENT FIFOphil2
+  PORT (
+    wr_clk : IN STD_LOGIC;
+    rd_clk : IN STD_LOGIC;
+    din : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+    wr_en : IN STD_LOGIC;
+    rd_en : IN STD_LOGIC;
+    dout : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+    full : OUT STD_LOGIC;
+    empty : OUT STD_LOGIC
+  );
+END COMPONENT;
+-- COMP_TAG_END ------ End COMPONENT Declaration ------------
+
+
+
+
+
+
+
+
+
+
+
+
+
 	signal clk250MHz : std_logic := '0';
 	signal clk125MHz : std_logic := '0';
 	signal clk125MHz_n : std_logic := '0';
@@ -233,7 +270,60 @@ end component;
    signal nextSwitchCount : unsigned (3 downto 0) := "0000";
    
 	
+	signal din : std_logic_vector(3 downto 0);
+	signal dout : std_logic_vector(3 downto 0);
 begin
+
+
+
+
+
+
+
+
+
+
+-- The following code must appear in the VHDL architecture
+-- body. Substitute your own instance name and net names.
+
+------------- Begin Cut here for INSTANTIATION Template ----- INST_TAG
+fifoInstance : FIFOphil2
+  PORT MAP (
+    wr_clk => clk250MHz,
+    rd_clk => clk250MHz,
+    din => din,
+    wr_en => '1',
+    rd_en => '1',
+    dout => dout
+--    full => full,
+ --   empty => empty
+  );
+-- INST_TAG_END ------ End INSTANTIATION Template ------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ------------- Begin Cut here for INSTANTIATION Template ----- INST_TAG
