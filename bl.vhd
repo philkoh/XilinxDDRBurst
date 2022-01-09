@@ -359,6 +359,7 @@ T => dqsTristate -- 1-bit input: 3-state input signal
 
 
 
+
 IODELAY2_inst2 : IODELAY2
 generic map (
 COUNTER_WRAPAROUND => "WRAPAROUND", -- "STAY_AT_LIMIT" or "WRAPAROUND"
