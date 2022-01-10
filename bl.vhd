@@ -858,7 +858,7 @@ process (clk250MHz, advanceTheShiftRegister)
 				
 			
 			
-		if count2 = 16 and writeRequest = '1' then  -- this replaces the waiting data from fifo
+		if count2 = 21 and writeRequest = '1' then  -- this replaces the waiting data from fifo
 			nextWriteRefill(0) <= "0000000000001001"; 
 			nextWriteRefill(1) <= "0000000000000110"; 
 			nextWriteRefill(2) <= "0000000000001100"; 
@@ -883,7 +883,7 @@ process (clk250MHz, advanceTheShiftRegister)
 			nextWriteRefill(0) <= "0000000000000001"; 
 			nextWriteRefill(1) <= "0000000000000010"; 
 			nextWriteRefill(2) <= "0000000000000100"; 
-			nextWriteRefill(3) <= "0000000000001010"; 
+			nextWriteRefill(3) <= "0000000000001000"; 
 			nextWriteRefill(4) <= "0000000000001100"; 
 			nextWriteRefill(5) <= "0000000000000110"; 
 			nextWriteRefill(6) <= "0000000000000011"; 
