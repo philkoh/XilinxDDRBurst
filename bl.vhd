@@ -781,6 +781,12 @@ process (clk250MHz, advanceTheShiftRegister)
    end process;
 	
 ------------------------------------------COMBINATORIAL:
+
+
+
+
+
+
 	process (count2,dqs0incoming,switchregister,switch2port,switch3port,switchCount,lastSwitchRegister, initializationmode,inDataB,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData)
 	
 	
@@ -1038,39 +1044,34 @@ writeRequest <= nextWriteRequest;
    end process;
 
 ------------------------------------------COMBINATORIAL:
+	dqm0PORT  <= '0';
+	dqm1PORT  <= '0';
+	odtPORT <= odt;
+	baPort <= ba;
+	resetPort <= reset;
+	ckePort <= cke;
+	blinkerPORT <= blinker;
+	
+	nextCount <= count + 1;
+	nextBlinker <= not blinker when count = 0 else blinker;
+
+
 	process (count)
 
 		begin
 	
 
-			dqm0PORT  <= '0';
-			dqm1PORT  <= '0';
-			odtPORT <= odt;
-			baPort <= ba;
-		
-			resetPort <= reset;
-			ckePort <= cke;
 	
 	
 	
-			blinkerPORT <= blinker;
 			
-			nextCount <= count + 1;
 			
-			if count = 0 then
-				nextBlinker <= not blinker;
-			else
-				nextBlinker <= blinker;
-			end if;
-		
+			
 	
 			nextDqsTristate <= '1';
 
 
-			nextCasRequest <= '1';
-			nextRasRequest <= '1';
-			nextWeRequest <= '1';
-			nextWriteRequest <= '0';  -- unless overridden below
+				nextWriteRequest <= '0';  -- unless overridden below
 			nextSaveRequest <= '0';
 			nextSaveRequest2 <= '0';
 			nextSaveRequest3 <= '0';
@@ -1084,6 +1085,12 @@ writeRequest <= nextWriteRequest;
 			nextODT <= '1';  -- On Die Termination is normally on
 			nextBa <= (others => '0');
 			nextAddrRequest <= (others => '0');
+			nextRasRequest <= '1';
+			nextCasRequest <= '1';
+			nextWeRequest <= '1';
+	
+			
+			
 			nextData <= (others => 'Z');
 			
 			
