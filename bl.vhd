@@ -745,9 +745,7 @@ process (clk250MHz, advanceTheShiftRegister)
 		begin
 	
 ------------------------------------------SEQUENTIAL :	
-		
-		
-		
+			
 		
 		if rising_edge(clk250MHz) and clk125MHz = '1' then  -- this is a falling edge of clk125MHz
 		
@@ -788,20 +786,10 @@ process (clk250MHz, advanceTheShiftRegister)
 	
 	
 		begin
-		
-	
-		
+			
 		
 		nextWriteRefill <=	writeRefill     ;
-		nextWriteRefill(0) <= "0000000000001001"; 
- 		nextWriteRefill(1) <= "0000000000000110"; 
- 		nextWriteRefill(2) <= "0000000000001100"; 
- 		nextWriteRefill(3) <= "0000000000001010"; 
- 		nextWriteRefill(4) <= "0000000000000101"; 
- 		nextWriteRefill(5) <= "0000000000000111"; 
- 		nextWriteRefill(6) <= "0000000000001111"; 
- 		nextWriteRefill(7) <= "0000000000001011"; 
- 	   nextAddrOut <= addrOut;--unless overridden below, hold and remember the loaded values
+	 	   nextAddrOut <= addrOut;--unless overridden below, hold and remember the loaded values
 		addrPort <= addrOut;
 	
 		
@@ -869,13 +857,40 @@ process (clk250MHz, advanceTheShiftRegister)
 		end if;
 				
 			
+			
+		if count2 = 16 and writeRequest = '1' then  -- this replaces the waiting data from fifo
+			nextWriteRefill(0) <= "0000000000001001"; 
+			nextWriteRefill(1) <= "0000000000000110"; 
+			nextWriteRefill(2) <= "0000000000001100"; 
+			nextWriteRefill(3) <= "0000000000001010"; 
+			nextWriteRefill(4) <= "0000000000000101"; 
+			nextWriteRefill(5) <= "0000000000000111"; 
+			nextWriteRefill(6) <= "0000000000001111"; 
+			nextWriteRefill(7) <= "0000000000001011"; 
+
+		
+		end if;
+			
+			
+			
 		
 		nextClockEnableRefillWriteData <= '0';
 		if (count2 = 22 or count2 = 26) and writeRequest = '1'   then   -- this refills more write data onto the outgoing stack
 			nextClockEnableRefillWriteData <= '1';
 		end if;
 
-	
+		if count2 = 25 and writeRequest = '1' then  -- this replaces the waiting data from fifo
+			nextWriteRefill(0) <= "0000000000000001"; 
+			nextWriteRefill(1) <= "0000000000000010"; 
+			nextWriteRefill(2) <= "0000000000000100"; 
+			nextWriteRefill(3) <= "0000000000001010"; 
+			nextWriteRefill(4) <= "0000000000001100"; 
+			nextWriteRefill(5) <= "0000000000000110"; 
+			nextWriteRefill(6) <= "0000000000000011"; 
+			nextWriteRefill(7) <= "0000000000000111"; 
+ 
+		
+		end if;
 			
 			
 --			if (count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26)   then  --reads for 4 cycles of 125MHz count2
@@ -1193,7 +1208,7 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextSaveRequest <= '1';	
 				
 				nextBa <= "000";
-				nextAddrRequest <= "000000000010000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
+				nextAddrRequest <= "000000001110000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '1';
