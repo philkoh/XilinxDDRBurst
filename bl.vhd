@@ -60,9 +60,6 @@ entity bl is
 			odtPORT : out std_logic; 
 			
 
-			monitor2 :out std_logic;
-			monitor3 :out std_logic;
-			monitor4 :out std_logic;
 			
 			switch2PORT : in std_logic;
 			switch3PORT : in std_logic;
@@ -259,8 +256,6 @@ END COMPONENT;
 	signal nextSaveRequest4 : std_logic := '0';
 	
 	
-	signal initializationMode : std_logic := '1';
-	signal nextInitializationMode : std_logic := '1';
 
 	signal switchRegister : std_logic := '0';
 	signal nextSwitchRegister : std_logic := '0';
@@ -767,7 +762,7 @@ process (clk250MHz, advanceTheShiftRegister)
 			cas <= nextCas;
 			ras <= nextRas;
 			we <= nextWe;
-			initializationMode <= nextInitializationMode;
+
 			switchRegister <= nextSwitchRegister;
 			switchCount <= nextSwitchCount;
 			lastSwitchRegister <= switchRegister;
@@ -781,20 +776,20 @@ process (clk250MHz, advanceTheShiftRegister)
    end process;
 	
 ------------------------------------------COMBINATORIAL:
+	casPORT <= cas;
+	rasPORT <= ras;
+	wePORT <= we;
 
 
 
 
 
-
-	process (count2,dqs0incoming,switchregister,switch2port,switch3port,switchCount,lastSwitchRegister, initializationmode,inDataB,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData)
+	process (count2,dqs0incoming,switchregister,switch2port,switch3port,switchCount,lastSwitchRegister,inDataB,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData)
 	
 	
 		begin
 		
-		casPORT <= cas;
-		rasPORT <= ras;
-		wePORT <= we;
+	
 		
 		
 		nextWriteRefill <=	writeRefill     ;
@@ -810,13 +805,6 @@ process (clk250MHz, advanceTheShiftRegister)
 		addrPort <= addrOut;
 	
 		
-		monitor2 <= dqs0Incoming;
-		monitor3 <= '0';
-		monitor4 <= '0';
---		monitor3 <= dataPORT(0);
---		monitor4 <= dataPORT(1);
-
-		nextInitializationMode <= initializationMode;
 	
 		nextSwitchRegister <= switchRegister;
 		if switch2PORT = '0' then
@@ -835,8 +823,7 @@ process (clk250MHz, advanceTheShiftRegister)
  		LED2 <= switchCount(2);
 		LED3 <= switchCount(3);
 
-		if initializationMode = '1' then --initializationMode is always '1', so this is always true
-			nextCount2 <= count2 + 1;  -- count2 increments at 125 MHz, not 250 MHz
+				nextCount2 <= count2 + 1;  -- count2 increments at 125 MHz, not 250 MHz
 			if count2 = 1 then 
 		--		nextCount2 <= count2 + 14;  --skip ahead to shorten the cycle
 			end if;
@@ -999,8 +986,6 @@ process (clk250MHz, advanceTheShiftRegister)
 
 			
 			 
-		
-	end if;
 
    end process;
 	
@@ -1023,11 +1008,11 @@ process (clk250MHz, advanceTheShiftRegister)
 			ba <= nextBa;
 			addrRequest <= nextAddrRequest;
 
-				casRequest <= nextCasRequest;
+			casRequest <= nextCasRequest;
 			rasRequest <= nextRasRequest;
 			weRequest <= nextWeRequest;
-writeRequest <= nextWriteRequest;		
-		saveRequest <= nextSaveRequest;
+			writeRequest <= nextWriteRequest;		
+			saveRequest <= nextSaveRequest;
 			saveRequest2 <= nextSaveRequest2;
 			saveRequest3 <= nextSaveRequest3;
 			saveRequest4 <= nextSaveRequest4;
@@ -1056,44 +1041,28 @@ writeRequest <= nextWriteRequest;
 	nextBlinker <= not blinker when count = 0 else blinker;
 
 
-	process (count)
+	process (count, requestedDataToWrite, reset, cke)
 
 		begin
-	
-
-	
-	
-	
-			
-			
-			
-	
+		
 			nextDqsTristate <= '1';
 
-
-				nextWriteRequest <= '0';  -- unless overridden below
+			nextWriteRequest <= '0';  -- unless overridden below
 			nextSaveRequest <= '0';
 			nextSaveRequest2 <= '0';
 			nextSaveRequest3 <= '0';
 			nextSaveRequest4 <= '0';
 			
-			
 			nextRequestedDataToWrite  <= requestedDataToWrite;
-		
-			
-			
+
 			nextODT <= '1';  -- On Die Termination is normally on
 			nextBa <= (others => '0');
 			nextAddrRequest <= (others => '0');
 			nextRasRequest <= '1';
 			nextCasRequest <= '1';
 			nextWeRequest <= '1';
-	
-			
 			
 			nextData <= (others => 'Z');
-			
-			
 	
 			nextReset <= reset;
 			nextCke <= cke;
@@ -1113,7 +1082,6 @@ writeRequest <= nextWriteRequest;
 				nextAddrRequest <= "111111111111111";
 			end if;
 	
-
 			if count = 20200 then--20200 --MRS MR2
 				nextBa <= "010";
 				nextAddrRequest <= "000000000001000";  --CWL = 6
@@ -1130,8 +1098,7 @@ writeRequest <= nextWriteRequest;
 				nextCasRequest <= '0';
 				nextWeRequest <= '0';
 			end if;
-	
-	
+		
 			if count = 20202 then--20202 --MRS MR1  
 				nextBa <= "001";
 				nextAddrRequest <= "000000000000101";  -- DLL disable     RZQ/4 (60O NOM)
@@ -1140,8 +1107,7 @@ writeRequest <= nextWriteRequest;
 				nextCasRequest <= '0';
 				nextWeRequest <= '0';
 			end if;
-	
-	
+		
 			if count = 20203 then--20203 --MRS MR0
 				nextBa <= "000";	
 				nextAddrRequest <= (9 => '1', 8 => '0', 5 => '1', others => '0'); --CAS latency = 6, Don'treset DLL  , WriteRecovery = 5, FixedBurstLength = 8
@@ -1158,8 +1124,7 @@ writeRequest <= nextWriteRequest;
 				nextCasRequest <= '1';
 				nextWeRequest <= '0';
 			end if;
-		
-		
+				
 			if count = 20224 then--20224 --MRS MR3
 				nextBa <= "011";
 				nextAddrRequest <= "000000000000000"; 
@@ -1167,9 +1132,6 @@ writeRequest <= nextWriteRequest;
 				nextCasRequest <= '0';
 				nextWeRequest <= '0';
 			end if;
-	
-	
-		
 		
 			if count = 20226 then--20226 --ACTIVATE
 				nextBa <= "000";
@@ -1178,7 +1140,6 @@ writeRequest <= nextWriteRequest;
 				nextCasRequest <= '1';
 				nextWeRequest <= '1';
 			end if;
-	
 
 			if count = 20229 then--20228 --WRITE
 				nextData <= "1010101010100110"; -- the last four digits of this will show up on the LEDs
@@ -1202,11 +1163,8 @@ writeRequest <= nextWriteRequest;
 				nextRequestedDataToWrite(18) <= "1010101010100011";
 				nextRequestedDataToWrite(19) <= "1010101010100001";
 				nextRequestedDataToWrite(20) <= "0000000000000011";
-				
- 				
 
 				nextWriteRequest <= '1';
-				
 				nextDqsTristate <= '0';
 			
 				nextBa <= "000";

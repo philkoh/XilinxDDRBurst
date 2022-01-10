@@ -84,14 +84,7 @@ NET "blinkerPORT" LOC = R9;
 
 #NET "dummyOut" LOC = L10;
 
-NET "monitor2" LOC = E13;
-NET "monitor3" LOC = T15;
-NET "monitor4" LOC = L13;
 
-
-NET "monitor2"  IOSTANDARD = LVCMOS33;
-NET "monitor3"  IOSTANDARD = LVCMOS33;
-NET "monitor4"  IOSTANDARD = LVCMOS33;
 NET "switch2PORT" IOSTANDARD = LVCMOS33;
 NET "switch3PORT" IOSTANDARD = LVCMOS33;
 
