@@ -850,15 +850,16 @@ process (clk250MHz, advanceTheShiftRegister)
 	
 	
 		--	if count2 = 17   then   -- this increments the address
-			if writePulseTrain(1) = '1' then
-				nextClockEnableAddrIncrement <= '1';
+			if writePulseTrain(2) = '1' then
+					nextAddrOut <= 			std_logic_vector(to_unsigned((to_integer(unsigned(addrOut)) + 8),15)); -- increment column address by 8
+--		nextClockEnableAddrIncrement <= '1';
 			else
-				nextClockEnableAddrIncrement <= '0';
+	--			nextClockEnableAddrIncrement <= '0';
 			end if;
 		
 		
 		if clockEnableAddrIncrement = '1' then
-			nextAddrOut <= 			std_logic_vector(to_unsigned((to_integer(unsigned(addrOut)) + 8),15)); -- increment column address by 8
+	--		nextAddrOut <= 			std_logic_vector(to_unsigned((to_integer(unsigned(addrOut)) + 8),15)); -- increment column address by 8
 		--		nextAddrOut <= "000000000011000"; 
 		end if;
 				
