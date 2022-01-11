@@ -864,8 +864,8 @@ process (clk250MHz, advanceTheShiftRegister)
 		end if;
 		
 		if clockEnableAddrIncrement = '1' then
-		--		nextAddrOut <= 			std_logic_vector(to_unsigned((to_integer(unsigned(addrOut)) + 8),15)); -- increment column address by 8
-				nextAddrOut <= "000000001110000"; 
+			nextAddrOut <= 			std_logic_vector(to_unsigned((to_integer(unsigned(addrOut)) + 8),15)); -- increment column address by 8
+		--		nextAddrOut <= "000000000011000"; 
 		end if;
 				
 			
@@ -1215,7 +1215,6 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextCasRequest <= '0';
 				nextWeRequest <= '0';
 			end if;
-
 	
 
 			if count = 20236 then--20232   --READ
@@ -1224,14 +1223,12 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextSaveRequest <= '1';	
 				
 				nextBa <= "000";
-				nextAddrRequest <= "000000001110000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
+				nextAddrRequest <= "000000000011000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '1';
 			end if;
 			
-			
-		
    end process;
 		
 
