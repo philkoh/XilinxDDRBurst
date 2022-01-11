@@ -210,8 +210,8 @@ END COMPONENT;
 	signal nextShiftRegister : philArr;
 	
 	
-	signal writePulseTrain :    std_logic_vector(15 downto 0) := "0000000000000000";
-	signal nextWritePulseTrain :    std_logic_vector(15 downto 0) ;
+	signal writePulseTrain :    std_logic_vector(15 downto 1) := "000000000000000";
+	signal nextWritePulseTrain :    std_logic_vector(15 downto 1) ;
 	
 	
 	signal dataAssertedToOutput : std_logic_vector(15 downto 0);
@@ -269,12 +269,10 @@ END COMPONENT;
 	signal nextdin : std_logic_vector(143 downto 0);
 	signal dout : std_logic_vector(143 downto 0);
 	
-	signal readIntoFIFO : std_logic;
-	signal nextReadIntoFIFO : std_logic := '0';
-	signal lastReadIntoFIFO : std_logic := '0';
+	signal sharpenFIFOpushEnable : std_logic_vector (4 downto 0) := "00000";
+	signal sharpenFIFOpullEnable : std_logic_vector (4 downto 0) := "00000";
+	
 
-	signal rd_en : std_logic := '0';
-	signal nextRdEn : std_logic ;
 begin
 
 
@@ -295,8 +293,8 @@ fifoInstance : FIFOphil2
     wr_clk => clk250MHz,
     rd_clk => clk250MHz,
     din => din,
-    wr_en => '1',
-    rd_en => '1',
+    wr_en => sharpenFIFOpushEnable(4) ,
+    rd_en => sharpenFIFOpullEnable(4) ,
     dout => dout
 --    full => full,
  --   empty => empty
@@ -306,7 +304,33 @@ fifoInstance : FIFOphil2
 
 
 
+	process (clk250MHz)  -- FIFOenable sharpener; it will turn any rising edge into a two cycle-pulse, then further sharpen to a one-cycle pulse at 250 MHz.
+		begin
+	------------------------------------------SEQUENTIAL :	
+		if rising_edge(clk250MHz) then
+			sharpenFIFOpushEnable(3) <= sharpenFIFOpushEnable(2) and (not sharpenFIFOpushEnable(3));  -- only on rising edge of sharpenFIFOpushEnable(2) 
+			sharpenFIFOpushEnable(4) <= sharpenFIFOpushEnable(3);
 
+			sharpenFIFOpullEnable(3) <= sharpenFIFOpullEnable(2) and (not sharpenFIFOpullEnable(3));  -- only on rising edge of sharpenFIFOpullEnable(2) 
+			sharpenFIFOpullEnable(4) <= sharpenFIFOpullEnable(3);
+		end if;
+	end process;
+
+	process (clk250MHz, clk125MHz)  -- FIFO enable sharpener; it will turn any rising edge into a two cycle-pulse, then further sharpen to a one-cycle pulse at 250 MHz.
+		begin
+	------------------------------------------SEQUENTIAL :	
+		if rising_edge(clk250MHz) and clk125MHz = '1' then
+			sharpenFIFOpushEnable(1) <= sharpenFIFOpushEnable(0);
+			sharpenFIFOpushEnable(2) <= sharpenFIFOpushEnable(1) and (not sharpenFIFOpushEnable(2)); -- only on rising edge of sharpenFIFOpushEnable(1) 
+ 
+			sharpenFIFOpullEnable(1) <= sharpenFIFOpullEnable(0);
+			sharpenFIFOpullEnable(2) <= sharpenFIFOpullEnable(1) and (not sharpenFIFOpullEnable(2)); -- only on rising edge of sharpenFIFOpullEnable(1) 
+ end if;
+  end process;
+
+
+	------------------------------------------COMBINATORIAL:
+ 
 
 
 
@@ -694,14 +718,16 @@ process (clk250MHz, advanceTheShiftRegister)
 			refillTheShiftRegister <= nextRefillTheShiftRegister  ;
 			
 
-			lastReadIntoFIFO <= readIntoFIFO;
-			rd_en <= nextRdEn;
+		 		
+		
+		 	 
+		 
+			
 		end if;
 	end process;
 
 		------------------------------------------COMBINATORIAL:
-		nextRdEn <= readIntoFIFO and (not lastReadIntoFIFO);  -- this will only pulse for one 250 MHZ clock cycle on rising edge of readIntoFIFO
-
+	 
 
 	process (clk125MHz,count2,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData,  clockEnableRead, capturedData, dqsTristate, delayedDataForOutput, dataAssertedToOutput, clockEnableWrite, clockEnableRefillWriteData, refillTheShiftRegister)
 	
@@ -749,6 +775,7 @@ process (clk250MHz, advanceTheShiftRegister)
 			nextRefillTheShiftRegister <= '1';
 		end if;
 
+	
 		
 	end process;
 		
@@ -770,7 +797,7 @@ process (clk250MHz, advanceTheShiftRegister)
 			clockEnableRefillWriteData <= nextClockEnableRefillWriteData;
 			clockEnableRead <= nextClockEnableRead;
 			clockEnableWrite <= nextClockEnableWrite;
-
+		
 			cas <= nextCas;
 			ras <= nextRas;
 			we <= nextWe;
@@ -797,13 +824,12 @@ process (clk250MHz, advanceTheShiftRegister)
 
 
 
-	process (saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount, count2)
+	process (dout, saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount, count2)
 	
 		begin
-			
 		
 		nextWriteRefill <=	writeRefill     ;
-	 	   nextAddrOut <= addrOut;--unless overridden below, hold and remember the loaded values
+	 	nextAddrOut <= addrOut;--unless overridden below, hold and remember the loaded values
 		addrPort <= addrOut;
 	
 		
@@ -825,75 +851,77 @@ process (clk250MHz, advanceTheShiftRegister)
  		LED2 <= switchCount(2);
 		LED3 <= switchCount(3);
 
-			nextCount2 <= count2 + 1;  -- count2 increments at 125 MHz, not 250 MHz
-			if count2 = 1 then 
-		--		nextCount2 <= count2 + 14;  --skip ahead to shorten the cycle
-			end if;
+		nextCount2 <= count2 + 1;  -- count2 increments at 125 MHz, not 250 MHz
+		if count2 = 1 then 
+	--		nextCount2 <= count2 + 14;  --skip ahead to shorten the cycle
+		end if;
+			
+		if count2 = 0    then
+			nextClockEnableBeginning <= '1';  -- this flag executes all the block of code below that changes signals on the count2 = 0 edge 
+		else
+			nextClockEnableBeginning <= '0';
+		end if;
+		
+		if count2 = 16   then   -- this pulses the CAS/RAS/WE command that must get sent for the read or write cycle
+			nextClockEnableCommand <= '1';
+		else
+			nextClockEnableCommand <= '0';
+		end if;
+			
+		if clockEnableCommand = '1' then  --the CAS/RAS/WE command is only applied for this one 125 MHz clock cycle just after count2=16
+			nextCas <= casRequest;
+			nextRas <= rasRequest;
+			nextWe <= weRequest;
+		else                      -- otherwise, CAS/RAS/WE are held HIGH (which is the NOP, No Operation command)
+			nextCas <= '1';
+			nextRas <= '1';
+			nextWe <= '1';
+		end if;
 		
 		
-			
-			if count2 = 0    then
-				nextClockEnableBeginning <= '1';  -- this flag executes all the block of code below that changes signals on the count2 = 0 edge 
-			else
-				nextClockEnableBeginning <= '0';
-			end if;
-			
-			if count2 = 16   then   -- this pulses the CAS/RAS/WE command that must get sent for the read or write cycle
-				nextClockEnableCommand <= '1';
-			else
-				nextClockEnableCommand <= '0';
-			end if;
-			
-			
-				
-			if clockEnableCommand = '1' then  --the CAS/RAS/WE command is only applied for this one 125 MHz clock cycle just after count2=16
-				nextCas <= casRequest;
-				nextRas <= rasRequest;
-				nextWe <= weRequest;
-			else                      -- otherwise, CAS/RAS/WE are held HIGH (which is the NOP, No Operation command)
-				nextCas <= '1';
-				nextRas <= '1';
-				nextWe <= '1';
-			end if;
-				
-			
-			nextWritePulseTrain (1) <= '0';
-			if count2 = 16 and writeRequest = '1' then
-				nextWritePulseTrain (1) <= '1';
-			end if;
-			
-			
-			if count2 = 20 and  writeRequest = '1' then  -- during a write cycle, pulse a second write command
-				nextClockEnableCommand <= '1';
-				nextWritePulseTrain(1) <= '1'; -- this starts a second sequence of write actions for the second burst of data
-			end if;
-				
-				
-			if count2 = 5   then   -- this loads address  
-				nextAddrOut <= addrRequest;
-			end if;
-	
-	
-	
-		--	if count2 = 17   then   -- this increments the address
-			if writePulseTrain(2) = '1' then
-					nextAddrOut <= 			std_logic_vector(to_unsigned((to_integer(unsigned(addrOut)) + 8),15)); -- increment column address by 8
-			end if;
 		
-				
+		
+		nextWritePulseTrain (1) <= '0';
+		if count2 = 16 and writeRequest = '1' then
+			nextWritePulseTrain (1) <= '1';
+		end if;
+		
+		if count2 = 20 and  writeRequest = '1' then  -- during a write cycle, pulse a second write command
+			nextClockEnableCommand <= '1';
+			nextWritePulseTrain(1) <= '1'; -- this starts a second sequence of write actions for the second burst of data
+		end if;
+			
+		if count2 = 5   then   -- this loads address  
+			nextAddrOut <= addrRequest;
+		end if;
+
+	--	if count2 = 17   then   -- this increments the address
+		if writePulseTrain(2) = '1' then
+				nextAddrOut <= 			std_logic_vector(to_unsigned((to_integer(unsigned(addrOut)) + 8),15)); -- increment column address by 8
+		end if;
 			
 			
 	--	if count2 = 20 and writeRequest = '1' then  -- this replaces the waiting data from fifo
 		if writePulseTrain(4) = '1' then
-			nextWriteRefill(0) <= "0000000000001001"; 
-			nextWriteRefill(1) <= "0000000000000110"; 
-			nextWriteRefill(2) <= "0000000000001100"; 
-			nextWriteRefill(3) <= "0000000000001010"; 
-			nextWriteRefill(4) <= "0000000000000101"; 
-			nextWriteRefill(5) <= "0000000000000111"; 
-			nextWriteRefill(6) <= "0000000000001111"; 
-			nextWriteRefill(7) <= "0000000000001011"; 
-		
+	--			nextWriteRefill(0) <= "0000000000001001"; 
+	--			nextWriteRefill(1) <= "0000000000000110"; 
+	--			nextWriteRefill(2) <= "0000000000001100"; 
+	--	 		nextWriteRefill(3) <= "0000000000001010"; 
+	--			nextWriteRefill(4) <= "0000000000000101"; 
+	--			nextWriteRefill(5) <= "0000000000000111"; 
+	--			nextWriteRefill(6) <= "0000000000001111"; 
+	--			nextWriteRefill(7) <= "0000000000001011"; 
+	
+			nextWriteRefill(0) <= dout (15 downto 0); 
+			nextWriteRefill(1) <= dout (31 downto 16); 
+			nextWriteRefill(2) <= dout (47 downto 32); 
+	 		nextWriteRefill(3) <= dout (63 downto 48); 
+			nextWriteRefill(4) <= dout (79 downto 64); 
+			nextWriteRefill(5) <= dout (95 downto 80); 
+			nextWriteRefill(6) <= dout (111 downto 96); 
+			nextWriteRefill(7) <= dout (127 downto 112); 
+	
+			sharpenFIFOpullEnable(0) <= '1';  -- this will advance the FIFO later 
 		end if;
 			
 			
@@ -908,15 +936,16 @@ process (clk250MHz, advanceTheShiftRegister)
 	--		nextClockEnableRefillWriteData <= '1';
 --		end if;
 
+
 		if count2 = 24 and writeRequest = '1' then  -- this replaces the waiting data from fifo
-			nextWriteRefill(0) <= "0000000000000001"; 
-			nextWriteRefill(1) <= "0000000000000010"; 
-			nextWriteRefill(2) <= "0000000000000100"; 
-			nextWriteRefill(3) <= "0000000000001000"; 
-			nextWriteRefill(4) <= "0000000000001100"; 
-			nextWriteRefill(5) <= "0000000000000110"; 
-			nextWriteRefill(6) <= "0000000000000011"; 
-			nextWriteRefill(7) <= "0000000000000111"; 
+--			nextWriteRefill(0) <= "0000000000000001"; 
+--			nextWriteRefill(1) <= "0000000000000010"; 
+--			nextWriteRefill(2) <= "0000000000000100"; 
+--			nextWriteRefill(3) <= "0000000000001000"; 
+--			nextWriteRefill(4) <= "0000000000001100"; 
+--			nextWriteRefill(5) <= "0000000000000110"; 
+--			nextWriteRefill(6) <= "0000000000000011"; 
+--			nextWriteRefill(7) <= "0000000000000111"; 
 	
 		end if;
 			
@@ -1001,16 +1030,12 @@ process (clk250MHz, advanceTheShiftRegister)
 				LED3 <=    capturedData(10)(3);
 		end if;
 
-
 		if switchCount = 10 then
 				LED0 <=   capturedData(11)(0);
 				LED1 <=    capturedData(11)(1);
 				LED2 <=    capturedData(11)(2);
 				LED3 <=    capturedData(11)(3);
 		end if;
-
-			
-			 
 
    end process;
 	
@@ -1050,7 +1075,6 @@ process (clk250MHz, advanceTheShiftRegister)
 			requestedDataToWrite  <= nextRequestedDataToWrite;
 	
 			din <= nextdin;
-			readIntoFIFO <= nextReadIntoFIFO;
 			end if;
    end process;
 
@@ -1067,7 +1091,7 @@ process (clk250MHz, advanceTheShiftRegister)
 	nextBlinker <= not blinker when count = 0 else blinker;
 
 
-	process (count, requestedDataToWrite, reset, cke)
+	process (count, requestedDataToWrite, reset, cke, din)
 
 		begin
 		
@@ -1096,8 +1120,7 @@ process (clk250MHz, advanceTheShiftRegister)
 			nextdin <= din;
 			
 			
-			nextReadIntoFIFO <= readIntoFIFO;
-			
+		 	
 			if count = 0 then
 				nextReset <= '0';
 				nextCke <= '0';
@@ -1174,19 +1197,18 @@ process (clk250MHz, advanceTheShiftRegister)
 			end if;
 
 
+			sharpenFIFOpushEnable(0) <= '0';
 			if count = 20227 then
-				nextdin(3 downto 0) <= "0001";
-				nextdin(19 downto 16) <= "0010";
-				nextdin(35 downto 32) <= "0100";
-				nextdin(51 downto 48) <= "1000";
-				nextdin(67 downto 64) <= "1100";
-				nextdin(83 downto 80) <= "0110";
-				nextdin(99 downto 96) <= "0011";
-				nextdin(115 downto 112) <= "0111";
-			end if;
-			if count = 20228 then
-				nextReadIntoFIFO <= '1';
-			end if;
+				nextdin(3 downto 0) <= "1110";
+				nextdin(19 downto 16) <= "1101";
+				nextdin(35 downto 32) <= "1011";
+				nextdin(51 downto 48) <= "0111";
+				nextdin(67 downto 64) <= "0011";
+				nextdin(83 downto 80) <= "1001";
+				nextdin(99 downto 96) <= "1100";
+				nextdin(115 downto 112) <= "1000";
+				sharpenFIFOpushEnable(0) <= '1';  -- note: will need a count where this is back to zero because the push happens only on rising edge
+		 	end if;
 
 
 			if count = 20229 then--20228 --WRITE
