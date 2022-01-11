@@ -1198,7 +1198,7 @@ process (clk250MHz, advanceTheShiftRegister)
 
 
 			sharpenFIFOpushEnable(0) <= '0';
-			if count = 20227 then
+			if count = 20228 then
 				nextdin(3 downto 0) <= "1110";
 				nextdin(19 downto 16) <= "1101";
 				nextdin(35 downto 32) <= "1011";
@@ -1209,9 +1209,41 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextdin(115 downto 112) <= "1000";
 				sharpenFIFOpushEnable(0) <= '1';  -- note: will need a count where this is back to zero because the push happens only on rising edge
 		 	end if;
+		
+			if count = 20230 then
+				sharpenFIFOpushEnable(0) <= '0';  -- back to zero because the push happens only on rising edge
+		 	end if;
+			if count = 20232 then
+				nextdin(3 downto 0) <= "1110";
+				nextdin(19 downto 16) <= "1101";
+				nextdin(35 downto 32) <= "1011";
+				nextdin(51 downto 48) <= "0111";
+				nextdin(67 downto 64) <= "0011";
+				nextdin(83 downto 80) <= "1001";
+				nextdin(99 downto 96) <= "1100";
+				nextdin(115 downto 112) <= "1000";
+				sharpenFIFOpushEnable(0) <= '1';  -- note: will need a count where this is back to zero because the push happens only on rising edge
+		 	end if;
+		
+			if count = 20234 then
+				sharpenFIFOpushEnable(0) <= '0';  -- back to zero because the push happens only on rising edge
+		 	end if;
 
 
-			if count = 20229 then--20228 --WRITE
+			if count = 20236 then
+				nextdin(3 downto 0) <= "0111";
+				nextdin(19 downto 16) <= "0110";
+				nextdin(35 downto 32) <= "0101";
+				nextdin(51 downto 48) <= "0100";
+				nextdin(67 downto 64) <= "0011";
+				nextdin(83 downto 80) <= "0010";
+				nextdin(99 downto 96) <= "0001";
+				nextdin(115 downto 112) <= "0000";
+				sharpenFIFOpushEnable(0) <= '1';  -- note: will need a count where this is back to zero because the push happens only on rising edge
+		 	end if;
+
+
+			if count = 20238 then--20228 --WRITE
 				nextData <= "1010101010100110"; -- the last four digits of this will show up on the LEDs
 				nextRequestedDataToWrite(1) <= "0000000000000001"; 
 				nextRequestedDataToWrite(2) <= "1010101010100010";
@@ -1248,7 +1280,7 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextWeRequest <= '0';
 			end if;
 			
-			if count = 20230 then--20230 --WRITE
+			if count = 20240 then--20230 --WRITE
 				nextData <= "1111111111111001";
 				nextDqsTristate <= '0';
 			
@@ -1260,7 +1292,7 @@ process (clk250MHz, advanceTheShiftRegister)
 			end if;
 	
 
-			if count = 20236 then--20232   --READ
+			if count = 20244 then--20232   --READ
 				nextODT <= '0';  -- turn On Die Termination off for read
 
 				nextSaveRequest <= '1';	
