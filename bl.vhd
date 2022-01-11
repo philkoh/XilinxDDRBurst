@@ -101,6 +101,7 @@ end component;
 ------------- Begin Cut here for COMPONENT Declaration ------ COMP_TAG
 COMPONENT FIFOphil2
   PORT (
+    rst : IN STD_LOGIC;
     wr_clk : IN STD_LOGIC;
     rd_clk : IN STD_LOGIC;
     din : IN STD_LOGIC_VECTOR(143 DOWNTO 0);
@@ -268,6 +269,7 @@ END COMPONENT;
 	signal din : std_logic_vector(143 downto 0);
 	signal nextdin : std_logic_vector(143 downto 0);
 	signal dout : std_logic_vector(143 downto 0);
+	signal rst : std_logic ;
 	
 	signal sharpenFIFOpushEnable : std_logic_vector (4 downto 0) := "00000";
 	signal sharpenFIFOpullEnable : std_logic_vector (4 downto 0) := "00000";
@@ -290,7 +292,8 @@ begin
 ------------- Begin Cut here for INSTANTIATION Template ----- INST_TAG
 fifoInstance : FIFOphil2
   PORT MAP (
-    wr_clk => clk250MHz,
+    rst => rst,
+     wr_clk => clk250MHz,
     rd_clk => clk250MHz,
     din => din,
     wr_en => sharpenFIFOpushEnable(4) ,
@@ -1120,10 +1123,11 @@ process (clk250MHz, advanceTheShiftRegister)
 			nextdin <= din;
 			
 			
-		 	
+		 	rst <= '0';
 			if count = 0 then
 				nextReset <= '0';
 				nextCke <= '0';
+				rst <= '1';
 			end if;
 			if count = 5000 then --5000
 				nextReset <= '1';
