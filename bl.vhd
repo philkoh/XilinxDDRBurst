@@ -847,10 +847,16 @@ process (clk250MHz, advanceTheShiftRegister)
 				
 				
 			if count2 = 5   then   -- this loads address  
-				nextClockEnableLoadAddress <= '1';
+			nextAddrOut <= addrRequest;
+--				nextClockEnableLoadAddress <= '1';
 			else
-				nextClockEnableLoadAddress<= '0';
+	--			nextClockEnableLoadAddress<= '0';
 			end if;
+	
+		if clockEnableLoadAddress = '1'  then  -- a bit before the write, assert the address
+	--		nextAddrOut <= addrRequest;
+		end if;
+	
 	
 		--	if count2 = 17   then   -- this increments the address
 			if writePulseTrain(1) = '1' then
@@ -859,9 +865,6 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextClockEnableAddrIncrement <= '0';
 			end if;
 		
-		if clockEnableLoadAddress = '1'  then  -- a bit before the write, assert the address
-			nextAddrOut <= addrRequest;
-		end if;
 		
 		if clockEnableAddrIncrement = '1' then
 			nextAddrOut <= 			std_logic_vector(to_unsigned((to_integer(unsigned(addrOut)) + 8),15)); -- increment column address by 8
