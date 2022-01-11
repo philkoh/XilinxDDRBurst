@@ -858,7 +858,7 @@ process (clk250MHz, advanceTheShiftRegister)
 				
 			
 			
-		if count2 = 21 and writeRequest = '1' then  -- this replaces the waiting data from fifo
+		if count2 = 20 and writeRequest = '1' then  -- this replaces the waiting data from fifo
 			nextWriteRefill(0) <= "0000000000001001"; 
 			nextWriteRefill(1) <= "0000000000000110"; 
 			nextWriteRefill(2) <= "0000000000001100"; 
@@ -879,7 +879,7 @@ process (clk250MHz, advanceTheShiftRegister)
 			nextClockEnableRefillWriteData <= '1';
 		end if;
 
-		if count2 = 25 and writeRequest = '1' then  -- this replaces the waiting data from fifo
+		if count2 = 24 and writeRequest = '1' then  -- this replaces the waiting data from fifo
 			nextWriteRefill(0) <= "0000000000000001"; 
 			nextWriteRefill(1) <= "0000000000000010"; 
 			nextWriteRefill(2) <= "0000000000000100"; 
@@ -1208,7 +1208,7 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextSaveRequest <= '1';	
 				
 				nextBa <= "000";
-				nextAddrRequest <= "000000001110000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
+				nextAddrRequest <= "000000000010000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '1';
