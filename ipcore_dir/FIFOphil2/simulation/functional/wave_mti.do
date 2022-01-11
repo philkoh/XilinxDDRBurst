@@ -57,6 +57,7 @@
 
 onerror {resume}
 quietly WaveActivateNextPane {} 0
+add wave -noupdate /FIFOphil2_tb/FIFOphil2_synth_inst/FIFOphil2_inst/RST
 add wave -noupdate -divider WRITE
 add wave -noupdate /FIFOphil2_tb/FIFOphil2_synth_inst/FIFOphil2_inst/WR_CLK
 add wave -noupdate /FIFOphil2_tb/FIFOphil2_synth_inst/FIFOphil2_inst/WR_EN

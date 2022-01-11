@@ -57,6 +57,7 @@
 ------------- Begin Cut here for COMPONENT Declaration ------ COMP_TAG
 COMPONENT FIFOphil2
   PORT (
+    rst : IN STD_LOGIC;
     wr_clk : IN STD_LOGIC;
     rd_clk : IN STD_LOGIC;
     din : IN STD_LOGIC_VECTOR(143 DOWNTO 0);
@@ -75,6 +76,7 @@ END COMPONENT;
 ------------- Begin Cut here for INSTANTIATION Template ----- INST_TAG
 your_instance_name : FIFOphil2
   PORT MAP (
+    rst => rst,
     wr_clk => wr_clk,
     rd_clk => rd_clk,
     din => din,

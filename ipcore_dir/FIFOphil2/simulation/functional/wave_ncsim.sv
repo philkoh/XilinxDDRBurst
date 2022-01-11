@@ -58,6 +58,7 @@
 window new WaveWindow  -name  "Waves for FIFO Generator Example Design"
 waveform  using  "Waves for FIFO Generator Example Design"
 
+waveform add -signals /FIFOphil2_tb/FIFOphil2_synth_inst/FIFOphil2_inst/RST
 waveform add -label WRITE
 waveform add -signals /FIFOphil2_tb/FIFOphil2_synth_inst/FIFOphil2_inst/WR_CLK
 waveform add -signals /FIFOphil2_tb/FIFOphil2_synth_inst/FIFOphil2_inst/WR_EN

@@ -200,6 +200,7 @@ PACKAGE FIFOphil2_pkg IS
    PORT (
            WR_CLK                    : IN  std_logic;
      	   RD_CLK                    : IN  std_logic;
+           RST                       : IN  std_logic;
            WR_EN 		     : IN  std_logic;
            RD_EN                     : IN  std_logic;
            DIN                       : IN  std_logic_vector(144-1 DOWNTO 0);

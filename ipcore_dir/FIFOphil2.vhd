@@ -42,6 +42,7 @@ LIBRARY XilinxCoreLib;
 -- synthesis translate_on
 ENTITY FIFOphil2 IS
   PORT (
+    rst : IN STD_LOGIC;
     wr_clk : IN STD_LOGIC;
     rd_clk : IN STD_LOGIC;
     din : IN STD_LOGIC_VECTOR(143 DOWNTO 0);
@@ -57,6 +58,7 @@ ARCHITECTURE FIFOphil2_a OF FIFOphil2 IS
 -- synthesis translate_off
 COMPONENT wrapped_FIFOphil2
   PORT (
+    rst : IN STD_LOGIC;
     wr_clk : IN STD_LOGIC;
     rd_clk : IN STD_LOGIC;
     din : IN STD_LOGIC_VECTOR(143 DOWNTO 0);
@@ -155,7 +157,7 @@ END COMPONENT;
       c_has_prog_flags_wrch => 0,
       c_has_rd_data_count => 0,
       c_has_rd_rst => 0,
-      c_has_rst => 0,
+      c_has_rst => 1,
       c_has_slave_ce => 0,
       c_has_srst => 0,
       c_has_underflow => 0,
@@ -227,7 +229,7 @@ END COMPONENT;
       c_use_common_overflow => 0,
       c_use_common_underflow => 0,
       c_use_default_settings => 0,
-      c_use_dout_rst => 0,
+      c_use_dout_rst => 1,
       c_use_ecc => 0,
       c_use_ecc_axis => 0,
       c_use_ecc_rach => 0,
@@ -266,6 +268,7 @@ BEGIN
 -- synthesis translate_off
 U0 : wrapped_FIFOphil2
   PORT MAP (
+    rst => rst,
     wr_clk => wr_clk,
     rd_clk => rd_clk,
     din => din,
