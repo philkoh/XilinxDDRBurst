@@ -650,7 +650,7 @@ process (clk250MHz, advanceTheShiftRegister)
    end process;
 	
 ------------------------------------------COMBINATORIAL:
-	process (refillTheShiftRegister)
+	process (refillTheShiftRegister, writeRefill, shiftRegister)
 		begin
 		if refillTheShiftRegister = '1' then
 			nextdataAssertedToOutput <= writeRefill(0);
@@ -692,7 +692,7 @@ process (clk250MHz, advanceTheShiftRegister)
  end process;
 
 		------------------------------------------COMBINATORIAL:
-	process (clk125MHz,count2,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData)
+	process (clk125MHz,count2,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData,  clockEnableRead, capturedData, dqsTristate, delayedDataForOutput, dataAssertedToOutput, clockEnableWrite, clockEnableRefillWriteData, refillTheShiftRegister)
 	
 	
 		begin
@@ -787,8 +787,7 @@ process (clk250MHz, advanceTheShiftRegister)
 
 
 
-	process (count2,dqs0incoming,switchregister,switch2port,switch3port,switchCount,lastSwitchRegister,inDataB,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData)
-	
+	process (clockEnableAddrIncrement, saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain, clockEnableLoadAddress, addrRequest, switch2port, switch3Port, switchCount, count2)
 	
 		begin
 			
