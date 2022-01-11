@@ -144,7 +144,6 @@ END COMPONENT;
 	signal clockEnableRefillWriteData : std_logic := '0';
 --	signal writeAndRefillThisCycle : std_logic := '0';
 --	signal nextwriteAndRefillThisCycle : std_logic := '0';
-	signal clockEnableLoadAddress : std_logic := '0';
 	signal clockEnableRead : std_logic := '0';
 	signal clockEnableWrite : std_logic := '0';
 	signal clockEnableAddrIncrement : std_logic := '0';
@@ -152,7 +151,6 @@ END COMPONENT;
 	signal nextClockEnableCommand : std_logic := '0';
 --	signal nextClockEnableLoadWriteData : std_logic := '0';
 	signal nextClockEnableRefillWriteData : std_logic := '0';
-	signal nextClockEnableLoadAddress : std_logic := '0';
 	signal nextClockEnableRead : std_logic := '0';
 	signal nextClockEnableWrite : std_logic := '0';
 	signal nextClockEnableAddrIncrement : std_logic := '0';
@@ -757,7 +755,6 @@ process (clk250MHz, advanceTheShiftRegister)
 			clockEnableBeginning <= nextClockEnableBeginning;  --clockEnable registers change on falling edge of clk125MHz
 			clockEnableCommand <= nextClockEnableCommand;
 			clockEnableRefillWriteData <= nextClockEnableRefillWriteData;
-			clockEnableLoadAddress <= nextClockEnableLoadAddress;
 			clockEnableRead <= nextClockEnableRead;
 			clockEnableWrite <= nextClockEnableWrite;
 			clockEnableAddrIncrement <= nextClockEnableAddrIncrement;
@@ -787,7 +784,7 @@ process (clk250MHz, advanceTheShiftRegister)
 
 
 
-	process (clockEnableAddrIncrement, saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain, clockEnableLoadAddress, addrRequest, switch2port, switch3Port, switchCount, count2)
+	process (clockEnableAddrIncrement, saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount, count2)
 	
 		begin
 			
@@ -847,15 +844,9 @@ process (clk250MHz, advanceTheShiftRegister)
 				
 				
 			if count2 = 5   then   -- this loads address  
-			nextAddrOut <= addrRequest;
---				nextClockEnableLoadAddress <= '1';
-			else
-	--			nextClockEnableLoadAddress<= '0';
+				nextAddrOut <= addrRequest;
 			end if;
 	
-		if clockEnableLoadAddress = '1'  then  -- a bit before the write, assert the address
-	--		nextAddrOut <= addrRequest;
-		end if;
 	
 	
 		--	if count2 = 17   then   -- this increments the address
