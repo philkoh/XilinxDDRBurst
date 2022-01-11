@@ -146,14 +146,12 @@ END COMPONENT;
 --	signal nextwriteAndRefillThisCycle : std_logic := '0';
 	signal clockEnableRead : std_logic := '0';
 	signal clockEnableWrite : std_logic := '0';
-	signal clockEnableAddrIncrement : std_logic := '0';
 	signal nextClockEnableBeginning : std_logic := '0';
 	signal nextClockEnableCommand : std_logic := '0';
 --	signal nextClockEnableLoadWriteData : std_logic := '0';
 	signal nextClockEnableRefillWriteData : std_logic := '0';
 	signal nextClockEnableRead : std_logic := '0';
 	signal nextClockEnableWrite : std_logic := '0';
-	signal nextClockEnableAddrIncrement : std_logic := '0';
 	
 	signal writeThisCycle : std_logic := '0';
 	signal nextWriteThisCycle : std_logic ;
@@ -268,7 +266,15 @@ END COMPONENT;
    
 	
 	signal din : std_logic_vector(143 downto 0);
+	signal nextdin : std_logic_vector(143 downto 0);
 	signal dout : std_logic_vector(143 downto 0);
+	
+	signal readIntoFIFO : std_logic;
+	signal nextReadIntoFIFO : std_logic := '0';
+	signal lastReadIntoFIFO : std_logic := '0';
+
+	signal rd_en : std_logic := '0';
+	signal nextRdEn : std_logic ;
 begin
 
 
@@ -686,10 +692,17 @@ process (clk250MHz, advanceTheShiftRegister)
 			  
 			advanceTheShiftRegister <= nextAdvanceTheShiftRegister  ;
 			refillTheShiftRegister <= nextRefillTheShiftRegister  ;
+			
+
+			lastReadIntoFIFO <= readIntoFIFO;
+			rd_en <= nextRdEn;
 		end if;
- end process;
+	end process;
 
 		------------------------------------------COMBINATORIAL:
+		nextRdEn <= readIntoFIFO and (not lastReadIntoFIFO);  -- this will only pulse for one 250 MHZ clock cycle on rising edge of readIntoFIFO
+
+
 	process (clk125MHz,count2,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData,  clockEnableRead, capturedData, dqsTristate, delayedDataForOutput, dataAssertedToOutput, clockEnableWrite, clockEnableRefillWriteData, refillTheShiftRegister)
 	
 	
@@ -757,7 +770,7 @@ process (clk250MHz, advanceTheShiftRegister)
 			clockEnableRefillWriteData <= nextClockEnableRefillWriteData;
 			clockEnableRead <= nextClockEnableRead;
 			clockEnableWrite <= nextClockEnableWrite;
-			clockEnableAddrIncrement <= nextClockEnableAddrIncrement;
+
 			cas <= nextCas;
 			ras <= nextRas;
 			we <= nextWe;
@@ -784,7 +797,7 @@ process (clk250MHz, advanceTheShiftRegister)
 
 
 
-	process (clockEnableAddrIncrement, saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount, count2)
+	process (saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount, count2)
 	
 		begin
 			
@@ -812,7 +825,7 @@ process (clk250MHz, advanceTheShiftRegister)
  		LED2 <= switchCount(2);
 		LED3 <= switchCount(3);
 
-				nextCount2 <= count2 + 1;  -- count2 increments at 125 MHz, not 250 MHz
+			nextCount2 <= count2 + 1;  -- count2 increments at 125 MHz, not 250 MHz
 			if count2 = 1 then 
 		--		nextCount2 <= count2 + 14;  --skip ahead to shorten the cycle
 			end if;
@@ -830,6 +843,19 @@ process (clk250MHz, advanceTheShiftRegister)
 			else
 				nextClockEnableCommand <= '0';
 			end if;
+			
+			
+				
+			if clockEnableCommand = '1' then  --the CAS/RAS/WE command is only applied for this one 125 MHz clock cycle just after count2=16
+				nextCas <= casRequest;
+				nextRas <= rasRequest;
+				nextWe <= weRequest;
+			else                      -- otherwise, CAS/RAS/WE are held HIGH (which is the NOP, No Operation command)
+				nextCas <= '1';
+				nextRas <= '1';
+				nextWe <= '1';
+			end if;
+				
 			
 			nextWritePulseTrain (1) <= '0';
 			if count2 = 16 and writeRequest = '1' then
@@ -852,16 +878,8 @@ process (clk250MHz, advanceTheShiftRegister)
 		--	if count2 = 17   then   -- this increments the address
 			if writePulseTrain(2) = '1' then
 					nextAddrOut <= 			std_logic_vector(to_unsigned((to_integer(unsigned(addrOut)) + 8),15)); -- increment column address by 8
---		nextClockEnableAddrIncrement <= '1';
-			else
-	--			nextClockEnableAddrIncrement <= '0';
 			end if;
 		
-		
-		if clockEnableAddrIncrement = '1' then
-	--		nextAddrOut <= 			std_logic_vector(to_unsigned((to_integer(unsigned(addrOut)) + 8),15)); -- increment column address by 8
-		--		nextAddrOut <= "000000000011000"; 
-		end if;
 				
 			
 			
@@ -899,8 +917,7 @@ process (clk250MHz, advanceTheShiftRegister)
 			nextWriteRefill(5) <= "0000000000000110"; 
 			nextWriteRefill(6) <= "0000000000000011"; 
 			nextWriteRefill(7) <= "0000000000000111"; 
- 
-		
+	
 		end if;
 			
 			
@@ -921,94 +938,76 @@ process (clk250MHz, advanceTheShiftRegister)
 		end if;
 		
 
-		
-		if clockEnableCommand = '1' then  --the CAS/RAS/WE command is only applied for this one 125 MHz clock cycle just after count2=16
-			nextCas <= casRequest;
-			nextRas <= rasRequest;
-			nextWe <= weRequest;
-		else                      -- otherwise, CAS/RAS/WE are held HIGH (which is the NOP, No Operation command)
-			nextCas <= '1';
-			nextRas <= '1';
-			nextWe <= '1';
+		if switchCount = 0 then
+			LED0 <=   capturedData(1)(0);
+			LED1 <=    capturedData(1)(1);
+			LED2 <=    capturedData(1)(2);
+			LED3 <=    capturedData(1)(3);
+	   end if;
+		if switchCount = 1 then
+			LED0 <=   capturedData(2)(0);
+			LED1 <=    capturedData(2)(1);
+			LED2 <=    capturedData(2)(2);
+			LED3 <=    capturedData(2)(3);
 		end if;
-	
-
-		 	
-	
-
-		 if switchCount = 0 then
-				LED0 <=   capturedData(1)(0);
-				LED1 <=    capturedData(1)(1);
-				LED2 <=    capturedData(1)(2);
-				LED3 <=    capturedData(1)(3);
+		if switchCount = 2 then
+			LED0 <=   capturedData(3)(0);
+			LED1 <=    capturedData(3)(1);
+			LED2 <=    capturedData(3)(2);
+			LED3 <=    capturedData(3)(3);
 		end if;
-		 if switchCount = 1 then
- 
-				LED0 <=   capturedData(2)(0);
-				LED1 <=    capturedData(2)(1);
-				LED2 <=    capturedData(2)(2);
-				LED3 <=    capturedData(2)(3);
-				
+		if switchCount = 3 then
+			LED0 <=   capturedData(4)(0);
+			LED1 <=    capturedData(4)(1);
+			LED2 <=    capturedData(4)(2);
+			LED3 <=    capturedData(4)(3);
 		end if;
-		 if switchCount = 2 then
-				LED0 <=   capturedData(3)(0);
-				LED1 <=    capturedData(3)(1);
-				LED2 <=    capturedData(3)(2);
-				LED3 <=    capturedData(3)(3);
-				
-		 end if;
-		 if switchCount = 3 then
-				LED0 <=   capturedData(4)(0);
-				LED1 <=    capturedData(4)(1);
-				LED2 <=    capturedData(4)(2);
-				LED3 <=    capturedData(4)(3);
-		 end if;
-		 if switchCount = 4 then
-				LED0 <=   capturedData(5)(0);
-				LED1 <=    capturedData(5)(1);
-				LED2 <=    capturedData(5)(2);
-				LED3 <=    capturedData(5)(3);
-		 end if;
-		 if switchCount = 5 then
-				LED0 <=   capturedData(6)(0);
-				LED1 <=    capturedData(6)(1);
-				LED2 <=    capturedData(6)(2);
-				LED3 <=    capturedData(6)(3);
-		 end if;
-		 if switchCount = 6 then
-				LED0 <=   capturedData(7)(0);
-				LED1 <=    capturedData(7)(1);
-				LED2 <=    capturedData(7)(2);
-				LED3 <=    capturedData(7)(3);
-		 end if;
-		 if switchCount = 7 then
+		if switchCount = 4 then
+			LED0 <=   capturedData(5)(0);
+			LED1 <=    capturedData(5)(1);
+			LED2 <=    capturedData(5)(2);
+			LED3 <=    capturedData(5)(3);
+		end if;
+		if switchCount = 5 then
+			LED0 <=   capturedData(6)(0);
+			LED1 <=    capturedData(6)(1);
+			LED2 <=    capturedData(6)(2);
+			LED3 <=    capturedData(6)(3);
+		end if;
+		if switchCount = 6 then
+			LED0 <=   capturedData(7)(0);
+			LED1 <=    capturedData(7)(1);
+			LED2 <=    capturedData(7)(2);
+			LED3 <=    capturedData(7)(3);
+		end if;
+		if switchCount = 7 then
 				LED0 <=   capturedData(8)(0);
 				LED1 <=    capturedData(8)(1);
 				LED2 <=    capturedData(8)(2);
 				LED3 <=    capturedData(8)(3);
-		 end if;
+		end if;
 
-		 if switchCount = 8 then
+		if switchCount = 8 then
 				LED0 <=   capturedData(9)(0);
 				LED1 <=    capturedData(9)(1);
 				LED2 <=    capturedData(9)(2);
 				LED3 <=    capturedData(9)(3);
-		 end if;
+		end if;
 
 	   if switchCount = 9 then
 				LED0 <=   capturedData(10)(0);
 				LED1 <=    capturedData(10)(1);
 				LED2 <=    capturedData(10)(2);
 				LED3 <=    capturedData(10)(3);
-		 end if;
+		end if;
 
 
-		    if switchCount = 10 then
+		if switchCount = 10 then
 				LED0 <=   capturedData(11)(0);
 				LED1 <=    capturedData(11)(1);
 				LED2 <=    capturedData(11)(2);
 				LED3 <=    capturedData(11)(3);
-		 end if;
+		end if;
 
 			
 			 
@@ -1050,7 +1049,8 @@ process (clk250MHz, advanceTheShiftRegister)
 	
 			requestedDataToWrite  <= nextRequestedDataToWrite;
 	
-	
+			din <= nextdin;
+			readIntoFIFO <= nextReadIntoFIFO;
 			end if;
    end process;
 
@@ -1092,6 +1092,12 @@ process (clk250MHz, advanceTheShiftRegister)
 	
 			nextReset <= reset;
 			nextCke <= cke;
+			
+			nextdin <= din;
+			
+			
+			nextReadIntoFIFO <= readIntoFIFO;
+			
 			if count = 0 then
 				nextReset <= '0';
 				nextCke <= '0';
@@ -1167,6 +1173,22 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextWeRequest <= '1';
 			end if;
 
+
+			if count = 20227 then
+				nextdin(3 downto 0) <= "0001";
+				nextdin(19 downto 16) <= "0010";
+				nextdin(35 downto 32) <= "0100";
+				nextdin(51 downto 48) <= "1000";
+				nextdin(67 downto 64) <= "1100";
+				nextdin(83 downto 80) <= "0110";
+				nextdin(99 downto 96) <= "0011";
+				nextdin(115 downto 112) <= "0111";
+			end if;
+			if count = 20228 then
+				nextReadIntoFIFO <= '1';
+			end if;
+
+
 			if count = 20229 then--20228 --WRITE
 				nextData <= "1010101010100110"; -- the last four digits of this will show up on the LEDs
 				nextRequestedDataToWrite(1) <= "0000000000000001"; 
@@ -1189,6 +1211,10 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextRequestedDataToWrite(18) <= "1010101010100011";
 				nextRequestedDataToWrite(19) <= "1010101010100001";
 				nextRequestedDataToWrite(20) <= "0000000000000011";
+
+
+
+
 
 				nextWriteRequest <= '1';
 				nextDqsTristate <= '0';
@@ -1218,7 +1244,7 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextSaveRequest <= '1';	
 				
 				nextBa <= "000";
-				nextAddrRequest <= "000000000011000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
+				nextAddrRequest <= "000000000010000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '1';
