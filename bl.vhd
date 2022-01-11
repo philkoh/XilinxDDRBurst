@@ -834,15 +834,15 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextClockEnableCommand <= '0';
 			end if;
 			
+			nextWritePulseTrain (1) <= '0';
 			if count2 = 16 and writeRequest = '1' then
 				nextWritePulseTrain (1) <= '1';
-			else
-				nextWritePulseTrain (1) <= '0';
 			end if;
 			
 			
 			if count2 = 20 and  writeRequest = '1' then  -- during a write cycle, pulse a second write command
-		   	nextClockEnableCommand <= '1';
+				nextClockEnableCommand <= '1';
+		--		nextWritePulseTrain(1) <= '1';
 			end if;
 				
 				
@@ -870,7 +870,8 @@ process (clk250MHz, advanceTheShiftRegister)
 				
 			
 			
-		if count2 = 20 and writeRequest = '1' then  -- this replaces the waiting data from fifo
+	--	if count2 = 20 and writeRequest = '1' then  -- this replaces the waiting data from fifo
+		if writePulseTrain(4) = '1' then
 			nextWriteRefill(0) <= "0000000000001001"; 
 			nextWriteRefill(1) <= "0000000000000110"; 
 			nextWriteRefill(2) <= "0000000000001100"; 
@@ -879,7 +880,6 @@ process (clk250MHz, advanceTheShiftRegister)
 			nextWriteRefill(5) <= "0000000000000111"; 
 			nextWriteRefill(6) <= "0000000000001111"; 
 			nextWriteRefill(7) <= "0000000000001011"; 
-
 		
 		end if;
 			
@@ -887,7 +887,11 @@ process (clk250MHz, advanceTheShiftRegister)
 			
 		
 		nextClockEnableRefillWriteData <= '0';
-		if (count2 = 22 or count2 = 26) and writeRequest = '1'   then   -- this refills more write data onto the outgoing stack
+--		if count2 = 22  and writeRequest = '1'   then   -- this refills more write data onto the outgoing stack
+		if writePulseTrain(6) = '1' then
+			nextClockEnableRefillWriteData <= '1';
+		end if;
+		if count2 = 26 and writeRequest = '1'   then   -- this refills more write data onto the outgoing stack
 			nextClockEnableRefillWriteData <= '1';
 		end if;
 
@@ -1220,7 +1224,7 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextSaveRequest <= '1';	
 				
 				nextBa <= "000";
-				nextAddrRequest <= "000000001110000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
+				nextAddrRequest <= "000000000010000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '1';
