@@ -842,7 +842,7 @@ process (clk250MHz, advanceTheShiftRegister)
 			
 			if count2 = 20 and  writeRequest = '1' then  -- during a write cycle, pulse a second write command
 				nextClockEnableCommand <= '1';
-		--		nextWritePulseTrain(1) <= '1';
+				nextWritePulseTrain(1) <= '1'; -- this starts a second sequence of write actions for the second burst of data
 			end if;
 				
 				
@@ -891,9 +891,9 @@ process (clk250MHz, advanceTheShiftRegister)
 		if writePulseTrain(6) = '1' then
 			nextClockEnableRefillWriteData <= '1';
 		end if;
-		if count2 = 26 and writeRequest = '1'   then   -- this refills more write data onto the outgoing stack
-			nextClockEnableRefillWriteData <= '1';
-		end if;
+	--	if count2 = 26 and writeRequest = '1'   then   -- this refills more write data onto the outgoing stack
+	--		nextClockEnableRefillWriteData <= '1';
+--		end if;
 
 		if count2 = 24 and writeRequest = '1' then  -- this replaces the waiting data from fifo
 			nextWriteRefill(0) <= "0000000000000001"; 
@@ -918,8 +918,8 @@ process (clk250MHz, advanceTheShiftRegister)
 		end if;
 		
 
-		if (count2 = 22 or count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26 or count2 = 27 or count2 = 28 or count2 = 29 or count2 = 30  ) and writeRequest = '1'   then  --writes for 4 cycles of 125MHz count2
--- 	if (count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26)   then  --writes for 4 cycles of 125MHz count2
+	--	if (count2 = 22 or count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26 or count2 = 27 or count2 = 28 or count2 = 29 or count2 = 30  ) and writeRequest = '1'   then  --writes for 4 cycles of 125MHz count2
+		if writePulseTrain(6) = '1' or writePulseTrain(7) = '1'  or writePulseTrain(8) = '1'  or writePulseTrain(9) = '1'  or writePulseTrain(10) = '1' then
 			nextClockEnableWrite <= '1';
 		else
 			nextClockEnableWrite <= '0';
@@ -1224,7 +1224,7 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextSaveRequest <= '1';	
 				
 				nextBa <= "000";
-				nextAddrRequest <= "000000000010000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
+				nextAddrRequest <= "000000001110000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '1';
