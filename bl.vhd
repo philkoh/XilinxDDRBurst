@@ -214,6 +214,10 @@ END COMPONENT;
 	signal nextShiftRegister : philArr;
 	
 	
+	signal writePulseTrain :    std_logic_vector(15 downto 0) := "0000000000000000";
+	signal nextWritePulseTrain :    std_logic_vector(15 downto 0) ;
+	
+	
 	signal dataAssertedToOutput : std_logic_vector(15 downto 0);
 	signal nextdataAssertedToOutput : std_logic_vector(15 downto 0);
 	signal delayedDataForOutput : std_logic_vector(15 downto 0);
@@ -768,6 +772,7 @@ process (clk250MHz, advanceTheShiftRegister)
 			writeRefill  <= nextWriteRefill ;
  		   addrOut <= nextAddrOut;
 
+			writePulseTrain <= nextWritePulseTrain;
 		
 		end if;
 		
@@ -778,7 +783,7 @@ process (clk250MHz, advanceTheShiftRegister)
 	rasPORT <= ras;
 	wePORT <= we;
 
-
+	nextWritePulseTrain (15 downto 2) <= writePulseTrain (14 downto 1);
 
 
 
@@ -830,6 +835,13 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextClockEnableCommand <= '0';
 			end if;
 			
+			if count2 = 16 and writeRequest = '1' then
+				nextWritePulseTrain (1) <= '1';
+			else
+				nextWritePulseTrain (1) <= '0';
+			end if;
+			
+			
 			if count2 = 20 and  writeRequest = '1' then  -- during a write cycle, pulse a second write command
 		   	nextClockEnableCommand <= '1';
 			end if;
@@ -841,8 +853,9 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextClockEnableLoadAddress<= '0';
 			end if;
 	
-			if count2 = 17   then   -- this increments the address
-					nextClockEnableAddrIncrement <= '1';
+		--	if count2 = 17   then   -- this increments the address
+			if writePulseTrain(1) = '1' then
+				nextClockEnableAddrIncrement <= '1';
 			else
 				nextClockEnableAddrIncrement <= '0';
 			end if;
@@ -1208,7 +1221,7 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextSaveRequest <= '1';	
 				
 				nextBa <= "000";
-				nextAddrRequest <= "000000000010000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
+				nextAddrRequest <= "000000001110000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '1';
