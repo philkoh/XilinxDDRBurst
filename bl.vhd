@@ -271,8 +271,8 @@ END COMPONENT;
 	signal dout : std_logic_vector(143 downto 0);
 	signal rst : std_logic ;
 	
-	signal sharpenFIFOpushEnable : std_logic_vector (4 downto 0) := "00000";
-	signal sharpenFIFOpullEnable : std_logic_vector (4 downto 0) := "00000";
+	signal sharpenFIFOpushEnable : std_logic_vector (5 downto 0) := "000000";
+	signal sharpenFIFOpullEnable : std_logic_vector (5 downto 0) := "000000";
 	
 
 begin
@@ -296,8 +296,8 @@ fifoInstance : FIFOphil2
      wr_clk => clk250MHz,
     rd_clk => clk250MHz,
     din => din,
-    wr_en => sharpenFIFOpushEnable(4) ,
-    rd_en => sharpenFIFOpullEnable(4) ,
+    wr_en => sharpenFIFOpushEnable(5) ,
+    rd_en => sharpenFIFOpullEnable(5) ,
     dout => dout
 --    full => full,
  --   empty => empty
@@ -311,11 +311,13 @@ fifoInstance : FIFOphil2
 		begin
 	------------------------------------------SEQUENTIAL :	
 		if rising_edge(clk250MHz) then
-			sharpenFIFOpushEnable(3) <= sharpenFIFOpushEnable(2) and (not sharpenFIFOpushEnable(3));  -- only on rising edge of sharpenFIFOpushEnable(2) 
-			sharpenFIFOpushEnable(4) <= sharpenFIFOpushEnable(3);
+			sharpenFIFOpushEnable(4) <= sharpenFIFOpushEnable(3) and (not sharpenFIFOpushEnable(4));  -- only on rising edge of sharpenFIFOpushEnable(2) 
+			sharpenFIFOpushEnable(5) <= sharpenFIFOpushEnable(4);
 
-			sharpenFIFOpullEnable(3) <= sharpenFIFOpullEnable(2) and (not sharpenFIFOpullEnable(3));  -- only on rising edge of sharpenFIFOpullEnable(2) 
-			sharpenFIFOpullEnable(4) <= sharpenFIFOpullEnable(3);
+			sharpenFIFOpullEnable(4) <= sharpenFIFOpullEnable(3) and (not sharpenFIFOpullEnable(4));  -- only on rising edge of sharpenFIFOpushEnable(2) 
+			sharpenFIFOpullEnable(5) <= sharpenFIFOpullEnable(4);
+
+	
 		end if;
 	end process;
 
@@ -324,10 +326,12 @@ fifoInstance : FIFOphil2
 	------------------------------------------SEQUENTIAL :	
 		if rising_edge(clk250MHz) and clk125MHz = '1' then
 			sharpenFIFOpushEnable(1) <= sharpenFIFOpushEnable(0);
-			sharpenFIFOpushEnable(2) <= sharpenFIFOpushEnable(1) and (not sharpenFIFOpushEnable(2)); -- only on rising edge of sharpenFIFOpushEnable(1) 
+			sharpenFIFOpushEnable(2) <= sharpenFIFOpushEnable(1);
+			sharpenFIFOpushEnable(3) <= sharpenFIFOpushEnable(1) and (not sharpenFIFOpushEnable(2)); -- only on rising edge of sharpenFIFOpushEnable(1) 
  
 			sharpenFIFOpullEnable(1) <= sharpenFIFOpullEnable(0);
-			sharpenFIFOpullEnable(2) <= sharpenFIFOpullEnable(1) and (not sharpenFIFOpullEnable(2)); -- only on rising edge of sharpenFIFOpullEnable(1) 
+			sharpenFIFOpullEnable(2) <= sharpenFIFOpullEnable(1);
+			sharpenFIFOpullEnable(3) <= sharpenFIFOpullEnable(1) and (not sharpenFIFOpullEnable(2)); -- only on rising edge of sharpenFIFOpushEnable(1) 
  end if;
   end process;
 
@@ -1137,7 +1141,7 @@ process (clk250MHz, advanceTheShiftRegister)
 			
 			
 			if count = 1 then
-				nextCount <= count + 20226;
+	--			nextCount <= count + 20226;
 			end if;
 			
 			
@@ -1223,7 +1227,7 @@ process (clk250MHz, advanceTheShiftRegister)
 
 
 			sharpenFIFOpushEnable(0) <= '0';
-			if count = 20228 then
+			if count = 20228 then     --- this first is junk filler data that never gets saved to SDRAM
 				nextdin(3 downto 0) <= "1110";
 				nextdin(19 downto 16) <= "1101";
 				nextdin(35 downto 32) <= "1011";
@@ -1323,7 +1327,7 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextSaveRequest <= '1';	
 				
 				nextBa <= "000";
-				nextAddrRequest <= "000000000011000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
+				nextAddrRequest <= "000000000010000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '1';
