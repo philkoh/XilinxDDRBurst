@@ -1090,14 +1090,14 @@ process (clk250MHz, advanceTheShiftRegister)
 	ckePort <= cke;
 	blinkerPORT <= blinker;
 	
-	nextCount <= count + 1;
 	nextBlinker <= not blinker when count = 0 else blinker;
 
 
 	process (count, requestedDataToWrite, reset, cke, din)
 
 		begin
-		
+			nextCount <= count + 1;
+
 			nextDqsTristate <= '1';
 
 			nextWriteRequest <= '0';  -- unless overridden below
@@ -1129,6 +1129,27 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextCke <= '0';
 				rst <= '1';
 			end if;
+			
+			
+			
+			
+			
+			
+			
+			if count = 1 then
+				nextCount <= count + 20226;
+			end if;
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			if count = 5000 then --5000
 				nextReset <= '1';
 			end if;
