@@ -274,6 +274,10 @@ END COMPONENT;
 	signal sharpenFIFOpushEnable : std_logic_vector (5 downto 0) := "000000";
 	signal sharpenFIFOpullEnable : std_logic_vector (5 downto 0) := "000000";
 	
+	signal dinLSBs: std_logic_vector(3 downto 0);
+	signal nextDinLSBs : std_logic_vector(3 downto 0);
+	signal doutLSBs: std_logic_vector(3 downto 0);
+	
 
 begin
 
@@ -337,6 +341,10 @@ fifoInstance : FIFOphil2
 
 
 	------------------------------------------COMBINATORIAL:
+ 
+dinLSBs <= din(3 downto 0); -- for easier inspection of simulations:
+nextDinLSBs <= nextDin(3 downto 0);
+doutLSBs <= dout(3 downto 0);
  
 
 
@@ -909,6 +917,7 @@ process (clk250MHz, advanceTheShiftRegister)
 			
 			
 	--	if count2 = 20 and writeRequest = '1' then  -- this replaces the waiting data from fifo
+		sharpenFIFOpullEnable(0) <= '0';  -- this will advance the FIFO later 
 		if writePulseTrain(4) = '1' then
 	--			nextWriteRefill(0) <= "0000000000001001"; 
 	--			nextWriteRefill(1) <= "0000000000000110"; 
@@ -1141,7 +1150,7 @@ process (clk250MHz, advanceTheShiftRegister)
 			
 			
 			if count = 1 then
-	--			nextCount <= count + 20226;
+	--		nextCount <= count + 20226;
 			end if;
 			
 			
@@ -1226,22 +1235,8 @@ process (clk250MHz, advanceTheShiftRegister)
 			end if;
 
 
-			sharpenFIFOpushEnable(0) <= '0';
-			if count = 20228 then     --- this first is junk filler data that never gets saved to SDRAM
-				nextdin(3 downto 0) <= "1110";
-				nextdin(19 downto 16) <= "1101";
-				nextdin(35 downto 32) <= "1011";
-				nextdin(51 downto 48) <= "0111";
-				nextdin(67 downto 64) <= "0011";
-				nextdin(83 downto 80) <= "1001";
-				nextdin(99 downto 96) <= "1100";
-				nextdin(115 downto 112) <= "1000";
-				sharpenFIFOpushEnable(0) <= '1';  -- note: will need a count where this is back to zero because the push happens only on rising edge
-		 	end if;
 		
-			if count = 20230 then
-				sharpenFIFOpushEnable(0) <= '0';  -- back to zero because the push happens only on rising edge
-		 	end if;
+			
 			if count = 20232 then
 				nextdin(3 downto 0) <= "1110";
 				nextdin(19 downto 16) <= "1101";
@@ -1251,11 +1246,11 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextdin(83 downto 80) <= "1001";
 				nextdin(99 downto 96) <= "1100";
 				nextdin(115 downto 112) <= "1000";
-				sharpenFIFOpushEnable(0) <= '1';  -- note: will need a count where this is back to zero because the push happens only on rising edge
+				sharpenFIFOpushEnable(0) <= '0';  -- note: will need a rising edge in a later count
 		 	end if;
 		
 			if count = 20234 then
-				sharpenFIFOpushEnable(0) <= '0';  -- back to zero because the push happens only on rising edge
+				sharpenFIFOpushEnable(0) <= '1';  -- here is the rising edge
 		 	end if;
 
 
@@ -1268,11 +1263,17 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextdin(83 downto 80) <= "0010";
 				nextdin(99 downto 96) <= "0001";
 				nextdin(115 downto 112) <= "0000";
-				sharpenFIFOpushEnable(0) <= '1';  -- note: will need a count where this is back to zero because the push happens only on rising edge
+				sharpenFIFOpushEnable(0) <= '0';  -- note: will need a rising edge in a later count
 		 	end if;
 
 
-			if count = 20238 then--20228 --WRITE
+			if count = 20238 then
+				sharpenFIFOpushEnable(0) <= '1';   -- here is the rising edge
+		 	end if;
+
+
+
+			if count = 20240 then--20228 --WRITE
 				nextData <= "1010101010100110"; -- the last four digits of this will show up on the LEDs
 				nextRequestedDataToWrite(1) <= "0000000000000001"; 
 				nextRequestedDataToWrite(2) <= "1010101010100010";
@@ -1309,7 +1310,7 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextWeRequest <= '0';
 			end if;
 			
-			if count = 20240 then--20230 --WRITE
+			if count = 20242 then--20230 --WRITE
 				nextData <= "1111111111111001";
 				nextDqsTristate <= '0';
 			
@@ -1327,7 +1328,7 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextSaveRequest <= '1';	
 				
 				nextBa <= "000";
-				nextAddrRequest <= "000000000010000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
+				nextAddrRequest <= "000000000011000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '1';

@@ -38,7 +38,8 @@ Compiling architecture obufds_v of entity OBUFDS [\OBUFDS("DONT_CARE","DIFF_SSTL
 Compiling architecture behavioral of entity bl [bl_default]
 Compiling architecture behavior of entity testbench
 Time Resolution for simulation is 1ps.
+Waiting for 1 sub-compilation(s) to finish...
 Compiled 45 VHDL Units
 Built simulation executable C:/GitRepos/XilinxDDRBurst/TestBench_isim_beh.exe
-Fuse Memory Usage: 67208 KB
-Fuse CPU Usage: 859 ms
+Fuse Memory Usage: 66992 KB
+Fuse CPU Usage: 780 ms

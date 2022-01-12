@@ -18,7 +18,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="30" />
+   <WVObjectSize size="35" />
    <wvobject fp_name="/testbench/clk" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -132,11 +132,31 @@
       <obj_property name="ObjectShortName">count[17:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/testbench/uut/sharpenfifopushenable" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">sharpenfifopushenable[4:0]</obj_property>
-      <obj_property name="ObjectShortName">sharpenfifopushenable[4:0]</obj_property>
+      <obj_property name="ElementShortName">sharpenfifopushenable[5:0]</obj_property>
+      <obj_property name="ObjectShortName">sharpenfifopushenable[5:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/testbench/uut/sharpenfifopullenable" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">sharpenfifopullenable[4:0]</obj_property>
-      <obj_property name="ObjectShortName">sharpenfifopullenable[4:0]</obj_property>
+      <obj_property name="ElementShortName">sharpenfifopullenable[5:0]</obj_property>
+      <obj_property name="ObjectShortName">sharpenfifopullenable[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/dinlsbs" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">dinlsbs[3:0]</obj_property>
+      <obj_property name="ObjectShortName">dinlsbs[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/doutlsbs" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">doutlsbs[3:0]</obj_property>
+      <obj_property name="ObjectShortName">doutlsbs[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/nextdinlsbs" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">nextdinlsbs[3:0]</obj_property>
+      <obj_property name="ObjectShortName">nextdinlsbs[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/writerefill[0]" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">[0]</obj_property>
+      <obj_property name="ObjectShortName">writerefill[0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/nextwriterefill[0]" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">[0]</obj_property>
+      <obj_property name="ObjectShortName">nextwriterefill[0]</obj_property>
    </wvobject>
 </wave_config>
