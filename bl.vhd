@@ -1168,7 +1168,7 @@ process (clk250MHz, advanceTheShiftRegister)
 			
 			
 			if count = 1 then
---			nextCount <= count + 20226;
+	--		nextCount <= count + 20226;
 			end if;
 			
 			
@@ -1289,9 +1289,24 @@ process (clk250MHz, advanceTheShiftRegister)
 				sharpenFIFOpushEnable(0) <= '1';   -- here is the rising edge
 		 	end if;
 
+			if count = 20240 then
+				nextdin(3 downto 0) <= "1000";
+				nextdin(19 downto 16) <= "0100";
+				nextdin(35 downto 32) <= "0010";
+				nextdin(51 downto 48) <= "0001";
+				nextdin(67 downto 64) <= "0011";
+				nextdin(83 downto 80) <= "0110";
+				nextdin(99 downto 96) <= "1100";
+				nextdin(115 downto 112) <= "1110";
+				sharpenFIFOpushEnable(0) <= '0';  -- note: will need a rising edge in a later count
+		 	end if;
+		
+			if count = 20242 then
+				sharpenFIFOpushEnable(0) <= '1';  -- here is the rising edge
+		 	end if;
 
 
-			if count = 20240 then--20228 --WRITE
+			if count = 20244 then--20228 --WRITE
 				nextData <= "1010101010100110"; -- the last four digits of this will show up on the LEDs
 				nextRequestedDataToWrite(1) <= "0000000000000001"; 
 				nextRequestedDataToWrite(2) <= "1010101010100010";
@@ -1328,7 +1343,7 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextWeRequest <= '0';
 			end if;
 			
-			if count = 20242 then--20230 --WRITE
+			if count = 20246 then--20230 --WRITE
 				nextData <= "1111111111111001";
 				nextDqsTristate <= '0';
 			
@@ -1340,13 +1355,13 @@ process (clk250MHz, advanceTheShiftRegister)
 			end if;
 	
 
-			if count = 20244 then--20232   --READ
+			if count = 20248 then--20232   --READ
 				nextODT <= '0';  -- turn On Die Termination off for read
 
 				nextSaveRequest <= '1';	
 				
 				nextBa <= "000";
-				nextAddrRequest <= "000000000010000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
+				nextAddrRequest <= "000000000011000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '1';
