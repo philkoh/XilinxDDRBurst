@@ -269,6 +269,8 @@ END COMPONENT;
 	signal din : std_logic_vector(143 downto 0);
 	signal nextdin : std_logic_vector(143 downto 0);
 	signal dout : std_logic_vector(143 downto 0);
+	signal doutWaiting : std_logic_vector(143 downto 0);
+	signal nextDoutWaiting : std_logic_vector(143 downto 0);
 	signal rst : std_logic ;
 	
 	signal sharpenFIFOpushEnable : std_logic_vector (5 downto 0) := "000000";
@@ -277,6 +279,7 @@ END COMPONENT;
 	signal dinLSBs: std_logic_vector(3 downto 0);
 	signal nextDinLSBs : std_logic_vector(3 downto 0);
 	signal doutLSBs: std_logic_vector(3 downto 0);
+	signal doutWaitingLSBs: std_logic_vector(3 downto 0);
 	
 
 begin
@@ -345,6 +348,8 @@ fifoInstance : FIFOphil2
 dinLSBs <= din(3 downto 0); -- for easier inspection of simulations:
 nextDinLSBs <= nextDin(3 downto 0);
 doutLSBs <= dout(3 downto 0);
+doutWaitingLSBs <= doutWaiting(3 downto 0);
+
  
 
 
@@ -825,7 +830,7 @@ process (clk250MHz, advanceTheShiftRegister)
  		   addrOut <= nextAddrOut;
 
 			writePulseTrain <= nextWritePulseTrain;
-		
+			doutWaiting <= nextDoutWaiting;
 		end if;
 		
    end process;
@@ -839,7 +844,7 @@ process (clk250MHz, advanceTheShiftRegister)
 
 
 
-	process (dout, saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount, count2)
+	process (nextwritepulsetrain, doutwaiting, dout, saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount, count2)
 	
 		begin
 		
@@ -905,6 +910,14 @@ process (clk250MHz, advanceTheShiftRegister)
 			nextClockEnableCommand <= '1';
 			nextWritePulseTrain(1) <= '1'; -- this starts a second sequence of write actions for the second burst of data
 		end if;
+		
+		if nextWritePulseTrain(1) = '1' then
+			sharpenFIFOpullEnable(0) <= '1';
+			nextDoutWaiting <= dout;
+		else
+			sharpenFIFOpullEnable(0) <= '0';   
+			nextDoutWaiting <= doutWaiting;
+		end if;
 			
 		if count2 = 5   then   -- this loads address  
 			nextAddrOut <= addrRequest;
@@ -917,7 +930,6 @@ process (clk250MHz, advanceTheShiftRegister)
 			
 			
 	--	if count2 = 20 and writeRequest = '1' then  -- this replaces the waiting data from fifo
-		sharpenFIFOpullEnable(0) <= '0';  -- this will advance the FIFO later 
 		if writePulseTrain(4) = '1' then
 	--			nextWriteRefill(0) <= "0000000000001001"; 
 	--			nextWriteRefill(1) <= "0000000000000110"; 
@@ -928,16 +940,16 @@ process (clk250MHz, advanceTheShiftRegister)
 	--			nextWriteRefill(6) <= "0000000000001111"; 
 	--			nextWriteRefill(7) <= "0000000000001011"; 
 	
-			nextWriteRefill(0) <= dout (15 downto 0); 
-			nextWriteRefill(1) <= dout (31 downto 16); 
-			nextWriteRefill(2) <= dout (47 downto 32); 
-	 		nextWriteRefill(3) <= dout (63 downto 48); 
-			nextWriteRefill(4) <= dout (79 downto 64); 
-			nextWriteRefill(5) <= dout (95 downto 80); 
-			nextWriteRefill(6) <= dout (111 downto 96); 
-			nextWriteRefill(7) <= dout (127 downto 112); 
+			nextWriteRefill(0) <= doutWaiting (15 downto 0); 
+			nextWriteRefill(1) <= doutWaiting (31 downto 16); 
+			nextWriteRefill(2) <= doutWaiting (47 downto 32); 
+	 		nextWriteRefill(3) <= doutWaiting (63 downto 48); 
+			nextWriteRefill(4) <= doutWaiting (79 downto 64); 
+			nextWriteRefill(5) <= doutWaiting (95 downto 80); 
+			nextWriteRefill(6) <= doutWaiting (111 downto 96); 
+			nextWriteRefill(7) <= doutWaiting (127 downto 112); 
 	
-			sharpenFIFOpullEnable(0) <= '1';  -- this will advance the FIFO later 
+	--		sharpenFIFOpullEnable(0) <= '1';  -- this will advance the FIFO later 
 		end if;
 			
 			
@@ -1150,7 +1162,7 @@ process (clk250MHz, advanceTheShiftRegister)
 			
 			
 			if count = 1 then
-	--		nextCount <= count + 20226;
+	--			nextCount <= count + 20226;
 			end if;
 			
 			
@@ -1328,7 +1340,7 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextSaveRequest <= '1';	
 				
 				nextBa <= "000";
-				nextAddrRequest <= "000000000011000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
+				nextAddrRequest <= "000000000010000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '1';

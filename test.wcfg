@@ -18,7 +18,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="35" />
+   <WVObjectSize size="37" />
    <wvobject fp_name="/testbench/clk" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -158,5 +158,13 @@
    <wvobject fp_name="/testbench/uut/nextwriterefill[0]" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">[0]</obj_property>
       <obj_property name="ObjectShortName">nextwriterefill[0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/count2" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">count2[5:0]</obj_property>
+      <obj_property name="ObjectShortName">count2[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/doutwaitinglsbs" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">doutwaitinglsbs[3:0]</obj_property>
+      <obj_property name="ObjectShortName">doutwaitinglsbs[3:0]</obj_property>
    </wvobject>
 </wave_config>
