@@ -40,5 +40,5 @@ Compiling architecture behavior of entity testbench
 Time Resolution for simulation is 1ps.
 Compiled 45 VHDL Units
 Built simulation executable C:/GitRepos/XilinxDDRBurst/TestBench_isim_beh.exe
-Fuse Memory Usage: 67200 KB
-Fuse CPU Usage: 765 ms
+Fuse Memory Usage: 67196 KB
+Fuse CPU Usage: 749 ms

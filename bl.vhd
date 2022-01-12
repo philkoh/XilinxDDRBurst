@@ -272,6 +272,7 @@ END COMPONENT;
 	signal doutWaiting : std_logic_vector(143 downto 0);
 	signal nextDoutWaiting : std_logic_vector(143 downto 0);
 	signal rst : std_logic ;
+	signal empty : std_logic;
 	
 	signal sharpenFIFOpushEnable : std_logic_vector (5 downto 0) := "000000";
 	signal sharpenFIFOpullEnable : std_logic_vector (5 downto 0) := "000000";
@@ -305,9 +306,9 @@ fifoInstance : FIFOphil2
     din => din,
     wr_en => sharpenFIFOpushEnable(5) ,
     rd_en => sharpenFIFOpullEnable(5) ,
-    dout => dout
+    dout => dout,
 --    full => full,
- --   empty => empty
+  empty => empty
   );
 -- INST_TAG_END ------ End INSTANTIATION Template ------------
 
@@ -902,13 +903,18 @@ process (clk250MHz, advanceTheShiftRegister)
 		
 		
 		nextWritePulseTrain (1) <= '0';
-		if count2 = 16 and writeRequest = '1' then
+		if count2 = 16 and writeRequest = '1' and empty = '0' then
 			nextWritePulseTrain (1) <= '1';
 		end if;
+
+		if count2 = 19 and  writeRequest = '1' and empty = '0' then  -- during a write cycle, pulse a second write command
+			nextCount2 <= count2 - 3;  -- leap backwards by 4 count2's of the sequence; instead of going to count2=20 next time, go to count2=16
+		end if;
+
 		
 		if count2 = 20 and  writeRequest = '1' then  -- during a write cycle, pulse a second write command
-			nextClockEnableCommand <= '1';
-			nextWritePulseTrain(1) <= '1'; -- this starts a second sequence of write actions for the second burst of data
+	--		nextClockEnableCommand <= '1';
+	--  	nextWritePulseTrain(1) <= '1'; -- this starts a second sequence of write actions for the second burst of data
 		end if;
 		
 		if nextWritePulseTrain(1) = '1' then
@@ -1162,7 +1168,7 @@ process (clk250MHz, advanceTheShiftRegister)
 			
 			
 			if count = 1 then
-	--			nextCount <= count + 20226;
+--			nextCount <= count + 20226;
 			end if;
 			
 			
@@ -1340,7 +1346,7 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextSaveRequest <= '1';	
 				
 				nextBa <= "000";
-				nextAddrRequest <= "000000000011000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
+				nextAddrRequest <= "000000000010000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '1';
