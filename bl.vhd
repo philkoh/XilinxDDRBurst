@@ -336,7 +336,7 @@ fifoInstance : FIFOphil2
 			sharpenFIFOpushEnable(2) <= sharpenFIFOpushEnable(1);
 			sharpenFIFOpushEnable(3) <= sharpenFIFOpushEnable(1) and (not sharpenFIFOpushEnable(2)); -- only on rising edge of sharpenFIFOpushEnable(1) 
  
-			sharpenFIFOpullEnable(1) <= sharpenFIFOpullEnable(0);
+	--		sharpenFIFOpullEnable(1) <= sharpenFIFOpullEnable(0);
 			sharpenFIFOpullEnable(2) <= sharpenFIFOpullEnable(1);
 			sharpenFIFOpullEnable(3) <= sharpenFIFOpullEnable(1) and (not sharpenFIFOpullEnable(2)); -- only on rising edge of sharpenFIFOpushEnable(1) 
  end if;
@@ -912,10 +912,10 @@ process (clk250MHz, advanceTheShiftRegister)
 		end if;
 		
 		if nextWritePulseTrain(1) = '1' then
-			sharpenFIFOpullEnable(0) <= '1';
+			sharpenFIFOpullEnable(1) <= '1';
 			nextDoutWaiting <= dout;
 		else
-			sharpenFIFOpullEnable(0) <= '0';   
+			sharpenFIFOpullEnable(1) <= '0';   
 			nextDoutWaiting <= doutWaiting;
 		end if;
 			
@@ -1340,7 +1340,7 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextSaveRequest <= '1';	
 				
 				nextBa <= "000";
-				nextAddrRequest <= "000000000010000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
+				nextAddrRequest <= "000000000011000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '1';
