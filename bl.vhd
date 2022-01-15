@@ -295,7 +295,17 @@ END COMPONENT;
 	signal IOpins : std_logic_vector(3 downto 0);
 	signal dataToPins : std_logic_vector(31 downto 0);
 	
-signal slowClockEnable : std_logic;
+	signal slowClockEnable : std_logic;
+	signal slowClockVector : std_logic_vector(7 downto 0) := "00000001";
+
+
+	type stateTypes IS (slowReset, idle, startWriting, continueWriting, stopWriting);
+	signal currentState : stateTypes := idle;
+	signal nextState : stateTypes;
+
+	signal csFast, rasFast, casFast, weFast : std_logic;
+	signal csSlow, rasSlow, casSlow, weSlow : std_logic;
+
 begin
 
 
@@ -305,6 +315,11 @@ Inst_SlowByEight: SlowByEight PORT MAP(
 		FastClock => clk250MHz ,
 		SlowClockEnable => slowClockEnable
 	);
+	
+csFast <= IOpins(0);
+rasFast <= IOpins(1);
+casFast <= IOpins(2);
+weFast <= IOpins(3);
 
 
 
@@ -865,7 +880,7 @@ process (clk250MHz, advanceTheShiftRegister)
 
 
 
-	process (nextwritepulsetrain, doutwaiting, dout, saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount, count2)
+	process (empty, nextwritepulsetrain, doutwaiting, dout, saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount, count2)
 	
 		begin
 		
@@ -1325,7 +1340,6 @@ process (clk250MHz, advanceTheShiftRegister)
 				sharpenFIFOpushEnable(0) <= '1';  -- here is the rising edge
 		 	end if;
 
-
 			if count = 20244 then--20228 --WRITE
 				nextData <= "1010101010100110"; -- the last four digits of this will show up on the LEDs
 				nextRequestedDataToWrite(1) <= "0000000000000001"; 
@@ -1389,6 +1403,58 @@ process (clk250MHz, advanceTheShiftRegister)
 			
    end process;
 		
+		
+		
+			
+
+process (clk250MHz)
+		begin
+------------------------------------------SEQUENTIAL :			
+		if rising_edge(clk250MHz) then  
+			slowClockVector(6 downto 0) <= slowClockVector(7 downto 1);
+			slowClockVector(7) <= slowClockVector(0);
+		end if;
+   end process;
+------------------------------------------COMBINATORIAL:
+	slowClockEnable <= slowClockVector(0);
+
+
+
+
+
+	
+process (clk250MHz, slowClockEnable)
+		begin
+------------------------------------------SEQUENTIAL :			
+		if rising_edge(clk250MHz) and slowClockEnable = '1' then  
+			currentState <= nextState;
+		end if;
+   end process;
+------------------------------------------COMBINATORIAL:
+process (count)
+	begin
+	nextState <= currentState;
+		
+		
+	case currentState is
+		when startWriting =>
+			nextState <= continueWriting;
+		when continueWriting =>
+		when others => 
+		
+	end case;		
+		
+		
+		
+	if count = 0 then
+		nextState <= slowReset;
+	end if;
+	
+	if count = 20244 and count2 = 0 then
+		nextState <= startWriting;
+	end if;
+end process;
+
 
 end Behavioral;
 
