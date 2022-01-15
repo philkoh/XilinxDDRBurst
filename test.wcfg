@@ -18,7 +18,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="40" />
+   <WVObjectSize size="49" />
    <wvobject fp_name="/testbench/clk" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -78,18 +78,6 @@
    <wvobject fp_name="/testbench/addrport" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">addrport[14:0]</obj_property>
       <obj_property name="ObjectShortName">addrport[14:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/casport" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">casport</obj_property>
-      <obj_property name="ObjectShortName">casport</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/rasport" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">rasport</obj_property>
-      <obj_property name="ObjectShortName">rasport</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/weport" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">weport</obj_property>
-      <obj_property name="ObjectShortName">weport</obj_property>
    </wvobject>
    <wvobject fp_name="/testbench/resetport" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">resetport</obj_property>
@@ -171,12 +159,61 @@
       <obj_property name="ElementShortName">ck_pport</obj_property>
       <obj_property name="ObjectShortName">ck_pport</obj_property>
    </wvobject>
+   <wvobject fp_name="/testbench/uut/dqsfast" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">dqsfast</obj_property>
+      <obj_property name="ObjectShortName">dqsfast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/rasport" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rasport</obj_property>
+      <obj_property name="ObjectShortName">rasport</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/casport" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">casport</obj_property>
+      <obj_property name="ObjectShortName">casport</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/weport" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">weport</obj_property>
+      <obj_property name="ObjectShortName">weport</obj_property>
+   </wvobject>
    <wvobject fp_name="/testbench/uut/clkoutfast" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clkoutfast</obj_property>
       <obj_property name="ObjectShortName">clkoutfast</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/uut/dqsfast" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">dqsfast</obj_property>
-      <obj_property name="ObjectShortName">dqsfast</obj_property>
+   <wvobject fp_name="/testbench/uut/rasfast" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rasfast</obj_property>
+      <obj_property name="ObjectShortName">rasfast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/casfast" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">casfast</obj_property>
+      <obj_property name="ObjectShortName">casfast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/wefast" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">wefast</obj_property>
+      <obj_property name="ObjectShortName">wefast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/currentstate" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">currentstate</obj_property>
+      <obj_property name="ObjectShortName">currentstate</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/nextstate" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">nextstate</obj_property>
+      <obj_property name="ObjectShortName">nextstate</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/slowclockenable" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">slowclockenable</obj_property>
+      <obj_property name="ObjectShortName">slowclockenable</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/slowcount" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">slowcount[17:0]</obj_property>
+      <obj_property name="ObjectShortName">slowcount[17:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/burstcount" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">burstcount[7:0]</obj_property>
+      <obj_property name="ObjectShortName">burstcount[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/nextburstcount" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">nextburstcount[7:0]</obj_property>
+      <obj_property name="ObjectShortName">nextburstcount[7:0]</obj_property>
    </wvobject>
 </wave_config>

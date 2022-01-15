@@ -301,8 +301,8 @@ END COMPONENT;
 	signal slowClockVector : std_logic_vector(7 downto 0) := "00000001";
 
 
-	type stateTypes IS (slowReset, idle, startWriting, continueWriting, stopWriting);
-	signal currentState : stateTypes := idle;
+	type stateTypes IS (slowReset, startWriting,   stopWriting, idle);
+	signal currentState : stateTypes := slowReset;
 	signal nextState : stateTypes;
 
 	signal csFast, rasFast, casFast, weFast : std_logic;
@@ -311,6 +311,13 @@ END COMPONENT;
 	signal clkOutFast, dqsFast : std_logic;
 	signal clkOutSlow, dqsSlow : std_logic_vector(7 downto 0);
 
+	signal slowCount : unsigned (17 downto 0) := "000000000000000000";
+	signal nextSlowCount : unsigned (17 downto 0) ;
+	signal burstCount : unsigned (7 downto 0) := "00000000";
+	signal nextBurstCount : unsigned (7 downto 0) ;
+
+	signal slowWritingPulseTrain : std_logic_vector (3 downto 0)  := "0000";
+	signal nextSlowWritingPulseTrain : std_logic_vector  (3 downto 0);
 begin
 
 
@@ -1453,32 +1460,62 @@ process (clk250MHz, slowClockEnable)
 ------------------------------------------SEQUENTIAL :			
 		if rising_edge(clk250MHz) and slowClockEnable = '1' then  
 			currentState <= nextState;
+			slowCount <= nextSlowCount;
+			burstCount <= nextBurstCount;
+			slowWritingPulseTrain  <= nextSlowWritingPulseTrain;
 		end if;
    end process;
 ------------------------------------------COMBINATORIAL:
-process (count, currentState,count2)
+	nextSlowWritingPulseTrain (3 downto 1) <= slowWritingPulseTrain(2 downto 0);
+
+process (count, currentState,count2, slowCount, burstCount, nextState, slowWritingPulseTrain)
 	begin
 	nextState <= currentState;
 	clkOutSlow <= "10101010";
 	dqsSlow <= "10101010";
-		
-	case currentState is
-		when startWriting =>
-			nextState <= continueWriting;
-		when continueWriting =>
-		when others => 
-		
-	end case;		
-		
-		
-		
-	if count = 0 then
-		nextState <= slowReset;
-	end if;
+	nextSlowCount <= slowCount + 1;
+	nextSlowWritingPulseTrain(0) <= '0';
+	nextBurstCount <= burstCount;
 	
-	if count = 20244 and count2 = 0 then
-		nextState <= startWriting;
+	if nextState /= currentState then
+		nextSlowCount <= "000000000000000000";  -- any time the state changes, reset the count to zero
 	end if;
+
+	rasSlow <= "11111111";
+	casSlow <= "11111111";
+	weSlow <= "11111111";
+
+	case currentState is
+		when slowReset =>
+			if slowCount = 307 then
+				nextState <= startWriting;
+			end if;
+		when startWriting =>  -- the state startWriting means there is additional data waiting in the FIFO
+			if burstCount = 3 then  -- this limits the max number of consecutive bursts
+				nextState <= stopWriting;
+				nextBurstCount <= "00000000";
+			else
+				nextSlowWritingPulseTrain(0) <= '1';
+				rasSlow <= "11111111";
+				casSlow <= "10011111";
+				weSlow <= "10011111";
+				nextBurstCount <= burstCount + 1;
+			end if;
+		when stopWriting => -- the state stopWriting means there is no additional data waiting in the FIFO, or we've sent enough pulses and need to refresh or activate a new row
+			if slowWritingPulseTrain = "0000" then --no more tasks to do for previous writes
+				nextState <= idle;
+			end if;
+
+			when others => 
+	
+	end case;	
+
+	if slowWritingPulseTrain(1) = '1' then
+		
+	end if;
+		
+	
+		
 end process;
 
 
@@ -1489,3 +1526,8 @@ end Behavioral;
 --	signal clkOutFast, dqsFast : std_logic;
 --	signal clkOutSlow, dqsSlow : std_logic_vector(7 downto 0);
 
+--	signal slowWritingPulseTrain (3 downto 0) := "0000";
+--	signal nextSlowWritingPulseTrain (3 downto 0);
+
+--	signal burstCount : unsigned (7 downto 0) := "00000000";
+--	signal nextBurstCount : unsigned (17 downto 0) ;
