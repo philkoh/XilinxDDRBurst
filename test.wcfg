@@ -18,7 +18,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="38" />
+   <WVObjectSize size="40" />
    <wvobject fp_name="/testbench/clk" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -35,10 +35,6 @@
       <obj_property name="ElementShortName">dataport[15:0]</obj_property>
       <obj_property name="ObjectShortName">dataport[15:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/ck_pport" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">ck_pport</obj_property>
-      <obj_property name="ObjectShortName">ck_pport</obj_property>
-   </wvobject>
    <wvobject fp_name="/testbench/ck_nport" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">ck_nport</obj_property>
       <obj_property name="ObjectShortName">ck_nport</obj_property>
@@ -50,10 +46,6 @@
    <wvobject fp_name="/testbench/dqs0_nport" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">dqs0_nport</obj_property>
       <obj_property name="ObjectShortName">dqs0_nport</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/dqs1_pport" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">dqs1_pport</obj_property>
-      <obj_property name="ObjectShortName">dqs1_pport</obj_property>
    </wvobject>
    <wvobject fp_name="/testbench/dqs1_nport" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">dqs1_nport</obj_property>
@@ -170,5 +162,21 @@
    <wvobject fp_name="/testbench/uut/empty" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">empty</obj_property>
       <obj_property name="ObjectShortName">empty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dqs1_pport" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">dqs1_pport</obj_property>
+      <obj_property name="ObjectShortName">dqs1_pport</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/ck_pport" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ck_pport</obj_property>
+      <obj_property name="ObjectShortName">ck_pport</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/clkoutfast" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clkoutfast</obj_property>
+      <obj_property name="ObjectShortName">clkoutfast</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/dqsfast" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">dqsfast</obj_property>
+      <obj_property name="ObjectShortName">dqsfast</obj_property>
    </wvobject>
 </wave_config>

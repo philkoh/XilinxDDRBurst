@@ -1,14 +1,17 @@
-Running: C:\Xilinx2\14.7\ISE_DS\ISE\bin\nt64\unwrapped\fuse.exe -intstyle ise -incremental -lib secureip -o C:/GitRepos/XilinxDDRBurst/TestBench_isim_beh.exe -prj C:/GitRepos/XilinxDDRBurst/TestBench_beh.prj work.TestBench 
-ISim P.20131013 (signature 0x7708f090)
+Running: fuse.exe -relaunch -intstyle "ise" -incremental -lib "secureip" -o "C:/GitRepos/XilinxDDRBurst/TestBench_isim_beh.exe" -prj "C:/GitRepos/XilinxDDRBurst/TestBench_beh.prj" "work.TestBench" 
+ISim P.20131013 (signature 0x8ef4fb42)
 Number of CPUs detected in this system: 16
 Turning on mult-threading, number of parallel sub-compilation jobs: 32 
 Determining compilation order of HDL files
 Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/ipcore_dir/PhilClock.vhd" into library work
 Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/ipcore_dir/FIFOphil2.vhd" into library work
+Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/SlowByEight.vhd" into library work
 Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/bl.vhd" into library work
 Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/TestBench.vhd" into library work
 Starting static elaboration
 Completed static elaboration
+Fuse Memory Usage: 173132 KB
+Fuse CPU Usage: 249 ms
 Compiling package standard
 Compiling package std_logic_1164
 Compiling package numeric_std
@@ -19,6 +22,7 @@ Compiling package textio
 Compiling package vital_timing
 Compiling package vital_primitives
 Compiling package vpkg
+Compiling architecture behavioral of entity SlowByEight [slowbyeight_default]
 Compiling architecture behavioral of entity fifo_generator_v9_3_bhv_as [\fifo_generator_v9_3_bhv_as(144,...]
 Compiling architecture behavioral of entity fifo_generator_v9_3_bhv_preload0 [\fifo_generator_v9_3_bhv_preload...]
 Compiling architecture behavioral of entity fifo_generator_v9_3_conv [\fifo_generator_v9_3_conv(0,0,10...]
@@ -38,7 +42,7 @@ Compiling architecture obufds_v of entity OBUFDS [\OBUFDS("DONT_CARE","DIFF_SSTL
 Compiling architecture behavioral of entity bl [bl_default]
 Compiling architecture behavior of entity testbench
 Time Resolution for simulation is 1ps.
-Compiled 45 VHDL Units
+Compiled 47 VHDL Units
 Built simulation executable C:/GitRepos/XilinxDDRBurst/TestBench_isim_beh.exe
-Fuse Memory Usage: 67124 KB
-Fuse CPU Usage: 952 ms
+Fuse Memory Usage: 213216 KB
+Fuse CPU Usage: 780 ms

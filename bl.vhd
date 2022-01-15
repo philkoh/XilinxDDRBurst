@@ -292,8 +292,10 @@ END COMPONENT;
 	signal doutWaitingLSBs: std_logic_vector(3 downto 0);
 	
 	
-	signal IOpins : std_logic_vector(3 downto 0);
-	signal dataToPins : std_logic_vector(31 downto 0);
+	signal IOpinsA : std_logic_vector(3 downto 0);
+	signal IOpinsB : std_logic_vector(3 downto 0);
+	signal dataToPinsA : std_logic_vector(31 downto 0);
+	signal dataToPinsB : std_logic_vector(31 downto 0);
 	
 	signal slowClockEnable : std_logic;
 	signal slowClockVector : std_logic_vector(7 downto 0) := "00000001";
@@ -304,25 +306,48 @@ END COMPONENT;
 	signal nextState : stateTypes;
 
 	signal csFast, rasFast, casFast, weFast : std_logic;
-	signal csSlow, rasSlow, casSlow, weSlow : std_logic;
+	signal csSlow, rasSlow, casSlow, weSlow : std_logic_vector(7 downto 0);
+
+	signal clkOutFast, dqsFast : std_logic;
+	signal clkOutSlow, dqsSlow : std_logic_vector(7 downto 0);
 
 begin
 
 
-Inst_SlowByEight: SlowByEight PORT MAP(
-		IOpins => IOpins ,
-		DataToPins => dataToPins,
+MainControlOutputsA: SlowByEight PORT MAP(
+		IOpins => IOpinsA ,
+		DataToPins => dataToPinsA,
 		FastClock => clk250MHz ,
 		SlowClockEnable => slowClockEnable
 	);
 	
-csFast <= IOpins(0);
-rasFast <= IOpins(1);
-casFast <= IOpins(2);
-weFast <= IOpins(3);
+csFast <= IOpinsA(0);
+rasFast <= IOpinsA(1);
+casFast <= IOpinsA(2);
+weFast <= IOpinsA(3);
+
+dataToPinsA(7 downto 0) <= csSlow;
+dataToPinsA(15 downto 8) <= rasSlow ;
+dataToPinsA(23 downto 16) <= casSlow;
+dataToPinsA(31 downto 24) <= weSlow ;
 
 
 
+
+
+ClockAndDQSB: SlowByEight PORT MAP(
+		IOpins => IOpinsB ,
+		DataToPins => dataToPinsB,
+		FastClock => clk250MHz ,
+		SlowClockEnable => slowClockEnable
+	);
+	
+clkOutFast <= IOpinsB(0);
+dqsFast <= IOpinsB(1);
+ 
+
+dataToPinsB(7 downto 0) <= clkOutSlow;
+dataToPinsB(15 downto 8) <= dqsSlow ;
 
 
 
@@ -1203,7 +1228,7 @@ process (clk250MHz, advanceTheShiftRegister)
 			
 			
 			if count = 1 then
-	--		nextCount <= count + 20226;
+	nextCount <= count + 20226;
 			end if;
 			
 			
@@ -1431,10 +1456,11 @@ process (clk250MHz, slowClockEnable)
 		end if;
    end process;
 ------------------------------------------COMBINATORIAL:
-process (count)
+process (count, currentState,count2)
 	begin
 	nextState <= currentState;
-		
+	clkOutSlow <= "10101010";
+	dqsSlow <= "10101010";
 		
 	case currentState is
 		when startWriting =>
@@ -1457,4 +1483,9 @@ end process;
 
 
 end Behavioral;
+--	signal csFast, rasFast, casFast, weFast : std_logic;
+--	signal csSlow, rasSlow, casSlow, weSlow : std_logic_vector(7 downto 0);
+
+--	signal clkOutFast, dqsFast : std_logic;
+--	signal clkOutSlow, dqsSlow : std_logic_vector(7 downto 0);
 
