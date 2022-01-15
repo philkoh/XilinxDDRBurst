@@ -118,7 +118,16 @@ END COMPONENT;
 
 
 
+	COMPONENT SlowByEight
+	PORT(
+		DataToPins : IN std_logic_vector(31 downto 0);
+		FastClock : IN std_logic;
+		SlowClockEnable : IN std_logic;       
+		IOpins : INOUT std_logic_vector(3 downto 0)
+		);
+	END COMPONENT;
 
+	
 
 
 
@@ -282,9 +291,20 @@ END COMPONENT;
 	signal doutLSBs: std_logic_vector(3 downto 0);
 	signal doutWaitingLSBs: std_logic_vector(3 downto 0);
 	
-
+	
+	signal IOpins : std_logic_vector(3 downto 0);
+	signal dataToPins : std_logic_vector(31 downto 0);
+	
+signal slowClockEnable : std_logic;
 begin
 
+
+Inst_SlowByEight: SlowByEight PORT MAP(
+		IOpins => IOpins ,
+		DataToPins => dataToPins,
+		FastClock => clk250MHz ,
+		SlowClockEnable => slowClockEnable
+	);
 
 
 
