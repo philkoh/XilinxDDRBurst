@@ -329,13 +329,22 @@ END COMPONENT;
 	
 	signal slowWriteData, slowWriteAddress : burstArr;
 	signal fastWriteData, fastWriteAddress : std_logic_vector(15 downto 0);
-	signal addr : std_logic_vector(15 downto 0) := "0000000011000000";
+	signal addr : std_logic_vector(15 downto 0) := "0000000000010000";
 	signal   nextAddr: std_logic_vector(15 downto 0);
 	
 	signal slowBA : std_logic_vector(2 downto 0) := "000";
 	signal nextSlowBA : std_logic_vector(2 downto 0)  ;
 	signal slowResetPort, slowCKEPort, slowFIFOrst : std_logic;
 	
+	signal useNewCode : std_logic := '0';
+	signal nextUseNewCode : std_logic;
+	signal requestNewCode : std_logic := '0';
+	signal lastRequestNewCode : std_logic := '0';
+	signal nextRequestNewCode : std_logic ;
+	signal lastRequestOldCode : std_logic := '0';
+	signal requestOldCode : std_logic := '0';
+	signal nextRequestOldCode : std_logic ;
+
 	
 begin
 
@@ -841,14 +850,29 @@ process (clk250MHz, advanceTheShiftRegister)
 			
 
 		 		
-		
-		 	 
-		 
-			
+			useNewCode <= nextUseNewCode  ;
+			requestNewCode <= nextRequestNewCode;
+			requestOldCode <= nextRequestOldCode;
+			lastrequestNewCode <= requestNewCode;
+			lastrequestOldCode <= requestOldCode;
 		end if;
 	end process;
 
 		------------------------------------------COMBINATORIAL:
+	process (useNewCode)
+		begin
+		nextUseNewCode <= useNewCode;
+		if requestNewCode /= lastRequestNewCode then  -- a toggle means change which code used
+			nextUseNewCode <= '1';
+		end if;
+		if requestOldCode /= lastRequestOldCode then  -- a toggle means change which code used
+			nextUseNewCode <= '0';
+		end if;
+	end process;
+
+
+
+
 	 
 
 	process (clk125MHz,count2,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData,  clockEnableRead, capturedData, dqsTristate, delayedDataForOutput, dataAssertedToOutput, clockEnableWrite, clockEnableRefillWriteData, refillTheShiftRegister)
@@ -1269,7 +1293,7 @@ process (clk250MHz, advanceTheShiftRegister)
 			
 			
 			if count = 1 then
-	nextCount <= count + 20226;
+	--nextCount <= count + 20226;  -- NOTE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  This *must* be commented out for system to work!!!!!!!!!!!!
 			end if;
 			
 			
@@ -1669,4 +1693,5 @@ end Behavioral;
 
 --	signal slowBA : std_logic_vector(3 downto 0) := "0000";
 -- signal nextSlowBA : std_logic_vector(3 downto 0)  ;
+	
 	
