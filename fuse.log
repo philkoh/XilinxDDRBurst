@@ -5,15 +5,15 @@ Turning on mult-threading, number of parallel sub-compilation jobs: 32
 Determining compilation order of HDL files
 Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/ipcore_dir/PhilClock.vhd" into library work
 Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/ipcore_dir/FIFOphil2.vhd" into library work
+Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/SlowByEight.vhd" into library work
 Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/common.vhd" into library work
 Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/SlowByEightBus.vhd" into library work
-Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/SlowByEight.vhd" into library work
 Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/bl.vhd" into library work
 Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/TestBench.vhd" into library work
 Starting static elaboration
 Completed static elaboration
-Fuse Memory Usage: 173004 KB
-Fuse CPU Usage: 249 ms
+Fuse Memory Usage: 172108 KB
+Fuse CPU Usage: 311 ms
 Compiling package standard
 Compiling package std_logic_1164
 Compiling package numeric_std
@@ -46,7 +46,8 @@ Compiling architecture obufds_v of entity OBUFDS [\OBUFDS("DONT_CARE","DIFF_SSTL
 Compiling architecture behavioral of entity bl [bl_default]
 Compiling architecture behavior of entity testbench
 Time Resolution for simulation is 1ps.
+Waiting for 1 sub-compilation(s) to finish...
 Compiled 50 VHDL Units
 Built simulation executable C:/GitRepos/XilinxDDRBurst/TestBench_isim_beh.exe
-Fuse Memory Usage: 215264 KB
-Fuse CPU Usage: 858 ms
+Fuse Memory Usage: 215392 KB
+Fuse CPU Usage: 764 ms

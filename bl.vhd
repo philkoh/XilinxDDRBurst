@@ -308,7 +308,7 @@ END COMPONENT;
 	signal slowClockVector : std_logic_vector(7 downto 0) := "00100000";
 
 
-	type stateTypes IS (slowReset, startWriting,   stopWriting, idle);
+	type stateTypes IS (slowReset, startWriting,   stopWriting, idle, activate, writeMRS);
 	signal currentState : stateTypes := slowReset;
 	signal nextState : stateTypes;
 
@@ -327,8 +327,14 @@ END COMPONENT;
 	signal slowWritingPulseTrain : std_logic_vector (3 downto 0)  := "0000";
 	signal nextSlowWritingPulseTrain : std_logic_vector  (3 downto 0);
 	
-	signal slowWriteData : burstArr;
-	signal fastWriteData : std_logic_vector(15 downto 0);
+	signal slowWriteData, slowWriteAddress : burstArr;
+	signal fastWriteData, fastWriteAddress : std_logic_vector(15 downto 0);
+	signal addr : std_logic_vector(15 downto 0) := "0000000011000000";
+	signal   nextAddr: std_logic_vector(15 downto 0);
+	
+	signal slowBA : std_logic_vector(2 downto 0) := "000";
+	signal nextSlowBA : std_logic_vector(2 downto 0)  ;
+	
 begin
 
 
@@ -376,6 +382,13 @@ DataBus: SlowByEightBus PORT MAP(
 	SlowClockEnable =>  slowClockEnable
 );
 
+
+AddressBus: SlowByEightBus PORT MAP(
+	IOpins => fastWriteAddress ,
+	DataToPins => slowWriteAddress,
+	FastClock => clk250MHz ,
+	SlowClockEnable =>  slowClockEnable
+);
 
 
 
@@ -1482,10 +1495,20 @@ process (clk250MHz, slowClockEnable)
 			slowCount <= nextSlowCount;
 			burstCount <= nextBurstCount;
 			slowWritingPulseTrain  <= nextSlowWritingPulseTrain;
+			addr <= nextAddr;
+			slowBA <= nextSlowBA;
 		end if;
    end process;
 ------------------------------------------COMBINATORIAL:
 	nextSlowWritingPulseTrain (3 downto 1) <= slowWritingPulseTrain(2 downto 0);
+	slowWriteAddress(0) <= addr;
+	slowWriteAddress(1) <= addr;
+	slowWriteAddress(2) <= addr;
+	slowWriteAddress(3) <= addr;
+	slowWriteAddress(4) <= addr;
+	slowWriteAddress(5) <= addr;
+	slowWriteAddress(6) <= addr;
+	slowWriteAddress(7) <= addr;
 
 process (count, currentState,count2, slowCount, burstCount, nextState, slowWritingPulseTrain)
 	begin
@@ -1495,6 +1518,8 @@ process (count, currentState,count2, slowCount, burstCount, nextState, slowWriti
 	nextSlowCount <= slowCount + 1;
 	nextSlowWritingPulseTrain(0) <= '0';
 	nextBurstCount <= burstCount;
+	nextAddr <= addr;
+	nextSlowBA <= slowBA;
 	
 	if nextState /= currentState then
 		nextSlowCount <= "000000000000000000";  -- any time the state changes, reset the count to zero
@@ -1519,13 +1544,68 @@ process (count, currentState,count2, slowCount, burstCount, nextState, slowWriti
 				casSlow <= "11110011";
 				weSlow <= "11110011";
 				nextBurstCount <= burstCount + 1;
+				nextAddr <= 			std_logic_vector(to_unsigned((to_integer(unsigned(addr)) + 8),16)); -- increment column address by 8
+	
 			end if;
 		when stopWriting => -- the state stopWriting means there is no additional data waiting in the FIFO, or we've sent enough pulses and need to refresh or activate a new row
 			if slowWritingPulseTrain = "0000" then --no more tasks to do for previous writes
 				nextState <= idle;
 			end if;
 
-			when others => 
+		when writeMRS =>
+			if slowCount = 1 or slowCount = 17 or slowCount = 33 or slowCount = 49 or slowCount = 265 then -- will occur at slowCount = 4, 20, 36, 52 etc.
+				rasSlow <= "11110011";
+				casSlow <= "11110011";
+				weSlow <= "11110011";
+			end if;
+			if slowCount = 0 then
+				nextSlowBA <= "010"; --MRS MR2
+				nextAddr <= "0000000000001000";  --CWL = 6
+			end if;
+			if slowCount = 16 then
+				nextSlowBA <= "011";--MRS MR3
+				nextAddr <= "0000000000000100"; -- MPR mode, outputs special pattern on reads
+			end if;
+			if slowCount = 32 then
+				nextSlowBA <= "001"; --MRS MR1  
+				nextAddr <= "0000000000000101";  -- DLL disable     RZQ/4 (60O NOM)
+--				nextAddrRequest <= "000000000000100";  -- DLL enable     RZQ/4 (60O NOM)
+			end if;
+			if slowCount = 48 then
+				nextSlowBa <= "000";		--MRS MR0
+				nextAddr <= (9 => '1', 8 => '0', 5 => '1', others => '0'); --CAS latency = 6, Don'treset DLL  , WriteRecovery = 5, FixedBurstLength = 8
+--				nextAddrRequest <= (9 => '1', 8 => '1', 4 => '1', others => '0'); --CAS latency = 5, reset DLL  , WriteRecovery = 5
+			end if;
+			if slowCount = 64 then
+				--ZQCL
+				nextSlowBa <= "000";				
+				nextAddr <= (10 => '1', others => '0'); 
+			end if;
+			if   slowCount = 65 then 
+				rasSlow <= "11111111";
+				casSlow <= "11111111";
+				weSlow <= "11110011";
+			end if;
+			if slowCount = 264 then
+				nextSlowBa <= "011"; --MRS MR3
+				nextAddr <= "0000000000000000"; 
+			end if;
+			if slowCount = 280 then
+				nextState <= activate;
+			end if;
+		when activate =>
+				nextSlowBa <= "000";
+				nextAddr <= "0000000000001000"; --Row Address 8  
+			if   slowCount = 1 then 
+				rasSlow <= "11110011";
+				casSlow <= "11111111";
+				weSlow <= "11111111";
+			end if;
+			if   slowCount = 2 then  -- this count can be reduced for slow clock frequencies
+				nextState <= startWriting;
+			end if;			
+	
+		when others => 
 	
 	end case;	
 
@@ -1551,6 +1631,8 @@ process (count, currentState,count2, slowCount, burstCount, nextState, slowWriti
 	
 	end if;
 		
+		
+	
 	
 		
 end process;
@@ -1568,3 +1650,7 @@ end Behavioral;
 
 --	signal burstCount : unsigned (7 downto 0) := "00000000";
 --	signal nextBurstCount : unsigned (17 downto 0) ;
+
+--	signal slowBA : std_logic_vector(3 downto 0) := "0000";
+-- signal nextSlowBA : std_logic_vector(3 downto 0)  ;
+	
