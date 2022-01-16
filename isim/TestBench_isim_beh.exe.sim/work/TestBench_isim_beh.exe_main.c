@@ -20,6 +20,7 @@ char *IEEE_P_3620187407;
 char *IEEE_P_3499444699;
 char *IEEE_P_1242562249;
 char *UNISIM_P_0947159679;
+char *WORK_P_2188849903;
 char *STD_TEXTIO;
 char *IEEE_P_2717149903;
 char *IEEE_P_1367372525;
@@ -35,6 +36,7 @@ int main(int argc, char **argv)
     ieee_p_2592010699_init();
     ieee_p_1242562249_init();
     unisim_p_0947159679_init();
+    work_p_2188849903_init();
     ieee_p_3499444699_init();
     ieee_p_3620187407_init();
     std_textio_init();
@@ -42,6 +44,7 @@ int main(int argc, char **argv)
     ieee_p_1367372525_init();
     unisim_p_3222816464_init();
     work_a_3947161695_3212880686_init();
+    work_a_0355882158_3212880686_init();
     xilinxcorelib_a_4007518929_3212880686_init();
     xilinxcorelib_a_3469892516_3212880686_init();
     xilinxcorelib_a_2870606753_3212880686_init();
@@ -71,6 +74,7 @@ int main(int argc, char **argv)
     IEEE_P_3499444699 = xsi_get_engine_memory("ieee_p_3499444699");
     IEEE_P_1242562249 = xsi_get_engine_memory("ieee_p_1242562249");
     UNISIM_P_0947159679 = xsi_get_engine_memory("unisim_p_0947159679");
+    WORK_P_2188849903 = xsi_get_engine_memory("work_p_2188849903");
     STD_TEXTIO = xsi_get_engine_memory("std_textio");
     IEEE_P_2717149903 = xsi_get_engine_memory("ieee_p_2717149903");
     IEEE_P_1367372525 = xsi_get_engine_memory("ieee_p_1367372525");

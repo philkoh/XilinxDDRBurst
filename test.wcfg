@@ -5,6 +5,7 @@
    <db_ref_list>
       <db_ref path="C:/GitRepos/XilinxDDRBurst/TestBench_isim_beh.wdb" id="1" type="auto">
          <top_modules>
+            <top_module name="common" />
             <top_module name="numeric_std" />
             <top_module name="std_logic_1164" />
             <top_module name="std_logic_arith" />
@@ -18,22 +19,14 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="49" />
+   <WVObjectSize size="51" />
    <wvobject fp_name="/testbench/clk" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/switch2port" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">switch2port</obj_property>
-      <obj_property name="ObjectShortName">switch2port</obj_property>
-   </wvobject>
    <wvobject fp_name="/testbench/switch3port" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">switch3port</obj_property>
       <obj_property name="ObjectShortName">switch3port</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/dataport" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">dataport[15:0]</obj_property>
-      <obj_property name="ObjectShortName">dataport[15:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/testbench/ck_nport" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">ck_nport</obj_property>
@@ -147,6 +140,10 @@
       <obj_property name="ElementShortName">doutwaitinglsbs[3:0]</obj_property>
       <obj_property name="ObjectShortName">doutwaitinglsbs[3:0]</obj_property>
    </wvobject>
+   <wvobject fp_name="/testbench/switch2port" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">switch2port</obj_property>
+      <obj_property name="ObjectShortName">switch2port</obj_property>
+   </wvobject>
    <wvobject fp_name="/testbench/uut/empty" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">empty</obj_property>
       <obj_property name="ObjectShortName">empty</obj_property>
@@ -215,5 +212,17 @@
    <wvobject fp_name="/testbench/uut/nextburstcount" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">nextburstcount[7:0]</obj_property>
       <obj_property name="ObjectShortName">nextburstcount[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/fastwritedata" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">fastwritedata[15:0]</obj_property>
+      <obj_property name="ObjectShortName">fastwritedata[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/slowwritingpulsetrain" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">slowwritingpulsetrain[3:0]</obj_property>
+      <obj_property name="ObjectShortName">slowwritingpulsetrain[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/dataassertedtooutput" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">dataassertedtooutput[15:0]</obj_property>
+      <obj_property name="ObjectShortName">dataassertedtooutput[15:0]</obj_property>
    </wvobject>
 </wave_config>

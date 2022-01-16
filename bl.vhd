@@ -23,7 +23,7 @@ use IEEE.NUMERIC_STD.ALL;
 
 library UNISIM;
 use UNISIM.VComponents.all;
-
+use work.common.all;
 
 entity bl is
     Port ( 
@@ -89,8 +89,14 @@ end component;
 
 
 
-
-
+	COMPONENT SlowByEightBus
+	PORT(
+		DataToPins : in  burstArr;
+		FastClock : IN std_logic;
+		SlowClockEnable : IN std_logic;       
+		IOpins : INOUT std_logic_vector(15 downto 0)
+		);
+	END COMPONENT;
 
 
 
@@ -294,11 +300,12 @@ END COMPONENT;
 	
 	signal IOpinsA : std_logic_vector(3 downto 0);
 	signal IOpinsB : std_logic_vector(3 downto 0);
+ 
 	signal dataToPinsA : std_logic_vector(31 downto 0);
 	signal dataToPinsB : std_logic_vector(31 downto 0);
 	
 	signal slowClockEnable : std_logic;
-	signal slowClockVector : std_logic_vector(7 downto 0) := "00000001";
+	signal slowClockVector : std_logic_vector(7 downto 0) := "00100000";
 
 
 	type stateTypes IS (slowReset, startWriting,   stopWriting, idle);
@@ -311,6 +318,7 @@ END COMPONENT;
 	signal clkOutFast, dqsFast : std_logic;
 	signal clkOutSlow, dqsSlow : std_logic_vector(7 downto 0);
 
+
 	signal slowCount : unsigned (17 downto 0) := "000000000000000000";
 	signal nextSlowCount : unsigned (17 downto 0) ;
 	signal burstCount : unsigned (7 downto 0) := "00000000";
@@ -318,6 +326,9 @@ END COMPONENT;
 
 	signal slowWritingPulseTrain : std_logic_vector (3 downto 0)  := "0000";
 	signal nextSlowWritingPulseTrain : std_logic_vector  (3 downto 0);
+	
+	signal slowWriteData : burstArr;
+	signal fastWriteData : std_logic_vector(15 downto 0);
 begin
 
 
@@ -356,6 +367,14 @@ dqsFast <= IOpinsB(1);
 dataToPinsB(7 downto 0) <= clkOutSlow;
 dataToPinsB(15 downto 8) <= dqsSlow ;
 
+
+
+DataBus: SlowByEightBus PORT MAP(
+	IOpins => fastWriteData ,
+	DataToPins => slowWriteData,
+	FastClock => clk250MHz ,
+	SlowClockEnable =>  slowClockEnable
+);
 
 
 
@@ -1471,8 +1490,8 @@ process (clk250MHz, slowClockEnable)
 process (count, currentState,count2, slowCount, burstCount, nextState, slowWritingPulseTrain)
 	begin
 	nextState <= currentState;
-	clkOutSlow <= "10101010";
-	dqsSlow <= "10101010";
+	clkOutSlow <= "01010101";
+	dqsSlow <= "01010101";
 	nextSlowCount <= slowCount + 1;
 	nextSlowWritingPulseTrain(0) <= '0';
 	nextBurstCount <= burstCount;
@@ -1487,7 +1506,7 @@ process (count, currentState,count2, slowCount, burstCount, nextState, slowWriti
 
 	case currentState is
 		when slowReset =>
-			if slowCount = 307 then
+			if slowCount = 306 then
 				nextState <= startWriting;
 			end if;
 		when startWriting =>  -- the state startWriting means there is additional data waiting in the FIFO
@@ -1497,8 +1516,8 @@ process (count, currentState,count2, slowCount, burstCount, nextState, slowWriti
 			else
 				nextSlowWritingPulseTrain(0) <= '1';
 				rasSlow <= "11111111";
-				casSlow <= "10011111";
-				weSlow <= "10011111";
+				casSlow <= "11110011";
+				weSlow <= "11110011";
 				nextBurstCount <= burstCount + 1;
 			end if;
 		when stopWriting => -- the state stopWriting means there is no additional data waiting in the FIFO, or we've sent enough pulses and need to refresh or activate a new row
@@ -1510,8 +1529,26 @@ process (count, currentState,count2, slowCount, burstCount, nextState, slowWriti
 	
 	end case;	
 
+
+	slowWriteData(0)<= "ZZZZZZZZZZZZZZZZ"; 
+	slowWriteData(1)<= "ZZZZZZZZZZZZZZZZ"; 
+	slowWriteData(2)<= "ZZZZZZZZZZZZZZZZ"; 
+	slowWriteData(3)<= "ZZZZZZZZZZZZZZZZ"; 
+	slowWriteData(4)<= "ZZZZZZZZZZZZZZZZ"; 
+	slowWriteData(5)<= "ZZZZZZZZZZZZZZZZ"; 
+	slowWriteData(6)<= "ZZZZZZZZZZZZZZZZ"; 
+	slowWriteData(7)<= "ZZZZZZZZZZZZZZZZ"; 
+
 	if slowWritingPulseTrain(1) = '1' then
-		
+		slowWriteData(0)<= "1111111111111111"; 
+		slowWriteData(1)<= "0000000000000000"; 
+		slowWriteData(2)<= "1111111111111111"; 
+		slowWriteData(3)<= "0000000000000000"; 
+		slowWriteData(4)<= "1111111111111111"; 
+		slowWriteData(5)<= "0000000000000000"; 
+		slowWriteData(6)<= "1111111111111111"; 
+		slowWriteData(7)<= "0000000000000000"; 
+	
 	end if;
 		
 	
