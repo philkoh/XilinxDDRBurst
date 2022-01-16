@@ -19,7 +19,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="52" />
+   <WVObjectSize size="55" />
    <wvobject fp_name="/testbench/clk" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -228,5 +228,17 @@
    <wvobject fp_name="/testbench/uut/fastwriteaddress" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">fastwriteaddress[15:0]</obj_property>
       <obj_property name="ObjectShortName">fastwriteaddress[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/slowresetport" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">slowresetport</obj_property>
+      <obj_property name="ObjectShortName">slowresetport</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/slowckeport" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">slowckeport</obj_property>
+      <obj_property name="ObjectShortName">slowckeport</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/slowfiforst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">slowfiforst</obj_property>
+      <obj_property name="ObjectShortName">slowfiforst</obj_property>
    </wvobject>
 </wave_config>

@@ -308,7 +308,7 @@ END COMPONENT;
 	signal slowClockVector : std_logic_vector(7 downto 0) := "00100000";
 
 
-	type stateTypes IS (slowReset, startWriting,   stopWriting, idle, activate, writeMRS);
+	type stateTypes IS (slowReset, ckeLOW, startWriting,   stopWriting, idle, activate, writeMRS);
 	signal currentState : stateTypes := slowReset;
 	signal nextState : stateTypes;
 
@@ -334,6 +334,8 @@ END COMPONENT;
 	
 	signal slowBA : std_logic_vector(2 downto 0) := "000";
 	signal nextSlowBA : std_logic_vector(2 downto 0)  ;
+	signal slowResetPort, slowCKEPort, slowFIFOrst : std_logic;
+	
 	
 begin
 
@@ -1529,10 +1531,24 @@ process (count, currentState,count2, slowCount, burstCount, nextState, slowWriti
 	casSlow <= "11111111";
 	weSlow <= "11111111";
 
+	slowResetPort <= '1';
+	slowCKEPort <= '1';
+	slowFIFOrst <= '0';
+	
 	case currentState is
 		when slowReset =>
-			if slowCount = 306 then
-				nextState <= startWriting;
+			slowResetPort <= '0';
+			slowCKEPort <= '0';
+			slowFIFOrst <= '1';
+		
+			if slowCount = 2 then
+				nextState <= ckeLOW;
+			end if;
+		when ckeLOW =>
+			slowCKEPort <= '0';
+				
+			if slowCount = 2 then
+				nextState <= writeMRS;
 			end if;
 		when startWriting =>  -- the state startWriting means there is additional data waiting in the FIFO
 			if burstCount = 3 then  -- this limits the max number of consecutive bursts
