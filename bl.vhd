@@ -182,9 +182,9 @@ END COMPONENT;
 	
    signal count2 : unsigned (5 downto 0) := "000000";
    signal count : unsigned (17 downto 0) := "000000000000000000";
-	constant fiveThousand : unsigned (17 downto 0) := "000000000000000100";-- "000001000000000000";
-	constant twentyThousand : unsigned (17 downto 0) := "000000000000010000";--"000100000000000000";
- 	constant hundred : unsigned (17 downto 0) := "000000000000000010";--"000000000010000000";
+	constant fiveThousand : unsigned (17 downto 0) :=   "000001000000000000";--"000000000000000100";
+	constant twentyThousand : unsigned (17 downto 0) :=  "000100000000000000";--"000000000000010000";
+ 	constant hundred : unsigned (17 downto 0) :=  "000000000010000000";--"000000000000000010";
    signal nextCount2 : unsigned (5 downto 0);
    signal nextCount : unsigned (17 downto 0);
 --	signal dqszero : std_logic := '0';
