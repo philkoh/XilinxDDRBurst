@@ -980,8 +980,9 @@ process (clk250MHz, advanceTheShiftRegister)
 		
 		nextWriteRefill <=	writeRefill     ;
 	 	nextAddrOut <= addrOut;--unless overridden below, hold and remember the loaded values
-		addrPort <= addrOut;
+		addrPort <= fastWriteAddress(14 downto 0);-- addrOut;
 	
+		
 		
 	
 		nextSwitchRegister <= switchRegister;

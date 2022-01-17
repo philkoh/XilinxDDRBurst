@@ -144,17 +144,17 @@
       <obj_property name="ElementShortName">dqsfast</obj_property>
       <obj_property name="ObjectShortName">dqsfast</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/rasport" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">rasport</obj_property>
-      <obj_property name="ObjectShortName">rasport</obj_property>
+   <wvobject fp_name="/testbench/uut/ras" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ras</obj_property>
+      <obj_property name="ObjectShortName">ras</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/casport" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">casport</obj_property>
-      <obj_property name="ObjectShortName">casport</obj_property>
+   <wvobject fp_name="/testbench/uut/cas" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">cas</obj_property>
+      <obj_property name="ObjectShortName">cas</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/weport" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">weport</obj_property>
-      <obj_property name="ObjectShortName">weport</obj_property>
+   <wvobject fp_name="/testbench/uut/we" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">we</obj_property>
+      <obj_property name="ObjectShortName">we</obj_property>
    </wvobject>
    <wvobject fp_name="/testbench/uut/clkoutfast" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clkoutfast</obj_property>
