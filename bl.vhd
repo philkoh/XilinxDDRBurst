@@ -1500,15 +1500,15 @@ process (clk250MHz, advanceTheShiftRegister)
 	
 
 			if count = twentyThousand + hundred  + hundred + 36 then--20232   --READ
-				nextODT <= '0';  -- turn On Die Termination off for read
+	--			nextODT <= '0';  -- turn On Die Termination off for read
 
-				nextSaveRequest <= '1';	
+		--			nextSaveRequest <= '1';	
 				
-				nextBa <= "000";
-				nextAddrRequest <= "000000000010000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
-				nextRasRequest <= '1';
-				nextCasRequest <= '0';
-				nextWeRequest <= '1';
+		--			nextBa <= "000";
+		--			nextAddrRequest <= "000000000010000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
+		--			nextRasRequest <= '1';
+			--		nextCasRequest <= '0';
+			--		nextWeRequest <= '1';
 			end if;
 			
    end process;
