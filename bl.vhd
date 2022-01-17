@@ -182,9 +182,9 @@ END COMPONENT;
 	
    signal count2 : unsigned (5 downto 0) := "000000";
    signal count : unsigned (17 downto 0) := "000000000000000000";
-	constant fourThousand : unsigned (17 downto 0) := "000001000000000000";
-	constant twentyThousand : unsigned (17 downto 0) := "000100000000000000";
- 	constant hundred : unsigned (17 downto 0) := "000000000010000000";
+	constant fiveThousand : unsigned (17 downto 0) := "000000000000000100";-- "000001000000000000";
+	constant twentyThousand : unsigned (17 downto 0) := "000000000000010000";--"000100000000000000";
+ 	constant hundred : unsigned (17 downto 0) := "000000000000000010";--"000000000010000000";
    signal nextCount2 : unsigned (5 downto 0);
    signal nextCount : unsigned (17 downto 0);
 --	signal dqszero : std_logic := '0';
@@ -1309,7 +1309,7 @@ process (clk250MHz, advanceTheShiftRegister)
 			
 			
 			
-			if count = fourThousand then --5000
+			if count = fiveThousand then --5000
 				nextReset <= '1';
 			end if;
 			if count = twentyThousand then -- 20000
@@ -1364,7 +1364,7 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextWeRequest <= '0';
 			end if;
 				
-			if count =  twentyThousand + hundred  + hundred + hundred + 4 then--20224 --MRS MR3
+			if count =  twentyThousand + hundred  + hundred + 24  then--20224 --MRS MR3
 				nextBa <= "011";
 				nextAddrRequest <= "000000000000000"; 
 				nextRasRequest <= '0';
@@ -1372,7 +1372,7 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextWeRequest <= '0';
 			end if;
 		
-			if count = twentyThousand + hundred  + hundred + hundred + 6 then--20226 --ACTIVATE
+			if count = twentyThousand + hundred  + hundred + 26 then--20226 --ACTIVATE
 				nextBa <= "000";
 				nextAddrRequest <= "000000000001000"; --Row Address 8  
 				nextRasRequest <= '0';
@@ -1383,7 +1383,7 @@ process (clk250MHz, advanceTheShiftRegister)
 
 		
 			
-			if count = 20232 then
+			if count = twentyThousand + hundred  + hundred + 27 then
 				nextdin(3 downto 0) <= "1110";
 				nextdin(19 downto 16) <= "1101";
 				nextdin(35 downto 32) <= "1011";
@@ -1395,12 +1395,12 @@ process (clk250MHz, advanceTheShiftRegister)
 				sharpenFIFOpushEnable(0) <= '0';  -- note: will need a rising edge in a later count
 		 	end if;
 		
-			if count = 20234 then
+			if count = twentyThousand + hundred  + hundred + 28 then
 				sharpenFIFOpushEnable(0) <= '1';  -- here is the rising edge
 		 	end if;
 
 
-			if count = 20236 then
+			if count = twentyThousand + hundred  + hundred + 29 then
 				nextdin(3 downto 0) <= "0111";
 				nextdin(19 downto 16) <= "0110";
 				nextdin(35 downto 32) <= "0101";
@@ -1413,11 +1413,11 @@ process (clk250MHz, advanceTheShiftRegister)
 		 	end if;
 
 
-			if count = 20238 then
+			if count =  twentyThousand + hundred  + hundred + 30 then
 				sharpenFIFOpushEnable(0) <= '1';   -- here is the rising edge
 		 	end if;
 
-			if count = 20240 then
+			if count = twentyThousand + hundred  + hundred + 31 then
 				nextdin(3 downto 0) <= "1000";
 				nextdin(19 downto 16) <= "0100";
 				nextdin(35 downto 32) <= "0010";
@@ -1429,11 +1429,11 @@ process (clk250MHz, advanceTheShiftRegister)
 				sharpenFIFOpushEnable(0) <= '0';  -- note: will need a rising edge in a later count
 		 	end if;
 		
-			if count = 20242 then
+			if count =  twentyThousand + hundred  + hundred + 32 then
 				sharpenFIFOpushEnable(0) <= '1';  -- here is the rising edge
 		 	end if;
 
-			if count = 20244 then--20228 --WRITE
+			if count = twentyThousand + hundred  + hundred + 34 then--20228 --WRITE
 				nextData <= "1010101010100110"; -- the last four digits of this will show up on the LEDs
 				nextRequestedDataToWrite(1) <= "0000000000000001"; 
 				nextRequestedDataToWrite(2) <= "1010101010100010";
@@ -1470,7 +1470,7 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextWeRequest <= '0';
 			end if;
 			
-			if count = 20246 then--20230 --WRITE
+			if count = twentyThousand + hundred  + hundred + 35 then--20230 --WRITE
 				nextData <= "1111111111111001";
 				nextDqsTristate <= '0';
 			
@@ -1482,13 +1482,13 @@ process (clk250MHz, advanceTheShiftRegister)
 			end if;
 	
 
-			if count = 20248 then--20232   --READ
+			if count = twentyThousand + hundred  + hundred + 36 then--20232   --READ
 				nextODT <= '0';  -- turn On Die Termination off for read
 
 				nextSaveRequest <= '1';	
 				
 				nextBa <= "000";
-				nextAddrRequest <= "000000000011000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
+				nextAddrRequest <= "000000000010000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
 				nextRasRequest <= '1';
 				nextCasRequest <= '0';
 				nextWeRequest <= '1';
@@ -1568,13 +1568,14 @@ process (count, currentState,count2, slowCount, burstCount, nextState, slowWriti
 			slowCKEPort <= '0';
 			slowFIFOrst <= '1';
 		
-			if slowCount = 2 then
+		
+			if slowCount = fiveThousand * 16 then
 				nextState <= ckeLOW;
 			end if;
 		when ckeLOW =>
 			slowCKEPort <= '0';
 				
-			if slowCount = 2 then
+			if slowCount = fiveThousand * 3 * 16 then
 				nextState <= writeMRS;
 			end if;
 		when startWriting =>  -- the state startWriting means there is additional data waiting in the FIFO
@@ -1596,46 +1597,75 @@ process (count, currentState,count2, slowCount, burstCount, nextState, slowWriti
 			end if;
 
 		when writeMRS =>
-			if slowCount = 1 or slowCount = 17 or slowCount = 33 or slowCount = 49 or slowCount = 265 then -- will occur at slowCount = 4, 20, 36, 52 etc.
+			if slowCount = hundred * 2 * 16 - 2 then
+				nextSlowBA <= "010"; --MRS MR2
+				nextAddr <= "0000000000001000";  --CWL = 6
+			end if;
+			if slowCount = hundred * 2 * 16 + 1 then 
 				rasSlow <= "11110011";
 				casSlow <= "11110011";
 				weSlow <= "11110011";
 			end if;
-			if slowCount = 0 then
-				nextSlowBA <= "010"; --MRS MR2
-				nextAddr <= "0000000000001000";  --CWL = 6
-			end if;
-			if slowCount = 16 then
+	
+			if slowCount = hundred * 2 * 16 + 1 * 16 - 2  then
 				nextSlowBA <= "011";--MRS MR3
 				nextAddr <= "0000000000000100"; -- MPR mode, outputs special pattern on reads
 			end if;
-			if slowCount = 32 then
+			if slowCount = hundred * 2 * 16 + 1 * 16  + 1 then 
+				rasSlow <= "11110011";
+				casSlow <= "11110011";
+				weSlow <= "11110011";
+			end if;
+	
+			if slowCount = hundred * 2 * 16 + 2 * 16 - 2    then
 				nextSlowBA <= "001"; --MRS MR1  
 				nextAddr <= "0000000000000101";  -- DLL disable     RZQ/4 (60O NOM)
 --				nextAddrRequest <= "000000000000100";  -- DLL enable     RZQ/4 (60O NOM)
 			end if;
-			if slowCount = 48 then
+			if slowCount = hundred * 2 * 16 + 2 * 16     + 1 then 
+				rasSlow <= "11110011";
+				casSlow <= "11110011";
+				weSlow <= "11110011";
+			end if;
+
+			if slowCount = hundred * 2 * 16 + 3 * 16  - 2   then
 				nextSlowBa <= "000";		--MRS MR0
 				nextAddr <= (9 => '1', 8 => '0', 5 => '1', others => '0'); --CAS latency = 6, Don'treset DLL  , WriteRecovery = 5, FixedBurstLength = 8
 --				nextAddrRequest <= (9 => '1', 8 => '1', 4 => '1', others => '0'); --CAS latency = 5, reset DLL  , WriteRecovery = 5
 			end if;
-			if slowCount = 64 then
+			if slowCount = hundred * 2 * 16 + 3 * 16    + 1 then 
+				rasSlow <= "11110011";
+				casSlow <= "11110011";
+				weSlow <= "11110011";
+			end if;
+
+
+
+			if slowCount = hundred * 2 * 16 + 4 * 16 - 2   then
 				--ZQCL
 				nextSlowBa <= "000";				
 				nextAddr <= (10 => '1', others => '0'); 
 			end if;
-			if   slowCount = 65 then 
+			if   slowCount = hundred * 2 * 16 + 4 * 16 + 1 then 
 				rasSlow <= "11111111";
 				casSlow <= "11111111";
 				weSlow <= "11110011";
 			end if;
-			if slowCount = 264 then
+			if slowCount = hundred * 2 * 16 + 24 * 16 - 2    then
 				nextSlowBa <= "011"; --MRS MR3
 				nextAddr <= "0000000000000000"; 
 			end if;
-			if slowCount = 280 then
+			if slowCount = hundred * 2 * 16 + 24 * 16    + 1 then 
+				rasSlow <= "11110011";
+				casSlow <= "11110011";
+				weSlow <= "11110011";
+			end if;
+		
+			
+			if slowCount = hundred * 2 * 16 + 26 * 16 - 1  then
 				nextState <= activate;
 			end if;
+			
 		when activate =>
 				nextSlowBa <= "000";
 				nextAddr <= "0000000000001000"; --Row Address 8  
@@ -1644,9 +1674,11 @@ process (count, currentState,count2, slowCount, burstCount, nextState, slowWriti
 				casSlow <= "11111111";
 				weSlow <= "11111111";
 			end if;
-			if   slowCount = 2 then  -- this count can be reduced for slow clock frequencies
+			if   slowCount = 8 * 16 then  -- this count can be reduced for slow clock frequencies
 				nextState <= startWriting;
-			end if;			
+				nextSlowBa <= "000";
+				nextAddr <= "0000000000010000";   
+	end if;			
 	
 		when others => 
 	
