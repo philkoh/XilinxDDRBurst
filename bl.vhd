@@ -311,7 +311,7 @@ END COMPONENT;
 	signal slowClockVector : std_logic_vector(7 downto 0) := "00100000";
 
 
-	type stateTypes IS (slowReset, ckeLOW, startWriting,   stopWriting, idle, activate, writeMRS, reading, stop);
+	type stateTypes IS (slowReset, ckeLOW, startWriting,   stopWriting, idle, activate, writeMRS, reading, stopReading, stop);
 	signal currentState : stateTypes := stop;
 	signal nextState : stateTypes;
 
@@ -347,6 +347,11 @@ END COMPONENT;
 	signal lastRequestOldCode : std_logic := '0';
 	signal requestOldCode : std_logic := '0';
 	signal nextRequestOldCode : std_logic ;
+	signal slowNextClockEnableRead : std_logic;
+	signal slowNextClockEnableReadDelayed1 : std_logic;
+	signal slowNextClockEnableReadDelayed2 : std_logic;
+signal slowNextClockEnableReadDelayed3 : std_logic;
+signal slowNextClockEnableReadDelayed4 : std_logic;
 
 	
 begin
@@ -858,6 +863,11 @@ process (clk250MHz, advanceTheShiftRegister)
 			requestOldCode <= nextRequestOldCode;
 			lastrequestNewCode <= requestNewCode;
 			lastrequestOldCode <= requestOldCode;
+			
+			slowNextClockEnableReadDelayed1 <= slowNextClockEnableRead;
+			slowNextClockEnableReadDelayed2 <= slowNextClockEnableReadDelayed1;
+			slowNextClockEnableReadDelayed3 <= slowNextClockEnableReadDelayed2;
+			slowNextClockEnableReadDelayed4 <= slowNextClockEnableReadDelayed3;
 		end if;
 	end process;
 
@@ -896,7 +906,8 @@ process (clk250MHz, advanceTheShiftRegister)
 		------------------------------------ NOTE: every clockEnable runs twice, on a rising then falling edge of the 125MHz clock, on two consecutive rising 250MHz edges
 		------------------------------------ NOTE: every clockEnable runs twice, on a rising then falling edge of the 125MHz clock, on two consecutive rising 250MHz edges
 	
-		if clockEnableRead = '1'  then --capture data, actually captures 8 times, I think, 4 cycles of count2 at 125MHz, but two rising edges of 250 MHz per count2 incremena
+		if slowNextClockEnableReadDelayed4 = '1'  then
+	--	if clockEnableRead = '1'  then --capture data, actually captures 8 times, I think, 4 cycles of count2 at 125MHz, but two rising edges of 250 MHz per count2 incremena
 			nextCapturedData(1) <= inData;
 			
 			nextCapturedData(11 downto 2) <= capturedData(10 downto 1);
@@ -1566,6 +1577,8 @@ process (count, currentState,count2, slowCount, burstCount, nextState, slowWriti
 	slowCKEPort <= '1';
 	slowFIFOrst <= '0';
 	
+	slowNextClockEnableRead <= '0';
+	
 	case currentState is
 		when slowReset =>
 			slowResetPort <= '0';
@@ -1610,8 +1623,12 @@ process (count, currentState,count2, slowCount, burstCount, nextState, slowWriti
 				rasSlow <= "11111111";
 				casSlow <= "11110011";
 				weSlow <= "11111111";
+				nextState <= stopReading;
+		when stopReading =>
+			if slowCount = 2 then
+				slowNextClockEnableRead <= '1';
 				nextState <= stop;
-		when stop =>
+			end if;
 		 
 
 		when writeMRS =>

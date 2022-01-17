@@ -19,7 +19,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="58" />
+   <WVObjectSize size="65" />
    <wvobject fp_name="/testbench/clk" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -160,6 +160,10 @@
       <obj_property name="ElementShortName">clkoutfast</obj_property>
       <obj_property name="ObjectShortName">clkoutfast</obj_property>
    </wvobject>
+   <wvobject fp_name="/testbench/uut/clk125mhz" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk125mhz</obj_property>
+      <obj_property name="ObjectShortName">clk125mhz</obj_property>
+   </wvobject>
    <wvobject fp_name="/testbench/uut/rasfast" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">rasfast</obj_property>
       <obj_property name="ObjectShortName">rasfast</obj_property>
@@ -249,8 +253,32 @@
       <obj_property name="ElementShortName">clk250mhz</obj_property>
       <obj_property name="ObjectShortName">clk250mhz</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/uut/clk125mhz" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">clk125mhz</obj_property>
-      <obj_property name="ObjectShortName">clk125mhz</obj_property>
+   <wvobject fp_name="/testbench/uut/slownextclockenableread" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">slownextclockenableread</obj_property>
+      <obj_property name="ObjectShortName">slownextclockenableread</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/slownextclockenablereaddelayed1" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">slownextclockenablereaddelayed1</obj_property>
+      <obj_property name="ObjectShortName">slownextclockenablereaddelayed1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/slownextclockenablereaddelayed2" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">slownextclockenablereaddelayed2</obj_property>
+      <obj_property name="ObjectShortName">slownextclockenablereaddelayed2</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/slownextclockenablereaddelayed3" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">slownextclockenablereaddelayed3</obj_property>
+      <obj_property name="ObjectShortName">slownextclockenablereaddelayed3</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/slownextclockenablereaddelayed4" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">slownextclockenablereaddelayed4</obj_property>
+      <obj_property name="ObjectShortName">slownextclockenablereaddelayed4</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/nextclockenableread" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">nextclockenableread</obj_property>
+      <obj_property name="ObjectShortName">nextclockenableread</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/clockenableread" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clockenableread</obj_property>
+      <obj_property name="ObjectShortName">clockenableread</obj_property>
    </wvobject>
 </wave_config>
