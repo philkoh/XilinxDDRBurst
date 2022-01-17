@@ -182,6 +182,9 @@ END COMPONENT;
 	
    signal count2 : unsigned (5 downto 0) := "000000";
    signal count : unsigned (17 downto 0) := "000000000000000000";
+	constant fourThousand : unsigned (17 downto 0) := "000001000000000000";
+	constant twentyThousand : unsigned (17 downto 0) := "000100000000000000";
+ 	constant hundred : unsigned (17 downto 0) := "000000000010000000";
    signal nextCount2 : unsigned (5 downto 0);
    signal nextCount : unsigned (17 downto 0);
 --	signal dqszero : std_logic := '0';
@@ -1306,19 +1309,19 @@ process (clk250MHz, advanceTheShiftRegister)
 			
 			
 			
-			if count = 5000 then --5000
+			if count = fourThousand then --5000
 				nextReset <= '1';
 			end if;
-			if count = 20000 then -- 20000
+			if count = twentyThousand then -- 20000
 				nextCke <= '1';
 			end if;
 			
-			if count = 20100 then -- 20100 --do nothing (sets nextAddr to get rid of an annoying warking)
+			if count = twentyThousand + hundred then -- 20100 --do nothing (sets nextAddr to get rid of an annoying warking)
 				nextBa <= "111";
 				nextAddrRequest <= "111111111111111";
 			end if;
 	
-			if count = 20200 then--20200 --MRS MR2
+			if count =  twentyThousand + hundred  + hundred then--20200 --MRS MR2
 				nextBa <= "010";
 				nextAddrRequest <= "000000000001000";  --CWL = 6
 --				nextAddrRequest <= "000000000000000";  --CWL = 5
@@ -1327,7 +1330,7 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextWeRequest <= '0';
 			end if;
 	
-			if count = 20201 then--20201 --MRS MR3
+			if count = twentyThousand + hundred  + hundred + 1 then--20201 --MRS MR3
 				nextBa <= "011";
 				nextAddrRequest <= "000000000000100"; -- MPR mode, outputs special pattern on reads
 				nextRasRequest <= '0';
@@ -1335,7 +1338,7 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextWeRequest <= '0';
 			end if;
 		
-			if count = 20202 then--20202 --MRS MR1  
+			if count = twentyThousand + hundred  + hundred + 2 then--20202 --MRS MR1  
 				nextBa <= "001";
 				nextAddrRequest <= "000000000000101";  -- DLL disable     RZQ/4 (60O NOM)
 --				nextAddrRequest <= "000000000000100";  -- DLL enable     RZQ/4 (60O NOM)
@@ -1344,7 +1347,7 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextWeRequest <= '0';
 			end if;
 		
-			if count = 20203 then--20203 --MRS MR0
+			if count = twentyThousand + hundred  + hundred + 3 then--20203 --MRS MR0
 				nextBa <= "000";	
 				nextAddrRequest <= (9 => '1', 8 => '0', 5 => '1', others => '0'); --CAS latency = 6, Don'treset DLL  , WriteRecovery = 5, FixedBurstLength = 8
 --				nextAddrRequest <= (9 => '1', 8 => '1', 4 => '1', others => '0'); --CAS latency = 5, reset DLL  , WriteRecovery = 5
@@ -1353,7 +1356,7 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextWeRequest <= '0';
 			end if;
 	
-			if count = 20204 then--20204 --ZQCL
+			if count = twentyThousand + hundred  + hundred + 4 then--20204 --ZQCL
 				nextBa <= "000";				
 				nextAddrRequest <= (10 => '1', others => '0'); 
 				nextRasRequest <= '1';
@@ -1361,7 +1364,7 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextWeRequest <= '0';
 			end if;
 				
-			if count = 20224 then--20224 --MRS MR3
+			if count =  twentyThousand + hundred  + hundred + hundred + 4 then--20224 --MRS MR3
 				nextBa <= "011";
 				nextAddrRequest <= "000000000000000"; 
 				nextRasRequest <= '0';
@@ -1369,7 +1372,7 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextWeRequest <= '0';
 			end if;
 		
-			if count = 20226 then--20226 --ACTIVATE
+			if count = twentyThousand + hundred  + hundred + hundred + 6 then--20226 --ACTIVATE
 				nextBa <= "000";
 				nextAddrRequest <= "000000000001000"; --Row Address 8  
 				nextRasRequest <= '0';
