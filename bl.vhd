@@ -965,9 +965,10 @@ process (clk250MHz, advanceTheShiftRegister)
    end process;
 	
 ------------------------------------------COMBINATORIAL:
-	casPORT <= cas;
-	rasPORT <= ras;
-	wePORT <= we;
+--rasFast, casFast, weFast
+	casPORT <=  casFast;--cas;
+	rasPORT <= rasFast;-- ras;
+	wePORT <= weFast;--we;
 
 	nextWritePulseTrain (15 downto 2) <= writePulseTrain (14 downto 1);
 
