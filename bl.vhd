@@ -1451,51 +1451,51 @@ process (clk250MHz, advanceTheShiftRegister)
 		 	end if;
 
 			if count = twentyThousand + hundred  + hundred + 34 then--20228 --WRITE
-				nextData <= "1010101010100110"; -- the last four digits of this will show up on the LEDs
-				nextRequestedDataToWrite(1) <= "0000000000000001"; 
-				nextRequestedDataToWrite(2) <= "1010101010100010";
-				nextRequestedDataToWrite(3) <= "1010101010100100";
-				nextRequestedDataToWrite(4) <= "1010101010101000";
-				nextRequestedDataToWrite(5) <= "1010101010101100";
-				nextRequestedDataToWrite(6) <= "1010101010100110";
-				nextRequestedDataToWrite(7) <= "1010101010100011";
-				nextRequestedDataToWrite(8) <= "1010101010100111";
-				nextRequestedDataToWrite(9) <= "1010101010101110";
-				nextRequestedDataToWrite(10) <= "0000000000001111";
- 				nextRequestedDataToWrite(11) <= "0000000000001110";
-				nextRequestedDataToWrite(12) <= "1010101010101100";
-				nextRequestedDataToWrite(13) <= "1010101010101000";
-				nextRequestedDataToWrite(14) <= "1010101010101100";
-				nextRequestedDataToWrite(15) <= "1010101010101110";
-				nextRequestedDataToWrite(16) <= "1010101010101111";
-				nextRequestedDataToWrite(17) <= "1010101010100111";
-				nextRequestedDataToWrite(18) <= "1010101010100011";
-				nextRequestedDataToWrite(19) <= "1010101010100001";
-				nextRequestedDataToWrite(20) <= "0000000000000011";
+			--		nextData <= "1010101010100110"; -- the last four digits of this will show up on the LEDs
+			--		nextRequestedDataToWrite(1) <= "0000000000000001"; 
+			--		nextRequestedDataToWrite(2) <= "1010101010100010";
+			--		nextRequestedDataToWrite(3) <= "1010101010100100";
+			--		nextRequestedDataToWrite(4) <= "1010101010101000";
+			--		nextRequestedDataToWrite(5) <= "1010101010101100";
+			--		nextRequestedDataToWrite(6) <= "1010101010100110";
+			--		nextRequestedDataToWrite(7) <= "1010101010100011";
+			--		nextRequestedDataToWrite(8) <= "1010101010100111";
+			--		nextRequestedDataToWrite(9) <= "1010101010101110";
+			--		nextRequestedDataToWrite(10) <= "0000000000001111";
+ 			--		nextRequestedDataToWrite(11) <= "0000000000001110";
+			--		nextRequestedDataToWrite(12) <= "1010101010101100";
+				--	nextRequestedDataToWrite(13) <= "1010101010101000";
+				--	nextRequestedDataToWrite(14) <= "1010101010101100";
+				--	nextRequestedDataToWrite(15) <= "1010101010101110";
+				--	nextRequestedDataToWrite(16) <= "1010101010101111";
+				--	nextRequestedDataToWrite(17) <= "1010101010100111";
+				--	nextRequestedDataToWrite(18) <= "1010101010100011";
+				--	nextRequestedDataToWrite(19) <= "1010101010100001";
+				--	nextRequestedDataToWrite(20) <= "0000000000000011";
 
 
 
 
 
-				nextWriteRequest <= '1';
-				nextDqsTristate <= '0';
+			--		nextWriteRequest <= '1';
+			--		nextDqsTristate <= '0';
 			
-				nextBa <= "000";
-				nextAddrRequest <= "000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
-				nextRasRequest <= '1';
-				nextCasRequest <= '0';
-				nextWeRequest <= '0';
+			--		nextBa <= "000";
+			--		nextAddrRequest <= "000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
+			--		nextRasRequest <= '1';
+			--		nextCasRequest <= '0';
+			--		nextWeRequest <= '0';
 			end if;
 			
 			if count = twentyThousand + hundred  + hundred + 35 then--20230 --WRITE
-				nextData <= "1111111111111001";
-				nextDqsTristate <= '0';
+		--			nextData <= "1111111111111001";
+		--			nextDqsTristate <= '0';
 			
-				nextBa <= "000";
-				nextAddrRequest <= "000000111110000"; -- A10 must be LOW to turn off AutoPrecharge
-				nextRasRequest <= '1';
-				nextCasRequest <= '0';
-				nextWeRequest <= '0';
+		--			nextBa <= "000";
+		--			nextAddrRequest <= "000000111110000"; -- A10 must be LOW to turn off AutoPrecharge
+		--			nextRasRequest <= '1';
+			--		nextCasRequest <= '0';
+			--		nextWeRequest <= '0';
 			end if;
 	
 
