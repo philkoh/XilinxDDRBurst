@@ -1016,9 +1016,6 @@ process (clk250MHz, advanceTheShiftRegister)
 		LED3 <= switchCount(3);
 
 		nextCount2 <= count2 + 1;  -- count2 increments at 125 MHz, not 250 MHz
-		if count2 = 1 then 
-	--		nextCount2 <= count2 + 14;  --skip ahead to shorten the cycle
-		end if;
 			
 		if count2 = 0    then
 			nextClockEnableBeginning <= '1';  -- this flag executes all the block of code below that changes signals on the count2 = 0 edge 
@@ -1055,10 +1052,6 @@ process (clk250MHz, advanceTheShiftRegister)
 		end if;
 
 		
-		if count2 = 20 and  writeRequest = '1' then  -- during a write cycle, pulse a second write command
-	--		nextClockEnableCommand <= '1';
-	--  	nextWritePulseTrain(1) <= '1'; -- this starts a second sequence of write actions for the second burst of data
-		end if;
 		
 		if nextWritePulseTrain(1) = '1' then
 			sharpenFIFOpullEnable(1) <= '1';
@@ -1072,22 +1065,12 @@ process (clk250MHz, advanceTheShiftRegister)
 			nextAddrOut <= addrRequest;
 		end if;
 
-	--	if count2 = 17   then   -- this increments the address
 		if writePulseTrain(2) = '1' then
 				nextAddrOut <= 			std_logic_vector(to_unsigned((to_integer(unsigned(addrOut)) + 8),15)); -- increment column address by 8
 		end if;
 			
 			
-	--	if count2 = 20 and writeRequest = '1' then  -- this replaces the waiting data from fifo
 		if writePulseTrain(4) = '1' then
-	--			nextWriteRefill(0) <= "0000000000001001"; 
-	--			nextWriteRefill(1) <= "0000000000000110"; 
-	--			nextWriteRefill(2) <= "0000000000001100"; 
-	--	 		nextWriteRefill(3) <= "0000000000001010"; 
-	--			nextWriteRefill(4) <= "0000000000000101"; 
-	--			nextWriteRefill(5) <= "0000000000000111"; 
-	--			nextWriteRefill(6) <= "0000000000001111"; 
-	--			nextWriteRefill(7) <= "0000000000001011"; 
 	
 			nextWriteRefill(0) <= doutWaiting (15 downto 0); 
 			nextWriteRefill(1) <= doutWaiting (31 downto 16); 
@@ -1098,20 +1081,15 @@ process (clk250MHz, advanceTheShiftRegister)
 			nextWriteRefill(6) <= doutWaiting (111 downto 96); 
 			nextWriteRefill(7) <= doutWaiting (127 downto 112); 
 	
-	--		sharpenFIFOpullEnable(0) <= '1';  -- this will advance the FIFO later 
 		end if;
 			
 			
 			
 		
 		nextClockEnableRefillWriteData <= '0';
---		if count2 = 22  and writeRequest = '1'   then   -- this refills more write data onto the outgoing stack
 		if writePulseTrain(6) = '1' then
 			nextClockEnableRefillWriteData <= '1';
 		end if;
-	--	if count2 = 26 and writeRequest = '1'   then   -- this refills more write data onto the outgoing stack
-	--		nextClockEnableRefillWriteData <= '1';
---		end if;
 
 
 		if count2 = 24 and writeRequest = '1' then  -- this replaces the waiting data from fifo
@@ -1127,20 +1105,20 @@ process (clk250MHz, advanceTheShiftRegister)
 		end if;
 			
 			
---			if (count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26)   then  --reads for 4 cycles of 125MHz count2
+--------------------------------			if (count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26)   then  --reads for 4 cycles of 125MHz count2
 		if (count2 = 24 or count2 = 25 or count2 = 26 or count2 = 27) and saveRequest = '1'   then  --reads for 4 cycles of 125MHz count2
---			if count2 = 26 or count2 = 27 or count2 = 28 or count2 = 29 then
-			nextClockEnableRead <= '1';
+------------------------------------------			if count2 = 26 or count2 = 27 or count2 = 28 or count2 = 29 then
+--			nextClockEnableRead <= '1';
 		else
-			nextClockEnableRead <= '0';
+--			nextClockEnableRead <= '0';
 		end if;
 		
 
-	--	if (count2 = 22 or count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26 or count2 = 27 or count2 = 28 or count2 = 29 or count2 = 30  ) and writeRequest = '1'   then  --writes for 4 cycles of 125MHz count2
+	----------------------	if (count2 = 22 or count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26 or count2 = 27 or count2 = 28 or count2 = 29 or count2 = 30  ) and writeRequest = '1'   then  --writes for 4 cycles of 125MHz count2
 		if writePulseTrain(6) = '1' or writePulseTrain(7) = '1'  or writePulseTrain(8) = '1'  or writePulseTrain(9) = '1'  or writePulseTrain(10) = '1' then
-			nextClockEnableWrite <= '1';
+--			nextClockEnableWrite <= '1';
 		else
-			nextClockEnableWrite <= '0';
+--			nextClockEnableWrite <= '0';
 		end if;
 		
 
