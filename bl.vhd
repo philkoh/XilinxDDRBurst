@@ -1246,7 +1246,7 @@ process (clk250MHz, advanceTheShiftRegister)
 	dqm0PORT  <= '0';
 	dqm1PORT  <= '0';
 	odtPORT <= odt;
-	baPort <= ba;
+	baPort <= slowBA;-- ba;
 	
 	 
 	resetPort <= slowResetPort;--reset;
