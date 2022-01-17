@@ -311,8 +311,8 @@ END COMPONENT;
 	signal slowClockVector : std_logic_vector(7 downto 0) := "00100000";
 
 
-	type stateTypes IS (slowReset, ckeLOW, startWriting,   stopWriting, idle, activate, writeMRS);
-	signal currentState : stateTypes := slowReset;
+	type stateTypes IS (slowReset, ckeLOW, startWriting,   stopWriting, idle, activate, writeMRS, reading, stop);
+	signal currentState : stateTypes := stop;
 	signal nextState : stateTypes;
 
 	signal csFast, rasFast, casFast, weFast : std_logic;
@@ -1569,7 +1569,7 @@ process (count, currentState,count2, slowCount, burstCount, nextState, slowWriti
 			slowFIFOrst <= '1';
 		
 		
-			if slowCount = fiveThousand * 16 then
+			if slowCount = fiveThousand * 16 - 1 then
 				nextState <= ckeLOW;
 			end if;
 		when ckeLOW =>
@@ -1595,6 +1595,20 @@ process (count, currentState,count2, slowCount, burstCount, nextState, slowWriti
 			if slowWritingPulseTrain = "0000" then --no more tasks to do for previous writes
 				nextState <= idle;
 			end if;
+		when idle => 
+			if slowCount = 2 * 16 - 7 then
+				nextState <= reading;
+			
+				nextSlowBa <= "000";
+				nextAddr <= "0000000000010000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
+			end if;
+		when reading =>
+				rasSlow <= "11111111";
+				casSlow <= "11110011";
+				weSlow <= "11111111";
+				nextState <= stop;
+		when stop =>
+		 
 
 		when writeMRS =>
 			if slowCount = hundred * 2 * 16 - 2 then
@@ -1683,6 +1697,10 @@ process (count, currentState,count2, slowCount, burstCount, nextState, slowWriti
 		when others => 
 	
 	end case;	
+	
+	if count = 1 then
+		nextState <= slowReset;
+	end if;
 
 
 	slowWriteData(0)<= "ZZZZZZZZZZZZZZZZ"; 

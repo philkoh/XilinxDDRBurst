@@ -12,7 +12,7 @@ Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/bl.vhd" into library work
 Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/TestBench.vhd" into library work
 Starting static elaboration
 Completed static elaboration
-Fuse Memory Usage: 173196 KB
+Fuse Memory Usage: 173388 KB
 Fuse CPU Usage: 296 ms
 Compiling package standard
 Compiling package std_logic_1164
@@ -46,8 +46,7 @@ Compiling architecture obufds_v of entity OBUFDS [\OBUFDS("DONT_CARE","DIFF_SSTL
 Compiling architecture behavioral of entity bl [bl_default]
 Compiling architecture behavior of entity testbench
 Time Resolution for simulation is 1ps.
-Waiting for 1 sub-compilation(s) to finish...
 Compiled 50 VHDL Units
 Built simulation executable C:/GitRepos/XilinxDDRBurst/TestBench_isim_beh.exe
-Fuse Memory Usage: 215456 KB
-Fuse CPU Usage: 812 ms
+Fuse Memory Usage: 215648 KB
+Fuse CPU Usage: 781 ms
