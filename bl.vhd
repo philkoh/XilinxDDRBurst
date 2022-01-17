@@ -1245,8 +1245,10 @@ process (clk250MHz, advanceTheShiftRegister)
 	dqm1PORT  <= '0';
 	odtPORT <= odt;
 	baPort <= ba;
-	resetPort <= reset;
-	ckePort <= cke;
+	
+	 
+	resetPort <= slowResetPort;--reset;
+	ckePort <= slowCKEPort;-- cke;
 	blinkerPORT <= blinker;
 	
 	nextBlinker <= not blinker when count = 0 else blinker;
