@@ -547,7 +547,7 @@ IDATAIN => dataPort(0), -- 1-bit input: Data input (connect to top-level port or
 INC => '0', -- 1-bit input: Increment / decrement input
 IOCLK0 => '0', -- 1-bit input: Input from the I/O clock network
 IOCLK1 => '0', -- 1-bit input: Input from the I/O clock network
-ODATAIN => dataAssertedToOutput(0), -- 1-bit input: Output data input from output register or OSERDES2.
+ODATAIN => fastWriteData(0),--dataAssertedToOutput(0), -- 1-bit input: Output data input from output register or OSERDES2.
 RST => '0', -- 1-bit input: Reset to zero or 1/2 of total delay period
 T => dqsTristate -- 1-bit input: 3-state input signal
 );
@@ -603,7 +603,7 @@ IDATAIN => dataPort(1), -- 1-bit input: Data input (connect to top-level port or
 INC => '0', -- 1-bit input: Increment / decrement input
 IOCLK0 => '0', -- 1-bit input: Input from the I/O clock network
 IOCLK1 => '0', -- 1-bit input: Input from the I/O clock network
-ODATAIN => dataAssertedToOutput(1), -- 1-bit input: Output data input from output register or OSERDES2.
+ODATAIN => fastWriteData(1),-- dataAssertedToOutput(1), -- 1-bit input: Output data input from output register or OSERDES2.
 RST => '0', -- 1-bit input: Reset to zero or 1/2 of total delay period
 T => dqsTristate -- 1-bit input: 3-state input signal
 );
@@ -659,7 +659,7 @@ IDATAIN => dataPort(2), -- 1-bit input: Data input (connect to top-level port or
 INC => '0', -- 1-bit input: Increment / decrement input
 IOCLK0 => '0', -- 1-bit input: Input from the I/O clock network
 IOCLK1 => '0', -- 1-bit input: Input from the I/O clock network
-ODATAIN => dataAssertedToOutput(2), -- 1-bit input: Output data input from output register or OSERDES2.
+ODATAIN => fastWriteData(2),-- dataAssertedToOutput(2), -- 1-bit input: Output data input from output register or OSERDES2.
 RST => '0', -- 1-bit input: Reset to zero or 1/2 of total delay period
 T => dqsTristate -- 1-bit input: 3-state input signal
 );
@@ -714,7 +714,7 @@ IDATAIN => dataPort(3), -- 1-bit input: Data input (connect to top-level port or
 INC => '0', -- 1-bit input: Increment / decrement input
 IOCLK0 => '0', -- 1-bit input: Input from the I/O clock network
 IOCLK1 => '0', -- 1-bit input: Input from the I/O clock network
-ODATAIN => dataAssertedToOutput(3), -- 1-bit input: Output data input from output register or OSERDES2.
+ODATAIN => fastWriteData(3),-- dataAssertedToOutput(3), -- 1-bit input: Output data input from output register or OSERDES2.
 RST => '0', -- 1-bit input: Reset to zero or 1/2 of total delay period
 T => dqsTristate -- 1-bit input: 3-state input signal
 );
