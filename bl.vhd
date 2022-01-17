@@ -1717,14 +1717,14 @@ process (count, currentState,count2, slowCount, burstCount, nextState, slowWriti
 	slowWriteData(7)<= "ZZZZZZZZZZZZZZZZ"; 
 
 	if slowWritingPulseTrain(1) = '1' then
-		slowWriteData(0)<= "1111111111111111"; 
-		slowWriteData(1)<= "0000000000000000"; 
-		slowWriteData(2)<= "1111111111111111"; 
-		slowWriteData(3)<= "0000000000000000"; 
-		slowWriteData(4)<= "1111111111111111"; 
-		slowWriteData(5)<= "0000000000000000"; 
-		slowWriteData(6)<= "1111111111111111"; 
-		slowWriteData(7)<= "0000000000000000"; 
+		slowWriteData(0)<= "1111111111110001"; 
+		slowWriteData(1)<= "0000000000000010"; 
+		slowWriteData(2)<= "1111111111110100"; 
+		slowWriteData(3)<= "0000000000001000"; 
+		slowWriteData(4)<= "1111111111111100"; 
+		slowWriteData(5)<= "0000000000000110"; 
+		slowWriteData(6)<= "1111111111110011"; 
+		slowWriteData(7)<= "0000000000000111"; 
 	
 	end if;
 		
