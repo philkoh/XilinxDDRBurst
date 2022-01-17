@@ -19,7 +19,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="66" />
+   <WVObjectSize size="75" />
    <wvobject fp_name="/testbench/clk" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -184,10 +184,6 @@
       <obj_property name="ElementShortName">nextstate</obj_property>
       <obj_property name="ObjectShortName">nextstate</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/uut/slowclockenable" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">slowclockenable</obj_property>
-      <obj_property name="ObjectShortName">slowclockenable</obj_property>
-   </wvobject>
    <wvobject fp_name="/testbench/uut/slowcount" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">slowcount[17:0]</obj_property>
       <obj_property name="ObjectShortName">slowcount[17:0]</obj_property>
@@ -200,10 +196,6 @@
    <wvobject fp_name="/testbench/uut/nextburstcount" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">nextburstcount[7:0]</obj_property>
       <obj_property name="ObjectShortName">nextburstcount[7:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/uut/fastwritedata" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">fastwritedata[15:0]</obj_property>
-      <obj_property name="ObjectShortName">fastwritedata[15:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/testbench/uut/slowwritingpulsetrain" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">slowwritingpulsetrain[3:0]</obj_property>
@@ -284,5 +276,49 @@
    <wvobject fp_name="/testbench/uut/dqstristate" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">dqstristate</obj_property>
       <obj_property name="ObjectShortName">dqstristate</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/slowfifopulltoggle" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">slowfifopulltoggle</obj_property>
+      <obj_property name="ObjectShortName">slowfifopulltoggle</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/nextslowfifopulltoggle" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">nextslowfifopulltoggle</obj_property>
+      <obj_property name="ObjectShortName">nextslowfifopulltoggle</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/slowclockenable" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">slowclockenable</obj_property>
+      <obj_property name="ObjectShortName">slowclockenable</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/slowfifopullpulse" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">slowfifopullpulse[9:0]</obj_property>
+      <obj_property name="ObjectShortName">slowfifopullpulse[9:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/slowwritedata" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">slowwritedata[7:0]</obj_property>
+      <obj_property name="ObjectShortName">slowwritedata[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/fastwritedata" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">fastwritedata[15:0]</obj_property>
+      <obj_property name="ObjectShortName">fastwritedata[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/sharpenfifopushenable" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">sharpenfifopushenable[5:0]</obj_property>
+      <obj_property name="ObjectShortName">sharpenfifopushenable[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/dinlsbs" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">dinlsbs[3:0]</obj_property>
+      <obj_property name="ObjectShortName">dinlsbs[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/nextdinlsbs" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">nextdinlsbs[3:0]</obj_property>
+      <obj_property name="ObjectShortName">nextdinlsbs[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/doutlsbs" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">doutlsbs[3:0]</obj_property>
+      <obj_property name="ObjectShortName">doutlsbs[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/clockenablebeginning" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clockenablebeginning</obj_property>
+      <obj_property name="ObjectShortName">clockenablebeginning</obj_property>
    </wvobject>
 </wave_config>

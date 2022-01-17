@@ -182,9 +182,12 @@ END COMPONENT;
 	
    signal count2 : unsigned (5 downto 0) := "000000";
    signal count : unsigned (17 downto 0) := "000000000000000000";
-	constant fiveThousand : unsigned (17 downto 0) :=   "000001000000000000";--"000000000000000100";
-	constant twentyThousand : unsigned (17 downto 0) :=  "000100000000000000";--"000000000000010000";
- 	constant hundred : unsigned (17 downto 0) :=  "000000000010000000";--"000000000000000010";
+--	constant fiveThousand : unsigned (17 downto 0) :=   "000001000000000000"; 
+--	constant twentyThousand : unsigned (17 downto 0) :=  "000100000000000000"; 
+-- 	constant hundred : unsigned (17 downto 0) :=  "000000000010000000"; 
+	constant fiveThousand : unsigned (17 downto 0) :=    "000000000000000100";
+	constant twentyThousand : unsigned (17 downto 0) :=   "000000000000010000";
+ 	constant hundred : unsigned (17 downto 0) :=   "000000000000000010";
    signal nextCount2 : unsigned (5 downto 0);
    signal nextCount : unsigned (17 downto 0);
 --	signal dqszero : std_logic := '0';
@@ -350,10 +353,15 @@ END COMPONENT;
 	signal slowNextClockEnableRead : std_logic;
 	signal slowNextClockEnableReadDelayed1 : std_logic;
 	signal slowNextClockEnableReadDelayed2 : std_logic;
-signal slowNextClockEnableReadDelayed3 : std_logic;
-signal slowNextClockEnableReadDelayed4 : std_logic;
+	signal slowNextClockEnableReadDelayed3 : std_logic;
+	signal slowNextClockEnableReadDelayed4 : std_logic;
+	
 
-signal slowDQStristate : std_logic;
+	signal slowDQStristate : std_logic;
+	
+	signal slowFIFOpullToggle :  std_logic   := '0';
+	signal nextSlowFIFOpullToggle :  std_logic  ;
+	signal slowFIFOpullPulse :  std_logic_vector(9 downto 0) := "0000000000";
 
 	
 begin
@@ -425,7 +433,7 @@ fifoInstance : FIFOphil2
     rd_clk => clk250MHz,
     din => din,
     wr_en => sharpenFIFOpushEnable(5) ,
-    rd_en => sharpenFIFOpullEnable(5) ,
+    rd_en => slowFIFOpullPulse(9) ,
     dout => dout,
 --    full => full,
   empty => empty
@@ -851,7 +859,7 @@ process (clk250MHz, advanceTheShiftRegister)
 
 	 
 
-	process (clk125MHz,count2,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData,  clockEnableRead, capturedData, dqsTristate, delayedDataForOutput, dataAssertedToOutput, clockEnableWrite, clockEnableRefillWriteData, refillTheShiftRegister)
+	process (slownextclockenablereaddelayed4,slowdqstristate, clk125MHz,count2,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData,  clockEnableRead, capturedData, dqsTristate, delayedDataForOutput, dataAssertedToOutput, clockEnableWrite, clockEnableRefillWriteData, refillTheShiftRegister)
 	
 	
 		begin
@@ -948,7 +956,7 @@ process (clk250MHz, advanceTheShiftRegister)
 
 
 
-	process (empty, nextwritepulsetrain, doutwaiting, dout, saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount, count2)
+	process (fastwriteaddress, empty, nextwritepulsetrain, doutwaiting, dout, saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount, count2)
 	
 		begin
 		
@@ -1190,7 +1198,7 @@ process (clk250MHz, advanceTheShiftRegister)
 	
 --			requestedDataToWrite  <= nextRequestedDataToWrite;
 	
---			din <= nextdin;
+			din <= nextdin;
 			end if;
    end process;
 
@@ -1235,7 +1243,7 @@ process (clk250MHz, advanceTheShiftRegister)
 --			nextReset <= reset;
 --			nextCke <= cke;
 			
---			nextdin <= din;
+			nextdin <= din;
 			
 			
 		 	rst <= '0';
@@ -1339,7 +1347,7 @@ process (clk250MHz, advanceTheShiftRegister)
 
 		
 			
-			if count = twentyThousand + hundred  + hundred + 27 then
+			if count = 4 then-- twentyThousand + hundred  + hundred + 27 then
 				nextdin(3 downto 0) <= "1110";
 				nextdin(19 downto 16) <= "1101";
 				nextdin(35 downto 32) <= "1011";
@@ -1351,12 +1359,12 @@ process (clk250MHz, advanceTheShiftRegister)
 				sharpenFIFOpushEnable(0) <= '0';  -- note: will need a rising edge in a later count
 		 	end if;
 		
-			if count = twentyThousand + hundred  + hundred + 28 then
+			if count = 5 then-- twentyThousand + hundred  + hundred + 28 then
 				sharpenFIFOpushEnable(0) <= '1';  -- here is the rising edge
 		 	end if;
 
 
-			if count = twentyThousand + hundred  + hundred + 29 then
+			if count = 6 then --twentyThousand + hundred  + hundred + 29 then
 				nextdin(3 downto 0) <= "0111";
 				nextdin(19 downto 16) <= "0110";
 				nextdin(35 downto 32) <= "0101";
@@ -1369,11 +1377,11 @@ process (clk250MHz, advanceTheShiftRegister)
 		 	end if;
 
 
-			if count =  twentyThousand + hundred  + hundred + 30 then
+			if count = 7 then -- twentyThousand + hundred  + hundred + 30 then
 				sharpenFIFOpushEnable(0) <= '1';   -- here is the rising edge
 		 	end if;
 
-			if count = twentyThousand + hundred  + hundred + 31 then
+			if count = 8 then-- twentyThousand + hundred  + hundred + 31 then
 				nextdin(3 downto 0) <= "1000";
 				nextdin(19 downto 16) <= "0100";
 				nextdin(35 downto 32) <= "0010";
@@ -1385,7 +1393,7 @@ process (clk250MHz, advanceTheShiftRegister)
 				sharpenFIFOpushEnable(0) <= '0';  -- note: will need a rising edge in a later count
 		 	end if;
 		
-			if count =  twentyThousand + hundred  + hundred + 32 then
+			if count = 9 then--  twentyThousand + hundred  + hundred + 32 then
 				sharpenFIFOpushEnable(0) <= '1';  -- here is the rising edge
 		 	end if;
 
@@ -1462,11 +1470,16 @@ process (clk250MHz)
 		if rising_edge(clk250MHz) then  
 			slowClockVector(6 downto 0) <= slowClockVector(7 downto 1);
 			slowClockVector(7) <= slowClockVector(0);
+			slowFIFOpullPulse( 1) <= slowFIFOpullPulse( 0);  -- shift delay for FIFO pull enable pulse
+			slowFIFOpullPulse(9 downto 3) <= slowFIFOpullPulse(8 downto 2);  -- shift delay for FIFO pull enable pulse
+		 
 		end if;
    end process;
 ------------------------------------------COMBINATORIAL:
 	slowClockEnable <= slowClockVector(0);
-
+	
+	slowFIFOpullPulse(0) <= slowFIFOpullToggle; -- remember the last state of toggle
+	slowFIFOpullPulse(2) <= '0' when slowFIFOpullPulse(0) = slowFIFOpullPulse(1) else '1';  -- bit 2 pulses when bit 0 toggles
 
 
 
@@ -1482,6 +1495,8 @@ process (clk250MHz, slowClockEnable)
 			slowWritingPulseTrain  <= nextSlowWritingPulseTrain;
 			addr <= nextAddr;
 			slowBA <= nextSlowBA;
+			slowFIFOpullToggle <= nextSlowFIFOpullToggle;
+
 		end if;
    end process;
 ------------------------------------------COMBINATORIAL:
@@ -1495,7 +1510,7 @@ process (clk250MHz, slowClockEnable)
 	slowWriteAddress(6) <= addr;
 	slowWriteAddress(7) <= addr;
 
-process (count, currentState,count2, slowCount, burstCount, nextState, slowWritingPulseTrain)
+process (slowfifopulltoggle, addr, slowBA, count, currentState,count2, slowCount, burstCount, nextState, slowWritingPulseTrain)
 	begin
 	nextState <= currentState;
 	clkOutSlow <= "01010101";
@@ -1522,6 +1537,9 @@ process (count, currentState,count2, slowCount, burstCount, nextState, slowWriti
 	
 	slowDQStristate <= '1';
 	
+	nextSlowFIFOpullToggle <= slowFIFOpullToggle;
+
+	
 	case currentState is
 		when slowReset =>
 			slowResetPort <= '0';
@@ -1545,6 +1563,7 @@ process (count, currentState,count2, slowCount, burstCount, nextState, slowWriti
 				nextBurstCount <= "00000000";
 			else
 				nextSlowWritingPulseTrain(0) <= '1';
+	
 				rasSlow <= "11111111";
 				casSlow <= "11110011";
 				weSlow <= "11110011";
@@ -1679,6 +1698,7 @@ process (count, currentState,count2, slowCount, burstCount, nextState, slowWriti
 	slowWriteData(7)<= "ZZZZZZZZZZZZZZZZ"; 
 
 	if slowWritingPulseTrain(1) = '1' then
+		
 		slowWriteData(0)<= "1111111111110001"; 
 		slowWriteData(1)<= "0000000000000010"; 
 		slowWriteData(2)<= "1111111111110100"; 
@@ -1689,7 +1709,9 @@ process (count, currentState,count2, slowCount, burstCount, nextState, slowWriti
 		slowWriteData(7)<= "0000000000000111"; 
 	
 	end if;
-		
+	if slowWritingPulseTrain(0) = '1' then
+		nextSlowFIFOpullToggle <= not slowFIFOpullToggle ;--toggle this to advance the FIFO (after some delay)
+	end if;
 		
 	
 	
@@ -1713,4 +1735,7 @@ end Behavioral;
 --	signal slowBA : std_logic_vector(3 downto 0) := "0000";
 -- signal nextSlowBA : std_logic_vector(3 downto 0)  ;
 	
-	
+--	signal slowFIFOpullToggle :  std_logic_vector  := '0';
+--	signal nextSlowFIFOpullToggle  ;
+--	signal slowFIFOpullPulse :  std_logic_vector(5 downto 0) := "000000";
+
