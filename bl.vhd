@@ -1697,16 +1697,26 @@ process (slowfifopulltoggle, addr, slowBA, count, currentState,count2, slowCount
 	slowWriteData(6)<= "ZZZZZZZZZZZZZZZZ"; 
 	slowWriteData(7)<= "ZZZZZZZZZZZZZZZZ"; 
 
-	if slowWritingPulseTrain(1) = '1' then
+	if slowWritingPulseTrain(1) = '1' or slowWritingPulseTrain(2) = '1' then
 		
-		slowWriteData(0)<= "1111111111110001"; 
-		slowWriteData(1)<= "0000000000000010"; 
-		slowWriteData(2)<= "1111111111110100"; 
-		slowWriteData(3)<= "0000000000001000"; 
-		slowWriteData(4)<= "1111111111111100"; 
-		slowWriteData(5)<= "0000000000000110"; 
-		slowWriteData(6)<= "1111111111110011"; 
-		slowWriteData(7)<= "0000000000000111"; 
+--		slowWriteData(0)<= "1111111111110001"; 
+--		slowWriteData(1)<= "0000000000000010"; 
+--		slowWriteData(2)<= "1111111111110100"; 
+--		slowWriteData(3)<= "0000000000001000"; 
+--		slowWriteData(4)<= "1111111111111100"; 
+--		slowWriteData(5)<= "0000000000000110"; 
+--		slowWriteData(6)<= "1111111111110011"; 
+--		slowWriteData(7)<= "0000000000000111"; 
+		
+		slowWriteData(0)<= dout(15 downto 0); 
+		slowWriteData(1)<= dout(31 downto 16); 
+		slowWriteData(2)<= dout(47 downto 32); 
+		slowWriteData(3)<= dout(63 downto 48); 
+		slowWriteData(4)<= dout(79 downto 64); 
+		slowWriteData(5)<= dout(95 downto 80); 
+		slowWriteData(6)<= dout(111 downto 96); 
+		slowWriteData(7)<= dout(127 downto 112); 
+	
 	
 	end if;
 	if slowWritingPulseTrain(0) = '1' then
