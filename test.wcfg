@@ -19,7 +19,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="65" />
+   <WVObjectSize size="66" />
    <wvobject fp_name="/testbench/clk" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -273,12 +273,16 @@
       <obj_property name="ElementShortName">slownextclockenablereaddelayed4</obj_property>
       <obj_property name="ObjectShortName">slownextclockenablereaddelayed4</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/uut/nextclockenableread" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">nextclockenableread</obj_property>
-      <obj_property name="ObjectShortName">nextclockenableread</obj_property>
-   </wvobject>
    <wvobject fp_name="/testbench/uut/clockenableread" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clockenableread</obj_property>
       <obj_property name="ObjectShortName">clockenableread</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/slowdqstristate" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">slowdqstristate</obj_property>
+      <obj_property name="ObjectShortName">slowdqstristate</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/uut/dqstristate" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">dqstristate</obj_property>
+      <obj_property name="ObjectShortName">dqstristate</obj_property>
    </wvobject>
 </wave_config>

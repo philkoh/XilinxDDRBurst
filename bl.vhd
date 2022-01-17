@@ -353,6 +353,8 @@ END COMPONENT;
 signal slowNextClockEnableReadDelayed3 : std_logic;
 signal slowNextClockEnableReadDelayed4 : std_logic;
 
+signal slowDQStristate : std_logic;
+
 	
 begin
 
@@ -554,7 +556,7 @@ IOCLK0 => '0', -- 1-bit input: Input from the I/O clock network
 IOCLK1 => '0', -- 1-bit input: Input from the I/O clock network
 ODATAIN => fastWriteData(0),--dataAssertedToOutput(0), -- 1-bit input: Output data input from output register or OSERDES2.
 RST => '0', -- 1-bit input: Reset to zero or 1/2 of total delay period
-T => dqsTristate -- 1-bit input: 3-state input signal
+T => slowdqsTristate -- 1-bit input: 3-state input signal
 );
 
 
@@ -610,7 +612,7 @@ IOCLK0 => '0', -- 1-bit input: Input from the I/O clock network
 IOCLK1 => '0', -- 1-bit input: Input from the I/O clock network
 ODATAIN => fastWriteData(1),-- dataAssertedToOutput(1), -- 1-bit input: Output data input from output register or OSERDES2.
 RST => '0', -- 1-bit input: Reset to zero or 1/2 of total delay period
-T => dqsTristate -- 1-bit input: 3-state input signal
+T => slowdqsTristate -- 1-bit input: 3-state input signal
 );
 
 
@@ -666,7 +668,7 @@ IOCLK0 => '0', -- 1-bit input: Input from the I/O clock network
 IOCLK1 => '0', -- 1-bit input: Input from the I/O clock network
 ODATAIN => fastWriteData(2),-- dataAssertedToOutput(2), -- 1-bit input: Output data input from output register or OSERDES2.
 RST => '0', -- 1-bit input: Reset to zero or 1/2 of total delay period
-T => dqsTristate -- 1-bit input: 3-state input signal
+T => slowdqsTristate -- 1-bit input: 3-state input signal
 );
 
 
@@ -721,7 +723,7 @@ IOCLK0 => '0', -- 1-bit input: Input from the I/O clock network
 IOCLK1 => '0', -- 1-bit input: Input from the I/O clock network
 ODATAIN => fastWriteData(3),-- dataAssertedToOutput(3), -- 1-bit input: Output data input from output register or OSERDES2.
 RST => '0', -- 1-bit input: Reset to zero or 1/2 of total delay period
-T => dqsTristate -- 1-bit input: 3-state input signal
+T => slowdqsTristate -- 1-bit input: 3-state input signal
 );
 
 
@@ -736,7 +738,7 @@ O => dqs0Incoming, -- received dqs from DRAM
 IO => dqs0_pPORT, -- Diff_p inout (connect directly to top-level port)
 IOB => dqs0_nPORT, -- Diff_n inout (connect directly to top-level port)
 I => dqsFast,--clk125MHz, -- outgoing dqs is just always the 125MHz clock
-T => dqsTristate -- 3-state enable input, high=input, low=output
+T => slowdqsTristate -- 3-state enable input, high=input, low=output
 );
 
 
@@ -753,7 +755,7 @@ O => dqs1Incoming, -- Buffer output
 IO => dqs1_pPORT, -- Diff_p inout (connect directly to top-level port)
 IOB => dqs1_nPORT, -- Diff_n inout (connect directly to top-level port)
 I => dqsFast,--clk125MHz, -- Buffer input
-T => dqsTristate -- 3-state enable input, high=input, low=output
+T => slowdqsTristate -- 3-state enable input, high=input, low=output
 );
 -- End of IOBUFDS_inst instantiation
 
@@ -915,7 +917,7 @@ process (clk250MHz, advanceTheShiftRegister)
 		end if;
 
 		
-		if dqsTristate = '1' then
+		if slowdqsTristate = '1' then
 			dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');	
 		else
 			dataPort(3 downto 0) <= delayedDataForOutput(3 downto 0);
@@ -1579,6 +1581,8 @@ process (count, currentState,count2, slowCount, burstCount, nextState, slowWriti
 	
 	slowNextClockEnableRead <= '0';
 	
+	slowDQStristate <= '1';
+	
 	case currentState is
 		when slowReset =>
 			slowResetPort <= '0';
@@ -1596,6 +1600,7 @@ process (count, currentState,count2, slowCount, burstCount, nextState, slowWriti
 				nextState <= writeMRS;
 			end if;
 		when startWriting =>  -- the state startWriting means there is additional data waiting in the FIFO
+			slowDQStristate <= '0';
 			if burstCount = 3 then  -- this limits the max number of consecutive bursts
 				nextState <= stopWriting;
 				nextBurstCount <= "00000000";
@@ -1609,6 +1614,7 @@ process (count, currentState,count2, slowCount, burstCount, nextState, slowWriti
 	
 			end if;
 		when stopWriting => -- the state stopWriting means there is no additional data waiting in the FIFO, or we've sent enough pulses and need to refresh or activate a new row
+			slowDQStristate <= '0';
 			if slowWritingPulseTrain = "0000" then --no more tasks to do for previous writes
 				nextState <= idle;
 			end if;
