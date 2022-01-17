@@ -730,7 +730,7 @@ port map (
 O => dqs0Incoming, -- received dqs from DRAM
 IO => dqs0_pPORT, -- Diff_p inout (connect directly to top-level port)
 IOB => dqs0_nPORT, -- Diff_n inout (connect directly to top-level port)
-I => clk125MHz, -- outgoing dqs is just always the 125MHz clock
+I => dqsFast,--clk125MHz, -- outgoing dqs is just always the 125MHz clock
 T => dqsTristate -- 3-state enable input, high=input, low=output
 );
 
@@ -747,7 +747,7 @@ port map (
 O => dqs1Incoming, -- Buffer output
 IO => dqs1_pPORT, -- Diff_p inout (connect directly to top-level port)
 IOB => dqs1_nPORT, -- Diff_n inout (connect directly to top-level port)
-I => clk125MHz, -- Buffer input
+I => dqsFast,--clk125MHz, -- Buffer input
 T => dqsTristate -- 3-state enable input, high=input, low=output
 );
 -- End of IOBUFDS_inst instantiation
@@ -764,11 +764,11 @@ IOSTANDARD => "DIFF_SSTL15_II")
 port map (
 O => ck_pPORT, -- Diff_p output (connect directly to top-level port)
 OB => ck_nPORT, -- Diff_n output (connect directly to top-level port)
-I => clk125MHz -- Buffer input
+I => clkOutFast--clk125MHz -- Buffer input
 );
 -- End of OBUFDS_inst instantiation
 
-
+--clkOutFast, dqsFast
 
 
 
