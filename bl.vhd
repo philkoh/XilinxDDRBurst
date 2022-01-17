@@ -775,36 +775,12 @@ I => clkOutFast--clk125MHz -- Buffer input
 );
 -- End of OBUFDS_inst instantiation
 
---clkOutFast, dqsFast
 
 
 
 
 
 
-
-
-	process (clk250MHz)
-	
-	
-		begin
-	
-------------------------------------------SEQUENTIAL :	
-		if falling_edge(clk250MHz) then
-			dataCount <= nextDataCount;
-
-		end if;
-  end process;
-
-
-	------------------------------------------COMBINATORIAL:
-	process (dataCount)
-		begin
-		
-		nextDataCount <= dataCount + 1;
-
-
-	end process;
 
 
 
