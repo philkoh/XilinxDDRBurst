@@ -1024,19 +1024,19 @@ process (clk250MHz, advanceTheShiftRegister)
 		end if;
 		
 		if count2 = 16   then   -- this pulses the CAS/RAS/WE command that must get sent for the read or write cycle
-			nextClockEnableCommand <= '1';
+--			nextClockEnableCommand <= '1';
 		else
-			nextClockEnableCommand <= '0';
+--			nextClockEnableCommand <= '0';
 		end if;
 			
 		if clockEnableCommand = '1' then  --the CAS/RAS/WE command is only applied for this one 125 MHz clock cycle just after count2=16
-			nextCas <= casRequest;
-			nextRas <= rasRequest;
-			nextWe <= weRequest;
+--			nextCas <= casRequest;
+--			nextRas <= rasRequest;
+--			nextWe <= weRequest;
 		else                      -- otherwise, CAS/RAS/WE are held HIGH (which is the NOP, No Operation command)
-			nextCas <= '1';
-			nextRas <= '1';
-			nextWe <= '1';
+--			nextCas <= '1';
+--			nextRas <= '1';
+--			nextWe <= '1';
 		end if;
 		
 		
@@ -1048,7 +1048,7 @@ process (clk250MHz, advanceTheShiftRegister)
 		end if;
 
 		if count2 = 19 and  writeRequest = '1' and empty = '0' then  -- during a write cycle, pulse a second write command
-			nextCount2 <= count2 - 3;  -- leap backwards by 4 count2's of the sequence; instead of going to count2=20 next time, go to count2=16
+--			nextCount2 <= count2 - 3;  -- leap backwards by 4 count2's of the sequence; instead of going to count2=20 next time, go to count2=16
 		end if;
 
 		
@@ -1062,11 +1062,11 @@ process (clk250MHz, advanceTheShiftRegister)
 		end if;
 			
 		if count2 = 5   then   -- this loads address  
-			nextAddrOut <= addrRequest;
+--			nextAddrOut <= addrRequest;
 		end if;
 
 		if writePulseTrain(2) = '1' then
-				nextAddrOut <= 			std_logic_vector(to_unsigned((to_integer(unsigned(addrOut)) + 8),15)); -- increment column address by 8
+--				nextAddrOut <= 			std_logic_vector(to_unsigned((to_integer(unsigned(addrOut)) + 8),15)); -- increment column address by 8
 		end if;
 			
 			
