@@ -960,16 +960,16 @@ process (clk250MHz, advanceTheShiftRegister)
 			clockEnableRead <= nextClockEnableRead;
 			clockEnableWrite <= nextClockEnableWrite;
 		
-			cas <= nextCas;
-			ras <= nextRas;
-			we <= nextWe;
+--			cas <= nextCas;
+--			ras <= nextRas;
+--			we <= nextWe;
 
 			switchRegister <= nextSwitchRegister;
 			switchCount <= nextSwitchCount;
 			lastSwitchRegister <= switchRegister;
 
 			writeRefill  <= nextWriteRefill ;
- 		   addrOut <= nextAddrOut;
+-- 		   addrOut <= nextAddrOut;
 
 			writePulseTrain <= nextWritePulseTrain;
 			doutWaiting <= nextDoutWaiting;
@@ -992,7 +992,7 @@ process (clk250MHz, advanceTheShiftRegister)
 		begin
 		
 		nextWriteRefill <=	writeRefill     ;
-	 	nextAddrOut <= addrOut;--unless overridden below, hold and remember the loaded values
+--	 	nextAddrOut <= addrOut;--unless overridden below, hold and remember the loaded values
 		addrPort <= fastWriteAddress(14 downto 0);-- addrOut;
 	
 		
