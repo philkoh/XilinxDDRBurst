@@ -1274,29 +1274,29 @@ process (clk250MHz, advanceTheShiftRegister)
 		begin
 			nextCount <= count + 1;
 
-			nextDqsTristate <= '1';
+--			nextDqsTristate <= '1';
 
-			nextWriteRequest <= '0';  -- unless overridden below
-			nextSaveRequest <= '0';
-			nextSaveRequest2 <= '0';
-			nextSaveRequest3 <= '0';
-			nextSaveRequest4 <= '0';
+--			nextWriteRequest <= '0';  -- unless overridden below
+--			nextSaveRequest <= '0';
+--			nextSaveRequest2 <= '0';
+--			nextSaveRequest3 <= '0';
+--			nextSaveRequest4 <= '0';
 			
-			nextRequestedDataToWrite  <= requestedDataToWrite;
+--			nextRequestedDataToWrite  <= requestedDataToWrite;
 
 			nextODT <= '1';  -- On Die Termination is normally on
-			nextBa <= (others => '0');
-			nextAddrRequest <= (others => '0');
-			nextRasRequest <= '1';
-			nextCasRequest <= '1';
-			nextWeRequest <= '1';
+--			nextBa <= (others => '0');
+--			nextAddrRequest <= (others => '0');
+--			nextRasRequest <= '1';
+--			nextCasRequest <= '1';
+--			nextWeRequest <= '1';
 			
-			nextData <= (others => 'Z');
+--			nextData <= (others => 'Z');
 	
-			nextReset <= reset;
-			nextCke <= cke;
+--			nextReset <= reset;
+--			nextCke <= cke;
 			
-			nextdin <= din;
+--			nextdin <= din;
 			
 			
 		 	rst <= '0';
@@ -1327,15 +1327,15 @@ process (clk250MHz, advanceTheShiftRegister)
 			
 			
 			if count = fiveThousand then --5000
-				nextReset <= '1';
+--				nextReset <= '1';
 			end if;
 			if count = twentyThousand then -- 20000
-				nextCke <= '1';
+--				nextCke <= '1';
 			end if;
 			
 			if count = twentyThousand + hundred then -- 20100 --do nothing (sets nextAddr to get rid of an annoying warking)
-				nextBa <= "111";
-				nextAddrRequest <= "111111111111111";
+--				nextBa <= "111";
+--				nextAddrRequest <= "111111111111111";
 			end if;
 	
 			if count =  twentyThousand + hundred  + hundred then--20200 --MRS MR2
