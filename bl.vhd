@@ -1339,62 +1339,62 @@ process (clk250MHz, advanceTheShiftRegister)
 			end if;
 	
 			if count =  twentyThousand + hundred  + hundred then--20200 --MRS MR2
-				nextBa <= "010";
-				nextAddrRequest <= "000000000001000";  --CWL = 6
---				nextAddrRequest <= "000000000000000";  --CWL = 5
-				nextRasRequest <= '0';
-				nextCasRequest <= '0';
-				nextWeRequest <= '0';
+--				nextBa <= "010";
+--				nextAddrRequest <= "000000000001000";  --CWL = 6
+-----------------------------------------				nextAddrRequest <= "000000000000000";  --CWL = 5
+--				nextRasRequest <= '0';
+--				nextCasRequest <= '0';
+--				nextWeRequest <= '0';
 			end if;
 	
 			if count = twentyThousand + hundred  + hundred + 1 then--20201 --MRS MR3
-				nextBa <= "011";
-				nextAddrRequest <= "000000000000100"; -- MPR mode, outputs special pattern on reads
-				nextRasRequest <= '0';
-				nextCasRequest <= '0';
-				nextWeRequest <= '0';
+--				nextBa <= "011";
+--				nextAddrRequest <= "000000000000100"; -- MPR mode, outputs special pattern on reads
+--				nextRasRequest <= '0';
+--				nextCasRequest <= '0';
+--				nextWeRequest <= '0';
 			end if;
 		
 			if count = twentyThousand + hundred  + hundred + 2 then--20202 --MRS MR1  
-				nextBa <= "001";
-				nextAddrRequest <= "000000000000101";  -- DLL disable     RZQ/4 (60O NOM)
---				nextAddrRequest <= "000000000000100";  -- DLL enable     RZQ/4 (60O NOM)
-				nextRasRequest <= '0';
-				nextCasRequest <= '0';
-				nextWeRequest <= '0';
+--				nextBa <= "001";
+--				nextAddrRequest <= "000000000000101";  -- DLL disable     RZQ/4 (60O NOM)
+-----------------------------------				nextAddrRequest <= "000000000000100";  -- DLL enable     RZQ/4 (60O NOM)
+--				nextRasRequest <= '0';
+--				nextCasRequest <= '0';
+--				nextWeRequest <= '0';
 			end if;
 		
 			if count = twentyThousand + hundred  + hundred + 3 then--20203 --MRS MR0
-				nextBa <= "000";	
-				nextAddrRequest <= (9 => '1', 8 => '0', 5 => '1', others => '0'); --CAS latency = 6, Don'treset DLL  , WriteRecovery = 5, FixedBurstLength = 8
---				nextAddrRequest <= (9 => '1', 8 => '1', 4 => '1', others => '0'); --CAS latency = 5, reset DLL  , WriteRecovery = 5
-				nextRasRequest <= '0';
-				nextCasRequest <= '0';
-				nextWeRequest <= '0';
+--				nextBa <= "000";	
+--				nextAddrRequest <= (9 => '1', 8 => '0', 5 => '1', others => '0'); --CAS latency = 6, Don'treset DLL  , WriteRecovery = 5, FixedBurstLength = 8
+--------------------------------------				nextAddrRequest <= (9 => '1', 8 => '1', 4 => '1', others => '0'); --CAS latency = 5, reset DLL  , WriteRecovery = 5
+--				nextRasRequest <= '0';
+--				nextCasRequest <= '0';
+--				nextWeRequest <= '0';
 			end if;
 	
 			if count = twentyThousand + hundred  + hundred + 4 then--20204 --ZQCL
-				nextBa <= "000";				
-				nextAddrRequest <= (10 => '1', others => '0'); 
-				nextRasRequest <= '1';
-				nextCasRequest <= '1';
-				nextWeRequest <= '0';
+		--		nextBa <= "000";				
+		--		nextAddrRequest <= (10 => '1', others => '0'); 
+		--		nextRasRequest <= '1';
+		--		nextCasRequest <= '1';
+		--		nextWeRequest <= '0';
 			end if;
 				
 			if count =  twentyThousand + hundred  + hundred + 24  then--20224 --MRS MR3
-				nextBa <= "011";
-				nextAddrRequest <= "000000000000000"; 
-				nextRasRequest <= '0';
-				nextCasRequest <= '0';
-				nextWeRequest <= '0';
+	--			nextBa <= "011";
+	--			nextAddrRequest <= "000000000000000"; 
+	--			nextRasRequest <= '0';
+	--			nextCasRequest <= '0';
+	--			nextWeRequest <= '0';
 			end if;
 		
 			if count = twentyThousand + hundred  + hundred + 26 then--20226 --ACTIVATE
-				nextBa <= "000";
-				nextAddrRequest <= "000000000001000"; --Row Address 8  
-				nextRasRequest <= '0';
-				nextCasRequest <= '1';
-				nextWeRequest <= '1';
+	--			nextBa <= "000";
+	--			nextAddrRequest <= "000000000001000"; --Row Address 8  
+	--			nextRasRequest <= '0';
+	--			nextCasRequest <= '1';
+	--			nextWeRequest <= '1';
 			end if;
 
 
