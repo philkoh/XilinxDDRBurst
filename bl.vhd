@@ -1232,26 +1232,26 @@ process (clk250MHz, advanceTheShiftRegister)
 		
 			count <= nextcount;  -- count is incrementing at 3.9MHz, or once every 32 count2 increments
 			blinker <= nextBlinker;
-			ba <= nextBa;
-			addrRequest <= nextAddrRequest;
+--			ba <= nextBa;
+--			addrRequest <= nextAddrRequest;
 
-			casRequest <= nextCasRequest;
-			rasRequest <= nextRasRequest;
-			weRequest <= nextWeRequest;
-			writeRequest <= nextWriteRequest;		
-			saveRequest <= nextSaveRequest;
-			saveRequest2 <= nextSaveRequest2;
-			saveRequest3 <= nextSaveRequest3;
-			saveRequest4 <= nextSaveRequest4;
-			reset <= nextReset;
-			cke <= nextCke;
-			dqsTristate <= nextDqsTristate;
+--			casRequest <= nextCasRequest;
+--			rasRequest <= nextRasRequest;
+--			weRequest <= nextWeRequest;
+--			writeRequest <= nextWriteRequest;		
+--			saveRequest <= nextSaveRequest;
+--			saveRequest2 <= nextSaveRequest2;
+--			saveRequest3 <= nextSaveRequest3;
+--			saveRequest4 <= nextSaveRequest4;
+--			reset <= nextReset;
+--			cke <= nextCke;
+--			dqsTristate <= nextDqsTristate;
 			odt <= nextODT;
 			
 	
-			requestedDataToWrite  <= nextRequestedDataToWrite;
+--			requestedDataToWrite  <= nextRequestedDataToWrite;
 	
-			din <= nextdin;
+--			din <= nextdin;
 			end if;
    end process;
 
