@@ -874,17 +874,7 @@ process (clk250MHz, advanceTheShiftRegister)
 	end process;
 
 		------------------------------------------COMBINATORIAL:
-	process (useNewCode)
-		begin
-		nextUseNewCode <= useNewCode;
-		if requestNewCode /= lastRequestNewCode then  -- a toggle means change which code used
-			nextUseNewCode <= '1';
-		end if;
-		if requestOldCode /= lastRequestOldCode then  -- a toggle means change which code used
-			nextUseNewCode <= '0';
-		end if;
-	end process;
-
+	
 
 
 
@@ -927,14 +917,14 @@ process (clk250MHz, advanceTheShiftRegister)
 	
 
 	 
-		nextAdvanceTheShiftRegister <= '0';
+--		nextAdvanceTheShiftRegister <= '0';
 		if clockEnableWrite = '1'  then --write data, and pull down the stack of registers
-			nextAdvanceTheShiftRegister <= '1';
+--			nextAdvanceTheShiftRegister <= '1';
 		end if;
 		
 		nextRefillTheShiftRegister <= '0';
 		if clockEnableRefillWriteData = '1' and refillTheShiftRegister = '0' then -- make pulse only 1 cycle long (the clockEnable pulse is two cycles)
-			nextRefillTheShiftRegister <= '1';
+--			nextRefillTheShiftRegister <= '1';
 		end if;
 
 	
@@ -955,10 +945,10 @@ process (clk250MHz, advanceTheShiftRegister)
 		
 			count2 <= nextCount2;    -- count2 runs at 125 MHz
 			clockEnableBeginning <= nextClockEnableBeginning;  --clockEnable registers change on falling edge of clk125MHz
-			clockEnableCommand <= nextClockEnableCommand;
+--			clockEnableCommand <= nextClockEnableCommand;
 			clockEnableRefillWriteData <= nextClockEnableRefillWriteData;
-			clockEnableRead <= nextClockEnableRead;
-			clockEnableWrite <= nextClockEnableWrite;
+--			clockEnableRead <= nextClockEnableRead;
+--			clockEnableWrite <= nextClockEnableWrite;
 		
 --			cas <= nextCas;
 --			ras <= nextRas;
