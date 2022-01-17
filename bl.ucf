@@ -3,10 +3,9 @@
 #TIMESPEC "TS_SYS_CLK" = PERIOD "slowGroup" 40 ns HIGH 50 %;
 
 NET CLK250MHz TNM = normalTiming;
-NET clockEnableBeginning TNM = slow_exception;
+NET slowClockVector(0) TNM = slow_exception;  # slowClockVector(0) is the true name of slowClockEnable
 TIMESPEC TS01 = PERIOD normalTiming 4 ns;
-TIMESPEC TS02 = PERIOD slow_exception 20 ns;
-
+TIMESPEC TS02 = PERIOD slow_exception TS01 * 8;
 
 NET "clk" LOC = A10;
 
