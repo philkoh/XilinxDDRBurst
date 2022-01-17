@@ -814,7 +814,7 @@ process (clk250MHz, advanceTheShiftRegister)
 		begin
 ------------------------------------------SEQUENTIAL :			
 		if rising_edge(clk250MHz) and advanceTheShiftRegister = '1' then  
-			shiftRegister <= nextShiftRegister;
+--			shiftRegister <= nextShiftRegister;
 		end if;
    end process;
 	
@@ -822,12 +822,12 @@ process (clk250MHz, advanceTheShiftRegister)
 	process (refillTheShiftRegister, writeRefill, shiftRegister)
 		begin
 		if refillTheShiftRegister = '1' then
-			nextdataAssertedToOutput <= writeRefill(0);
-			nextShiftRegister(6 downto 0) <= writeRefill(7 downto 1);
+--			nextdataAssertedToOutput <= writeRefill(0);
+--			nextShiftRegister(6 downto 0) <= writeRefill(7 downto 1);
 		else
-			nextdataAssertedToOutput <= shiftRegister(0);
-			nextShiftRegister(5 downto 0) <= shiftRegister(6 downto 1);
-			nextShiftRegister(6) <= (15 downTo 0 => '0');
+--			nextdataAssertedToOutput <= shiftRegister(0);
+--			nextShiftRegister(5 downto 0) <= shiftRegister(6 downto 1);
+--			nextShiftRegister(6) <= (15 downTo 0 => '0');
 		end if;
 		
 	end process;
@@ -852,19 +852,14 @@ process (clk250MHz, advanceTheShiftRegister)
 
 			capturedData(11 downto 1) <= nextCapturedData(11 downto 1);
 			
-			dataAssertedToOutput <= nextdataAssertedToOutput;
+--			dataAssertedToOutput <= nextdataAssertedToOutput;
 			
 			  
-			advanceTheShiftRegister <= nextAdvanceTheShiftRegister  ;
-			refillTheShiftRegister <= nextRefillTheShiftRegister  ;
+--			advanceTheShiftRegister <= nextAdvanceTheShiftRegister  ;
+--			refillTheShiftRegister <= nextRefillTheShiftRegister  ;
 			
 
 		 		
-			useNewCode <= nextUseNewCode  ;
-			requestNewCode <= nextRequestNewCode;
-			requestOldCode <= nextRequestOldCode;
-			lastrequestNewCode <= requestNewCode;
-			lastrequestOldCode <= requestOldCode;
 			
 			slowNextClockEnableReadDelayed1 <= slowNextClockEnableRead;
 			slowNextClockEnableReadDelayed2 <= slowNextClockEnableReadDelayed1;
