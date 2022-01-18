@@ -1251,11 +1251,11 @@ process (clk250MHz, advanceTheShiftRegister)
 			nextdin <= din;
 			
 			nextRequestReset <= '0';
-		 	rst <= '0';
+--		 	rst <= '0';
 			if count = 0 then
-				nextReset <= '0';
-				nextCke <= '0';
-				rst <= '1';
+--				nextReset <= '0';
+--				nextCke <= '0';
+--				rst <= '1';
 				
 				nextRequestReset <= '1';
 			end if;
