@@ -454,8 +454,8 @@ fifoInstance : FIFOphil2
 			sharpenFIFOpushEnable(4) <= sharpenFIFOpushEnable(3) and (not sharpenFIFOpushEnable(4));  -- only on rising edge of sharpenFIFOpushEnable(2) 
 			sharpenFIFOpushEnable(5) <= sharpenFIFOpushEnable(4);
 
-			sharpenFIFOpullEnable(4) <= sharpenFIFOpullEnable(3) and (not sharpenFIFOpullEnable(4));  -- only on rising edge of sharpenFIFOpushEnable(2) 
-			sharpenFIFOpullEnable(5) <= sharpenFIFOpullEnable(4);
+--			sharpenFIFOpullEnable(4) <= sharpenFIFOpullEnable(3) and (not sharpenFIFOpullEnable(4));  -- only on rising edge of sharpenFIFOpushEnable(2) 
+--			sharpenFIFOpullEnable(5) <= sharpenFIFOpullEnable(4);
 
 	
 		end if;
@@ -469,9 +469,8 @@ fifoInstance : FIFOphil2
 			sharpenFIFOpushEnable(2) <= sharpenFIFOpushEnable(1);
 			sharpenFIFOpushEnable(3) <= sharpenFIFOpushEnable(1) and (not sharpenFIFOpushEnable(2)); -- only on rising edge of sharpenFIFOpushEnable(1) 
  
-	--		sharpenFIFOpullEnable(1) <= sharpenFIFOpullEnable(0);
-			sharpenFIFOpullEnable(2) <= sharpenFIFOpullEnable(1);
-			sharpenFIFOpullEnable(3) <= sharpenFIFOpullEnable(1) and (not sharpenFIFOpullEnable(2)); -- only on rising edge of sharpenFIFOpushEnable(1) 
+--			sharpenFIFOpullEnable(2) <= sharpenFIFOpullEnable(1);
+--			sharpenFIFOpullEnable(3) <= sharpenFIFOpullEnable(1) and (not sharpenFIFOpullEnable(2)); -- only on rising edge of sharpenFIFOpushEnable(1) 
  end if;
   end process;
 
@@ -484,23 +483,6 @@ doutLSBs <= dout(3 downto 0);
 doutWaitingLSBs <= doutWaiting(3 downto 0);
 
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -788,49 +770,8 @@ I => clkOutFast--clk125MHz -- Buffer input
 -- End of OBUFDS_inst instantiation
 
 
-
-
-
-
-
-
-
-
-
-
-process (clk250MHz, advanceTheShiftRegister)
-		begin
-------------------------------------------SEQUENTIAL :			
-		if rising_edge(clk250MHz) and advanceTheShiftRegister = '1' then  
---			shiftRegister <= nextShiftRegister;
-		end if;
-   end process;
-	
-------------------------------------------COMBINATORIAL:
-	process (refillTheShiftRegister, writeRefill, shiftRegister)
-		begin
-		if refillTheShiftRegister = '1' then
---			nextdataAssertedToOutput <= writeRefill(0);
---			nextShiftRegister(6 downto 0) <= writeRefill(7 downto 1);
-		else
---			nextdataAssertedToOutput <= shiftRegister(0);
---			nextShiftRegister(5 downto 0) <= shiftRegister(6 downto 1);
---			nextShiftRegister(6) <= (15 downTo 0 => '0');
-		end if;
-		
-	end process;
-
-		
-
-
-
-
-
 	process (clk250MHz)
-	
-	
 		begin
-	
 ------------------------------------------SEQUENTIAL :	
 		if rising_edge(clk250MHz) then
 			clk125MHz <=  nextClk125MHz  ;  --clk125MHz changes on rising edge of 250MHz clock; this is sent out as external clock *and* as dqs
@@ -839,16 +780,7 @@ process (clk250MHz, advanceTheShiftRegister)
 
 
 			capturedData(11 downto 1) <= nextCapturedData(11 downto 1);
-			
---			dataAssertedToOutput <= nextdataAssertedToOutput;
-			
-			  
---			advanceTheShiftRegister <= nextAdvanceTheShiftRegister  ;
---			refillTheShiftRegister <= nextRefillTheShiftRegister  ;
-			
-
-		 		
-			
+		
 			slowNextClockEnableReadDelayed1 <= slowNextClockEnableRead;
 			slowNextClockEnableReadDelayed2 <= slowNextClockEnableReadDelayed1;
 			slowNextClockEnableReadDelayed3 <= slowNextClockEnableReadDelayed2;
@@ -857,62 +789,31 @@ process (clk250MHz, advanceTheShiftRegister)
 	end process;
 
 		------------------------------------------COMBINATORIAL:
-	
-
-
-
-	 
-
 	process (slownextclockenablereaddelayed4,slowdqstristate, clk125MHz,count2,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData,  clockEnableRead, capturedData, dqsTristate, delayedDataForOutput, dataAssertedToOutput, clockEnableWrite, clockEnableRefillWriteData, refillTheShiftRegister)
-	
-	
 		begin
-		
 
 		nextClk125MHz <= not clk125MHz;
 		
 		nextCapturedData(11 downto 1) <= capturedData(11 downto 1); --unless overridden below, hold and remember the captured values
-			
-		
-		------------------------------------ NOTE: every clockEnable runs twice, on a rising then falling edge of the 125MHz clock, on two consecutive rising 250MHz edges
-		------------------------------------ NOTE: every clockEnable runs twice, on a rising then falling edge of the 125MHz clock, on two consecutive rising 250MHz edges
-		------------------------------------ NOTE: every clockEnable runs twice, on a rising then falling edge of the 125MHz clock, on two consecutive rising 250MHz edges
-		------------------------------------ NOTE: every clockEnable runs twice, on a rising then falling edge of the 125MHz clock, on two consecutive rising 250MHz edges
-		------------------------------------ NOTE: every clockEnable runs twice, on a rising then falling edge of the 125MHz clock, on two consecutive rising 250MHz edges
-		------------------------------------ NOTE: every clockEnable runs twice, on a rising then falling edge of the 125MHz clock, on two consecutive rising 250MHz edges
 	
 		if slowNextClockEnableReadDelayed4 = '1'  then
-	--	if clockEnableRead = '1'  then --capture data, actually captures 8 times, I think, 4 cycles of count2 at 125MHz, but two rising edges of 250 MHz per count2 incremena
 			nextCapturedData(1) <= inData;
-			
 			nextCapturedData(11 downto 2) <= capturedData(10 downto 1);
-			
 		end if;
-
 		
 		if slowdqsTristate = '1' then
 			dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');	
 		else
 			dataPort(3 downto 0) <= delayedDataForOutput(3 downto 0);
 			dataPort(15 downto 4) <= dataAssertedToOutput (15 downto 4);
-			
 		end if;
-	
-
-	 
 		
 	end process;
 		
 		
-		
 	process (clk250MHz, clk125MHz, verySlowClockEnable(0))
-	
-	
 		begin
-	
 ------------------------------------------SEQUENTIAL :	
-			
-		
 		if rising_edge(clk250MHz) and verySlowClockEnable(0) = '1' then  -- this is a falling edge of clk125MHz
 		
 			count2 <= nextCount2;    
@@ -922,7 +823,6 @@ process (clk250MHz, advanceTheShiftRegister)
 			lastSwitchRegister <= switchRegister;
 
 		end if;
-		
    end process;
 	
 ------------------------------------------COMBINATORIAL:
@@ -1402,22 +1302,4 @@ end process;
 
 
 end Behavioral;
---	signal csFast, rasFast, casFast, weFast : std_logic;
---	signal csSlow, rasSlow, casSlow, weSlow : std_logic_vector(7 downto 0);
-
---	signal clkOutFast, dqsFast : std_logic;
---	signal clkOutSlow, dqsSlow : std_logic_vector(7 downto 0);
-
---	signal slowWritingPulseTrain (3 downto 0) := "0000";
---	signal nextSlowWritingPulseTrain (3 downto 0);
-
---	signal burstCount : unsigned (7 downto 0) := "00000000";
---	signal nextBurstCount : unsigned (17 downto 0) ;
-
---	signal slowBA : std_logic_vector(3 downto 0) := "0000";
--- signal nextSlowBA : std_logic_vector(3 downto 0)  ;
-	
---	signal slowFIFOpullToggle :  std_logic_vector  := '0';
---	signal nextSlowFIFOpullToggle  ;
---	signal slowFIFOpullPulse :  std_logic_vector(5 downto 0) := "000000";
 
