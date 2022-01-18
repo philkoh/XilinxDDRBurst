@@ -811,10 +811,10 @@ I => clkOutFast--clk125MHz -- Buffer input
 	end process;
 		
 		
-	process (clk250MHz, clk125MHz, verySlowClockEnable(0))
+	process (clk250MHz, verySlowClockEnable(0))
 		begin
 ------------------------------------------SEQUENTIAL :	
-		if rising_edge(clk250MHz) and verySlowClockEnable(0) = '1' then  -- this is a falling edge of clk125MHz
+		if rising_edge(clk250MHz) and verySlowClockEnable(0) = '1' then 
 		
 			count2 <= nextCount2;    
 
