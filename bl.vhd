@@ -337,7 +337,7 @@ END COMPONENT;
 	signal slowWriteData, slowWriteAddress : burstArr;
 	signal fastWriteData, fastWriteAddress : std_logic_vector(15 downto 0);
 	signal addr : std_logic_vector(15 downto 0) := "0000000000010000";
-	signal   nextAddr: std_logic_vector(15 downto 0);
+	signal nextAddr: std_logic_vector(15 downto 0);
 	
 	signal slowBA : std_logic_vector(2 downto 0) := "000";
 	signal nextSlowBA : std_logic_vector(2 downto 0)  ;
@@ -431,7 +431,7 @@ AddressBus: SlowByEightBus PORT MAP(
 ------------- Begin Cut here for INSTANTIATION Template ----- INST_TAG
 fifoInstance : FIFOphil2
   PORT MAP (
-    rst => rst,
+    rst => slowFIFOrst,--rst,
      wr_clk => clk250MHz,
     rd_clk => clk250MHz,
     din => din,
