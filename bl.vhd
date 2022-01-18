@@ -363,6 +363,8 @@ END COMPONENT;
 	signal nextSlowFIFOpullToggle :  std_logic  ;
 	signal slowFIFOpullPulse :  std_logic_vector(9 downto 0) := "0000000000";
 
+	signal requestReset :  std_logic   := '0';
+	signal nextRequestReset : std_logic;
 	
 begin
 
@@ -1199,6 +1201,8 @@ process (clk250MHz, advanceTheShiftRegister)
 --			requestedDataToWrite  <= nextRequestedDataToWrite;
 	
 			din <= nextdin;
+			
+			requestReset <= nextRequestReset;
 			end if;
    end process;
 
@@ -1245,12 +1249,14 @@ process (clk250MHz, advanceTheShiftRegister)
 			
 			nextdin <= din;
 			
-			
+			nextRequestReset <= '0';
 		 	rst <= '0';
 			if count = 0 then
 				nextReset <= '0';
 				nextCke <= '0';
 				rst <= '1';
+				
+				nextRequestReset <= '1';
 			end if;
 			
 			
@@ -1684,7 +1690,7 @@ process (slowfifopulltoggle, addr, slowBA, count, currentState,count2, slowCount
 	
 	end case;	
 	
-	if count = 1 then
+	if requestReset = '1'  then
 		nextState <= slowReset;
 	end if;
 
