@@ -179,7 +179,8 @@ END COMPONENT;
 	signal nextRefillTheShiftRegister : std_logic;
 
 
-	
+	signal verySlowClockEnable : std_logic_vector(31 downto 0) := "00000000000000000000000000000001";
+
    signal count2 : unsigned (5 downto 0) := "000000";
    signal count : unsigned (17 downto 0) := "000000000000000000";
 	constant fiveThousand : unsigned (17 downto 0) :=   "000001000000000000"; 
@@ -928,7 +929,7 @@ process (clk250MHz, advanceTheShiftRegister)
 			count2 <= nextCount2;    -- count2 runs at 125 MHz
 			clockEnableBeginning <= nextClockEnableBeginning;  --clockEnable registers change on falling edge of clk125MHz
 --			clockEnableCommand <= nextClockEnableCommand;
-			clockEnableRefillWriteData <= nextClockEnableRefillWriteData;
+--			clockEnableRefillWriteData <= nextClockEnableRefillWriteData;
 --			clockEnableRead <= nextClockEnableRead;
 --			clockEnableWrite <= nextClockEnableWrite;
 		
@@ -940,11 +941,11 @@ process (clk250MHz, advanceTheShiftRegister)
 			switchCount <= nextSwitchCount;
 			lastSwitchRegister <= switchRegister;
 
-			writeRefill  <= nextWriteRefill ;
+--			writeRefill  <= nextWriteRefill ;
 -- 		   addrOut <= nextAddrOut;
 
-			writePulseTrain <= nextWritePulseTrain;
-			doutWaiting <= nextDoutWaiting;
+--			writePulseTrain <= nextWritePulseTrain;
+--			doutWaiting <= nextDoutWaiting;
 		end if;
 		
    end process;
@@ -1171,11 +1172,11 @@ process (clk250MHz, advanceTheShiftRegister)
 	
 	
 ------------------------------------------SEQUENTIAL :	
-	process (clk250MHz, clk125MHz, ClockEnableBeginning)
+	process (clk250MHz, clk125MHz, ClockEnableBeginning,verySlowClockEnable(0))
 
 		begin
 	
-		if rising_edge(clk250MHz) and ClockEnableBeginning = '1' and clk125MHz = '1' then --this block of code causes all these to change only on the count2=0 rising edge
+		if rising_edge(clk250MHz) and verySlowClockEnable(0) = '1' then --this block of code causes all these to change only on the count2=0 rising edge
 		-- basically, all this code is running as if it had a clock at 125MHz/32 = 3.9MHz
 		-- it all occurs exactly when count2 = 0, so at the very start of the read or write cycle, which lasts 32 count2 cycles
 			
@@ -1477,6 +1478,11 @@ process (clk250MHz)
 		if rising_edge(clk250MHz) then  
 			slowClockVector(6 downto 0) <= slowClockVector(7 downto 1);
 			slowClockVector(7) <= slowClockVector(0);
+			verySlowClockEnable(30 downto 0) <= verySlowClockEnable(31 downto 1);
+			verySlowClockEnable(31) <= verySlowClockEnable(0);
+			
+			
+			
 			slowFIFOpullPulse( 1) <= slowFIFOpullPulse( 0);  -- shift delay for FIFO pull enable pulse
 			slowFIFOpullPulse(9 downto 3) <= slowFIFOpullPulse(8 downto 2);  -- shift delay for FIFO pull enable pulse
 		 
