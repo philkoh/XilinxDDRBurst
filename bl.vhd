@@ -185,7 +185,7 @@ END COMPONENT;
 	constant fiveThousand : unsigned (17 downto 0) :=   "000001000000000000"; 
 	constant twentyThousand : unsigned (17 downto 0) :=  "000100000000000000"; 
  	constant hundred : unsigned (17 downto 0) :=  "000000000010000000"; 
- 	constant thousand : unsigned (17 downto 0) :=  "000000010000000000"; 
+ 	constant thousand : unsigned (17 downto 0) := "000000000000000000";--  "000000010000000000"; 
 --	constant fiveThousand : unsigned (17 downto 0) :=    "000000000000000100";
 --	constant twentyThousand : unsigned (17 downto 0) :=   "000000000000010000";
 -- 	constant hundred : unsigned (17 downto 0) :=   "000000000000000010";
@@ -1604,43 +1604,43 @@ process (slowfifopulltoggle, addr, slowBA, count, currentState,count2, slowCount
 		 
 
 		when writeMRS =>
-			if slowCount = thousand  then
+			if slowCount = 0  then
 				nextSlowBA <= "010"; --MRS MR2
 				nextAddr <= "0000000000001000";  --CWL = 6
 			end if;
-			if slowCount = thousand + 3 then 
+			if slowCount = 3 then 
 				rasSlow <= "11110011";
 				casSlow <= "11110011";
 				weSlow <= "11110011";
 			end if;
 	
-			if slowCount = thousand + 1 * 16   then
+			if slowCount = 1 * 16   then
 				nextSlowBA <= "011";--MRS MR3
 				nextAddr <= "0000000000000100"; -- MPR mode, outputs special pattern on reads
 			end if;
-			if slowCount = thousand + 1 * 16  + 3 then 
+			if slowCount =  1 * 16  + 3 then 
 				rasSlow <= "11110011";
 				casSlow <= "11110011";
 				weSlow <= "11110011";
 			end if;
 	
-			if slowCount = thousand + 2 * 16     then
+			if slowCount =  2 * 16     then
 				nextSlowBA <= "001"; --MRS MR1  
 				nextAddr <= "0000000000000101";  -- DLL disable     RZQ/4 (60O NOM)
 --				nextAddrRequest <= "000000000000100";  -- DLL enable     RZQ/4 (60O NOM)
 			end if;
-			if slowCount = thousand + 2 * 16     + 3 then 
+			if slowCount =  2 * 16     + 3 then 
 				rasSlow <= "11110011";
 				casSlow <= "11110011";
 				weSlow <= "11110011";
 			end if;
 
-			if slowCount = thousand + 3 * 16   then
+			if slowCount =  3 * 16   then
 				nextSlowBa <= "000";		--MRS MR0
 				nextAddr <= (9 => '1', 8 => '0', 5 => '1', others => '0'); --CAS latency = 6, Don'treset DLL  , WriteRecovery = 5, FixedBurstLength = 8
 --				nextAddrRequest <= (9 => '1', 8 => '1', 4 => '1', others => '0'); --CAS latency = 5, reset DLL  , WriteRecovery = 5
 			end if;
-			if slowCount = thousand + 3 * 16    + 3 then 
+			if slowCount =  3 * 16    + 3 then 
 				rasSlow <= "11110011";
 				casSlow <= "11110011";
 				weSlow <= "11110011";
@@ -1648,28 +1648,28 @@ process (slowfifopulltoggle, addr, slowBA, count, currentState,count2, slowCount
 
 
 
-			if slowCount = thousand + 4 * 16   then
+			if slowCount =  4 * 16   then
 				--ZQCL
 				nextSlowBa <= "000";				
 				nextAddr <= (10 => '1', others => '0'); 
 			end if;
-			if   slowCount = thousand + 4 * 16 + 3 then 
+			if   slowCount = 4 * 16 + 3 then 
 				rasSlow <= "11111111";
 				casSlow <= "11111111";
 				weSlow <= "11110011";
 			end if;
-			if slowCount = thousand + 24 * 16     then
+			if slowCount =  24 * 16     then
 				nextSlowBa <= "011"; --MRS MR3
 				nextAddr <= "0000000000000000"; 
 			end if;
-			if slowCount = thousand + 24 * 16    + 3 then 
+			if slowCount =  24 * 16    + 3 then 
 				rasSlow <= "11110011";
 				casSlow <= "11110011";
 				weSlow <= "11110011";
 			end if;
 		
 			
-			if slowCount = thousand + 26 * 16    then
+			if slowCount =  26 * 16    then
 				nextState <= activate;
 			end if;
 			
