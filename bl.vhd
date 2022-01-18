@@ -955,7 +955,7 @@ process (clk250MHz, advanceTheShiftRegister)
 	rasPORT <= rasFast;-- ras;
 	wePORT <= weFast;--we;
 
-	nextWritePulseTrain (15 downto 2) <= writePulseTrain (14 downto 1);
+--	nextWritePulseTrain (15 downto 2) <= writePulseTrain (14 downto 1);
 
 
 
@@ -963,7 +963,7 @@ process (clk250MHz, advanceTheShiftRegister)
 	
 		begin
 		
-		nextWriteRefill <=	writeRefill     ;
+--		nextWriteRefill <=	writeRefill     ;
 --	 	nextAddrOut <= addrOut;--unless overridden below, hold and remember the loaded values
 		addrPort <= fastWriteAddress(14 downto 0);-- addrOut;
 	
@@ -1014,9 +1014,9 @@ process (clk250MHz, advanceTheShiftRegister)
 		
 		
 		
-		nextWritePulseTrain (1) <= '0';
+--		nextWritePulseTrain (1) <= '0';
 		if count2 = 16 and writeRequest = '1' and empty = '0' then
-			nextWritePulseTrain (1) <= '1';
+--			nextWritePulseTrain (1) <= '1';
 		end if;
 
 		if count2 = 19 and  writeRequest = '1' and empty = '0' then  -- during a write cycle, pulse a second write command
@@ -1026,11 +1026,11 @@ process (clk250MHz, advanceTheShiftRegister)
 		
 		
 		if nextWritePulseTrain(1) = '1' then
-			sharpenFIFOpullEnable(1) <= '1';
-			nextDoutWaiting <= dout;
+--			sharpenFIFOpullEnable(1) <= '1';
+--			nextDoutWaiting <= dout;
 		else
-			sharpenFIFOpullEnable(1) <= '0';   
-			nextDoutWaiting <= doutWaiting;
+--			sharpenFIFOpullEnable(1) <= '0';   
+--			nextDoutWaiting <= doutWaiting;
 		end if;
 			
 		if count2 = 5   then   -- this loads address  
@@ -1044,23 +1044,23 @@ process (clk250MHz, advanceTheShiftRegister)
 			
 		if writePulseTrain(4) = '1' then
 	
-			nextWriteRefill(0) <= doutWaiting (15 downto 0); 
-			nextWriteRefill(1) <= doutWaiting (31 downto 16); 
-			nextWriteRefill(2) <= doutWaiting (47 downto 32); 
-	 		nextWriteRefill(3) <= doutWaiting (63 downto 48); 
-			nextWriteRefill(4) <= doutWaiting (79 downto 64); 
-			nextWriteRefill(5) <= doutWaiting (95 downto 80); 
-			nextWriteRefill(6) <= doutWaiting (111 downto 96); 
-			nextWriteRefill(7) <= doutWaiting (127 downto 112); 
+--			nextWriteRefill(0) <= doutWaiting (15 downto 0); 
+--			nextWriteRefill(1) <= doutWaiting (31 downto 16); 
+--			nextWriteRefill(2) <= doutWaiting (47 downto 32); 
+--	 		nextWriteRefill(3) <= doutWaiting (63 downto 48); 
+--			nextWriteRefill(4) <= doutWaiting (79 downto 64); 
+--			nextWriteRefill(5) <= doutWaiting (95 downto 80); 
+--			nextWriteRefill(6) <= doutWaiting (111 downto 96); 
+--			nextWriteRefill(7) <= doutWaiting (127 downto 112); 
 	
 		end if;
 			
 			
 			
 		
-		nextClockEnableRefillWriteData <= '0';
+--		nextClockEnableRefillWriteData <= '0';
 		if writePulseTrain(6) = '1' then
-			nextClockEnableRefillWriteData <= '1';
+--			nextClockEnableRefillWriteData <= '1';
 		end if;
 
 
