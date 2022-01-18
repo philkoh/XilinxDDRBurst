@@ -181,8 +181,7 @@ END COMPONENT;
 
 	signal verySlowClockEnable : std_logic_vector(31 downto 0) := "00000000000000000000000000000001";
 
-   signal count2 : unsigned (5 downto 0) := "000000";
-   signal count : unsigned (17 downto 0) := "000000000000000000";
+    signal count : unsigned (17 downto 0) := "000000000000000000";
 	constant fiveThousand : unsigned (17 downto 0) :=   "000001000000000000"; 
 	constant twentyThousand : unsigned (17 downto 0) :=  "000100000000000000"; 
  	constant hundred : unsigned (17 downto 0) :=  "000000000010000000"; 
@@ -190,7 +189,6 @@ END COMPONENT;
 --	constant fiveThousand : unsigned (17 downto 0) :=    "000000000000000100";
 --	constant twentyThousand : unsigned (17 downto 0) :=   "000000000000010000";
 -- 	constant hundred : unsigned (17 downto 0) :=   "000000000000000010";
-   signal nextCount2 : unsigned (5 downto 0);
    signal nextCount : unsigned (17 downto 0);
 --	signal dqszero : std_logic := '0';
 --	signal dqsone : std_logic := '1';
@@ -789,7 +787,7 @@ I => clkOutFast--clk125MHz -- Buffer input
 	end process;
 
 		------------------------------------------COMBINATORIAL:
-	process (slownextclockenablereaddelayed4,slowdqstristate, clk125MHz,count2,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData,  clockEnableRead, capturedData, dqsTristate, delayedDataForOutput, dataAssertedToOutput, clockEnableWrite, clockEnableRefillWriteData, refillTheShiftRegister)
+	process (slownextclockenablereaddelayed4,slowdqstristate, clk125MHz,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData,  clockEnableRead, capturedData, dqsTristate, delayedDataForOutput, dataAssertedToOutput, clockEnableWrite, clockEnableRefillWriteData, refillTheShiftRegister)
 		begin
 
 		nextClk125MHz <= not clk125MHz;
@@ -816,7 +814,7 @@ I => clkOutFast--clk125MHz -- Buffer input
 ------------------------------------------SEQUENTIAL :	
 		if rising_edge(clk250MHz) and verySlowClockEnable(0) = '1' then 
 		
-			count2 <= nextCount2;    
+--			count2 <= nextCount2;    
 
 			switchRegister <= nextSwitchRegister;
 			switchCount <= nextSwitchCount;
@@ -830,7 +828,7 @@ I => clkOutFast--clk125MHz -- Buffer input
 	rasPORT <= rasFast;-- ras;
 	wePORT <= weFast;--we;
 
-	process (fastwriteaddress, empty, nextwritepulsetrain, doutwaiting, dout, saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount, count2)
+	process (fastwriteaddress, empty, nextwritepulsetrain, doutwaiting, dout, saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount)
 	
 		begin
 
@@ -853,7 +851,7 @@ I => clkOutFast--clk125MHz -- Buffer input
  		LED2 <= switchCount(2);
 		LED3 <= switchCount(3);
 
-		nextCount2 <= count2 + 1;  -- count2 increments at 125 MHz, not 250 MHz
+--		nextCount2 <= count2 + 1;  -- count2 increments at 125 MHz, not 250 MHz
 	
 		if switchCount = 0 then
 			LED0 <=   capturedData(1)(0);
@@ -936,7 +934,7 @@ I => clkOutFast--clk125MHz -- Buffer input
 		begin
 		if rising_edge(clk250MHz) and verySlowClockEnable(0) = '1' then 
 
-			count <= nextcount;  -- count is incrementing at 3.9MHz, or once every 32 count2 increments
+			count <= nextcount;  
 			blinker <= nextBlinker;
 
 			odt <= nextODT;
@@ -1081,7 +1079,7 @@ process (clk250MHz, slowClockEnable)
 	slowWriteAddress(6) <= addr;
 	slowWriteAddress(7) <= addr;
 
-process (slowfifopulltoggle, addr, slowBA, count, currentState,count2, slowCount, burstCount, nextState, slowWritingPulseTrain)
+process (slowfifopulltoggle, addr, slowBA, count, currentState, slowCount, burstCount, nextState, slowWritingPulseTrain)
 	begin
 	nextState <= currentState;
 	clkOutSlow <= "01010101";
@@ -1152,7 +1150,7 @@ process (slowfifopulltoggle, addr, slowBA, count, currentState,count2, slowCount
 				nextState <= reading;
 			
 				nextSlowBa <= "000";
-				nextAddr <= "0000000000010000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
+				nextAddr <= "0000000000011000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
 			end if;
 		when reading =>
 				rasSlow <= "11111111";
