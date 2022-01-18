@@ -900,23 +900,12 @@ process (clk250MHz, advanceTheShiftRegister)
 	
 
 	 
---		nextAdvanceTheShiftRegister <= '0';
-		if clockEnableWrite = '1'  then --write data, and pull down the stack of registers
---			nextAdvanceTheShiftRegister <= '1';
-		end if;
-		
-		nextRefillTheShiftRegister <= '0';
-		if clockEnableRefillWriteData = '1' and refillTheShiftRegister = '0' then -- make pulse only 1 cycle long (the clockEnable pulse is two cycles)
---			nextRefillTheShiftRegister <= '1';
-		end if;
-
-	
 		
 	end process;
 		
 		
 		
-	process (clk250MHz, clk125MHz)
+	process (clk250MHz, clk125MHz, verySlowClockEnable(0))
 	
 	
 		begin
@@ -924,52 +913,28 @@ process (clk250MHz, advanceTheShiftRegister)
 ------------------------------------------SEQUENTIAL :	
 			
 		
-		if rising_edge(clk250MHz) and clk125MHz = '1' then  -- this is a falling edge of clk125MHz
+		if rising_edge(clk250MHz) and verySlowClockEnable(0) = '1' then  -- this is a falling edge of clk125MHz
 		
-			count2 <= nextCount2;    -- count2 runs at 125 MHz
-			clockEnableBeginning <= nextClockEnableBeginning;  --clockEnable registers change on falling edge of clk125MHz
---			clockEnableCommand <= nextClockEnableCommand;
---			clockEnableRefillWriteData <= nextClockEnableRefillWriteData;
---			clockEnableRead <= nextClockEnableRead;
---			clockEnableWrite <= nextClockEnableWrite;
-		
---			cas <= nextCas;
---			ras <= nextRas;
---			we <= nextWe;
+			count2 <= nextCount2;    
 
 			switchRegister <= nextSwitchRegister;
 			switchCount <= nextSwitchCount;
 			lastSwitchRegister <= switchRegister;
 
---			writeRefill  <= nextWriteRefill ;
--- 		   addrOut <= nextAddrOut;
-
---			writePulseTrain <= nextWritePulseTrain;
---			doutWaiting <= nextDoutWaiting;
 		end if;
 		
    end process;
 	
 ------------------------------------------COMBINATORIAL:
---rasFast, casFast, weFast
 	casPORT <=  casFast;--cas;
 	rasPORT <= rasFast;-- ras;
 	wePORT <= weFast;--we;
 
---	nextWritePulseTrain (15 downto 2) <= writePulseTrain (14 downto 1);
-
-
-
 	process (fastwriteaddress, empty, nextwritepulsetrain, doutwaiting, dout, saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount, count2)
 	
 		begin
-		
---		nextWriteRefill <=	writeRefill     ;
---	 	nextAddrOut <= addrOut;--unless overridden below, hold and remember the loaded values
+
 		addrPort <= fastWriteAddress(14 downto 0);-- addrOut;
-	
-		
-		
 	
 		nextSwitchRegister <= switchRegister;
 		if switch2PORT = '0' then
@@ -989,112 +954,7 @@ process (clk250MHz, advanceTheShiftRegister)
 		LED3 <= switchCount(3);
 
 		nextCount2 <= count2 + 1;  -- count2 increments at 125 MHz, not 250 MHz
-			
-		if count2 = 0    then
-			nextClockEnableBeginning <= '1';  -- this flag executes all the block of code below that changes signals on the count2 = 0 edge 
-		else
-			nextClockEnableBeginning <= '0';
-		end if;
-		
-		if count2 = 16   then   -- this pulses the CAS/RAS/WE command that must get sent for the read or write cycle
---			nextClockEnableCommand <= '1';
-		else
---			nextClockEnableCommand <= '0';
-		end if;
-			
-		if clockEnableCommand = '1' then  --the CAS/RAS/WE command is only applied for this one 125 MHz clock cycle just after count2=16
---			nextCas <= casRequest;
---			nextRas <= rasRequest;
---			nextWe <= weRequest;
-		else                      -- otherwise, CAS/RAS/WE are held HIGH (which is the NOP, No Operation command)
---			nextCas <= '1';
---			nextRas <= '1';
---			nextWe <= '1';
-		end if;
-		
-		
-		
-		
---		nextWritePulseTrain (1) <= '0';
-		if count2 = 16 and writeRequest = '1' and empty = '0' then
---			nextWritePulseTrain (1) <= '1';
-		end if;
-
-		if count2 = 19 and  writeRequest = '1' and empty = '0' then  -- during a write cycle, pulse a second write command
---			nextCount2 <= count2 - 3;  -- leap backwards by 4 count2's of the sequence; instead of going to count2=20 next time, go to count2=16
-		end if;
-
-		
-		
-		if nextWritePulseTrain(1) = '1' then
---			sharpenFIFOpullEnable(1) <= '1';
---			nextDoutWaiting <= dout;
-		else
---			sharpenFIFOpullEnable(1) <= '0';   
---			nextDoutWaiting <= doutWaiting;
-		end if;
-			
-		if count2 = 5   then   -- this loads address  
---			nextAddrOut <= addrRequest;
-		end if;
-
-		if writePulseTrain(2) = '1' then
---				nextAddrOut <= 			std_logic_vector(to_unsigned((to_integer(unsigned(addrOut)) + 8),15)); -- increment column address by 8
-		end if;
-			
-			
-		if writePulseTrain(4) = '1' then
 	
---			nextWriteRefill(0) <= doutWaiting (15 downto 0); 
---			nextWriteRefill(1) <= doutWaiting (31 downto 16); 
---			nextWriteRefill(2) <= doutWaiting (47 downto 32); 
---	 		nextWriteRefill(3) <= doutWaiting (63 downto 48); 
---			nextWriteRefill(4) <= doutWaiting (79 downto 64); 
---			nextWriteRefill(5) <= doutWaiting (95 downto 80); 
---			nextWriteRefill(6) <= doutWaiting (111 downto 96); 
---			nextWriteRefill(7) <= doutWaiting (127 downto 112); 
-	
-		end if;
-			
-			
-			
-		
---		nextClockEnableRefillWriteData <= '0';
-		if writePulseTrain(6) = '1' then
---			nextClockEnableRefillWriteData <= '1';
-		end if;
-
-
-		if count2 = 24 and writeRequest = '1' then  -- this replaces the waiting data from fifo
---			nextWriteRefill(0) <= "0000000000000001"; 
---			nextWriteRefill(1) <= "0000000000000010"; 
---			nextWriteRefill(2) <= "0000000000000100"; 
---			nextWriteRefill(3) <= "0000000000001000"; 
---			nextWriteRefill(4) <= "0000000000001100"; 
---			nextWriteRefill(5) <= "0000000000000110"; 
---			nextWriteRefill(6) <= "0000000000000011"; 
---			nextWriteRefill(7) <= "0000000000000111"; 
-	
-		end if;
-			
-			
---------------------------------			if (count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26)   then  --reads for 4 cycles of 125MHz count2
-		if (count2 = 24 or count2 = 25 or count2 = 26 or count2 = 27) and saveRequest = '1'   then  --reads for 4 cycles of 125MHz count2
-------------------------------------------			if count2 = 26 or count2 = 27 or count2 = 28 or count2 = 29 then
---			nextClockEnableRead <= '1';
-		else
---			nextClockEnableRead <= '0';
-		end if;
-		
-
-	----------------------	if (count2 = 22 or count2 = 23 or count2 = 24 or count2 = 25 or count2 = 26 or count2 = 27 or count2 = 28 or count2 = 29 or count2 = 30  ) and writeRequest = '1'   then  --writes for 4 cycles of 125MHz count2
-		if writePulseTrain(6) = '1' or writePulseTrain(7) = '1'  or writePulseTrain(8) = '1'  or writePulseTrain(9) = '1'  or writePulseTrain(10) = '1' then
---			nextClockEnableWrite <= '1';
-		else
---			nextClockEnableWrite <= '0';
-		end if;
-		
-
 		if switchCount = 0 then
 			LED0 <=   capturedData(1)(0);
 			LED1 <=    capturedData(1)(1);
@@ -1172,39 +1032,19 @@ process (clk250MHz, advanceTheShiftRegister)
 	
 	
 ------------------------------------------SEQUENTIAL :	
-	process (clk250MHz, clk125MHz, ClockEnableBeginning,verySlowClockEnable(0))
-
+	process (clk250MHz,  ClockEnableBeginning,verySlowClockEnable(0))
 		begin
-	
-		if rising_edge(clk250MHz) and verySlowClockEnable(0) = '1' then --this block of code causes all these to change only on the count2=0 rising edge
-		-- basically, all this code is running as if it had a clock at 125MHz/32 = 3.9MHz
-		-- it all occurs exactly when count2 = 0, so at the very start of the read or write cycle, which lasts 32 count2 cycles
-			
-		
+		if rising_edge(clk250MHz) and verySlowClockEnable(0) = '1' then 
+
 			count <= nextcount;  -- count is incrementing at 3.9MHz, or once every 32 count2 increments
 			blinker <= nextBlinker;
---			ba <= nextBa;
---			addrRequest <= nextAddrRequest;
 
---			casRequest <= nextCasRequest;
---			rasRequest <= nextRasRequest;
---			weRequest <= nextWeRequest;
---			writeRequest <= nextWriteRequest;		
---			saveRequest <= nextSaveRequest;
---			saveRequest2 <= nextSaveRequest2;
---			saveRequest3 <= nextSaveRequest3;
---			saveRequest4 <= nextSaveRequest4;
---			reset <= nextReset;
---			cke <= nextCke;
---			dqsTristate <= nextDqsTristate;
 			odt <= nextODT;
-			
-	
---			requestedDataToWrite  <= nextRequestedDataToWrite;
-	
+
 			din <= nextdin;
 			
 			requestReset <= nextRequestReset;
+
 			end if;
    end process;
 
@@ -1213,7 +1053,6 @@ process (clk250MHz, advanceTheShiftRegister)
 	dqm1PORT  <= '0';
 	odtPORT <= odt;
 	baPort <= slowBA;-- ba;
-	
 	 
 	resetPort <= slowResetPort;--reset;
 	ckePort <= slowCKEPort;-- cke;
@@ -1221,139 +1060,20 @@ process (clk250MHz, advanceTheShiftRegister)
 	
 	nextBlinker <= not blinker when count = 0 else blinker;
 
-
 	process (count, requestedDataToWrite, reset, cke, din)
 
 		begin
 			nextCount <= count + 1;
 
---			nextDqsTristate <= '1';
-
---			nextWriteRequest <= '0';  -- unless overridden below
---			nextSaveRequest <= '0';
---			nextSaveRequest2 <= '0';
---			nextSaveRequest3 <= '0';
---			nextSaveRequest4 <= '0';
-			
---			nextRequestedDataToWrite  <= requestedDataToWrite;
-
 			nextODT <= '1';  -- On Die Termination is normally on
---			nextBa <= (others => '0');
---			nextAddrRequest <= (others => '0');
---			nextRasRequest <= '1';
---			nextCasRequest <= '1';
---			nextWeRequest <= '1';
-			
---			nextData <= (others => 'Z');
-	
---			nextReset <= reset;
---			nextCke <= cke;
 			
 			nextdin <= din;
 			
 			nextRequestReset <= '0';
---		 	rst <= '0';
+
 			if count = 0 then
---				nextReset <= '0';
---				nextCke <= '0';
---				rst <= '1';
-				
 				nextRequestReset <= '1';
 			end if;
-			
-			
-			
-			
-			
-			
-			
-			if count = 1 then
-	--nextCount <= count + 20226;  -- NOTE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  This *must* be commented out for system to work!!!!!!!!!!!!
-			end if;
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			if count = fiveThousand then --5000
---				nextReset <= '1';
-			end if;
-			if count = twentyThousand then -- 20000
---				nextCke <= '1';
-			end if;
-			
-			if count = twentyThousand + hundred then -- 20100 --do nothing (sets nextAddr to get rid of an annoying warking)
---				nextBa <= "111";
---				nextAddrRequest <= "111111111111111";
-			end if;
-	
-			if count =  twentyThousand + hundred  + hundred then--20200 --MRS MR2
---				nextBa <= "010";
---				nextAddrRequest <= "000000000001000";  --CWL = 6
------------------------------------------				nextAddrRequest <= "000000000000000";  --CWL = 5
---				nextRasRequest <= '0';
---				nextCasRequest <= '0';
---				nextWeRequest <= '0';
-			end if;
-	
-			if count = twentyThousand + hundred  + hundred + 1 then--20201 --MRS MR3
---				nextBa <= "011";
---				nextAddrRequest <= "000000000000100"; -- MPR mode, outputs special pattern on reads
---				nextRasRequest <= '0';
---				nextCasRequest <= '0';
---				nextWeRequest <= '0';
-			end if;
-		
-			if count = twentyThousand + hundred  + hundred + 2 then--20202 --MRS MR1  
---				nextBa <= "001";
---				nextAddrRequest <= "000000000000101";  -- DLL disable     RZQ/4 (60O NOM)
------------------------------------				nextAddrRequest <= "000000000000100";  -- DLL enable     RZQ/4 (60O NOM)
---				nextRasRequest <= '0';
---				nextCasRequest <= '0';
---				nextWeRequest <= '0';
-			end if;
-		
-			if count = twentyThousand + hundred  + hundred + 3 then--20203 --MRS MR0
---				nextBa <= "000";	
---				nextAddrRequest <= (9 => '1', 8 => '0', 5 => '1', others => '0'); --CAS latency = 6, Don'treset DLL  , WriteRecovery = 5, FixedBurstLength = 8
---------------------------------------				nextAddrRequest <= (9 => '1', 8 => '1', 4 => '1', others => '0'); --CAS latency = 5, reset DLL  , WriteRecovery = 5
---				nextRasRequest <= '0';
---				nextCasRequest <= '0';
---				nextWeRequest <= '0';
-			end if;
-	
-			if count = twentyThousand + hundred  + hundred + 4 then--20204 --ZQCL
-		--		nextBa <= "000";				
-		--		nextAddrRequest <= (10 => '1', others => '0'); 
-		--		nextRasRequest <= '1';
-		--		nextCasRequest <= '1';
-		--		nextWeRequest <= '0';
-			end if;
-				
-			if count =  twentyThousand + hundred  + hundred + 24  then--20224 --MRS MR3
-	--			nextBa <= "011";
-	--			nextAddrRequest <= "000000000000000"; 
-	--			nextRasRequest <= '0';
-	--			nextCasRequest <= '0';
-	--			nextWeRequest <= '0';
-			end if;
-		
-			if count = twentyThousand + hundred  + hundred + 26 then--20226 --ACTIVATE
-	--			nextBa <= "000";
-	--			nextAddrRequest <= "000000000001000"; --Row Address 8  
-	--			nextRasRequest <= '0';
-	--			nextCasRequest <= '1';
-	--			nextWeRequest <= '1';
-			end if;
-
-
-		
 			
 			if count = 4 then-- twentyThousand + hundred  + hundred + 27 then
 				nextdin(3 downto 0) <= "1110";
@@ -1371,7 +1091,6 @@ process (clk250MHz, advanceTheShiftRegister)
 				sharpenFIFOpushEnable(0) <= '1';  -- here is the rising edge
 		 	end if;
 
-
 			if count = 6 then --twentyThousand + hundred  + hundred + 29 then
 				nextdin(3 downto 0) <= "0111";
 				nextdin(19 downto 16) <= "0110";
@@ -1383,7 +1102,6 @@ process (clk250MHz, advanceTheShiftRegister)
 				nextdin(115 downto 112) <= "0000";
 				sharpenFIFOpushEnable(0) <= '0';  -- note: will need a rising edge in a later count
 		 	end if;
-
 
 			if count = 7 then -- twentyThousand + hundred  + hundred + 30 then
 				sharpenFIFOpushEnable(0) <= '1';   -- here is the rising edge
@@ -1404,67 +1122,6 @@ process (clk250MHz, advanceTheShiftRegister)
 			if count = 9 then--  twentyThousand + hundred  + hundred + 32 then
 				sharpenFIFOpushEnable(0) <= '1';  -- here is the rising edge
 		 	end if;
-
-			if count = twentyThousand + hundred  + hundred + 34 then--20228 --WRITE
-			--		nextData <= "1010101010100110"; -- the last four digits of this will show up on the LEDs
-			--		nextRequestedDataToWrite(1) <= "0000000000000001"; 
-			--		nextRequestedDataToWrite(2) <= "1010101010100010";
-			--		nextRequestedDataToWrite(3) <= "1010101010100100";
-			--		nextRequestedDataToWrite(4) <= "1010101010101000";
-			--		nextRequestedDataToWrite(5) <= "1010101010101100";
-			--		nextRequestedDataToWrite(6) <= "1010101010100110";
-			--		nextRequestedDataToWrite(7) <= "1010101010100011";
-			--		nextRequestedDataToWrite(8) <= "1010101010100111";
-			--		nextRequestedDataToWrite(9) <= "1010101010101110";
-			--		nextRequestedDataToWrite(10) <= "0000000000001111";
- 			--		nextRequestedDataToWrite(11) <= "0000000000001110";
-			--		nextRequestedDataToWrite(12) <= "1010101010101100";
-				--	nextRequestedDataToWrite(13) <= "1010101010101000";
-				--	nextRequestedDataToWrite(14) <= "1010101010101100";
-				--	nextRequestedDataToWrite(15) <= "1010101010101110";
-				--	nextRequestedDataToWrite(16) <= "1010101010101111";
-				--	nextRequestedDataToWrite(17) <= "1010101010100111";
-				--	nextRequestedDataToWrite(18) <= "1010101010100011";
-				--	nextRequestedDataToWrite(19) <= "1010101010100001";
-				--	nextRequestedDataToWrite(20) <= "0000000000000011";
-
-
-
-
-
-			--		nextWriteRequest <= '1';
-			--		nextDqsTristate <= '0';
-			
-			--		nextBa <= "000";
-			--		nextAddrRequest <= "000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
-			--		nextRasRequest <= '1';
-			--		nextCasRequest <= '0';
-			--		nextWeRequest <= '0';
-			end if;
-			
-			if count = twentyThousand + hundred  + hundred + 35 then--20230 --WRITE
-		--			nextData <= "1111111111111001";
-		--			nextDqsTristate <= '0';
-			
-		--			nextBa <= "000";
-		--			nextAddrRequest <= "000000111110000"; -- A10 must be LOW to turn off AutoPrecharge
-		--			nextRasRequest <= '1';
-			--		nextCasRequest <= '0';
-			--		nextWeRequest <= '0';
-			end if;
-	
-
-			if count = twentyThousand + hundred  + hundred + 36 then--20232   --READ
-	--			nextODT <= '0';  -- turn On Die Termination off for read
-
-		--			nextSaveRequest <= '1';	
-				
-		--			nextBa <= "000";
-		--			nextAddrRequest <= "000000000010000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
-		--			nextRasRequest <= '1';
-			--		nextCasRequest <= '0';
-			--		nextWeRequest <= '1';
-			end if;
 			
    end process;
 		
