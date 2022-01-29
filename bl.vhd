@@ -33,6 +33,20 @@ entity bl is
 			LED1 : out STD_LOGIC;
 			LED2 : out STD_LOGIC;
 			LED3 : out STD_LOGIC;
+			
+			LEDBUS0 : out STD_LOGIC;
+			LEDBUS1 : out STD_LOGIC;
+			LEDBUS2 : out STD_LOGIC;
+			LEDBUS3 : out STD_LOGIC;
+			LEDBUS4 : out STD_LOGIC;
+			LEDBUS5 : out STD_LOGIC;
+			LEDBUS6 : out STD_LOGIC;
+			LEDBUS7 : out STD_LOGIC;
+			LEDBUS8 : out STD_LOGIC;
+
+			
+			
+			
 			baPORT : out std_logic_vector(2 downto 0);
 			addrPORT : out std_logic_vector(14 downto 0);
 		   dataPORT : inout std_logic_vector(15 downto 0);
@@ -365,6 +379,9 @@ END COMPONENT;
 
 	signal requestReset :  std_logic   := '0';
 	signal nextRequestReset : std_logic;
+	
+	
+	signal LEDBUSvec : std_logic_vector(8 downto 0)  ;
 	
 begin
 
@@ -827,6 +844,17 @@ I => clkOutFast--clk125MHz -- Buffer input
 	casPORT <=  casFast;--cas;
 	rasPORT <= rasFast;-- ras;
 	wePORT <= weFast;--we;
+	
+	LEDBUS0 <= LEDBUSvec(0);
+	LEDBUS1 <= LEDBUSvec(1);
+	LEDBUS2 <= LEDBUSvec(2);
+	LEDBUS3 <= LEDBUSvec(3);
+	LEDBUS4 <= LEDBUSvec(4);
+	LEDBUS5 <= LEDBUSvec(5);
+	LEDBUS6 <= LEDBUSvec(6);
+	LEDBUS7 <= LEDBUSvec(7);
+	LEDBUS8 <= LEDBUSvec(8);
+
 
 	process (fastwriteaddress, empty, nextwritepulsetrain, doutwaiting, dout, saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount)
 	
@@ -858,48 +886,56 @@ I => clkOutFast--clk125MHz -- Buffer input
 			LED1 <=    capturedData(1)(1);
 			LED2 <=    capturedData(1)(2);
 			LED3 <=    capturedData(1)(3);
+			LEDBUSvec <= capturedData(1)(8 downto 0);
 	   end if;
 		if switchCount = 1 then
 			LED0 <=   capturedData(2)(0);
 			LED1 <=    capturedData(2)(1);
 			LED2 <=    capturedData(2)(2);
 			LED3 <=    capturedData(2)(3);
+			LEDBUSvec <= capturedData(2)(8 downto 0);
 		end if;
 		if switchCount = 2 then
 			LED0 <=   capturedData(3)(0);
 			LED1 <=    capturedData(3)(1);
 			LED2 <=    capturedData(3)(2);
 			LED3 <=    capturedData(3)(3);
-		end if;
+			LEDBUSvec <= capturedData(3)(8 downto 0);
+	end if;
 		if switchCount = 3 then
 			LED0 <=   capturedData(4)(0);
 			LED1 <=    capturedData(4)(1);
 			LED2 <=    capturedData(4)(2);
 			LED3 <=    capturedData(4)(3);
+			LEDBUSvec <= capturedData(4)(8 downto 0);
 		end if;
 		if switchCount = 4 then
 			LED0 <=   capturedData(5)(0);
 			LED1 <=    capturedData(5)(1);
 			LED2 <=    capturedData(5)(2);
 			LED3 <=    capturedData(5)(3);
+			LEDBUSvec <= capturedData(5)(8 downto 0);
 		end if;
 		if switchCount = 5 then
 			LED0 <=   capturedData(6)(0);
 			LED1 <=    capturedData(6)(1);
 			LED2 <=    capturedData(6)(2);
 			LED3 <=    capturedData(6)(3);
+			LEDBUSvec <= capturedData(6)(8 downto 0);
 		end if;
 		if switchCount = 6 then
 			LED0 <=   capturedData(7)(0);
 			LED1 <=    capturedData(7)(1);
 			LED2 <=    capturedData(7)(2);
 			LED3 <=    capturedData(7)(3);
+			LEDBUSvec <= capturedData(7)(8 downto 0);
 		end if;
 		if switchCount = 7 then
-				LED0 <=   capturedData(8)(0);
-				LED1 <=    capturedData(8)(1);
-				LED2 <=    capturedData(8)(2);
-				LED3 <=    capturedData(8)(3);
+			LED0 <=   capturedData(8)(0);
+			LED1 <=    capturedData(8)(1);
+			LED2 <=    capturedData(8)(2);
+			LED3 <=    capturedData(8)(3);
+			LEDBUSvec <= capturedData(8)(8 downto 0);
 		end if;
 
 		if switchCount = 8 then
@@ -907,6 +943,7 @@ I => clkOutFast--clk125MHz -- Buffer input
 				LED1 <=    capturedData(9)(1);
 				LED2 <=    capturedData(9)(2);
 				LED3 <=    capturedData(9)(3);
+			LEDBUSvec <= capturedData(9)(8 downto 0);
 		end if;
 
 	   if switchCount = 9 then
@@ -914,6 +951,7 @@ I => clkOutFast--clk125MHz -- Buffer input
 				LED1 <=    capturedData(10)(1);
 				LED2 <=    capturedData(10)(2);
 				LED3 <=    capturedData(10)(3);
+			LEDBUSvec <= capturedData(10)(8 downto 0);
 		end if;
 
 		if switchCount = 10 then
@@ -921,6 +959,7 @@ I => clkOutFast--clk125MHz -- Buffer input
 				LED1 <=    capturedData(11)(1);
 				LED2 <=    capturedData(11)(2);
 				LED3 <=    capturedData(11)(3);
+			LEDBUSvec <= capturedData(11)(8 downto 0);
 		end if;
 
    end process;
