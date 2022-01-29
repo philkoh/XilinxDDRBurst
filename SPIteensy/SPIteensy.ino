@@ -52,12 +52,12 @@ void loop() {
     ch = Serial.read();
     if (ch == '2') {
       executeTransfer = true;
-      Serial.println("TWO!!");
+      Serial.println("2 -- get switchCount and captured data entry");
       mybyteMSB = 2;  // MSB is the command index
     }
     if (ch == '3') {
       executeTransfer = true;
-      Serial.println("THREE!!");
+      Serial.println("3 -- advance switchCount");
       mybyteMSB = 3;  // MSB is the command index
     }
     if (!executeTransfer)  return;
