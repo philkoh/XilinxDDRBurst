@@ -45,6 +45,10 @@ entity bl is
 			LEDBUS8 : out STD_LOGIC;
 
 			
+			PIN0 : in  STD_LOGIC;
+			PIN1 : out  STD_LOGIC;
+			PIN26 : in  STD_LOGIC;
+			PIN27 : in  STD_LOGIC;
 			
 			
 			baPORT : out std_logic_vector(2 downto 0);
@@ -148,6 +152,21 @@ END COMPONENT;
 	END COMPONENT;
 
 	
+
+	COMPONENT SPIinterface
+	PORT(
+		clk : IN std_logic;
+		dataout : IN std_logic_vector(15 downto 0);
+		csPin : IN std_logic;
+		MOSIpin : IN std_logic;
+		sckPin : IN std_logic;          
+		datain : OUT std_logic_vector(15 downto 0);
+		dataarrivedtoggle : OUT std_logic;
+		MISOpin : OUT std_logic
+		);
+	END COMPONENT;
+
+
 
 
 
@@ -382,6 +401,12 @@ END COMPONENT;
 	
 	
 	signal LEDBUSvec : std_logic_vector(8 downto 0)  ;
+	
+	signal SPIdataIn : std_logic_vector (15 downto 0) ;
+	signal SPIdataOut : std_logic_vector (15 downto 0) := "1000000000000010";
+	signal nextSPIdataOut : std_logic_vector (15 downto 0);
+
+	signal dataArrivedToggle : std_logic;
 	
 begin
 
@@ -784,6 +809,26 @@ I => clkOutFast--clk125MHz -- Buffer input
 );
 -- End of OBUFDS_inst instantiation
 
+Inst_SPIinterface: SPIinterface PORT MAP(
+		clk => clk250MHz ,
+		dataout => SPIdataOut,
+		datain => SPIdataIn,
+		dataarrivedtoggle => dataArrivedToggle ,
+		csPin => PIN0,
+		MISOpin => PIN1,
+		MOSIpin => PIN26,
+		sckPin => PIN27 
+	);
+
+
+
+
+
+
+
+
+
+
 
 	process (clk250MHz)
 		begin
@@ -962,6 +1007,9 @@ I => clkOutFast--clk125MHz -- Buffer input
 			LEDBUSvec <= capturedData(11)(8 downto 0);
 		end if;
 
+
+
+	LEDBUSvec(8 downto 0) <= SPIdataIn(8 downto 0);
    end process;
 	
 	
