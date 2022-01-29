@@ -43,17 +43,20 @@ void setup() {
 void loop() {
   int chipSelectPin = 0;
   int mybyteMSB = 1;
-  int mybyteLSB = 15;
+  int mybyteLSB = 5;
   uint8_t valMSB, valLSB;
+  char ch;
   // put your main code here, to run repeatedly:
-  delay(200);
-  SPI1.beginTransaction(SPISettings(10000000, MSBFIRST, SPI_MODE0));
-  digitalWrite(chipSelectPin, LOW);
-  valMSB = SPI1.transfer(mybyteMSB);
-  valLSB = SPI1.transfer(mybyteLSB);
-  digitalWrite(chipSelectPin, HIGH);
-  SPI1.endTransaction();
-  Serial.print(valMSB);
-  Serial.print(" ");
-  Serial.println(valLSB);
+  if (Serial.available() > 0 ) {
+    ch = Serial.read();
+    SPI1.beginTransaction(SPISettings(10000000, MSBFIRST, SPI_MODE0));
+    digitalWrite(chipSelectPin, LOW);
+    valMSB = SPI1.transfer(mybyteMSB);
+    valLSB = SPI1.transfer(mybyteLSB);
+    digitalWrite(chipSelectPin, HIGH);
+    SPI1.endTransaction();
+    Serial.print(valMSB);
+    Serial.print(" ");
+    Serial.println(valLSB);
+  }
 }

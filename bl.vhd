@@ -408,6 +408,8 @@ END COMPONENT;
 
 	signal dataArrivedToggle : std_logic;
 	
+	signal lastDataArrivedToggle : std_logic := '0';
+	
 begin
 
 
@@ -882,6 +884,8 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 			switchCount <= nextSwitchCount;
 			lastSwitchRegister <= switchRegister;
 
+
+			lastDataArrivedToggle <= dataArrivedToggle;
 		end if;
    end process;
 	
@@ -1009,7 +1013,14 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 
 
 
-	LEDBUSvec(8 downto 0) <= SPIdataIn(8 downto 0);
+		LEDBUSvec(8 downto 0) <= SPIdataIn(8 downto 0);
+		LEDBUSvec(3 downto 0) <= std_logic_vector(switchCount);
+		if lastDataArrivedToggle /= dataArrivedToggle then  -- an SPI message has arrived
+	--		if SPIdataIn(15 downto 8) = "00000011" then -- command 3 means advance the switchCount
+				nextSwitchCount <= switchCount + 1;
+	--		end if;
+		end if;
+			
    end process;
 	
 	
@@ -1107,6 +1118,9 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 			if count = 9 then--  twentyThousand + hundred  + hundred + 32 then
 				sharpenFIFOpushEnable(0) <= '1';  -- here is the rising edge
 		 	end if;
+			
+			
+		
 			
    end process;
 		
@@ -1377,6 +1391,7 @@ process (slowfifopulltoggle, addr, slowBA, count, currentState, slowCount, burst
 	
 	end if;
 	if slowWritingPulseTrain(0) = '1' then
+		
 		nextSlowFIFOpullToggle <= not slowFIFOpullToggle ;--toggle this to advance the FIFO (after some delay)
 	end if;
 		
