@@ -1016,9 +1016,9 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 		LEDBUSvec(8 downto 0) <= SPIdataIn(8 downto 0);
 		LEDBUSvec(3 downto 0) <= std_logic_vector(switchCount);
 		if lastDataArrivedToggle /= dataArrivedToggle then  -- an SPI message has arrived
-	--		if SPIdataIn(15 downto 8) = "00000011" then -- command 3 means advance the switchCount
+			if SPIdataIn(15 downto 8) = "00000011" then -- command 3 means advance the switchCount
 				nextSwitchCount <= switchCount + 1;
-	--		end if;
+			end if;
 		end if;
 			
    end process;

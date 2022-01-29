@@ -46,9 +46,21 @@ void loop() {
   int mybyteLSB = 5;
   uint8_t valMSB, valLSB;
   char ch;
+  bool executeTransfer = false;
   // put your main code here, to run repeatedly:
   if (Serial.available() > 0 ) {
     ch = Serial.read();
+    if (ch == '2') {
+      executeTransfer = true;
+      Serial.println("TWO!!");
+      mybyteMSB = 2;  // MSB is the command index
+    }
+    if (ch == '3') {
+      executeTransfer = true;
+      Serial.println("THREE!!");
+      mybyteMSB = 3;  // MSB is the command index
+    }
+    if (!executeTransfer)  return;
     SPI1.beginTransaction(SPISettings(10000000, MSBFIRST, SPI_MODE0));
     digitalWrite(chipSelectPin, LOW);
     valMSB = SPI1.transfer(mybyteMSB);
