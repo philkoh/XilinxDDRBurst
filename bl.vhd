@@ -410,6 +410,13 @@ END COMPONENT;
 	
 	signal lastDataArrivedToggle : std_logic := '0';
 	
+	signal requestReadToggle : std_logic := '0';
+	signal lastRequestReadToggle : std_logic := '0';
+	signal nextRequestReadToggle : std_logic;
+	
+	signal requestedAddress : std_logic_vector (15 downto 0) := "0000000000010000" ;
+	signal nextRequestedAddress : std_logic_vector (15 downto 0) ;
+	
 begin
 
 
@@ -886,6 +893,10 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 
 
 			lastDataArrivedToggle <= dataArrivedToggle;
+			
+			
+			requestReadToggle <= nextRequestReadToggle ;
+			requestedAddress <= nextRequestedAddress  ;
 		end if;
    end process;
 	
@@ -1019,10 +1030,18 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 		SPIdataOut(11 downto 8) <= std_logic_vector(switchCount);
 		SPIdataOut(7 downto 0) <= capturedData(to_integer(switchCount + 1))(7 downto 0);
 
+
+		nextRequestReadToggle <= requestReadToggle ;
+		nextRequestedAddress <= requestedAddress  ;
+			
 		if lastDataArrivedToggle /= dataArrivedToggle then  -- an SPI message has arrived
 			if SPIdataIn(15 downto 8) = "00000011" then -- command 3 means advance the switchCount
 				nextSwitchCount <= switchCount + 1;
 			end if;
+			if SPIdataIn(15 downto 8) = "00000101" then -- command 5 means request a read operation
+				nextRequestReadToggle <= not requestReadToggle ;
+			end if;
+			
 		end if;
 			
    end process;
@@ -1162,7 +1181,8 @@ process (clk250MHz)
 process (clk250MHz, slowClockEnable)
 		begin
 ------------------------------------------SEQUENTIAL :			
-		if rising_edge(clk250MHz) and slowClockEnable = '1' then  
+		if rising_edge(clk250MHz) and slowClockEnable = '1' then  -- the slowClockEnable is one-eighth speed, so the below logic 
+																					--can do very complicated count math, FIFO operations, etc, without hitting timing issues
 			currentState <= nextState;
 			slowCount <= nextSlowCount;
 			burstCount <= nextBurstCount;
@@ -1170,6 +1190,8 @@ process (clk250MHz, slowClockEnable)
 			addr <= nextAddr;
 			slowBA <= nextSlowBA;
 			slowFIFOpullToggle <= nextSlowFIFOpullToggle;
+			
+			lastRequestReadToggle <= requestReadToggle; -- keep track of last toggle value so we can detect a change within this process
 
 		end if;
    end process;
@@ -1251,11 +1273,13 @@ process (slowfifopulltoggle, addr, slowBA, count, currentState, slowCount, burst
 				nextState <= idle;
 			end if;
 		when idle => 
-			if slowCount = 2 * 16 - 7 then
+--			if slowCount = 2 * 16 - 7 then
+			if requestReadToggle /= lastRequestReadToggle then
 				nextState <= reading;
 			
 				nextSlowBa <= "000";
-				nextAddr <= "0000000000011000";  --"000000000010000";  -- A10 must be LOW to turn off AutoPrecharge
+			--	nextAddr <= "0000000000010000";  --"000000000011000";  -- A10 must be LOW to turn off AutoPrecharge
+				nextAddr <= requestedAddress; 
 			end if;
 		when reading =>
 				rasSlow <= "11111111";

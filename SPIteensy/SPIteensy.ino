@@ -57,15 +57,21 @@ void loop() {
       mybyteMSB = 3;  // MSB is the command index
       performTransfer(mybyteMSB,  mybyteLSB);
     }
-    if (ch == '4') { 
+    if (ch == '4') {
       Serial.println("4 -- get eight capturedData entries");
       int i;
       for (i = 0; i < 8; i++) {
-      mybyteMSB = 3;  // MSB is the command index
-      performTransfer(mybyteMSB,  mybyteLSB);
-      delay(1);
+        mybyteMSB = 3;  // MSB is the command index
+        performTransfer(mybyteMSB,  mybyteLSB);
+        delay(1);
       }
     }
+    if (ch == '5') {
+      Serial.println("5 -- request read operation");
+      mybyteMSB = 5;  // MSB is the command index
+      performTransfer(mybyteMSB,  mybyteLSB);
+    }
+
   }
 }
 
