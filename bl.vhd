@@ -403,10 +403,12 @@ END COMPONENT;
 	signal LEDBUSvec : std_logic_vector(8 downto 0)  ;
 	
 	signal SPIdataIn : std_logic_vector (15 downto 0) ;
+	signal SPIdataInSlowed : std_logic_vector (15 downto 0) ;
 	signal SPIdataOut : std_logic_vector (15 downto 0) := "1000000000000010";
 	signal nextSPIdataOut : std_logic_vector (15 downto 0);
 
 	signal dataArrivedToggle : std_logic;
+	signal dataArrivedToggleSlowed : std_logic;
 	
 	signal lastDataArrivedToggle : std_logic := '0';
 	
@@ -913,7 +915,6 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 			lastSwitchRegister <= switchRegister;
 
 
-			lastDataArrivedToggle <= dataArrivedToggle;
 			
 			
 			requestReadToggle <= nextRequestReadToggle ;
@@ -923,6 +924,9 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 			FIFOpushToggle <= nextFIFOpushToggle;
 
 --			din <= nextdin;
+			SPIdataInSlowed <= SPIdataIn ;
+			dataArrivedToggleSlowed <= dataArrivedToggle ;
+			lastDataArrivedToggle <= dataArrivedToggleSlowed;
 
 		end if;
    end process;
@@ -1067,46 +1071,46 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 		nextFIFOpushToggle <= FIFOpushToggle;
 --		nextdin <= din;
 		
-		if lastDataArrivedToggle /= dataArrivedToggle then  -- an SPI message has arrived
-			if SPIdataIn(15 downto 8) = "00000011" then -- command 3 means advance the switchCount
+		if lastDataArrivedToggle /= dataArrivedToggleSlowed then  -- an SPI message has arrived
+			if SPIdataInSlowed(15 downto 8) = "00000011" then -- command 3 means advance the switchCount
 				nextSwitchCount <= switchCount + 1;
 			end if;
-			if SPIdataIn(15 downto 8) = "00000101" then -- command 5 means request a read operation
+			if SPIdataInSlowed(15 downto 8) = "00000101" then -- command 5 means request a read operation
 				nextRequestReadToggle <= not requestReadToggle ;
 			end if;
-			if SPIdataIn(15 downto 8) = "00000001" then -- command 1 means request a write operation
+			if SPIdataInSlowed(15 downto 8) = "00000001" then -- command 1 means request a write operation
 				nextRequestWriteToggle <= not requestWriteToggle ;
 			end if;
-			if SPIdataIn(15 downto 8) = "00000110" then -- command 6 means set address
-				nextRequestedAddress(7 downto 0) <= SPIdataIn(7 downto 0);
+			if SPIdataInSlowed(15 downto 8) = "00000110" then -- command 6 means set address
+				nextRequestedAddress(7 downto 0) <= SPIdataInSlowed(7 downto 0);
 			end if; 
 
-			if SPIdataIn(15 downto 8) = "00000111" then -- command 7 means push into FIFO
+			if SPIdataInSlowed(15 downto 8) = "00000111" then -- command 7 means push into FIFO
 				nextFIFOpushToggle <= not FIFOpushToggle;
 			end if;
-			if SPIdataIn(15 downto 8) = "000010000" then -- command 16 through 31 means set nextdin values
---				nextdin(7 downto 0) <= SPIdataIn(7 downto 0);
+			if SPIdataInSlowed(15 downto 8) = "000010000" then -- command 16 through 31 means set nextdin values
+--				nextdin(7 downto 0) <= SPIdataInSlowed(7 downto 0);
 			end if;
-			if SPIdataIn(15 downto 8) = "000010010" then -- command 16 through 31 means set nextdin values
---				nextdin(23 downto 16) <= SPIdataIn(7 downto 0);
+			if SPIdataInSlowed(15 downto 8) = "000010010" then -- command 16 through 31 means set nextdin values
+--				nextdin(23 downto 16) <= SPIdataInSlowed(7 downto 0);
 			end if;
-			if SPIdataIn(15 downto 8) = "000010100" then -- command 16 through 31 means set nextdin values
---				nextdin(39 downto 32) <= SPIdataIn(7 downto 0);
+			if SPIdataInSlowed(15 downto 8) = "000010100" then -- command 16 through 31 means set nextdin values
+--				nextdin(39 downto 32) <= SPIdataInSlowed(7 downto 0);
 			end if;
-			if SPIdataIn(15 downto 8) = "000010110" then -- command 16 through 31 means set nextdin values
---				nextdin(55 downto 48) <= SPIdataIn(7 downto 0);
+			if SPIdataInSlowed(15 downto 8) = "000010110" then -- command 16 through 31 means set nextdin values
+--				nextdin(55 downto 48) <= SPIdataInSlowed(7 downto 0);
 			end if;
-			if SPIdataIn(15 downto 8) = "000011000" then -- command 16 through 31 means set nextdin values
---				nextdin(71 downto 64) <= SPIdataIn(7 downto 0);
+			if SPIdataInSlowed(15 downto 8) = "000011000" then -- command 16 through 31 means set nextdin values
+--				nextdin(71 downto 64) <= SPIdataInSlowed(7 downto 0);
 			end if;
-			if SPIdataIn(15 downto 8) = "000011010" then -- command 16 through 31 means set nextdin values
---				nextdin(87 downto 80) <= SPIdataIn(7 downto 0);
+			if SPIdataInSlowed(15 downto 8) = "000011010" then -- command 16 through 31 means set nextdin values
+--				nextdin(87 downto 80) <= SPIdataInSlowed(7 downto 0);
 			end if;
-			if SPIdataIn(15 downto 8) = "000011100" then -- command 16 through 31 means set nextdin values
---				nextdin(103 downto 96) <= SPIdataIn(7 downto 0);
+			if SPIdataInSlowed(15 downto 8) = "000011100" then -- command 16 through 31 means set nextdin values
+--				nextdin(103 downto 96) <= SPIdataInSlowed(7 downto 0);
 			end if;
-			if SPIdataIn(15 downto 8) = "000011110" then -- command 16 through 31 means set nextdin values
---				nextdin(119 downto 112) <= SPIdataIn(7 downto 0);
+			if SPIdataInSlowed(15 downto 8) = "000011110" then -- command 16 through 31 means set nextdin values
+--				nextdin(119 downto 112) <= SPIdataInSlowed(7 downto 0);
 			end if;
 
 		
