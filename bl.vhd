@@ -417,6 +417,13 @@ END COMPONENT;
 	signal requestedAddress : std_logic_vector (15 downto 0) := "0000000000010000" ;
 	signal nextRequestedAddress : std_logic_vector (15 downto 0) ;
 	
+	signal FIFOpushEnable : std_logic := '0';
+	signal nextFIFOpushEnable : std_logic;
+	signal FIFOpushToggle : std_logic := '0';
+	signal lastFIFOpushToggle : std_logic := '0';
+	signal nextFIFOpushToggle : std_logic;
+
+	
 begin
 
 
@@ -485,7 +492,7 @@ fifoInstance : FIFOphil2
      wr_clk => clk250MHz,
     rd_clk => clk250MHz,
     din => din,
-    wr_en => sharpenFIFOpushEnable(5) ,
+    wr_en => sharpenFIFOpushEnable(5) ,--FIFOpushEnable,-- 
     rd_en => slowFIFOpullPulse(9) ,
     dout => dout,
 --    full => full,
@@ -506,9 +513,16 @@ fifoInstance : FIFOphil2
 --			sharpenFIFOpullEnable(4) <= sharpenFIFOpullEnable(3) and (not sharpenFIFOpullEnable(4));  -- only on rising edge of sharpenFIFOpushEnable(2) 
 --			sharpenFIFOpullEnable(5) <= sharpenFIFOpullEnable(4);
 
-	
+			lastFIFOpushToggle <= FIFOpushToggle;
+			FIFOpushEnable <= nextFIFOpushEnable;
+			
 		end if;
 	end process;
+	
+	
+		------------------------------------------COMBINATORIAL:
+		nextFIFOpushEnable <= '1' when FIFOpushToggle /= lastFIFOpushToggle else '0';
+	
 
 	process (clk250MHz, clk125MHz)  -- FIFO enable sharpener; it will turn any rising edge into a two cycle-pulse, then further sharpen to a one-cycle pulse at 250 MHz.
 		begin
@@ -897,6 +911,11 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 			
 			requestReadToggle <= nextRequestReadToggle ;
 			requestedAddress <= nextRequestedAddress  ;
+			
+			FIFOpushToggle <= nextFIFOpushToggle;
+
+--			din <= nextdin;
+
 		end if;
    end process;
 	
@@ -1033,7 +1052,10 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 
 		nextRequestReadToggle <= requestReadToggle ;
 		nextRequestedAddress <= requestedAddress  ;
-			
+		
+		nextFIFOpushToggle <= FIFOpushToggle;
+--		nextdin <= din;
+		
 		if lastDataArrivedToggle /= dataArrivedToggle then  -- an SPI message has arrived
 			if SPIdataIn(15 downto 8) = "00000011" then -- command 3 means advance the switchCount
 				nextSwitchCount <= switchCount + 1;
@@ -1043,7 +1065,37 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 			end if;
 			if SPIdataIn(15 downto 8) = "00000110" then -- command 6 means set address
 				nextRequestedAddress(7 downto 0) <= SPIdataIn(7 downto 0);
+			end if; 
+
+			if SPIdataIn(15 downto 8) = "00000111" then -- command 7 means push into FIFO
+				nextFIFOpushToggle <= not FIFOpushToggle;
 			end if;
+			if SPIdataIn(15 downto 8) = "000010000" then -- command 16 through 31 means set nextdin values
+--				nextdin(7 downto 0) <= SPIdataIn(7 downto 0);
+			end if;
+			if SPIdataIn(15 downto 8) = "000010010" then -- command 16 through 31 means set nextdin values
+--				nextdin(23 downto 16) <= SPIdataIn(7 downto 0);
+			end if;
+			if SPIdataIn(15 downto 8) = "000010100" then -- command 16 through 31 means set nextdin values
+--				nextdin(39 downto 32) <= SPIdataIn(7 downto 0);
+			end if;
+			if SPIdataIn(15 downto 8) = "000010110" then -- command 16 through 31 means set nextdin values
+--				nextdin(55 downto 48) <= SPIdataIn(7 downto 0);
+			end if;
+			if SPIdataIn(15 downto 8) = "000011000" then -- command 16 through 31 means set nextdin values
+--				nextdin(71 downto 64) <= SPIdataIn(7 downto 0);
+			end if;
+			if SPIdataIn(15 downto 8) = "000011010" then -- command 16 through 31 means set nextdin values
+--				nextdin(87 downto 80) <= SPIdataIn(7 downto 0);
+			end if;
+			if SPIdataIn(15 downto 8) = "000011100" then -- command 16 through 31 means set nextdin values
+--				nextdin(103 downto 96) <= SPIdataIn(7 downto 0);
+			end if;
+			if SPIdataIn(15 downto 8) = "000011110" then -- command 16 through 31 means set nextdin values
+--				nextdin(119 downto 112) <= SPIdataIn(7 downto 0);
+			end if;
+
+		
 
 		end if;
 			
