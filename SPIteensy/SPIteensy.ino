@@ -71,6 +71,12 @@ void loop() {
       mybyteMSB = 5;  // MSB is the command index
       performTransfer(mybyteMSB,  mybyteLSB);
     }
+    if (ch == '6') {
+      Serial.println("6 -- set address");
+      mybyteMSB = 6;  // MSB is the command index
+      mybyteLSB = 24;  //"000000000011000"
+      performTransfer(mybyteMSB,  mybyteLSB);
+    }
 
   }
 }

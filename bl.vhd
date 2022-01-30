@@ -1041,7 +1041,10 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 			if SPIdataIn(15 downto 8) = "00000101" then -- command 5 means request a read operation
 				nextRequestReadToggle <= not requestReadToggle ;
 			end if;
-			
+			if SPIdataIn(15 downto 8) = "00000110" then -- command 6 means set address
+				nextRequestedAddress(7 downto 0) <= SPIdataIn(7 downto 0);
+			end if;
+
 		end if;
 			
    end process;
