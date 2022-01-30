@@ -427,6 +427,9 @@ END COMPONENT;
 	signal lastFIFOpushToggle : std_logic := '0';
 	signal nextFIFOpushToggle : std_logic;
 
+   signal readBurstCount : unsigned (7 downto 0) := "00000000";
+	signal nextReadBurstCount : unsigned (7 downto 0) ;
+
 	
 begin
 
@@ -1050,6 +1053,8 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 
 		LEDBUSvec(8 downto 0) <= SPIdataIn(8 downto 0);
 		LEDBUSvec(3 downto 0) <= std_logic_vector(switchCount);
+		LEDBUSvec <= "000000000";
+		LEDBUSvec(7 downto 0) <= std_logic_vector(readBurstCount);
 		SPIdataOut(15 downto 0) <= "0000000000000000";
 		SPIdataOut(11 downto 8) <= std_logic_vector(switchCount);
 		SPIdataOut(7 downto 0) <= capturedData(to_integer(switchCount + 1))(7 downto 0);
@@ -1258,6 +1263,9 @@ process (clk250MHz, slowClockEnable)
 			lastRequestReadToggle <= requestReadToggle; -- keep track of last toggle value so we can detect a change within this process
 			lastRequestWriteToggle <= requestWriteToggle; -- keep track of last toggle value so we can detect a change within this process
 
+
+			readBurstCount <= nextReadBurstCount;
+
 		end if;
    end process;
 ------------------------------------------COMBINATORIAL:
@@ -1299,6 +1307,9 @@ process (slowfifopulltoggle, addr, slowBA, count, currentState, slowCount, burst
 	slowDQStristate <= '1';
 	
 	nextSlowFIFOpullToggle <= slowFIFOpullToggle;
+		
+	nextReadBurstCount <= readBurstCount ;
+
 
 	
 	case currentState is
@@ -1360,6 +1371,7 @@ process (slowfifopulltoggle, addr, slowBA, count, currentState, slowCount, burst
 				casSlow <= "11110011";
 				weSlow <= "11111111";
 				nextState <= stopReading;
+				nextReadBurstCount <= readBurstCount + 1 ;
 		when stopReading =>
 			if slowCount = 2 then
 				slowNextClockEnableRead <= '1';
