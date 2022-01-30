@@ -71,13 +71,41 @@ void loop() {
       mybyteMSB = 5;  // MSB is the command index
       performTransfer(mybyteMSB,  mybyteLSB);
     }
+    if (ch == '1') {
+      Serial.println("1 -- request write operation");
+      mybyteMSB = 1;  // MSB is the command index
+      performTransfer(mybyteMSB,  mybyteLSB);
+    }
     if (ch == '6') {
       Serial.println("6 -- set address");
       mybyteMSB = 6;  // MSB is the command index
       mybyteLSB = 24;  //"000000000011000"
       performTransfer(mybyteMSB,  mybyteLSB);
     }
-
+    if (ch == 'a') {
+      Serial.println("6 -- set address 0");
+      mybyteMSB = 6;  // MSB is the command index
+      mybyteLSB = 0;  
+      performTransfer(mybyteMSB,  mybyteLSB);
+    }
+    if (ch == 'b') {
+      Serial.println("6 -- set address 8");
+      mybyteMSB = 6;  // MSB is the command index
+      mybyteLSB = 8;  
+      performTransfer(mybyteMSB,  mybyteLSB);
+    }
+    if (ch == 'c') {
+      Serial.println("6 -- set address 16");
+      mybyteMSB = 6;  // MSB is the command index
+      mybyteLSB = 16;  
+      performTransfer(mybyteMSB,  mybyteLSB);
+    }
+    if (ch == 'd') {
+      Serial.println("6 -- set address 24");
+      mybyteMSB = 6;  // MSB is the command index
+      mybyteLSB = 24;  
+      performTransfer(mybyteMSB,  mybyteLSB);
+    }
   }
 }
 

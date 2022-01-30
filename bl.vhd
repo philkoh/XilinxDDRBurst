@@ -414,6 +414,10 @@ END COMPONENT;
 	signal lastRequestReadToggle : std_logic := '0';
 	signal nextRequestReadToggle : std_logic;
 	
+	signal requestWriteToggle : std_logic := '0';
+	signal lastRequestWriteToggle : std_logic := '0';
+	signal nextRequestWriteToggle : std_logic;
+	
 	signal requestedAddress : std_logic_vector (15 downto 0) := "0000000000010000" ;
 	signal nextRequestedAddress : std_logic_vector (15 downto 0) ;
 	
@@ -910,6 +914,7 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 			
 			
 			requestReadToggle <= nextRequestReadToggle ;
+			requestWriteToggle <= nextRequestWriteToggle ;
 			requestedAddress <= nextRequestedAddress  ;
 			
 			FIFOpushToggle <= nextFIFOpushToggle;
@@ -1051,6 +1056,7 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 
 
 		nextRequestReadToggle <= requestReadToggle ;
+		nextRequestWriteToggle <= requestWriteToggle ;
 		nextRequestedAddress <= requestedAddress  ;
 		
 		nextFIFOpushToggle <= FIFOpushToggle;
@@ -1062,6 +1068,9 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 			end if;
 			if SPIdataIn(15 downto 8) = "00000101" then -- command 5 means request a read operation
 				nextRequestReadToggle <= not requestReadToggle ;
+			end if;
+			if SPIdataIn(15 downto 8) = "00000001" then -- command 1 means request a write operation
+				nextRequestWriteToggle <= not requestWriteToggle ;
 			end if;
 			if SPIdataIn(15 downto 8) = "00000110" then -- command 6 means set address
 				nextRequestedAddress(7 downto 0) <= SPIdataIn(7 downto 0);
@@ -1150,14 +1159,14 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 			end if;
 			
 			if count = 4 then-- twentyThousand + hundred  + hundred + 27 then
-				nextdin(3 downto 0) <= "1110";
-				nextdin(19 downto 16) <= "1101";
-				nextdin(35 downto 32) <= "1011";
-				nextdin(51 downto 48) <= "0111";
-				nextdin(67 downto 64) <= "0011";
-				nextdin(83 downto 80) <= "1001";
-				nextdin(99 downto 96) <= "1100";
-				nextdin(115 downto 112) <= "1000";
+				nextdin(3 downto 0) <= "1110"; --14
+				nextdin(19 downto 16) <= "1101"; --13
+				nextdin(35 downto 32) <= "1011"; --11
+				nextdin(51 downto 48) <= "0111"; --7
+				nextdin(67 downto 64) <= "0011"; --3
+				nextdin(83 downto 80) <= "1001"; --9
+				nextdin(99 downto 96) <= "1100"; --12
+				nextdin(115 downto 112) <= "1000"; --8
 				sharpenFIFOpushEnable(0) <= '0';  -- note: will need a rising edge in a later count
 		 	end if;
 		
@@ -1247,6 +1256,7 @@ process (clk250MHz, slowClockEnable)
 			slowFIFOpullToggle <= nextSlowFIFOpullToggle;
 			
 			lastRequestReadToggle <= requestReadToggle; -- keep track of last toggle value so we can detect a change within this process
+			lastRequestWriteToggle <= requestWriteToggle; -- keep track of last toggle value so we can detect a change within this process
 
 		end if;
    end process;
@@ -1336,6 +1346,15 @@ process (slowfifopulltoggle, addr, slowBA, count, currentState, slowCount, burst
 			--	nextAddr <= "0000000000010000";  --"000000000011000";  -- A10 must be LOW to turn off AutoPrecharge
 				nextAddr <= requestedAddress; 
 			end if;
+
+			if requestWriteToggle /= lastRequestWriteToggle then
+				nextState <= startWriting;
+				nextSlowBa <= "000";
+				nextAddr <= requestedAddress; 
+			end if;
+
+
+
 		when reading =>
 				rasSlow <= "11111111";
 				casSlow <= "11110011";
@@ -1427,7 +1446,7 @@ process (slowfifopulltoggle, addr, slowBA, count, currentState, slowCount, burst
 				weSlow <= "11111111";
 			end if;
 			if   slowCount = 8 * 16 then  -- this count can be reduced for slow clock frequencies
-				nextState <= startWriting;
+				nextState <= idle;--startWriting;
 				nextSlowBa <= "000";
 				nextAddr <= "0000000000010000";   
 	end if;			
