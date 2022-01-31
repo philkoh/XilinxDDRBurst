@@ -113,7 +113,7 @@ void loop() {
 void performTransfer(int mybyteMSB, int mybyteLSB ) {
   int chipSelectPin = 0;
   uint8_t valMSB, valLSB;
-  SPI1.beginTransaction(SPISettings(10000000, MSBFIRST, SPI_MODE0));
+  SPI1.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0));
   digitalWrite(chipSelectPin, LOW);
   valMSB = SPI1.transfer(mybyteMSB);
   valLSB = SPI1.transfer(mybyteLSB);
