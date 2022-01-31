@@ -1215,7 +1215,9 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 				sharpenFIFOpushEnable(0) <= '1';  -- here is the rising edge
 		 	end if;
 			
-			
+			if count = 10 then
+				nextCount <= nextCount + 0;
+			end if;
 		
 			
    end process;
