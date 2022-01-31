@@ -40,6 +40,10 @@ void setup() {
 
 }
 
+
+bool printVals = true;
+
+
 void loop() {
   int mybyteMSB = 1;
   int mybyteLSB = 5;
@@ -59,12 +63,17 @@ void loop() {
     }
     if (ch == '4') {
       Serial.println("4 -- get eight capturedData entries");
+      printVals = false;
       int i;
-      for (i = 0; i < 8; i++) {
-        mybyteMSB = 3;  // MSB is the command index
-        performTransfer(mybyteMSB,  mybyteLSB);
-        delay(1);
-      }
+      /*   for (i = 0; i < 8; i++) {
+           mybyteMSB = 3;  // MSB is the command index
+           performTransfer(mybyteMSB,  mybyteLSB);
+           delay(1);
+         } */
+      Read16Captures();
+      PrintCapturedData();
+      Serial.println();
+      printVals = true;
     }
     if (ch == '5') {
       Serial.println("5 -- request read operation");
@@ -85,41 +94,80 @@ void loop() {
     if (ch == 'a') {
       Serial.println("6 -- set address 0");
       mybyteMSB = 6;  // MSB is the command index
-      mybyteLSB = 0;  
+      mybyteLSB = 0;
       performTransfer(mybyteMSB,  mybyteLSB);
     }
     if (ch == 'b') {
       Serial.println("6 -- set address 8");
       mybyteMSB = 6;  // MSB is the command index
-      mybyteLSB = 8;  
+      mybyteLSB = 8;
       performTransfer(mybyteMSB,  mybyteLSB);
     }
     if (ch == 'c') {
       Serial.println("6 -- set address 16");
       mybyteMSB = 6;  // MSB is the command index
-      mybyteLSB = 16;  
+      mybyteLSB = 16;
       performTransfer(mybyteMSB,  mybyteLSB);
     }
     if (ch == 'd') {
       Serial.println("6 -- set address 24");
       mybyteMSB = 6;  // MSB is the command index
-      mybyteLSB = 24;  
+      mybyteLSB = 24;
       performTransfer(mybyteMSB,  mybyteLSB);
+    }
+    if (ch == 'm') {  // read all memory
+      Serial.println("m -- read all memory");
+      printVals = false;
+      int i;
+      for (i = 0; i < 8; i++) {
+        performTransfer(6,  i * 8);  // set address
+        delay(1);
+        performTransfer(5,  0);  // read operation
+        delay(1);
+        Read16Captures();
+        PrintCapturedData();
+        Serial.println();
+      }
+      printVals = true;
+
     }
   }
 }
 
 
+uint8_t valMSB, valLSB;
+
+
 void performTransfer(int mybyteMSB, int mybyteLSB ) {
   int chipSelectPin = 0;
-  uint8_t valMSB, valLSB;
   SPI1.beginTransaction(SPISettings(10000000, MSBFIRST, SPI_MODE0));
   digitalWrite(chipSelectPin, LOW);
   valMSB = SPI1.transfer(mybyteMSB);
   valLSB = SPI1.transfer(mybyteLSB);
   digitalWrite(chipSelectPin, HIGH);
   SPI1.endTransaction();
-  Serial.print(valMSB);
-  Serial.print(" ");
-  Serial.println(valLSB);
+  if (printVals) {
+    Serial.print(valMSB);
+    Serial.print(" ");
+    Serial.println(valLSB);
+  }
+}
+
+uint8_t capturedData[15];
+
+void Read16Captures() {
+  int i;
+  for (i = 0; i < 16; i++) {
+    performTransfer(3,  0);
+    delay(1);
+    capturedData[valMSB] = valLSB;
+  }
+}
+
+void PrintCapturedData() {
+  int i;
+  for (i = 0; i < 8; i++) {
+    Serial.print(capturedData[i]);
+    Serial.print(" ");
+  }
 }
