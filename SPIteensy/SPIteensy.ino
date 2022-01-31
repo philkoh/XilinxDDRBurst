@@ -52,6 +52,7 @@ void loop() {
   // put your main code here, to run repeatedly:
   if (Serial.available() > 0 ) {
     ch = Serial.read();
+
     if (ch == '2') {
       Serial.println("2 -- get switchCount and captured data entry");
       mybyteMSB = 2;  // MSB is the command index
@@ -143,7 +144,14 @@ void loop() {
       performTransfer(7,  0);  // commands 7 pushes it onto the FIFO
 
     }
+    if (ch == '0') {
+      Serial.println("0 -- fill nextdin with 01010101");
+      mybyteMSB = 0;  // MSB is the command index
+      performTransfer(mybyteMSB,  mybyteLSB);
+      delay(1);
+      performTransfer(7,  0);  // commands 7 pushes it onto the FIFO
 
+    }
   }
 }
 
@@ -152,6 +160,10 @@ uint8_t valMSB, valLSB;
 
 
 void performTransfer(int mybyteMSB, int mybyteLSB ) {
+//  Serial.print(mybyteMSB);
+ // Serial.print(",");
+ // Serial.println(mybyteLSB);
+
   int chipSelectPin = 0;
   SPI1.beginTransaction(SPISettings(10000000, MSBFIRST, SPI_MODE0));
   digitalWrite(chipSelectPin, LOW);

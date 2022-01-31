@@ -923,7 +923,7 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 			
 			FIFOpushToggle <= nextFIFOpushToggle;
 
---			din <= nextdin;
+			din <= nextdin;
 			SPIdataInSlowed <= SPIdataIn ;
 			dataArrivedToggleSlowed <= dataArrivedToggle ;
 			lastDataArrivedToggle <= dataArrivedToggleSlowed;
@@ -1069,7 +1069,7 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 		nextRequestedAddress <= requestedAddress  ;
 		
 		nextFIFOpushToggle <= FIFOpushToggle;
---		nextdin <= din;
+		nextdin <= din;
 		
 		if lastDataArrivedToggle /= dataArrivedToggleSlowed then  -- an SPI message has arrived
 			if SPIdataInSlowed(15 downto 8) = "00000011" then -- command 3 means advance the switchCount
@@ -1088,29 +1088,43 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 			if SPIdataInSlowed(15 downto 8) = "00000111" then -- command 7 means push into FIFO
 				nextFIFOpushToggle <= not FIFOpushToggle;
 			end if;
+			
+			if SPIdataInSlowed(15 downto 8) = "000000000" then -- command 0   means set nextdin values
+				nextdin(31 downto 0) <= "10101010101010101010101010101010";
+			end if;
+	
+			
 			if SPIdataInSlowed(15 downto 8) = "000010000" then -- command 16 through 31 means set nextdin values
---				nextdin(7 downto 0) <= SPIdataInSlowed(7 downto 0);
+				nextdin(7 downto 0) <= "10101010";--SPIdataInSlowed(7 downto 0);
+				nextdin(15 downto 8) <= "10101010";--SPIdataInSlowed(7 downto 0);
 			end if;
 			if SPIdataInSlowed(15 downto 8) = "000010010" then -- command 16 through 31 means set nextdin values
---				nextdin(23 downto 16) <= SPIdataInSlowed(7 downto 0);
+				nextdin(23 downto 16) <= "10101010";
+				nextdin(31 downto 24) <= "10101010";
 			end if;
 			if SPIdataInSlowed(15 downto 8) = "000010100" then -- command 16 through 31 means set nextdin values
---				nextdin(39 downto 32) <= SPIdataInSlowed(7 downto 0);
+				nextdin(39 downto 32) <= SPIdataInSlowed(7 downto 0);
+				nextdin(47 downto 40) <= SPIdataInSlowed(7 downto 0);
 			end if;
 			if SPIdataInSlowed(15 downto 8) = "000010110" then -- command 16 through 31 means set nextdin values
---				nextdin(55 downto 48) <= SPIdataInSlowed(7 downto 0);
+				nextdin(55 downto 48) <= SPIdataInSlowed(15 downto 8);
+				nextdin(63 downto 56) <= SPIdataInSlowed(15 downto 8);
 			end if;
 			if SPIdataInSlowed(15 downto 8) = "000011000" then -- command 16 through 31 means set nextdin values
---				nextdin(71 downto 64) <= SPIdataInSlowed(7 downto 0);
+				nextdin(71 downto 64) <= SPIdataInSlowed(7 downto 0);
+				nextdin(79 downto 72) <= SPIdataInSlowed(7 downto 0);
 			end if;
 			if SPIdataInSlowed(15 downto 8) = "000011010" then -- command 16 through 31 means set nextdin values
---				nextdin(87 downto 80) <= SPIdataInSlowed(7 downto 0);
+				nextdin(87 downto 80) <= SPIdataInSlowed(7 downto 0);
+				nextdin(95 downto 88) <= SPIdataInSlowed(7 downto 0);
 			end if;
 			if SPIdataInSlowed(15 downto 8) = "000011100" then -- command 16 through 31 means set nextdin values
---				nextdin(103 downto 96) <= SPIdataInSlowed(7 downto 0);
+				nextdin(103 downto 96) <= SPIdataInSlowed(7 downto 0);
+				nextdin(111 downto 104) <= SPIdataInSlowed(7 downto 0);
 			end if;
 			if SPIdataInSlowed(15 downto 8) = "000011110" then -- command 16 through 31 means set nextdin values
---				nextdin(119 downto 112) <= SPIdataInSlowed(7 downto 0);
+				nextdin(119 downto 112) <= SPIdataInSlowed(15 downto 8);
+				nextdin(127 downto 120) <= SPIdataInSlowed(15 downto 8);
 			end if;
 
 		
@@ -1133,7 +1147,7 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 
 			odt <= nextODT;
 
-			din <= nextdin;
+--			din <= nextdin;
 			
 			requestReset <= nextRequestReset;
 
@@ -1159,7 +1173,7 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 
 			nextODT <= '1';  -- On Die Termination is normally on
 			
-			nextdin <= din;
+	--		nextdin <= din;
 			
 			nextRequestReset <= '0';
 
@@ -1168,15 +1182,15 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 			end if;
 			
 			if count = 4 then-- twentyThousand + hundred  + hundred + 27 then
-				nextdin(3 downto 0) <= "1110"; --14
-				nextdin(19 downto 16) <= "1101"; --13
-				nextdin(35 downto 32) <= "1011"; --11
-				nextdin(51 downto 48) <= "0111"; --7
-				nextdin(67 downto 64) <= "0011"; --3
-				nextdin(83 downto 80) <= "1001"; --9
-				nextdin(99 downto 96) <= "1100"; --12
-				nextdin(115 downto 112) <= "1000"; --8
-				sharpenFIFOpushEnable(0) <= '0';  -- note: will need a rising edge in a later count
+--				nextdin(3 downto 0) <= "1110"; --14
+--				nextdin(19 downto 16) <= "1101"; --13
+--				nextdin(35 downto 32) <= "1011"; --11
+--				nextdin(51 downto 48) <= "0111"; --7
+--				nextdin(67 downto 64) <= "0011"; --3
+--				nextdin(83 downto 80) <= "1001"; --9
+--				nextdin(99 downto 96) <= "1100"; --12
+--				nextdin(115 downto 112) <= "1000"; --8
+--				sharpenFIFOpushEnable(0) <= '0';  -- note: will need a rising edge in a later count
 		 	end if;
 		
 			if count = 5 then-- twentyThousand + hundred  + hundred + 28 then
@@ -1184,15 +1198,15 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 		 	end if;
 
 			if count = 6 then --twentyThousand + hundred  + hundred + 29 then
-				nextdin(3 downto 0) <= "0111";
-				nextdin(19 downto 16) <= "0110";
-				nextdin(35 downto 32) <= "0101";
-				nextdin(51 downto 48) <= "0100";
-				nextdin(67 downto 64) <= "0011";
-				nextdin(83 downto 80) <= "0010";
-				nextdin(99 downto 96) <= "0001";
-				nextdin(115 downto 112) <= "0000";
-				sharpenFIFOpushEnable(0) <= '0';  -- note: will need a rising edge in a later count
+--				nextdin(3 downto 0) <= "0111";
+--				nextdin(19 downto 16) <= "0110";
+--				nextdin(35 downto 32) <= "0101";
+--				nextdin(51 downto 48) <= "0100";
+--				nextdin(67 downto 64) <= "0011";
+--				nextdin(83 downto 80) <= "0010";
+--				nextdin(99 downto 96) <= "0001";
+--				nextdin(115 downto 112) <= "0000";
+--				sharpenFIFOpushEnable(0) <= '0';  -- note: will need a rising edge in a later count
 		 	end if;
 
 			if count = 7 then -- twentyThousand + hundred  + hundred + 30 then
@@ -1200,15 +1214,15 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 		 	end if;
 
 			if count = 8 then-- twentyThousand + hundred  + hundred + 31 then
-				nextdin(3 downto 0) <= "1000";
-				nextdin(19 downto 16) <= "0100";
-				nextdin(35 downto 32) <= "0010";
-				nextdin(51 downto 48) <= "0001";
-				nextdin(67 downto 64) <= "0011";
-				nextdin(83 downto 80) <= "0110";
-				nextdin(99 downto 96) <= "1100";
-				nextdin(115 downto 112) <= "1110";
-				sharpenFIFOpushEnable(0) <= '0';  -- note: will need a rising edge in a later count
+--				nextdin(3 downto 0) <= "1000";
+--				nextdin(19 downto 16) <= "0100";
+--				nextdin(35 downto 32) <= "0010";
+--				nextdin(51 downto 48) <= "0001";
+--				nextdin(67 downto 64) <= "0011";
+--				nextdin(83 downto 80) <= "0110";
+--				nextdin(99 downto 96) <= "1100";
+--				nextdin(115 downto 112) <= "1110";
+--				sharpenFIFOpushEnable(0) <= '0';  -- note: will need a rising edge in a later count
 		 	end if;
 		
 			if count = 9 then--  twentyThousand + hundred  + hundred + 32 then
