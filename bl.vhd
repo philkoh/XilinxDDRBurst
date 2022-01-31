@@ -501,7 +501,7 @@ fifoInstance : FIFOphil2
      wr_clk => clk250MHz,
     rd_clk => clk250MHz,
     din => din,
-    wr_en => sharpenFIFOpushEnable(5) ,--FIFOpushEnable,-- 
+    wr_en => FIFOpushEnable,-- sharpenFIFOpushEnable(5) ,--
     rd_en => slowFIFOpullPulse(9) ,
     dout => dout,
 --    full => full,

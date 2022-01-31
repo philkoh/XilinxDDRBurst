@@ -42,6 +42,7 @@ void setup() {
 
 
 bool printVals = true;
+uint8_t sequenceCount = 0;
 
 
 void loop() {
@@ -131,6 +132,18 @@ void loop() {
       printVals = true;
 
     }
+    if (ch == 's') {  // fill FIFO with sequential bytes
+      Serial.println("s -- push sequential bytes onto the FIFO");
+      int i;
+      for (i = 0; i < 8; i++) {
+        performTransfer(16 + 2 * i,  sequenceCount);  // commands 16-31 fill the FIFO register with one byte each
+        sequenceCount ++;
+        delay(1);
+      }
+      performTransfer(7,  0);  // commands 7 pushes it onto the FIFO
+
+    }
+
   }
 }
 
