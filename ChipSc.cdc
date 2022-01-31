@@ -1,23 +1,25 @@
 #ChipScope Core Inserter Project File Version 3.0
-#Mon Jan 31 01:51:51 EST 2022
+#Mon Jan 31 02:45:14 EST 2022
 Project.device.designInputFile=C\:\\GitRepos\\XilinxDDRBurst\\bl_cs.ngc
 Project.device.designOutputFile=C\:\\GitRepos\\XilinxDDRBurst\\bl_cs.ngc
 Project.device.deviceFamily=18
 Project.device.enableRPMs=true
 Project.device.outputDirectory=C\:\\GitRepos\\XilinxDDRBurst\\_ngo
 Project.device.useSRL16=true
-Project.filter.dimension=11
-Project.filter<0>=*currentstate*
-Project.filter<10>=toggle
-Project.filter<1>=*state*
-Project.filter<2>=*slowclockenable*
-Project.filter<3>=slowclockenable
-Project.filter<4>=*nextstate*
-Project.filter<5>=
-Project.filter<6>=nextstate
-Project.filter<7>=currentstate
-Project.filter<8>=lastrequestReadToggle
-Project.filter<9>=requestReadToggle
+Project.filter.dimension=13
+Project.filter<0>=*state*
+Project.filter<10>=lastrequestReadToggle
+Project.filter<11>=requestReadToggle
+Project.filter<12>=toggle
+Project.filter<1>=
+Project.filter<2>=state
+Project.filter<3>=nextstate
+Project.filter<4>=*nextState*
+Project.filter<5>=*currentstate*
+Project.filter<6>=*slowclockenable*
+Project.filter<7>=slowclockenable
+Project.filter<8>=*nextstate*
+Project.filter<9>=currentstate
 Project.icon.boundaryScanChain=1
 Project.icon.enableExtTriggerIn=false
 Project.icon.enableExtTriggerOut=false
@@ -32,7 +34,6 @@ Project.unit<0>.dataChannel<11>=nextState<3>
 Project.unit<0>.dataChannel<12>=nextState<2>
 Project.unit<0>.dataChannel<13>=nextState<1>
 Project.unit<0>.dataChannel<14>=nextState<0>
-Project.unit<0>.dataChannel<15>=
 Project.unit<0>.dataChannel<1>=SPIdataInSlowed<9>
 Project.unit<0>.dataChannel<2>=SPIdataInSlowed<10>
 Project.unit<0>.dataChannel<3>=SPIdataInSlowed<11>

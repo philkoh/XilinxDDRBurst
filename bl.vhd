@@ -348,7 +348,7 @@ END COMPONENT;
 
 
 	type stateTypes IS (slowReset, ckeLOW, startWriting,   stopWriting, idle, activate, writeMRS, reading, stopReading, stop);
-	signal currentState : stateTypes := stop;
+	signal currentState : stateTypes := slowReset;
 	signal nextState : stateTypes;
 
 	signal csFast, rasFast, casFast, weFast : std_logic;
@@ -1164,7 +1164,7 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 			nextRequestReset <= '0';
 
 			if count = 0 then
-				nextRequestReset <= '1';
+	--			nextRequestReset <= '1';
 			end if;
 			
 			if count = 4 then-- twentyThousand + hundred  + hundred + 27 then
@@ -1381,7 +1381,7 @@ process (slowfifopulltoggle, addr, slowBA, count, currentState, slowCount, burst
 		when stopReading =>
 			if slowCount = 2 then
 				slowNextClockEnableRead <= '1';
-				nextState <= stop;
+				nextState <= idle;
 			end if;
 		 
 
@@ -1474,7 +1474,7 @@ process (slowfifopulltoggle, addr, slowBA, count, currentState, slowCount, burst
 	end case;	
 	
 	if requestReset = '1'  then
-		nextState <= slowReset;
+--		nextState <= slowReset;
 	end if;
 
 
