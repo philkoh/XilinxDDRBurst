@@ -1148,7 +1148,7 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 	 
 	resetPort <= slowResetPort;--reset;
 	ckePort <= slowCKEPort;-- cke;
-	blinkerPORT <= blinker;
+	blinkerPORT <= empty;--blinker;
 	
 	nextBlinker <= not blinker when count = 0 else blinker;
 
