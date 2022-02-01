@@ -432,7 +432,8 @@ END COMPONENT;
    signal readBurstCount : unsigned (7 downto 0) := "00000000";
 	signal nextReadBurstCount : unsigned (7 downto 0) ;
 
-	signal SPIFIFOdin : std_logic_vector(143 downto 0);
+	signal SPIFIFOdin : std_logic_vector(143 downto 0) := "010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101";
+
 	signal nextSPIFIFOdin : std_logic_vector(143 downto 0);
 
 	
@@ -955,9 +956,7 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 	process (dataArrivedToggleSlowed, SPIdataInSlowed, lastDataArrivedToggle, FIFOpushToggle, requestedAddress, requestWriteToggle, requestReadToggle, SPIdataIn, SPIFIFOdin, readBurstCount, fastwriteaddress, empty, nextwritepulsetrain, doutwaiting, dout, saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount)
 	
 		begin
-		nextSPIFIFOdin(63 downto 0) <= "0101010101010101010101010101010101010101010101010101010101010101";
-		nextSPIFIFOdin(127 downto 64) <= "0101010101010101010101010101010101010101010101010101010101010101";
-		nextSPIFIFOdin(143 downto 128) <= "0101010101010101";
+		nextSPIFIFOdin <= SPIFIFOdin;
 		
 		addrPort <= fastWriteAddress(14 downto 0);-- addrOut;
 	
@@ -1061,13 +1060,19 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 			LEDBUSvec <= capturedData(11)(8 downto 0);
 		end if;
 
-
+		LED0 <= dout(0);
+		LED1 <= dout(1);
+		LED2 <= dout(2);
+		LED3 <= dout(3);
+		
 
 		LEDBUSvec(8 downto 0) <= SPIdataIn(8 downto 0);
 		LEDBUSvec(3 downto 0) <= std_logic_vector(switchCount);
 		LEDBUSvec <= "000000000";
 		LEDBUSvec(7 downto 0) <= std_logic_vector(readBurstCount);
 		LEDBUSvec(8 downto 0) <= SPIFIFOdin (8 downto 0);
+		LEDBUSvec(8 downto 0) <= requestedAddress (8 downto 0);
+		
 		SPIdataOut(15 downto 0) <= "0000000000000000";
 		SPIdataOut(11 downto 8) <= std_logic_vector(switchCount);
 		SPIdataOut(7 downto 0) <= capturedData(to_integer(switchCount + 1))(7 downto 0);
@@ -1097,10 +1102,20 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 			if SPIdataInSlowed(15 downto 8) = "00000111" then -- command 7 means push into FIFO
 				nextFIFOpushToggle <= not FIFOpushToggle;
 			end if;
-			if SPIdataInSlowed(15 downto 8) = "00000000" then -- command 0 means set nextSPIFIFOdin values
+			if SPIdataInSlowed(15 downto 8) = "00001000" then -- command 8 means set nextSPIFIFOdin values
 				nextSPIFIFOdin(63 downto 0)   <= "1111111111111111111111111111111111111111111111111111111111111111";
 				nextSPIFIFOdin(127 downto 64) <= "1111111111111111111111111111111111111111111111111111111111111111";
 				nextSPIFIFOdin(143 downto 128) <= "1111111111111111";
+			end if;
+			if SPIdataInSlowed(15 downto 8) = "00001001" then -- command 9 means set nextSPIFIFOdin values
+				nextSPIFIFOdin(63 downto 0)   <= "0000000000000000000000000000000000000000000000000000000000000000";
+				nextSPIFIFOdin(127 downto 64) <= "0000000000000000000000000000000000000000000000000000000000000000";
+				nextSPIFIFOdin(143 downto 128) <= "0000000000000000";
+			end if;
+			if SPIdataInSlowed(15 downto 8) = "00001010" then -- command 10 means set nextSPIFIFOdin values
+				nextSPIFIFOdin(63 downto 0)   <= "0101010101010101010101010101010101010101010101010101010101010101";
+				nextSPIFIFOdin(127 downto 64) <= "0101010101010101010101010101010101010101010101010101010101010101";
+				nextSPIFIFOdin(143 downto 128) <= "0101010101010101";
 			end if;
 			if SPIdataInSlowed(15 downto 8) = "00010010" then -- command 16 through 31 means set nextdin values
 --				nextdin(23 downto 16) <= SPIdataInSlowed(7 downto 0);
