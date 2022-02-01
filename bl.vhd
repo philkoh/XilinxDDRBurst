@@ -952,7 +952,7 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 	LEDBUS8 <= LEDBUSvec(8);
 
 
-	process (fastwriteaddress, empty, nextwritepulsetrain, doutwaiting, dout, saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount)
+	process (dataArrivedToggleSlowed, SPIdataInSlowed, lastDataArrivedToggle, FIFOpushToggle, requestedAddress, requestWriteToggle, requestReadToggle, SPIdataIn, SPIFIFOdin, readBurstCount, fastwriteaddress, empty, nextwritepulsetrain, doutwaiting, dout, saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount)
 	
 		begin
 		nextSPIFIFOdin(63 downto 0) <= "0101010101010101010101010101010101010101010101010101010101010101";
@@ -1067,6 +1067,7 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 		LEDBUSvec(3 downto 0) <= std_logic_vector(switchCount);
 		LEDBUSvec <= "000000000";
 		LEDBUSvec(7 downto 0) <= std_logic_vector(readBurstCount);
+		LEDBUSvec(8 downto 0) <= SPIFIFOdin (8 downto 0);
 		SPIdataOut(15 downto 0) <= "0000000000000000";
 		SPIdataOut(11 downto 8) <= std_logic_vector(switchCount);
 		SPIdataOut(7 downto 0) <= capturedData(to_integer(switchCount + 1))(7 downto 0);
@@ -1096,28 +1097,30 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 			if SPIdataInSlowed(15 downto 8) = "00000111" then -- command 7 means push into FIFO
 				nextFIFOpushToggle <= not FIFOpushToggle;
 			end if;
-			if SPIdataInSlowed(15 downto 8) = "000010000" then -- command 16 through 31 means set nextdin values
---				nextdin(7 downto 0) <= SPIdataInSlowed(7 downto 0);
+			if SPIdataInSlowed(15 downto 8) = "00000000" then -- command 0 means set nextSPIFIFOdin values
+				nextSPIFIFOdin(63 downto 0)   <= "1111111111111111111111111111111111111111111111111111111111111111";
+				nextSPIFIFOdin(127 downto 64) <= "1111111111111111111111111111111111111111111111111111111111111111";
+				nextSPIFIFOdin(143 downto 128) <= "1111111111111111";
 			end if;
-			if SPIdataInSlowed(15 downto 8) = "000010010" then -- command 16 through 31 means set nextdin values
+			if SPIdataInSlowed(15 downto 8) = "00010010" then -- command 16 through 31 means set nextdin values
 --				nextdin(23 downto 16) <= SPIdataInSlowed(7 downto 0);
 			end if;
-			if SPIdataInSlowed(15 downto 8) = "000010100" then -- command 16 through 31 means set nextdin values
+			if SPIdataInSlowed(15 downto 8) = "00010100" then -- command 16 through 31 means set nextdin values
 --				nextdin(39 downto 32) <= SPIdataInSlowed(7 downto 0);
 			end if;
-			if SPIdataInSlowed(15 downto 8) = "000010110" then -- command 16 through 31 means set nextdin values
+			if SPIdataInSlowed(15 downto 8) = "00010110" then -- command 16 through 31 means set nextdin values
 --				nextdin(55 downto 48) <= SPIdataInSlowed(7 downto 0);
 			end if;
-			if SPIdataInSlowed(15 downto 8) = "000011000" then -- command 16 through 31 means set nextdin values
+			if SPIdataInSlowed(15 downto 8) = "00011000" then -- command 16 through 31 means set nextdin values
 --				nextdin(71 downto 64) <= SPIdataInSlowed(7 downto 0);
 			end if;
-			if SPIdataInSlowed(15 downto 8) = "000011010" then -- command 16 through 31 means set nextdin values
+			if SPIdataInSlowed(15 downto 8) = "00011010" then -- command 16 through 31 means set nextdin values
 --				nextdin(87 downto 80) <= SPIdataInSlowed(7 downto 0);
 			end if;
-			if SPIdataInSlowed(15 downto 8) = "000011100" then -- command 16 through 31 means set nextdin values
+			if SPIdataInSlowed(15 downto 8) = "00011100" then -- command 16 through 31 means set nextdin values
 --				nextdin(103 downto 96) <= SPIdataInSlowed(7 downto 0);
 			end if;
-			if SPIdataInSlowed(15 downto 8) = "000011110" then -- command 16 through 31 means set nextdin values
+			if SPIdataInSlowed(15 downto 8) = "00011110" then -- command 16 through 31 means set nextdin values
 --				nextdin(119 downto 112) <= SPIdataInSlowed(7 downto 0);
 			end if;
 
@@ -1224,7 +1227,7 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 		 	end if;
 			
 			if count = 10 then
-				nextCount <= nextCount + 0;
+				nextCount <= count + 0;
 			end if;
 		
 			

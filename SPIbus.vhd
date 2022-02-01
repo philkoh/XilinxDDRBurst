@@ -96,7 +96,7 @@ end process;
 
 
 
-process (CSvec, MOSIvec, SCKvec, CS, MOSI, SCK, SPIdataIn, lastSCK)
+process (CSvec, MOSIvec, SCKvec, CS, MOSI, SCK, SPIdataIn, lastSCK, SPIdataOut, dataout, newDataToggle, lastCS)
 	begin
 	nextCS <= CS;
 	if CSvec(4) = CSvec(5) and CSvec(5) = CSvec(6) and CSvec(6) = CSvec(7) then  -- if there's any jittering in the input, ignore it

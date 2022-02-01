@@ -148,6 +148,11 @@ void loop() {
       mybyteMSB = 7;  // MSB is the command index
       performTransfer(mybyteMSB,  mybyteLSB);
     }
+   if (ch == '0') {
+      Serial.println("0 --  sets SPIFIFOdin to all-1's");
+      mybyteMSB = 0;  // MSB is the command index
+      performTransfer(mybyteMSB,  mybyteLSB);
+    }
 
   }
 }
