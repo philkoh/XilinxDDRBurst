@@ -94,6 +94,7 @@ end bl;
 
 
 
+
 architecture Behavioral of bl is
 component PhilClock
 port
@@ -215,7 +216,7 @@ END COMPONENT;
 	signal verySlowClockEnable : std_logic_vector(31 downto 0) := "00000000000000000000000000000001";
 
     signal count : unsigned (17 downto 0) := "000000000000000000";
-	constant fiveThousand : unsigned (17 downto 0) :=   "000001000000000000"; 
+	constant fiveThousand : unsigned (17 downto 0) :=   "000000000000001000"; -- "000001000000000000"; 
 	constant twentyThousand : unsigned (17 downto 0) :=  "000100000000000000"; 
  	constant hundred : unsigned (17 downto 0) :=  "000000000010000000"; 
  	constant thousand : unsigned (17 downto 0) := "000000000000000000";--  "000000010000000000"; 
@@ -326,7 +327,8 @@ END COMPONENT;
 	signal doutWaiting : std_logic_vector(143 downto 0);
 	signal nextDoutWaiting : std_logic_vector(143 downto 0);
 	signal rst : std_logic ;
-	signal empty : std_logic;
+	signal empty : std_logic := '1';
+	signal nextEmpty : std_logic;
 	
 	signal sharpenFIFOpushEnable : std_logic_vector (5 downto 0) := "000000";
 	signal sharpenFIFOpullEnable : std_logic_vector (5 downto 0) := "000000";
@@ -364,6 +366,10 @@ END COMPONENT;
 	signal nextBurstCount : unsigned (7 downto 0) ;
 
 	signal slowWritingPulseTrain : std_logic_vector (3 downto 0)  := "0000";
+	signal slowWritingDataTrain0 : std_logic_vector (143 downto 0) ;
+	signal slowWritingDataTrain1 : std_logic_vector (143 downto 0) ;
+	signal slowWritingDataTrain2 : std_logic_vector (143 downto 0) ;
+	signal slowWritingDataTrain3 : std_logic_vector (143 downto 0) ;
 	signal nextSlowWritingPulseTrain : std_logic_vector  (3 downto 0);
 	
 	signal slowWriteData, slowWriteAddress : burstArr;
@@ -436,6 +442,10 @@ END COMPONENT;
 
 	signal nextSPIFIFOdin : std_logic_vector(143 downto 0);
 
+	signal immediatelyPullFIFOtoggle : std_logic := '0';
+	signal nextImmediatelyPullFIFOtoggle : std_logic;
+	signal immediatelyPullFIFO : std_logic := '0';
+	signal nextImmediatelyPullFIFO : std_logic ;
 	
 begin
 
@@ -506,10 +516,10 @@ fifoInstance : FIFOphil2
     rd_clk => clk250MHz,
     din => SPIFIFOdin,--din,
     wr_en => FIFOpushEnable,-- sharpenFIFOpushEnable(5) ,--
-    rd_en => slowFIFOpullPulse(9) ,
+    rd_en => immediatelyPullFIFO,--slowFIFOpullPulse(9) ,
     dout => dout,
 --    full => full,
-  empty => empty
+  empty => nextEmpty
   );
 -- INST_TAG_END ------ End INSTANTIATION Template ------------
 
@@ -529,12 +539,24 @@ fifoInstance : FIFOphil2
 			lastFIFOpushToggle <= FIFOpushToggle;
 			FIFOpushEnable <= nextFIFOpushEnable;
 			
+			immediatelyPullFIFO <= nextImmediatelyPullFIFO;
+
+			empty <= nextEmpty;
+			
 		end if;
 	end process;
-	
+		
 	
 		------------------------------------------COMBINATORIAL:
-		nextFIFOpushEnable <= '1' when FIFOpushToggle /= lastFIFOpushToggle else '0';
+	
+	nextImmediatelyPullFIFO <= '1' when nextImmediatelyPullFIFOtoggle /= immediatelyPullFIFOtoggle and slowClockVector(1) = '1' else '0';  
+	-- this is a very subtle piece of timing; the slowClockVector(1) pulses one cycle earlier than slowClockEnable, so nextImmediatelyPullFIFOtoggle 
+	-- must settle in 7 cycles rather than 8 cycles like the other slowClockEnabled combinatorial logic
+	
+	
+	
+	
+	nextFIFOpushEnable <= '1' when FIFOpushToggle /= lastFIFOpushToggle else '0';
 	
 
 	process (clk250MHz, clk125MHz)  -- FIFO enable sharpener; it will turn any rising edge into a two cycle-pulse, then further sharpen to a one-cycle pulse at 250 MHz.
@@ -1288,6 +1310,11 @@ process (clk250MHz, slowClockEnable)
 			slowCount <= nextSlowCount;
 			burstCount <= nextBurstCount;
 			slowWritingPulseTrain  <= nextSlowWritingPulseTrain;
+			slowWritingDataTrain0  <= dout ;
+			slowWritingDataTrain1  <= slowWritingDataTrain0  ;
+			slowWritingDataTrain2  <= slowWritingDataTrain1  ;
+			slowWritingDataTrain3  <= slowWritingDataTrain2  ;
+
 			addr <= nextAddr;
 			slowBA <= nextSlowBA;
 			slowFIFOpullToggle <= nextSlowFIFOpullToggle;
@@ -1297,6 +1324,8 @@ process (clk250MHz, slowClockEnable)
 
 
 			readBurstCount <= nextReadBurstCount;
+			
+			immediatelyPullFIFOtoggle <= nextImmediatelyPullFIFOtoggle;
 
 		end if;
    end process;
@@ -1311,7 +1340,7 @@ process (clk250MHz, slowClockEnable)
 	slowWriteAddress(6) <= addr;
 	slowWriteAddress(7) <= addr;
 
-process (slowfifopulltoggle, addr, slowBA, count, currentState, slowCount, burstCount, nextState, slowWritingPulseTrain)
+process (dout, requestreset, lastrequestwritetoggle, lastrequestreadtoggle, requestedaddress, requestwritetoggle, requestedaddress, requestreadtoggle, empty, immediatelypullfifotoggle, readburstcount, slowfifopulltoggle, addr, slowBA, count, currentState, slowCount, burstCount, nextState, slowWritingPulseTrain)
 	begin
 	nextState <= currentState;
 	clkOutSlow <= "01010101";
@@ -1342,7 +1371,7 @@ process (slowfifopulltoggle, addr, slowBA, count, currentState, slowCount, burst
 		
 	nextReadBurstCount <= readBurstCount ;
 
-
+	nextImmediatelyPullFIFOtoggle <= immediatelyPullFIFOtoggle;
 	
 	case currentState is
 		when slowReset =>
@@ -1362,11 +1391,16 @@ process (slowfifopulltoggle, addr, slowBA, count, currentState, slowCount, burst
 			end if;
 		when startWriting =>  -- the state startWriting means there is additional data waiting in the FIFO
 			slowDQStristate <= '0';
-			if burstCount = 3 then  -- this limits the max number of consecutive bursts
+			if	burstCount = 63 then -- this limits the max number of consecutive bursts 
+				nextState <= stopWriting;
+			end if;
+			
+			if empty = '1' then   --this checks that more data is available
 				nextState <= stopWriting;
 				nextBurstCount <= "00000000";
 			else
 				nextSlowWritingPulseTrain(0) <= '1';
+				nextImmediatelyPullFIFOtoggle <= not immediatelyPullFIFOtoggle;
 	
 				rasSlow <= "11111111";
 				casSlow <= "11110011";
@@ -1390,7 +1424,7 @@ process (slowfifopulltoggle, addr, slowBA, count, currentState, slowCount, burst
 				nextAddr <= requestedAddress; 
 			end if;
 
-			if requestWriteToggle /= lastRequestWriteToggle then
+			if requestWriteToggle /= lastRequestWriteToggle and empty = '0' then  -- don't write if the FIFO is empty
 				nextState <= startWriting;
 				nextSlowBa <= "000";
 				nextAddr <= requestedAddress; 

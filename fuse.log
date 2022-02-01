@@ -1,4 +1,4 @@
-Running: fuse.exe -relaunch -intstyle "ise" -incremental -lib "secureip" -o "C:/GitRepos/XilinxDDRBurst/TestBench_isim_beh.exe" -prj "C:/GitRepos/XilinxDDRBurst/TestBench_beh.prj" "work.TestBench" 
+Running: fuse.exe -relaunch -intstyle "ise" -incremental -lib "secureip" -o "C:/GitRepos/XilinxDDRBurst/SPItest_isim_beh.exe" -prj "C:/GitRepos/XilinxDDRBurst/SPItest_beh.prj" "work.SPItest" 
 ISim P.20131013 (signature 0x8ef4fb42)
 Number of CPUs detected in this system: 16
 Turning on mult-threading, number of parallel sub-compilation jobs: 32 
@@ -7,13 +7,14 @@ Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/ipcore_dir/PhilClock.vhd" into lib
 Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/ipcore_dir/FIFOphil2.vhd" into library work
 Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/SlowByEight.vhd" into library work
 Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/common.vhd" into library work
+Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/SPIbus.vhd" into library work
 Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/SlowByEightBus.vhd" into library work
 Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/bl.vhd" into library work
-Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/TestBench.vhd" into library work
+Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/SPItest.vhd" into library work
 Starting static elaboration
 Completed static elaboration
-Fuse Memory Usage: 172612 KB
-Fuse CPU Usage: 281 ms
+Fuse Memory Usage: 172940 KB
+Fuse CPU Usage: 280 ms
 Compiling package standard
 Compiling package std_logic_1164
 Compiling package numeric_std
@@ -43,11 +44,11 @@ Compiling architecture xilinx of entity PhilClock [philclock_default]
 Compiling architecture iodelay2_v of entity IODELAY2 [\IODELAY2("WRAPAROUND","SDR","IO...]
 Compiling architecture iobufds_v of entity IOBUFDS [\IOBUFDS("DONT_CARE",false,"FALS...]
 Compiling architecture obufds_v of entity OBUFDS [\OBUFDS("DONT_CARE","DIFF_SSTL15...]
+Compiling architecture behavioral of entity SPIinterface [spiinterface_default]
 Compiling architecture behavioral of entity bl [bl_default]
-Compiling architecture behavior of entity testbench
+Compiling architecture behavior of entity spitest
 Time Resolution for simulation is 1ps.
-Waiting for 1 sub-compilation(s) to finish...
-Compiled 50 VHDL Units
-Built simulation executable C:/GitRepos/XilinxDDRBurst/TestBench_isim_beh.exe
-Fuse Memory Usage: 212824 KB
-Fuse CPU Usage: 827 ms
+Compiled 52 VHDL Units
+Built simulation executable C:/GitRepos/XilinxDDRBurst/SPItest_isim_beh.exe
+Fuse Memory Usage: 214176 KB
+Fuse CPU Usage: 828 ms
