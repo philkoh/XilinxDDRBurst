@@ -216,7 +216,7 @@ END COMPONENT;
 	signal verySlowClockEnable : std_logic_vector(31 downto 0) := "00000000000000000000000000000001";
 
     signal count : unsigned (17 downto 0) := "000000000000000000";
-	constant fiveThousand : unsigned (17 downto 0) :=   "000000000000001000"; -- "000001000000000000"; 
+	constant fiveThousand : unsigned (17 downto 0) :=  "000001000000000000"; -- "000000000000001000"; -- "000001000000000000"; 
 	constant twentyThousand : unsigned (17 downto 0) :=  "000100000000000000"; 
  	constant hundred : unsigned (17 downto 0) :=  "000000000010000000"; 
  	constant thousand : unsigned (17 downto 0) := "000000000000000000";--  "000000010000000000"; 
