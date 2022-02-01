@@ -516,7 +516,7 @@ fifoInstance : FIFOphil2
     rd_clk => clk250MHz,
     din => SPIFIFOdin,--din,
     wr_en => FIFOpushEnable,-- sharpenFIFOpushEnable(5) ,--
-    rd_en => slowFIFOpullPulse(9) ,--immediatelyPullFIFO,
+    rd_en => immediatelyPullFIFO,--slowFIFOpullPulse(9) ,--
     dout => dout,
 --    full => full,
   empty => nextEmpty
@@ -1568,7 +1568,15 @@ process (dout, requestreset, lastrequestwritetoggle, lastrequestreadtoggle, requ
 		slowWriteData(6)<= dout(111 downto 96); 
 		slowWriteData(7)<= dout(127 downto 112); 
 	
-	
+		slowWriteData(0)<= slowWritingDataTrain1(15 downto 0); 
+		slowWriteData(1)<= slowWritingDataTrain1(31 downto 16); 
+		slowWriteData(2)<= slowWritingDataTrain1(47 downto 32); 
+		slowWriteData(3)<= slowWritingDataTrain1(63 downto 48); 
+		slowWriteData(4)<= slowWritingDataTrain1(79 downto 64); 
+		slowWriteData(5)<= slowWritingDataTrain1(95 downto 80); 
+		slowWriteData(6)<= slowWritingDataTrain1(111 downto 96); 
+		slowWriteData(7)<= slowWritingDataTrain1(127 downto 112); 
+
 	end if;
 	if slowWritingPulseTrain(0) = '1' then
 		

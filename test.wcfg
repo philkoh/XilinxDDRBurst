@@ -19,7 +19,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="21" />
+   <WVObjectSize size="25" />
    <wvobject fp_name="/spitest/uut/clk250mhz" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk250mhz</obj_property>
       <obj_property name="ObjectShortName">clk250mhz</obj_property>
@@ -103,5 +103,21 @@
    <wvobject fp_name="/spitest/uut/nextimmediatelypullfifo" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">nextimmediatelypullfifo</obj_property>
       <obj_property name="ObjectShortName">nextimmediatelypullfifo</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/slowwritingdatatrain0[80]" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">[80]</obj_property>
+      <obj_property name="ObjectShortName">slowwritingdatatrain0[80]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/slowwritingdatatrain0[81]" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">[81]</obj_property>
+      <obj_property name="ObjectShortName">slowwritingdatatrain0[81]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/slowwritingdatatrain1[80]" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">[80]</obj_property>
+      <obj_property name="ObjectShortName">slowwritingdatatrain1[80]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/slowwritingdatatrain1[81]" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">[81]</obj_property>
+      <obj_property name="ObjectShortName">slowwritingdatatrain1[81]</obj_property>
    </wvobject>
 </wave_config>
