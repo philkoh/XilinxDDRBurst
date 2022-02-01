@@ -1,0 +1,28 @@
+Command line:
+   SPItest_isim_beh.exe
+     -simmode  gui
+     -simrunnum  0
+     -socket  55203
+
+Tue Feb 01 05:18:34 2022
+
+
+ Elaboration Time: 0.25 sec
+
+ Current Memory Usage: 1327.97 Meg
+
+ Total Signals          : 1863
+ Total Nets             : 10934
+ Total Signal Drivers   : 1454
+ Total Blocks           : 78
+ Total Primitive Blocks : 59
+ Total Processes        : 910
+ Total Traceable Variables  : 747
+ Total Scalar Nets and Variables : 17838
+
+ Total Simulation Time: 0.859375 sec
+
+ Current Memory Usage: 382.894 Meg
+
+Tue Feb 01 05:22:47 2022
+

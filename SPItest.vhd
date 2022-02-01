@@ -282,6 +282,189 @@ BEGIN
 
 
 
+  wait for clk_period*50;
+
+
+
+
+
+
+		PIN0 <= '0';
+		PIN26 <= '0';
+	
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+	
+	
+		PIN26 <= '1';
+		
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		
+		PIN26 <= '0';
+		
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+
+      wait for clk_period*10;
+		
+		wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+
+
+		PIN0 <= '1';
+
+
+
+
+wait for clk_period*50;
+
+
+
+
+	PIN0 <= '0';
+		PIN26 <= '0';
+	
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		
+		PIN26 <= '1';
+		
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		
+		PIN26 <= '0';
+		
+		PIN27 <= '0';
+      wait for clk_period*10;
+
+      wait for clk_period*10;
+		
+		wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+
+
+		PIN0 <= '1';
+
+
+
+
 
       wait for 15us;
 
