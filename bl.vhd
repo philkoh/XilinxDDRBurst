@@ -432,6 +432,9 @@ END COMPONENT;
    signal readBurstCount : unsigned (7 downto 0) := "00000000";
 	signal nextReadBurstCount : unsigned (7 downto 0) ;
 
+	signal SPIFIFOdin : std_logic_vector(143 downto 0);
+	signal nextSPIFIFOdin : std_logic_vector(143 downto 0);
+
 	
 begin
 
@@ -500,7 +503,7 @@ fifoInstance : FIFOphil2
     rst => slowFIFOrst,--rst,
      wr_clk => clk250MHz,
     rd_clk => clk250MHz,
-    din => din,
+    din => SPIFIFOdin,--din,
     wr_en => FIFOpushEnable,-- sharpenFIFOpushEnable(5) ,--
     rd_en => slowFIFOpullPulse(9) ,
     dout => dout,
@@ -928,6 +931,8 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 			dataArrivedToggleSlowed <= dataArrivedToggle ;
 			lastDataArrivedToggle <= dataArrivedToggleSlowed;
 
+
+			SPIFIFOdin <= nextSPIFIFOdin;
 		end if;
    end process;
 	
@@ -950,7 +955,10 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 	process (fastwriteaddress, empty, nextwritepulsetrain, doutwaiting, dout, saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount)
 	
 		begin
-
+		nextSPIFIFOdin(63 downto 0) <= "0101010101010101010101010101010101010101010101010101010101010101";
+		nextSPIFIFOdin(127 downto 64) <= "0101010101010101010101010101010101010101010101010101010101010101";
+		nextSPIFIFOdin(143 downto 128) <= "0101010101010101";
+		
 		addrPort <= fastWriteAddress(14 downto 0);-- addrOut;
 	
 		nextSwitchRegister <= switchRegister;

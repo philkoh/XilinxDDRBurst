@@ -143,6 +143,11 @@ void loop() {
       performTransfer(7,  0);  // commands 7 pushes it onto the FIFO
 
     }
+   if (ch == '7') {
+      Serial.println("7 --  pushes data onto the FIFO");
+      mybyteMSB = 7;  // MSB is the command index
+      performTransfer(mybyteMSB,  mybyteLSB);
+    }
 
   }
 }
