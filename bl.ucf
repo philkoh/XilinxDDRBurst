@@ -9,9 +9,9 @@ INST empty TNM = slow_exception;
 NET "slowCount*" TNM = slow_exception;
 
 
-TIMESPEC TS01 = PERIOD normalTiming 3.8 ns;
-TIMESPEC TS02 = PERIOD slow_exception 6.5 ns;
-TIMESPEC TS03 = PERIOD very_slow_exception 8 ns;
+TIMESPEC TS01 = PERIOD normalTiming 3.7 ns;
+TIMESPEC TS02 = PERIOD slow_exception 7 ns;
+TIMESPEC TS03 = PERIOD very_slow_exception 8.5 ns;
 
 
 NET "clk" LOC = A10;
