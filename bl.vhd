@@ -455,10 +455,10 @@ END COMPONENT;
 	signal immediatelyPullFIFO : std_logic := '0';
 	signal nextImmediatelyPullFIFO : std_logic ;
 
-	signal IncomingDelayedA : std_logic_vector(3 downto 0);
-	signal OutgoingDelayedA : std_logic_vector(3 downto 0);
-	signal IncomingUndelayedA : std_logic_vector(3 downto 0);
-	signal OutgoingUndelayedA : std_logic_vector(3 downto 0);
+--	signal IncomingDelayedA : std_logic_vector(3 downto 0);
+--	signal OutgoingDelayedA : std_logic_vector(3 downto 0);
+--	signal IncomingUndelayedA : std_logic_vector(3 downto 0);
+--	signal OutgoingUndelayedA : std_logic_vector(3 downto 0);
 		
 	 
 begin
@@ -618,17 +618,17 @@ your_instance_name : PhilClock
 
 
 Inst_Delay: Delay PORT MAP(
-		IncomingDelayed => IncomingDelayedA,
-		OutgoingDelayed => OutgoingDelayedA,
-		IncomingUndelayed => IncomingUndelayedA,
-		OutgoingUndelayed => OutgoingUndelayedA,
+		IncomingDelayed => delayedDataPort(3 downto 0),
+		OutgoingDelayed => delayedDataForOutput(3 downto 0),
+		IncomingUndelayed => dataPort(3 downto 0),
+		OutgoingUndelayed => fastWriteData(3 downto 0),
 		Tristate => slowdqsTristate
 	);
 
-	delayedDataPort(3 downto 0) <= IncomingDelayedA(3 downto 0);
-	delayedDataForOutput(3 downto 0) <= OutgoingDelayedA(3 downto 0);
-	IncomingUndelayedA(3 downto 0) <= dataPort(3 downto 0);
-	OutgoingUndelayedA(3 downto 0) <= fastWriteData(3 downto 0);
+--	delayedDataPort(3 downto 0) <= IncomingDelayedA(3 downto 0);
+--	delayedDataForOutput(3 downto 0) <= OutgoingDelayedA(3 downto 0);
+--	IncomingUndelayedA(3 downto 0) <= dataPort(3 downto 0);
+--	OutgoingUndelayedA(3 downto 0) <= fastWriteData(3 downto 0);
 
 
 
