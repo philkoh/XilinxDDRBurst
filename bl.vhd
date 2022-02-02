@@ -617,7 +617,7 @@ your_instance_name : PhilClock
 
 
 
-Inst_Delay: Delay PORT MAP(
+Inst_Delay0: Delay PORT MAP(
 		IncomingDelayed => delayedDataPort(3 downto 0),
 		OutgoingDelayed => delayedDataForOutput(3 downto 0),
 		IncomingUndelayed => dataPort(3 downto 0),
@@ -625,10 +625,13 @@ Inst_Delay: Delay PORT MAP(
 		Tristate => slowdqsTristate
 	);
 
---	delayedDataPort(3 downto 0) <= IncomingDelayedA(3 downto 0);
---	delayedDataForOutput(3 downto 0) <= OutgoingDelayedA(3 downto 0);
---	IncomingUndelayedA(3 downto 0) <= dataPort(3 downto 0);
---	OutgoingUndelayedA(3 downto 0) <= fastWriteData(3 downto 0);
+Inst_Delay1: Delay PORT MAP(
+		IncomingDelayed => delayedDataPort(7 downto 4),
+		OutgoingDelayed => delayedDataForOutput(7 downto 4),
+		IncomingUndelayed => dataPort(7 downto 4),
+		OutgoingUndelayed => fastWriteData(7 downto 4),
+		Tristate => slowdqsTristate
+	);
 
 
 
@@ -711,8 +714,8 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 ------------------------------------------SEQUENTIAL :	
 		if rising_edge(clk250MHz) then
 			clk125MHz <=  nextClk125MHz  ;  --clk125MHz changes on rising edge of 250MHz clock; this is sent out as external clock *and* as dqs
-			inData (15 downTo 4) <= dataPort (15 downTo 4);  -- data uses the 250 MHz clock
-			inData (3 downto 0) <= delayedDataPort (3 downto 0);  -- data uses the 250 MHz clock
+			inData (15 downTo 8) <= dataPort (15 downTo 8);  -- data uses the 250 MHz clock
+			inData (7 downto 0) <= delayedDataPort (7 downto 0);  -- data uses the 250 MHz clock
 
 
 			capturedData(11 downto 1) <= nextCapturedData(11 downto 1);
@@ -740,8 +743,8 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 		if slowdqsTristate = '1' then
 			dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');	
 		else
-			dataPort(3 downto 0) <= delayedDataForOutput(3 downto 0);
-			dataPort(15 downto 4) <= dataAssertedToOutput (15 downto 4);
+			dataPort(7 downto 0) <= delayedDataForOutput(7 downto 0);
+			dataPort(15 downto 8) <= dataAssertedToOutput (15 downto 8);
 		end if;
 		
 	end process;
