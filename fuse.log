@@ -6,15 +6,18 @@ Determining compilation order of HDL files
 Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/ipcore_dir/PhilClock.vhd" into library work
 Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/ipcore_dir/FIFOphil2.vhd" into library work
 Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/SlowByEight.vhd" into library work
+Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/Delay.vhd" into library work
 Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/common.vhd" into library work
 Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/SPIbus.vhd" into library work
+Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/SlowInputByEight.vhd" into library work
 Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/SlowByEightBus.vhd" into library work
+Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/DelayWideBus.vhd" into library work
 Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/bl.vhd" into library work
 Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/SPItest.vhd" into library work
 Starting static elaboration
 Completed static elaboration
-Fuse Memory Usage: 173580 KB
-Fuse CPU Usage: 264 ms
+Fuse Memory Usage: 172940 KB
+Fuse CPU Usage: 296 ms
 Compiling package standard
 Compiling package std_logic_1164
 Compiling package numeric_std
@@ -22,17 +25,18 @@ Compiling package vcomponents
 Compiling package common
 Compiling package std_logic_arith
 Compiling package std_logic_unsigned
-Compiling package textio
-Compiling package vital_timing
-Compiling package vital_primitives
-Compiling package vpkg
 Compiling architecture behavioral of entity SlowByEight [slowbyeight_default]
 Compiling architecture behavioral of entity SlowByEightBus [slowbyeightbus_default]
+Compiling architecture behavioral of entity SlowInputByEight [slowinputbyeight_default]
 Compiling architecture behavioral of entity fifo_generator_v9_3_bhv_as [\fifo_generator_v9_3_bhv_as(144,...]
 Compiling architecture behavioral of entity fifo_generator_v9_3_bhv_preload0 [\fifo_generator_v9_3_bhv_preload...]
 Compiling architecture behavioral of entity fifo_generator_v9_3_conv [\fifo_generator_v9_3_conv(0,0,10...]
 Compiling architecture behavioral of entity fifo_generator_v9_3 [\fifo_generator_v9_3(0,0,10,"Bla...]
 Compiling architecture fifophil2_a of entity FIFOphil2 [fifophil2_default]
+Compiling package textio
+Compiling package vital_timing
+Compiling package vital_primitives
+Compiling package vpkg
 Compiling architecture ibufg_v of entity IBUFG [\IBUFG("DONT_CARE","0",true,"DEF...]
 Compiling architecture dcm_sp_clock_divide_by_2_v of entity dcm_sp_clock_divide_by_2 [dcm_sp_clock_divide_by_2_default]
 Compiling architecture dcm_sp_maximum_period_check_v of entity dcm_sp_maximum_period_check [\dcm_sp_maximum_period_check("*"...]
@@ -42,14 +46,15 @@ Compiling architecture dcm_sp_v of entity DCM_SP [\DCM_SP(true,"*",true,false,2.
 Compiling architecture bufg_v of entity BUFG [bufg_default]
 Compiling architecture xilinx of entity PhilClock [philclock_default]
 Compiling architecture iodelay2_v of entity IODELAY2 [\IODELAY2("WRAPAROUND","SDR","IO...]
+Compiling architecture behavioral of entity Delay [delay_default]
+Compiling architecture behavioral of entity DelayWideBus [delaywidebus_default]
 Compiling architecture iobufds_v of entity IOBUFDS [\IOBUFDS("DONT_CARE",false,"FALS...]
 Compiling architecture obufds_v of entity OBUFDS [\OBUFDS("DONT_CARE","DIFF_SSTL15...]
 Compiling architecture behavioral of entity SPIinterface [spiinterface_default]
 Compiling architecture behavioral of entity bl [bl_default]
 Compiling architecture behavior of entity spitest
 Time Resolution for simulation is 1ps.
-Waiting for 1 sub-compilation(s) to finish...
-Compiled 52 VHDL Units
+Compiled 58 VHDL Units
 Built simulation executable C:/GitRepos/XilinxDDRBurst/SPItest_isim_beh.exe
-Fuse Memory Usage: 214816 KB
-Fuse CPU Usage: 812 ms
+Fuse Memory Usage: 215200 KB
+Fuse CPU Usage: 905 ms

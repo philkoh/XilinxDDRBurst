@@ -119,6 +119,14 @@ end component;
 
 
 
+COMPONENT SlowInputByEight
+	PORT(
+		IOpins : IN std_logic_vector(3 downto 0);
+		FastClock : IN std_logic;
+		SlowClockEnable : IN std_logic;          
+		DataToPins : OUT std_logic_vector(31 downto 0)
+		);
+	END COMPONENT;
 
 
 
@@ -227,13 +235,8 @@ COMPONENT DelayWideBus
 	signal verySlowClockEnable : std_logic_vector(31 downto 0) := "00000000000000000000000000000001";
 
     signal count : unsigned (17 downto 0) := "000000000000000000";
-	constant fiveThousand : unsigned (17 downto 0) :=  "000001000000000000"; -- "000000000000001000"; -- "000001000000000000"; 
-	constant twentyThousand : unsigned (17 downto 0) :=  "000100000000000000"; 
- 	constant hundred : unsigned (17 downto 0) :=  "000000000010000000"; 
- 	constant thousand : unsigned (17 downto 0) := "000000000000000000";--  "000000010000000000"; 
---	constant fiveThousand : unsigned (17 downto 0) :=    "000000000000000100";
---	constant twentyThousand : unsigned (17 downto 0) :=   "000000000000010000";
--- 	constant hundred : unsigned (17 downto 0) :=   "000000000000000010";
+	constant fiveThousand : unsigned (17 downto 0) := "000000000000001000"; --  "000001000000000000"; -- "000000000000001000"; -- "000001000000000000"; 
+
    signal nextCount : unsigned (17 downto 0);
 --	signal dqszero : std_logic := '0';
 --	signal dqsone : std_logic := '1';
@@ -462,7 +465,8 @@ COMPONENT DelayWideBus
 --	signal OutgoingDelayedA : std_logic_vector(3 downto 0);
 --	signal IncomingUndelayedA : std_logic_vector(3 downto 0);
 --	signal OutgoingUndelayedA : std_logic_vector(3 downto 0);
-		
+	signal fastReadData : std_logic_vector(3 downto 0);
+	signal slowReadData :  std_logic_vector(31 downto 0);
 	 
 begin
 
@@ -519,6 +523,13 @@ AddressBus: SlowByEightBus PORT MAP(
 	SlowClockEnable =>  slowClockEnable
 );
 
+
+Inst_SlowInputByEight: SlowInputByEight PORT MAP(
+	IOpins => dataPort(3 downto 0),
+	DataToPins => slowReadData,
+	FastClock => clk250MHz,
+	SlowClockEnable => slowClockEnable
+);
 
 
 
@@ -1144,7 +1155,7 @@ process (clk250MHz, slowClockEnable)
 	slowWriteAddress(6) <= addr;
 	slowWriteAddress(7) <= addr;
 
-process (dout, requestreset, lastrequestwritetoggle, lastrequestreadtoggle, requestedaddress, requestwritetoggle, requestedaddress, requestreadtoggle, empty, immediatelypullfifotoggle, readburstcount, slowfifopulltoggle, addr, slowBA, count, currentState, slowCount, burstCount, nextState, slowWritingPulseTrain)
+process (slowwritingdatatrain1, dout, requestreset, lastrequestwritetoggle, lastrequestreadtoggle, requestedaddress, requestwritetoggle, requestedaddress, requestreadtoggle, empty, immediatelypullfifotoggle, readburstcount, slowfifopulltoggle, addr, slowBA, count, currentState, slowCount, burstCount, nextState, slowWritingPulseTrain)
 	begin
 	nextState <= currentState;
 	clkOutSlow <= "01010101";
