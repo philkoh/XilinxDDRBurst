@@ -525,10 +525,10 @@ AddressBus: SlowByEightBus PORT MAP(
 
 
 Inst_SlowInputByEight: SlowInputByEight PORT MAP(
-	IOpins => dataPort(3 downto 0),
+	IOpins => delayeddataPort(3 downto 0),
 	DataToPins => slowReadData,
 	FastClock => clk250MHz,
-	SlowClockEnable => slowClockEnable
+	SlowClockEnable => slowClockVector(4)
 );
 
 

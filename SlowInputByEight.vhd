@@ -79,10 +79,10 @@ process (iopins, preloadPulse, shiftRegisters)
 --	end if;
 
 
-	nextShiftRegisters(7) <= IOpins(0);
-	nextShiftRegisters(15) <= IOpins(1);
-	nextShiftRegisters(23) <= IOpins(2);
-	nextShiftRegisters(31) <= IOpins(3);
+	nextShiftRegisters(0) <= IOpins(0);
+	nextShiftRegisters(8) <= IOpins(1);
+	nextShiftRegisters(16) <= IOpins(2);
+	nextShiftRegisters(24) <= IOpins(3);
 
 	end process;
 
