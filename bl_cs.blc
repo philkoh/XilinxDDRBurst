@@ -19,7 +19,7 @@ NGCBUILD Design Results Summary:
   Number of errors:     0
   Number of warnings:   0
 
-Total memory usage is 135332 kilobytes
+Total memory usage is 135204 kilobytes
 
 Writing NGC file "C:/GitRepos/XilinxDDRBurst/bl_cs.ngc" ...
 Total REAL time to NGCBUILD completion:  1 sec
