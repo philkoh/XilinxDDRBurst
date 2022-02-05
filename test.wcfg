@@ -19,7 +19,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="49" />
+   <WVObjectSize size="50" />
    <wvobject fp_name="/spitest/uut/clk250mhz" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk250mhz</obj_property>
       <obj_property name="ObjectShortName">clk250mhz</obj_property>
@@ -215,5 +215,9 @@
    <wvobject fp_name="/spitest/uut/Inst_SlowInputByEight/shiftregisters" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">shiftregisters[31:0]</obj_property>
       <obj_property name="ObjectShortName">shiftregisters[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/captureddata" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">captureddata[20:0]</obj_property>
+      <obj_property name="ObjectShortName">captureddata[20:0]</obj_property>
    </wvobject>
 </wave_config>

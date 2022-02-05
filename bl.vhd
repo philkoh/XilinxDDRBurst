@@ -235,7 +235,7 @@ COMPONENT DelayWideBus
 	signal verySlowClockEnable : std_logic_vector(31 downto 0) := "00000000000000000000000000000001";
 
     signal count : unsigned (17 downto 0) := "000000000000000000";
-	constant fiveThousand : unsigned (17 downto 0) := "000000000000001000"; --  "000001000000000000"; -- "000000000000001000"; -- "000001000000000000"; 
+	constant fiveThousand : unsigned (17 downto 0) := "000001000000000000"; --"000000000000001000"; --  "000001000000000000"; -- "000000000000001000"; -- "000001000000000000"; 
 
    signal nextCount : unsigned (17 downto 0);
 --	signal dqszero : std_logic := '0';
@@ -408,6 +408,7 @@ COMPONENT DelayWideBus
 	signal slowNextClockEnableReadDelayed2 : std_logic;
 	signal slowNextClockEnableReadDelayed3 : std_logic;
 	signal slowNextClockEnableReadDelayed4 : std_logic;
+	signal slowNextClockEnableReadDelayed5 : std_logic;
 	
 
 	signal slowDQStristate : std_logic;
@@ -718,6 +719,7 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 			slowNextClockEnableReadDelayed2 <= slowNextClockEnableReadDelayed1;
 			slowNextClockEnableReadDelayed3 <= slowNextClockEnableReadDelayed2;
 			slowNextClockEnableReadDelayed4 <= slowNextClockEnableReadDelayed3;
+			slowNextClockEnableReadDelayed5 <= slowNextClockEnableReadDelayed4;
 		end if;
 	end process;
 
@@ -730,10 +732,53 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 		nextCapturedData(11 downto 1) <= capturedData(11 downto 1); --unless overridden below, hold and remember the captured values
 	
 		if slowNextClockEnableReadDelayed4 = '1'  then
-			nextCapturedData(1) <= inData;
-			nextCapturedData(11 downto 2) <= capturedData(10 downto 1);
+	--		nextCapturedData(1) <= inData;
+	--		nextCapturedData(11 downto 2) <= capturedData(10 downto 1);
 		end if;
+		if slowNextClockEnableReadDelayed5 = '1'  then
+			nextCapturedData(8)(0) <= slowReadData(0);
+			nextCapturedData(7)(0) <= slowReadData(1);
+			nextCapturedData(6)(0) <= slowReadData(2);
+			nextCapturedData(5)(0) <= slowReadData(3);
+			nextCapturedData(4)(0) <= slowReadData(4);
+			nextCapturedData(3)(0) <= slowReadData(5);
+			nextCapturedData(2)(0) <= slowReadData(6);
+			nextCapturedData(1)(0) <= slowReadData(7);
+
+			nextCapturedData(8)(1) <= slowReadData(8);
+			nextCapturedData(7)(1) <= slowReadData(9);
+			nextCapturedData(6)(1) <= slowReadData(10);
+			nextCapturedData(5)(1) <= slowReadData(11);
+			nextCapturedData(4)(1) <= slowReadData(12);
+			nextCapturedData(3)(1) <= slowReadData(13);
+			nextCapturedData(2)(1) <= slowReadData(14);
+			nextCapturedData(1)(1) <= slowReadData(15);
+	
+			nextCapturedData(8)(2) <= slowReadData(16);
+			nextCapturedData(7)(2) <= slowReadData(17);
+			nextCapturedData(6)(2) <= slowReadData(18);
+			nextCapturedData(5)(2) <= slowReadData(19);
+			nextCapturedData(4)(2) <= slowReadData(20);
+			nextCapturedData(3)(2) <= slowReadData(21);
+			nextCapturedData(2)(2) <= slowReadData(22);
+			nextCapturedData(1)(2) <= slowReadData(23);
+	
+
+			nextCapturedData(8)(3) <= slowReadData(24);
+			nextCapturedData(7)(3) <= slowReadData(25);
+			nextCapturedData(6)(3) <= slowReadData(26);
+			nextCapturedData(5)(3) <= slowReadData(27);
+			nextCapturedData(4)(3) <= slowReadData(28);
+			nextCapturedData(3)(3) <= slowReadData(29);
+			nextCapturedData(2)(3) <= slowReadData(30);
+			nextCapturedData(1)(3) <= slowReadData(31);
+	
+
+	end if;
 		
+
+
+	
 		if slowdqsTristate = '1' then
 			dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');	
 		else
