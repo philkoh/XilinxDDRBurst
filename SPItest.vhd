@@ -130,7 +130,7 @@ ARCHITECTURE behavior OF SPItest IS
    signal dummyOut : std_logic;
 
    -- Clock period definitions
-   constant clk_period : time := 10 ns;
+   constant clk_period : time := 20 ns;
  
 BEGIN
  
@@ -466,7 +466,7 @@ wait for clk_period*50;
 
 
 
-      wait for 15us;
+      wait for clk_period*500;
 
 
 
@@ -553,6 +553,171 @@ wait for clk_period*50;
 
 
 		PIN0 <= '1';
+
+
+
+     wait for clk_period*10;
+
+
+
+		PIN0 <= '0';
+		PIN26 <= '0';
+	
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+
+		
+		PIN26 <= '1';
+		
+
+
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		
+				
+		PIN26 <= '0';
+		
+		
+		
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		
+		PIN26 <= '1';
+		
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		
+		PIN26 <= '0';
+		
+		PIN27 <= '0';
+      wait for clk_period*10;
+
+      wait for clk_period*10;
+		
+		wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN27 <= '1';
+      wait for clk_period*10;
+		PIN27 <= '0';
+      wait for clk_period*10;
+		PIN0 <= '1';
+
+      wait for clk_period*17;
+		dataPORT(0) <= '1';
+		dataPORT(1) <= '0';
+		wait for 4ns;
+		dataPORT(0) <= '0';
+		dataPORT(1) <= '0';
+		wait for 4ns;
+		dataPORT(0) <= '1';
+		dataPORT(1) <= '0';
+		wait for 4ns;
+		dataPORT(0) <= '0';
+		dataPORT(1) <= '1';
+		wait for 4ns;
+		dataPORT(0) <= '1';
+		dataPORT(1) <= '1';
+		wait for 4ns;
+		dataPORT(0) <= '0';
+		dataPORT(1) <= '0';
+		wait for 4ns;
+		dataPORT(0) <= '1';
+		dataPORT(1) <= '0';
+		wait for 4ns;
+		dataPORT(0) <= '0';
+		dataPORT(1) <= '1';
+		wait for 4ns;
+		dataPORT(0) <= '1';
+		dataPORT(1) <= '1';
+		wait for 4ns;
+		dataPORT(0) <= '0';
+		dataPORT(1) <= '0';
+		wait for 4ns;
+		dataPORT(0) <= '1';
+		dataPORT(1) <= '0';
+		wait for 4ns;
+		dataPORT(0) <= '0';
+		dataPORT(1) <= '1';
+		wait for 4ns;
+		dataPORT(0) <= '1';
+		dataPORT(1) <= '1';
+		wait for 4ns;
+		dataPORT(0) <= '0';
+		dataPORT(1) <= '0';
+		wait for 4ns;
+		dataPORT(0) <= '1';
+		dataPORT(1) <= '0';
+		wait for 4ns;
+		dataPORT(0) <= '0';
+		dataPORT(1) <= '1';
+		wait for 4ns;
+		dataPORT(0) <= '1';
+		dataPORT(1) <= '1';
+		wait for 4ns;
+		dataPORT(0) <= '0';
+		dataPORT(1) <= '0';
+		wait for 4ns;
+		dataPORT(0) <= '1';
+		dataPORT(1) <= '0';
+		wait for 4ns;
+		dataPORT(0) <= '0';
+		dataPORT(1) <= '1';
+		wait for 4ns;
+		dataPORT(0) <= '1';
+		dataPORT(1) <= '1';
+		wait for 4ns;
+		dataPORT(0) <= '0';
+		dataPORT(1) <= '0';
 
 
       wait;
