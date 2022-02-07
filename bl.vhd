@@ -87,6 +87,8 @@ entity bl is
 			dummyOut : out std_logic  -- just used to eliminate annoying warning
 
 
+
+
 			  );
 end bl;
 
@@ -469,6 +471,10 @@ COMPONENT DelayWideBus
 	signal fastReadData : std_logic_vector(3 downto 0);
 	signal slowReadData :  std_logic_vector(31 downto 0);
 	 
+	signal clockShift : std_logic_vector(3 downto 0) := "1000";
+	signal clk62M5Hz : std_logic := '0';
+	signal testBlink : std_logic := '1';
+
 begin
 
 
@@ -696,8 +702,34 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 
 
 
+-- BUFGCE: Global Clock Buffer with Clock Enable
+-- Spartan-6
+-- Xilinx HDL Libraries Guide, version 14.7
+BUFGCE_inst : BUFGCE
+port map (
+O => clk62M5Hz, -- 1-bit output: Clock buffer output
+CE => clockShift(0), -- 1-bit input: Clock buffer select
+I => clk250MHz -- 1-bit input: Clock buffer input (S=0)
+);
+-- End of BUFGCE_inst instantiation
 
 
+
+process (clk250MHz)
+	begin
+	if falling_edge(clk250MHz) then
+		clockShift(3 downto 1) <= clockShift(2 downto 0);
+		clockShift(0) <= clockShift(3);
+	end if;
+end process;
+
+process (clk62M5Hz)
+	begin
+		if	rising_edge(clk62M5Hz) then
+			testBlink <= testBlink;
+		end if;
+end process;
+LEDBUS8  <= testBlink;
 
 
 
@@ -832,7 +864,7 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 	LEDBUS5 <= LEDBUSvec(5);
 	LEDBUS6 <= LEDBUSvec(6);
 	LEDBUS7 <= LEDBUSvec(7);
-	LEDBUS8 <= LEDBUSvec(8);
+	--LEDBUS8 <= LEDBUSvec(8);
 
 
 	process (dataArrivedToggleSlowed, SPIdataInSlowed, lastDataArrivedToggle, FIFOpushToggle, requestedAddress, requestWriteToggle, requestReadToggle, SPIdataIn, SPIFIFOdin, readBurstCount, fastwriteaddress, empty, nextwritepulsetrain, doutwaiting, dout, saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount)
