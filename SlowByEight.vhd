@@ -51,7 +51,7 @@ begin
 
 process (FastClock, SlowClockEnable)
 	begin
-	if rising_edge(FastClock) and SlowClockEnable = '1' then
+	if rising_edge(MediumClock) and SlowClockEnable = '1' then
 		incomingData <= DataToPins;
 		dataStrobe <= not dataStrobe;  -- this toggles on every new set of data arriving
 	end if;
