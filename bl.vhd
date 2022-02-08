@@ -1147,10 +1147,11 @@ process (clk250MHz)
 
 
 	
-process (clk250MHz, slowClockEnable)
+process (clk62M5Hz, slowClockEnable)
 		begin
 ------------------------------------------SEQUENTIAL :			
-		if rising_edge(clk250MHz) and slowClockEnable = '1' then  -- the slowClockEnable is one-eighth speed, so the below logic 
+		if rising_edge(clk62M5Hz) and slowClockEnable = '1' then  -- the slowClockEnable is one-eighth speed, so the below logic 
+	--	if rising_edge(clk250MHz) and slowClockEnable = '1' then  -- the slowClockEnable is one-eighth speed, so the below logic 
 																					--can do very complicated count math, FIFO operations, etc, without hitting timing issues
 			currentState <= nextState;
 			slowCount <= nextSlowCount;
