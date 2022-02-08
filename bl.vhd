@@ -596,18 +596,7 @@ fifoInstance : FIFOphil2
 	nextFIFOpushEnable <= '1' when FIFOpushToggle /= lastFIFOpushToggle else '0';
 	
 
-	process (clk250MHz, clk125MHz)  -- FIFO enable sharpener; it will turn any rising edge into a two cycle-pulse, then further sharpen to a one-cycle pulse at 250 MHz.
-		begin
-	------------------------------------------SEQUENTIAL :	
-		if rising_edge(clk250MHz) and clk125MHz = '1' then
-	--		sharpenFIFOpushEnable(1) <= sharpenFIFOpushEnable(0);
-	--		sharpenFIFOpushEnable(2) <= sharpenFIFOpushEnable(1);
-	--		sharpenFIFOpushEnable(3) <= sharpenFIFOpushEnable(1) and (not sharpenFIFOpushEnable(2)); -- only on rising edge of sharpenFIFOpushEnable(1) 
- 
---			sharpenFIFOpullEnable(2) <= sharpenFIFOpullEnable(1);
---			sharpenFIFOpullEnable(3) <= sharpenFIFOpullEnable(1) and (not sharpenFIFOpullEnable(2)); -- only on rising edge of sharpenFIFOpushEnable(1) 
- end if;
-  end process;
+	
 
 
 	------------------------------------------COMBINATORIAL:
