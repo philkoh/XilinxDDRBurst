@@ -861,12 +861,12 @@ LEDBUS8  <= testBlink;
 	end process;
 		
 		
-	process (clk250MHz, slowClockEnable)
+	process (clk250MHz, slowClockEnable, clk31M25Hz)
 		begin
 ------------------------------------------SEQUENTIAL :	
 	--	if rising_edge(clk250MHz) and verySlowClockEnable(0) = '1' then 
-		if rising_edge(clk250MHz) and slowClockEnable = '1' then 
-		
+	--	if rising_edge(clk250MHz) and slowClockEnable = '1' then 
+			if rising_edge(clk31M25Hz)  then 
 --			count2 <= nextCount2;    
 
 			switchRegister <= nextSwitchRegister;
@@ -1105,10 +1105,11 @@ LEDBUS8  <= testBlink;
 	
 	
 ------------------------------------------SEQUENTIAL :	
-	process (clk250MHz,  ClockEnableBeginning, slowClockEnable)
+	process (clk250MHz,  ClockEnableBeginning, slowClockEnable, clk31M25Hz)
 		begin
 	--	if rising_edge(clk250MHz) and verySlowClockEnable(0) = '1' then 
-	if rising_edge(clk250MHz) and slowClockEnable = '1' then 
+--	if rising_edge(clk250MHz) and slowClockEnable = '1' then 
+	if rising_edge(clk31M25Hz)  then 
 
 	--		count <= nextcount;  
 			blinker <= nextBlinker;
