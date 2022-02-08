@@ -34,6 +34,7 @@ entity SlowInputByEight is
            DataToPins : out  STD_LOGIC_VECTOR (31 downto 0);
            FastClock : in  STD_LOGIC;
 			  MediumClock : in  STD_LOGIC;
+			  SlowClock : IN std_logic;
 		--	  originalSlowClockEnable : in STD_LOGIC;
            SlowClockEnable : in  STD_LOGIC);
 end SlowInputByEight;

@@ -129,6 +129,7 @@ COMPONENT SlowInputByEight
 		SlowClockEnable : IN std_logic;   
 	--	originalSlowClockEnable : in STD_LOGIC;      
 		MediumClock : IN std_logic;
+		SlowClock : IN std_logic;
 		DataToPins : OUT std_logic_vector(31 downto 0)
 		);
 	END COMPONENT;
@@ -567,6 +568,7 @@ Inst_SlowInputByEight: SlowInputByEight PORT MAP(
 	DataToPins => slowReadData,
 	FastClock => clk250MHz,
 	MediumClock => clk62M5Hz,
+	SlowClock => clk31M25Hz,
 --	originalSlowClockEnable => slowClockVector(4),-- slowClockVector(0),
 	SlowClockEnable =>   slowClockEnable
 );
