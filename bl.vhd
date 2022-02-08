@@ -1066,9 +1066,10 @@ LEDBUS8  <= testBlink;
 	
 	
 ------------------------------------------SEQUENTIAL :	
-	process (clk250MHz,  ClockEnableBeginning,verySlowClockEnable(0))
+	process (clk250MHz,  ClockEnableBeginning, slowClockEnable)
 		begin
-		if rising_edge(clk250MHz) and verySlowClockEnable(0) = '1' then 
+	--	if rising_edge(clk250MHz) and verySlowClockEnable(0) = '1' then 
+	if rising_edge(clk250MHz) and slowClockEnable = '1' then 
 
 	--		count <= nextcount;  
 			blinker <= nextBlinker;
@@ -1094,25 +1095,13 @@ LEDBUS8  <= testBlink;
 	
 	nextBlinker <= not blinker; --when count = 0 else blinker;
 
-	process ( requestedDataToWrite, reset, cke, din)
 
-		begin
---			nextCount <= count + 1;
+	nextODT <= '1';  -- On Die Termination is normally on
+	
+	nextdin <= din;
+	
+	nextRequestReset <= '0';
 
-			nextODT <= '1';  -- On Die Termination is normally on
-			
-			nextdin <= din;
-			
-			nextRequestReset <= '0';
-
-		
-	---		if count = 10 then
-	--			nextCount <= count + 0;
-	--		end if;
-		
-			
-   end process;
-		
 		
 		
 			
