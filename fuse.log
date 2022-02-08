@@ -16,8 +16,8 @@ Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/bl.vhd" into library work
 Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/SPItest.vhd" into library work
 Starting static elaboration
 Completed static elaboration
-Fuse Memory Usage: 173644 KB
-Fuse CPU Usage: 264 ms
+Fuse Memory Usage: 172940 KB
+Fuse CPU Usage: 327 ms
 Compiling package standard
 Compiling package std_logic_1164
 Compiling package numeric_std
@@ -59,5 +59,5 @@ Compiling architecture behavior of entity spitest
 Time Resolution for simulation is 1ps.
 Compiled 64 VHDL Units
 Built simulation executable C:/GitRepos/XilinxDDRBurst/SPItest_isim_beh.exe
-Fuse Memory Usage: 215904 KB
-Fuse CPU Usage: 905 ms
+Fuse Memory Usage: 215200 KB
+Fuse CPU Usage: 967 ms

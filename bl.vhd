@@ -235,10 +235,10 @@ COMPONENT DelayWideBus
 	signal nextRefillTheShiftRegister : std_logic;
 
 
-	signal verySlowClockEnable : std_logic_vector(31 downto 0) := "00000000000000000000000000000001";
+	signal verySlowClockEnable : std_logic_vector(31 downto 0) := "00000000000000000000000000100000";-- "00000000000000000000000000000001";
 
     signal count : unsigned (17 downto 0) := "000000000000000000";
-	constant fiveThousand : unsigned (17 downto 0) := "000001000000000000"; -- "000000000000001000"; -- "000001000000000000"; 
+	constant fiveThousand : unsigned (17 downto 0) :=  "000001000000000000";--    "000000000000001000";--   "000001000000000000";--     "000000000000001000";--     "000001000000000000"; 
 
    signal nextCount : unsigned (17 downto 0);
 --	signal dqszero : std_logic := '0';
@@ -537,7 +537,7 @@ Inst_SlowInputByEight: SlowInputByEight PORT MAP(
 	DataToPins => slowReadData,
 	FastClock => clk250MHz,
 --	originalSlowClockEnable => slowClockVector(4),-- slowClockVector(0),
-	SlowClockEnable =>   slowClockVector(0)
+	SlowClockEnable =>   slowClockEnable
 );
 
 

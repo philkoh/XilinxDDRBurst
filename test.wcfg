@@ -19,11 +19,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="51" />
-   <wvobject fp_name="/spitest/uut/clk250mhz" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">clk250mhz</obj_property>
-      <obj_property name="ObjectShortName">clk250mhz</obj_property>
-   </wvobject>
+   <WVObjectSize size="52" />
    <wvobject fp_name="/spitest/uut/currentstate" type="other" db_ref_id="1">
       <obj_property name="ElementShortName">currentstate</obj_property>
       <obj_property name="ObjectShortName">currentstate</obj_property>
@@ -220,8 +216,16 @@
       <obj_property name="ElementShortName">captureddata[20:0]</obj_property>
       <obj_property name="ObjectShortName">captureddata[20:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/spitest/uut/Inst_SlowInputByEight/slowclockdelay" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">slowclockdelay[7:0]</obj_property>
-      <obj_property name="ObjectShortName">slowclockdelay[7:0]</obj_property>
+   <wvobject fp_name="/spitest/uut/clk250mhz" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk250mhz</obj_property>
+      <obj_property name="ObjectShortName">clk250mhz</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/clk62m5hz" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk62m5hz</obj_property>
+      <obj_property name="ObjectShortName">clk62m5hz</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/veryslowclockenable[0]" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">[0]</obj_property>
+      <obj_property name="ObjectShortName">veryslowclockenable[0]</obj_property>
    </wvobject>
 </wave_config>
