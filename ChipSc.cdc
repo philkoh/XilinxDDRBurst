@@ -1,5 +1,5 @@
 #ChipScope Core Inserter Project File Version 3.0
-#Tue Feb 08 07:06:21 EST 2022
+#Tue Feb 08 08:21:14 EST 2022
 Project.device.designInputFile=C\:\\GitRepos\\XilinxDDRBurst\\bl_cs.ngc
 Project.device.designOutputFile=C\:\\GitRepos\\XilinxDDRBurst\\bl_cs.ngc
 Project.device.deviceFamily=18
@@ -28,26 +28,18 @@ Project.icon.triggerOutPinName=
 Project.unit.dimension=1
 Project.unit<0>.clockChannel=clk250MHz
 Project.unit<0>.clockEdge=Rising
-Project.unit<0>.dataChannel<0>=clk250MHz
-Project.unit<0>.dataChannel<10>=
+Project.unit<0>.dataChannel<0>=PIN0_IBUF
 Project.unit<0>.dataChannel<1>=clk62M5Hz
 Project.unit<0>.dataChannel<2>=slowClockVector<0>
-Project.unit<0>.dataChannel<3>=
-Project.unit<0>.dataChannel<4>=
-Project.unit<0>.dataChannel<5>=
-Project.unit<0>.dataChannel<6>=
-Project.unit<0>.dataChannel<7>=
-Project.unit<0>.dataChannel<8>=
-Project.unit<0>.dataChannel<9>=
 Project.unit<0>.dataDepth=1024
 Project.unit<0>.dataEqualsTrigger=false
-Project.unit<0>.dataPortWidth=3
+Project.unit<0>.dataPortWidth=1
 Project.unit<0>.enableGaps=false
 Project.unit<0>.enableStorageQualification=true
 Project.unit<0>.enableTimestamps=false
 Project.unit<0>.timestampDepth=0
 Project.unit<0>.timestampWidth=0
-Project.unit<0>.triggerChannel<0><0>=requestReadToggle_lastRequestReadToggle_XOR_129_o
+Project.unit<0>.triggerChannel<0><0>=PIN0_IBUF
 Project.unit<0>.triggerConditionCountWidth=0
 Project.unit<0>.triggerMatchCount<0>=1
 Project.unit<0>.triggerMatchCountWidth<0><0>=0

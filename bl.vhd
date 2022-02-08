@@ -250,7 +250,7 @@ COMPONENT DelayWideBus
 
 -- NOTE: SET fiveThousand to 000000000000001000 for simulation, and to 000001000000000000 for actual operation
 
-	constant fiveThousand : unsigned (17 downto 0) :=  "000000000000001000";--   "000001000000000000";--    "000000000000001000";--   "000001000000000000";--     "000000000000001000";--     "000001000000000000"; 
+	constant fiveThousand : unsigned (17 downto 0) :=     "000001000000000000";--    "000000000000001000";--   "000001000000000000";--     "000000000000001000";--     "000001000000000000"; 
 -------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
@@ -726,7 +726,7 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 -- BUFGCE: Global Clock Buffer with Clock Enable
 -- Spartan-6
 -- Xilinx HDL Libraries Guide, version 14.7
-BUFGCE_inst : BUFGCE
+BUFGCE_inst : BUFGCE ----------NOTE: this is a clean way to make a slower clock and still have its rising edge well aligned with clk250MHz
 port map (
 O => clk62M5Hz, -- 1-bit output: Clock buffer output
 CE => clockShift(0), -- 1-bit input: Clock buffer select
@@ -738,7 +738,7 @@ I => clk250MHz -- 1-bit input: Clock buffer input (S=0)
 -- BUFGCE: Global Clock Buffer with Clock Enable
 -- Spartan-6
 -- Xilinx HDL Libraries Guide, version 14.7
-BUFGCE_inst2 : BUFGCE
+BUFGCE_inst2 : BUFGCE ----------NOTE: this is a clean way to make a slower clock and still have its rising edge well aligned with clk250MHz
 port map (
 O => clk31M25Hz, -- 1-bit output: Clock buffer output
 CE => useThisEdge, -- 1-bit input: Clock buffer select
@@ -1172,10 +1172,11 @@ process (clk250MHz)
 
 
 	
-process (clk62M5Hz, slowClockEnable)
+process (clk31M25Hz, slowClockEnable)
 		begin
 ------------------------------------------SEQUENTIAL :			
-		if rising_edge(clk62M5Hz) and slowClockEnable = '1' then  -- the slowClockEnable is one-eighth speed, so the below logic 
+	if rising_edge(clk31M25Hz)  then  -- the slowClockEnable is one-eighth speed, so the below logic 
+	--	if rising_edge(clk62M5Hz) and slowClockEnable = '1' then  -- the slowClockEnable is one-eighth speed, so the below logic 
 	--	if rising_edge(clk250MHz) and slowClockEnable = '1' then  -- the slowClockEnable is one-eighth speed, so the below logic 
 																					--can do very complicated count math, FIFO operations, etc, without hitting timing issues
 			currentState <= nextState;
