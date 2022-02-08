@@ -347,7 +347,7 @@ COMPONENT DelayWideBus
 	signal empty : std_logic := '1';
 	signal nextEmpty : std_logic;
 	
-	signal sharpenFIFOpushEnable : std_logic_vector (5 downto 0) := "000000";
+--	signal sharpenFIFOpushEnable : std_logic_vector (5 downto 0) := "000000";
 	signal sharpenFIFOpullEnable : std_logic_vector (5 downto 0) := "000000";
 	
 	signal dinLSBs: std_logic_vector(3 downto 0);
@@ -567,8 +567,8 @@ fifoInstance : FIFOphil2
 		begin
 	------------------------------------------SEQUENTIAL :	
 		if rising_edge(clk250MHz) then
-			sharpenFIFOpushEnable(4) <= sharpenFIFOpushEnable(3) and (not sharpenFIFOpushEnable(4));  -- only on rising edge of sharpenFIFOpushEnable(2) 
-			sharpenFIFOpushEnable(5) <= sharpenFIFOpushEnable(4);
+		--	sharpenFIFOpushEnable(4) <= sharpenFIFOpushEnable(3) and (not sharpenFIFOpushEnable(4));  -- only on rising edge of sharpenFIFOpushEnable(2) 
+		--	sharpenFIFOpushEnable(5) <= sharpenFIFOpushEnable(4);
 
 --			sharpenFIFOpullEnable(4) <= sharpenFIFOpullEnable(3) and (not sharpenFIFOpullEnable(4));  -- only on rising edge of sharpenFIFOpushEnable(2) 
 --			sharpenFIFOpullEnable(5) <= sharpenFIFOpullEnable(4);
@@ -600,9 +600,9 @@ fifoInstance : FIFOphil2
 		begin
 	------------------------------------------SEQUENTIAL :	
 		if rising_edge(clk250MHz) and clk125MHz = '1' then
-			sharpenFIFOpushEnable(1) <= sharpenFIFOpushEnable(0);
-			sharpenFIFOpushEnable(2) <= sharpenFIFOpushEnable(1);
-			sharpenFIFOpushEnable(3) <= sharpenFIFOpushEnable(1) and (not sharpenFIFOpushEnable(2)); -- only on rising edge of sharpenFIFOpushEnable(1) 
+	--		sharpenFIFOpushEnable(1) <= sharpenFIFOpushEnable(0);
+	--		sharpenFIFOpushEnable(2) <= sharpenFIFOpushEnable(1);
+	--		sharpenFIFOpushEnable(3) <= sharpenFIFOpushEnable(1) and (not sharpenFIFOpushEnable(2)); -- only on rising edge of sharpenFIFOpushEnable(1) 
  
 --			sharpenFIFOpullEnable(2) <= sharpenFIFOpullEnable(1);
 --			sharpenFIFOpullEnable(3) <= sharpenFIFOpullEnable(1) and (not sharpenFIFOpullEnable(2)); -- only on rising edge of sharpenFIFOpushEnable(1) 
@@ -1118,11 +1118,11 @@ LEDBUS8  <= testBlink;
 				nextdin(83 downto 80) <= "1001"; --9
 				nextdin(99 downto 96) <= "1100"; --12
 				nextdin(115 downto 112) <= "1000"; --8
-				sharpenFIFOpushEnable(0) <= '0';  -- note: will need a rising edge in a later count
+		--		sharpenFIFOpushEnable(0) <= '0';  -- note: will need a rising edge in a later count
 		 	end if;
 		
 			if count = 5 then-- twentyThousand + hundred  + hundred + 28 then
-				sharpenFIFOpushEnable(0) <= '1';  -- here is the rising edge
+		--		sharpenFIFOpushEnable(0) <= '1';  -- here is the rising edge
 		 	end if;
 
 			if count = 6 then --twentyThousand + hundred  + hundred + 29 then
@@ -1134,11 +1134,11 @@ LEDBUS8  <= testBlink;
 				nextdin(83 downto 80) <= "0010";
 				nextdin(99 downto 96) <= "0001";
 				nextdin(115 downto 112) <= "0000";
-				sharpenFIFOpushEnable(0) <= '0';  -- note: will need a rising edge in a later count
+		--		sharpenFIFOpushEnable(0) <= '0';  -- note: will need a rising edge in a later count
 		 	end if;
 
 			if count = 7 then -- twentyThousand + hundred  + hundred + 30 then
-				sharpenFIFOpushEnable(0) <= '1';   -- here is the rising edge
+	--			sharpenFIFOpushEnable(0) <= '1';   -- here is the rising edge
 		 	end if;
 
 			if count = 8 then-- twentyThousand + hundred  + hundred + 31 then
@@ -1150,11 +1150,11 @@ LEDBUS8  <= testBlink;
 				nextdin(83 downto 80) <= "0110";
 				nextdin(99 downto 96) <= "1100";
 				nextdin(115 downto 112) <= "1110";
-				sharpenFIFOpushEnable(0) <= '0';  -- note: will need a rising edge in a later count
+	--			sharpenFIFOpushEnable(0) <= '0';  -- note: will need a rising edge in a later count
 		 	end if;
 		
 			if count = 9 then--  twentyThousand + hundred  + hundred + 32 then
-				sharpenFIFOpushEnable(0) <= '1';  -- here is the rising edge
+		--		sharpenFIFOpushEnable(0) <= '1';  -- here is the rising edge
 		 	end if;
 			
 			if count = 10 then
