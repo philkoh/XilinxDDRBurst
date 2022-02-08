@@ -826,7 +826,8 @@ LEDBUS8  <= testBlink;
 	process (clk250MHz, verySlowClockEnable(0))
 		begin
 ------------------------------------------SEQUENTIAL :	
-		if rising_edge(clk250MHz) and verySlowClockEnable(0) = '1' then 
+	--	if rising_edge(clk250MHz) and verySlowClockEnable(0) = '1' then 
+		if rising_edge(clk250MHz) and slowClockEnable = '1' then 
 		
 --			count2 <= nextCount2;    
 
