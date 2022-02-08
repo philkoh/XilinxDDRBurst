@@ -235,7 +235,7 @@ COMPONENT DelayWideBus
 	signal nextRefillTheShiftRegister : std_logic;
 
 
-	signal verySlowClockEnable : std_logic_vector(31 downto 0) := "00000000000000000000000000100000";-- "00000000000000000000000000000001";
+--	signal verySlowClockEnable : std_logic_vector(31 downto 0) := "00000000000000000000000000100000";-- "00000000000000000000000000000001";
 
  --   signal count : unsigned (17 downto 0) := "000000000000000000";
 	constant fiveThousand : unsigned (17 downto 0) :=  "000001000000000000";--    "000000000000001000";--   "000001000000000000";--     "000000000000001000";--     "000001000000000000"; 
@@ -823,7 +823,7 @@ LEDBUS8  <= testBlink;
 	end process;
 		
 		
-	process (clk250MHz, verySlowClockEnable(0))
+	process (clk250MHz, slowClockEnable)
 		begin
 ------------------------------------------SEQUENTIAL :	
 	--	if rising_edge(clk250MHz) and verySlowClockEnable(0) = '1' then 
@@ -1113,8 +1113,8 @@ process (clk250MHz)
 		if rising_edge(clk250MHz) then  
 			slowClockVector(6 downto 0) <= slowClockVector(7 downto 1);
 			slowClockVector(7) <= slowClockVector(0);
-			verySlowClockEnable(30 downto 0) <= verySlowClockEnable(31 downto 1);
-			verySlowClockEnable(31) <= verySlowClockEnable(0);
+--			verySlowClockEnable(30 downto 0) <= verySlowClockEnable(31 downto 1);
+	--		verySlowClockEnable(31) <= verySlowClockEnable(0);
 			
 			
 			
