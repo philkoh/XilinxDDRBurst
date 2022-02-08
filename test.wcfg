@@ -19,7 +19,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="54" />
+   <WVObjectSize size="55" />
    <wvobject fp_name="/spitest/uut/currentstate" type="other" db_ref_id="1">
       <obj_property name="ElementShortName">currentstate</obj_property>
       <obj_property name="ObjectShortName">currentstate</obj_property>
@@ -235,5 +235,9 @@
    <wvobject fp_name="/spitest/uut/usethisedge" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">usethisedge</obj_property>
       <obj_property name="ObjectShortName">usethisedge</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/snapshotofslowclockenable" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">snapshotofslowclockenable</obj_property>
+      <obj_property name="ObjectShortName">snapshotofslowclockenable</obj_property>
    </wvobject>
 </wave_config>

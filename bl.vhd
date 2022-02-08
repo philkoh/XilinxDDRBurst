@@ -250,7 +250,7 @@ COMPONENT DelayWideBus
 
 -- NOTE: SET fiveThousand to 000000000000001000 for simulation, and to 000001000000000000 for actual operation
 
-	constant fiveThousand : unsigned (17 downto 0) :=     "000001000000000000";--    "000000000000001000";--   "000001000000000000";--     "000000000000001000";--     "000001000000000000"; 
+	constant fiveThousand : unsigned (17 downto 0) :=         "000000000000001000";--     "000001000000000000";--     "000000000000001000";--     "000001000000000000"; 
 -------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
@@ -494,9 +494,10 @@ COMPONENT DelayWideBus
 	signal clockShift : std_logic_vector(3 downto 0) :=  "1000";--  "0010";--
 	signal clk62M5Hz : std_logic := '0';
 	signal clk31M25Hz : std_logic := '0';
-	signal clockToggle : std_logic := '0';
+--	signal clockToggle : std_logic := '0';
 	signal useThisEdge : std_logic := '0';
 	signal nextUseThisEdge : std_logic;
+	signal snapShotOfSlowClockEnable : std_logic := '0';
 
 
 	signal testBlink : std_logic := '1';
@@ -758,7 +759,7 @@ process (clk250MHz)
 	end if;
 end process;
 
-nextUseThisEdge <= '1' when clockToggle = '1' and clockShift(3) = '1' else '0';  -- on the next cycle, clockShift(0) will be '1', 
+nextUseThisEdge <= '1' when snapShotOfSlowClockEnable = '0' and clockShift(3) = '1' else '0';  -- on the next cycle, clockShift(0) will be '1', 
 ------------ so the clk62M5Hz will rise; on every other of these clk62M5Hz rising edges, useThisEdge will be '1', so the clk32M25Hz
 ------------ will also have a simultaneous rising edge.
 
@@ -766,7 +767,10 @@ process (clk62M5Hz)
 	begin
 		if	rising_edge(clk62M5Hz) then
 			testBlink <= testBlink;
-			clockToggle <= not clockToggle;
+--			clockToggle <= not clockToggle;
+			
+			snapShotOfSlowClockEnable <= slowClockEnable;
+			
 		end if;
 end process;
 LEDBUS8  <= testBlink;
