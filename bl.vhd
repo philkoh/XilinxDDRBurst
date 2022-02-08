@@ -114,6 +114,7 @@ end component;
 	PORT(
 		DataToPins : in  burstArr;
 		FastClock : IN std_logic;
+		MediumClock : IN std_logic;
 		SlowClockEnable : IN std_logic;       
 		IOpins : INOUT std_logic_vector(15 downto 0)
 		);
@@ -159,6 +160,7 @@ END COMPONENT;
 	PORT(
 		DataToPins : IN std_logic_vector(31 downto 0);
 		FastClock : IN std_logic;
+		MediumClock : IN std_logic;
 		SlowClockEnable : IN std_logic;       
 		IOpins : INOUT std_logic_vector(3 downto 0)
 		);
@@ -500,6 +502,7 @@ MainControlOutputsA: SlowByEight PORT MAP(
 		IOpins => IOpinsA ,
 		DataToPins => dataToPinsA,
 		FastClock => clk250MHz ,
+		MediumClock => clk62M5Hz,
 		SlowClockEnable => slowClockEnable
 	);
 	
@@ -521,7 +524,8 @@ ClockAndDQSB: SlowByEight PORT MAP(
 		IOpins => IOpinsB ,
 		DataToPins => dataToPinsB,
 		FastClock => clk250MHz ,
-		SlowClockEnable => slowClockEnable
+		MediumClock => clk62M5Hz,
+	SlowClockEnable => slowClockEnable
 	);
 	
 clkOutFast <= IOpinsB(0);
@@ -537,6 +541,7 @@ DataBus: SlowByEightBus PORT MAP(
 	IOpins => fastWriteData ,
 	DataToPins => slowWriteData,
 	FastClock => clk250MHz ,
+	MediumClock => clk62M5Hz,
 	SlowClockEnable =>  slowClockEnable
 );
 
@@ -545,6 +550,7 @@ AddressBus: SlowByEightBus PORT MAP(
 	IOpins => fastWriteAddress ,
 	DataToPins => slowWriteAddress,
 	FastClock => clk250MHz ,
+	MediumClock => clk62M5Hz,
 	SlowClockEnable =>  slowClockEnable
 );
 
