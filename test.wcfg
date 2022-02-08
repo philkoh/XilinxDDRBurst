@@ -19,7 +19,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="50" />
+   <WVObjectSize size="51" />
    <wvobject fp_name="/spitest/uut/clk250mhz" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk250mhz</obj_property>
       <obj_property name="ObjectShortName">clk250mhz</obj_property>
@@ -71,10 +71,6 @@
    <wvobject fp_name="/spitest/uut/slowwritingpulsetrain" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">slowwritingpulsetrain[3:0]</obj_property>
       <obj_property name="ObjectShortName">slowwritingpulsetrain[3:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/spitest/uut/slowclockenable" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">slowclockenable</obj_property>
-      <obj_property name="ObjectShortName">slowclockenable</obj_property>
    </wvobject>
    <wvobject fp_name="/spitest/uut/slowfifopulltoggle" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">slowfifopulltoggle</obj_property>
@@ -208,6 +204,10 @@
       <obj_property name="ElementShortName">fastclock</obj_property>
       <obj_property name="ObjectShortName">fastclock</obj_property>
    </wvobject>
+   <wvobject fp_name="/spitest/uut/slowclockenable" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">slowclockenable</obj_property>
+      <obj_property name="ObjectShortName">slowclockenable</obj_property>
+   </wvobject>
    <wvobject fp_name="/spitest/uut/Inst_SlowInputByEight/slowclockenable" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">slowclockenable</obj_property>
       <obj_property name="ObjectShortName">slowclockenable</obj_property>
@@ -219,5 +219,9 @@
    <wvobject fp_name="/spitest/uut/captureddata" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">captureddata[20:0]</obj_property>
       <obj_property name="ObjectShortName">captureddata[20:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/Inst_SlowInputByEight/slowclockdelay" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">slowclockdelay[7:0]</obj_property>
+      <obj_property name="ObjectShortName">slowclockdelay[7:0]</obj_property>
    </wvobject>
 </wave_config>

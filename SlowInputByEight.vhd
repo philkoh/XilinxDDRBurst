@@ -33,6 +33,7 @@ entity SlowInputByEight is
     Port ( IOpins : in  STD_LOGIC_VECTOR (3 downto 0);
            DataToPins : out  STD_LOGIC_VECTOR (31 downto 0);
            FastClock : in  STD_LOGIC;
+			  originalSlowClockEnable : in STD_LOGIC;
            SlowClockEnable : in  STD_LOGIC);
 end SlowInputByEight;
 
@@ -45,12 +46,16 @@ signal dataStrobe : std_logic := '0';
 signal lastDataStrobe : std_logic := '0';
 signal preloadPulse : std_logic := '0';
 signal nextPreloadPulse : std_logic := '0';
+
+signal slowClockDelay : std_logic_vector (7 downto 0) := "00000000";
+
 	
 begin
 
-process (FastClock, SlowClockEnable)
+process (FastClock, SlowClockEnable, slowClockDelay(3))
 	begin
-	if rising_edge(FastClock) and SlowClockEnable = '1' then
+--	if rising_edge(FastClock) and slowClockDelay(3) = '1' then
+	if rising_edge(FastClock) and slowClockEnable = '1' then
 		DataToPins <= shiftRegisters; 
 		dataStrobe <= not dataStrobe;  -- this toggles on every new set of data arriving
 	end if;
@@ -63,6 +68,9 @@ begin
 		lastDataStrobe <= dataStrobe;
 		preloadPulse <= nextPreloadPulse;
 		shiftRegisters <= nextShiftRegisters;
+		
+		slowClockDelay(7 downto 1) <= slowClockDelay(6 downto 0);
+		slowClockDelay(0) <= originalSlowClockEnable;
 	end if;
 	
 end process;

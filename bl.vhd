@@ -125,7 +125,8 @@ COMPONENT SlowInputByEight
 	PORT(
 		IOpins : IN std_logic_vector(3 downto 0);
 		FastClock : IN std_logic;
-		SlowClockEnable : IN std_logic;          
+		SlowClockEnable : IN std_logic;   
+		originalSlowClockEnable : in STD_LOGIC;      
 		DataToPins : OUT std_logic_vector(31 downto 0)
 		);
 	END COMPONENT;
@@ -237,7 +238,7 @@ COMPONENT DelayWideBus
 	signal verySlowClockEnable : std_logic_vector(31 downto 0) := "00000000000000000000000000000001";
 
     signal count : unsigned (17 downto 0) := "000000000000000000";
-	constant fiveThousand : unsigned (17 downto 0) := "000001000000000000"; --"000000000000001000"; --  "000001000000000000"; -- "000000000000001000"; -- "000001000000000000"; 
+	constant fiveThousand : unsigned (17 downto 0) := "000001000000000000"; -- "000000000000001000"; -- "000001000000000000"; 
 
    signal nextCount : unsigned (17 downto 0);
 --	signal dqszero : std_logic := '0';
@@ -535,7 +536,8 @@ Inst_SlowInputByEight: SlowInputByEight PORT MAP(
 	IOpins => delayeddataPort(3 downto 0),
 	DataToPins => slowReadData,
 	FastClock => clk250MHz,
-	SlowClockEnable => slowClockVector(4)
+	originalSlowClockEnable => slowClockVector(4),-- slowClockVector(0),
+	SlowClockEnable =>   slowClockVector(4)
 );
 
 
@@ -1326,7 +1328,7 @@ process (slowwritingdatatrain1, dout, requestreset, lastrequestwritetoggle, last
 
 		when reading =>
 				rasSlow <= "11111111";
-				casSlow <= "11110011";
+				casSlow <= "11110011"; --"11111100";  --"11110011";
 				weSlow <= "11111111";
 				nextState <= stopReading;
 				nextReadBurstCount <= readBurstCount + 1 ;
