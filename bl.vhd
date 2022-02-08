@@ -537,7 +537,7 @@ Inst_SlowInputByEight: SlowInputByEight PORT MAP(
 	DataToPins => slowReadData,
 	FastClock => clk250MHz,
 	originalSlowClockEnable => slowClockVector(4),-- slowClockVector(0),
-	SlowClockEnable =>   slowClockVector(4)
+	SlowClockEnable =>   slowClockVector(0)
 );
 
 
@@ -1328,7 +1328,7 @@ process (slowwritingdatatrain1, dout, requestreset, lastrequestwritetoggle, last
 
 		when reading =>
 				rasSlow <= "11111111";
-				casSlow <= "11110011"; --"11111100";  --"11110011";
+				casSlow <= "00111111"; --"11111100";  --"11110011";
 				weSlow <= "11111111";
 				nextState <= stopReading;
 				nextReadBurstCount <= readBurstCount + 1 ;

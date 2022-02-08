@@ -159,7 +159,7 @@ void loop() {
       performTransfer(mybyteMSB,  mybyteLSB);
     }
    if (ch == 't') {
-      Serial.println("t --  sets SPIFIFOdin to all-0's");
+      Serial.println("t --  sets SPIFIFOdin to 01010101 etc.");
       mybyteMSB = 10;  // MSB is the command index
       performTransfer(mybyteMSB,  mybyteLSB);
     }
