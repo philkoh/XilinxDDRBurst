@@ -19,7 +19,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="52" />
+   <WVObjectSize size="54" />
    <wvobject fp_name="/spitest/uut/currentstate" type="other" db_ref_id="1">
       <obj_property name="ElementShortName">currentstate</obj_property>
       <obj_property name="ObjectShortName">currentstate</obj_property>
@@ -224,8 +224,16 @@
       <obj_property name="ElementShortName">clk62m5hz</obj_property>
       <obj_property name="ObjectShortName">clk62m5hz</obj_property>
    </wvobject>
-   <wvobject fp_name="/spitest/uut/veryslowclockenable[0]" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">[0]</obj_property>
-      <obj_property name="ObjectShortName">veryslowclockenable[0]</obj_property>
+   <wvobject fp_name="/spitest/uut/clk31m25hz" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk31m25hz</obj_property>
+      <obj_property name="ObjectShortName">clk31m25hz</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/clocktoggle" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clocktoggle</obj_property>
+      <obj_property name="ObjectShortName">clocktoggle</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/usethisedge" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">usethisedge</obj_property>
+      <obj_property name="ObjectShortName">usethisedge</obj_property>
    </wvobject>
 </wave_config>

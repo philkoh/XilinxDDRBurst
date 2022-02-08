@@ -493,6 +493,12 @@ COMPONENT DelayWideBus
 	 
 	signal clockShift : std_logic_vector(3 downto 0) :=  "1000";--  "0010";--
 	signal clk62M5Hz : std_logic := '0';
+	signal clk31M25Hz : std_logic := '0';
+	signal clockToggle : std_logic := '0';
+	signal useThisEdge : std_logic := '0';
+	signal nextUseThisEdge : std_logic;
+
+
 	signal testBlink : std_logic := '1';
 
 begin
@@ -729,19 +735,38 @@ I => clk250MHz -- 1-bit input: Clock buffer input (S=0)
 -- End of BUFGCE_inst instantiation
 
 
+-- BUFGCE: Global Clock Buffer with Clock Enable
+-- Spartan-6
+-- Xilinx HDL Libraries Guide, version 14.7
+BUFGCE_inst2 : BUFGCE
+port map (
+O => clk31M25Hz, -- 1-bit output: Clock buffer output
+CE => useThisEdge, -- 1-bit input: Clock buffer select
+I => clk250MHz -- 1-bit input: Clock buffer input (S=0)
+);
+-- End of BUFGCE_inst instantiation
+
+
+
 
 process (clk250MHz)
 	begin
 	if falling_edge(clk250MHz) then
 		clockShift(3 downto 1) <= clockShift(2 downto 0);
 		clockShift(0) <= clockShift(3);
+		useThisEdge <= nextUseThisEdge;
 	end if;
 end process;
+
+nextUseThisEdge <= '1' when clockToggle = '1' and clockShift(3) = '1' else '0';  -- on the next cycle, clockShift(0) will be '1', 
+------------ so the clk62M5Hz will rise; on every other of these clk62M5Hz rising edges, useThisEdge will be '1', so the clk32M25Hz
+------------ will also have a simultaneous rising edge.
 
 process (clk62M5Hz)
 	begin
 		if	rising_edge(clk62M5Hz) then
 			testBlink <= testBlink;
+			clockToggle <= not clockToggle;
 		end if;
 end process;
 LEDBUS8  <= testBlink;

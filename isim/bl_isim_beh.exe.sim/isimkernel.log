@@ -2,27 +2,27 @@ Command line:
    bl_isim_beh.exe
      -simmode  gui
      -simrunnum  0
-     -socket  52047
+     -socket  55880
 
-Sat Feb 05 01:35:07 2022
+Tue Feb 08 08:11:12 2022
 
 
- Elaboration Time: 0.171875 sec
+ Elaboration Time: 0.234375 sec
 
  Current Memory Usage: 1331.29 Meg
 
- Total Signals          : 3721
- Total Nets             : 15346
- Total Signal Drivers   : 2981
- Total Blocks           : 95
- Total Primitive Blocks : 72
- Total Processes        : 1776
- Total Traceable Variables  : 1391
- Total Scalar Nets and Variables : 26635
+ Total Signals          : 3767
+ Total Nets             : 15320
+ Total Signal Drivers   : 3000
+ Total Blocks           : 98
+ Total Primitive Blocks : 74
+ Total Processes        : 1799
+ Total Traceable Variables  : 1392
+ Total Scalar Nets and Variables : 26613
 
- Total Simulation Time: 0.1875 sec
+ Total Simulation Time: 0.296875 sec
 
- Current Memory Usage: 1331.51 Meg
+ Current Memory Usage: 858.866 Meg
 
-Sat Feb 05 01:35:15 2022
+Tue Feb 08 08:12:20 2022
 
