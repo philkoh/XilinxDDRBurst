@@ -237,7 +237,7 @@ COMPONENT DelayWideBus
 
 	signal verySlowClockEnable : std_logic_vector(31 downto 0) := "00000000000000000000000000100000";-- "00000000000000000000000000000001";
 
-    signal count : unsigned (17 downto 0) := "000000000000000000";
+ --   signal count : unsigned (17 downto 0) := "000000000000000000";
 	constant fiveThousand : unsigned (17 downto 0) :=  "000001000000000000";--    "000000000000001000";--   "000001000000000000";--     "000000000000001000";--     "000001000000000000"; 
 
    signal nextCount : unsigned (17 downto 0);
@@ -1070,7 +1070,7 @@ LEDBUS8  <= testBlink;
 		begin
 		if rising_edge(clk250MHz) and verySlowClockEnable(0) = '1' then 
 
-			count <= nextcount;  
+	--		count <= nextcount;  
 			blinker <= nextBlinker;
 
 			odt <= nextODT;
@@ -1092,12 +1092,12 @@ LEDBUS8  <= testBlink;
 	ckePort <= slowCKEPort;-- cke;
 	blinkerPORT <= empty;--blinker;
 	
-	nextBlinker <= not blinker when count = 0 else blinker;
+	nextBlinker <= not blinker; --when count = 0 else blinker;
 
-	process (count, requestedDataToWrite, reset, cke, din)
+	process ( requestedDataToWrite, reset, cke, din)
 
 		begin
-			nextCount <= count + 1;
+--			nextCount <= count + 1;
 
 			nextODT <= '1';  -- On Die Termination is normally on
 			
@@ -1105,61 +1105,10 @@ LEDBUS8  <= testBlink;
 			
 			nextRequestReset <= '0';
 
-			if count = 0 then
-	--			nextRequestReset <= '1';
-			end if;
-			
-			if count = 4 then-- twentyThousand + hundred  + hundred + 27 then
-				nextdin(3 downto 0) <= "1110"; --14
-				nextdin(19 downto 16) <= "1101"; --13
-				nextdin(35 downto 32) <= "1011"; --11
-				nextdin(51 downto 48) <= "0111"; --7
-				nextdin(67 downto 64) <= "0011"; --3
-				nextdin(83 downto 80) <= "1001"; --9
-				nextdin(99 downto 96) <= "1100"; --12
-				nextdin(115 downto 112) <= "1000"; --8
-		--		sharpenFIFOpushEnable(0) <= '0';  -- note: will need a rising edge in a later count
-		 	end if;
 		
-			if count = 5 then-- twentyThousand + hundred  + hundred + 28 then
-		--		sharpenFIFOpushEnable(0) <= '1';  -- here is the rising edge
-		 	end if;
-
-			if count = 6 then --twentyThousand + hundred  + hundred + 29 then
-				nextdin(3 downto 0) <= "0111";
-				nextdin(19 downto 16) <= "0110";
-				nextdin(35 downto 32) <= "0101";
-				nextdin(51 downto 48) <= "0100";
-				nextdin(67 downto 64) <= "0011";
-				nextdin(83 downto 80) <= "0010";
-				nextdin(99 downto 96) <= "0001";
-				nextdin(115 downto 112) <= "0000";
-		--		sharpenFIFOpushEnable(0) <= '0';  -- note: will need a rising edge in a later count
-		 	end if;
-
-			if count = 7 then -- twentyThousand + hundred  + hundred + 30 then
-	--			sharpenFIFOpushEnable(0) <= '1';   -- here is the rising edge
-		 	end if;
-
-			if count = 8 then-- twentyThousand + hundred  + hundred + 31 then
-				nextdin(3 downto 0) <= "1000";
-				nextdin(19 downto 16) <= "0100";
-				nextdin(35 downto 32) <= "0010";
-				nextdin(51 downto 48) <= "0001";
-				nextdin(67 downto 64) <= "0011";
-				nextdin(83 downto 80) <= "0110";
-				nextdin(99 downto 96) <= "1100";
-				nextdin(115 downto 112) <= "1110";
-	--			sharpenFIFOpushEnable(0) <= '0';  -- note: will need a rising edge in a later count
-		 	end if;
-		
-			if count = 9 then--  twentyThousand + hundred  + hundred + 32 then
-		--		sharpenFIFOpushEnable(0) <= '1';  -- here is the rising edge
-		 	end if;
-			
-			if count = 10 then
-				nextCount <= count + 0;
-			end if;
+	---		if count = 10 then
+	--			nextCount <= count + 0;
+	--		end if;
 		
 			
    end process;
@@ -1234,7 +1183,7 @@ process (clk250MHz, slowClockEnable)
 	slowWriteAddress(6) <= addr;
 	slowWriteAddress(7) <= addr;
 
-process (slowwritingdatatrain1, dout, requestreset, lastrequestwritetoggle, lastrequestreadtoggle, requestedaddress, requestwritetoggle, requestedaddress, requestreadtoggle, empty, immediatelypullfifotoggle, readburstcount, slowfifopulltoggle, addr, slowBA, count, currentState, slowCount, burstCount, nextState, slowWritingPulseTrain)
+process (slowwritingdatatrain1, dout, requestreset, lastrequestwritetoggle, lastrequestreadtoggle, requestedaddress, requestwritetoggle, requestedaddress, requestreadtoggle, empty, immediatelypullfifotoggle, readburstcount, slowfifopulltoggle, addr, slowBA,  currentState, slowCount, burstCount, nextState, slowWritingPulseTrain)
 	begin
 	nextState <= currentState;
 	clkOutSlow <= "01010101";
