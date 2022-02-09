@@ -163,11 +163,11 @@ END COMPONENT;
 	signal writeThisCycle : std_logic := '0';
 	signal nextWriteThisCycle : std_logic ;
 	
-	signal advanceTheShiftRegister : std_logic := '0';
-	signal nextAdvanceTheShiftRegister : std_logic;
+--	signal advanceTheShiftRegister : std_logic := '0';
+--	signal nextAdvanceTheShiftRegister : std_logic;
 
-	signal refillTheShiftRegister : std_logic := '0';
-	signal nextRefillTheShiftRegister : std_logic;
+--	signal refillTheShiftRegister : std_logic := '0';
+--	signal nextRefillTheShiftRegister : std_logic;
 -------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
@@ -212,17 +212,17 @@ END COMPONENT;
 	--signal inDataB :   std_logic_vector(15 downto 0);
 	
 	type philArr is array (20 downto 0) of std_logic_vector(15 downto 0);
-	signal requestedDataToWrite : philArr;
-	signal nextRequestedDataToWrite : philArr;
+--	signal requestedDataToWrite : philArr;
+--	signal nextRequestedDataToWrite : philArr;
 	
-	signal writeRefill :  philArr;
-	signal nextWriteRefill :  philArr;
+--	signal writeRefill :  philArr;
+--	signal nextWriteRefill :  philArr;
 	 
 	signal capturedData :   philArr;
 	signal nextCapturedData :   philArr;
 	
-	signal shiftRegister : philArr;
-	signal nextShiftRegister : philArr;
+--	signal shiftRegister : philArr;
+--	signal nextShiftRegister : philArr;
 	
 	signal writePulseTrain :    std_logic_vector(15 downto 1) := "000000000000000";
 	signal nextWritePulseTrain :    std_logic_vector(15 downto 1) ;
@@ -280,10 +280,10 @@ END COMPONENT;
 	signal rst : std_logic ;
 	signal empty : std_logic := '1';
 	
-	signal dinLSBs: std_logic_vector(3 downto 0);
-	signal nextDinLSBs : std_logic_vector(3 downto 0);
-	signal doutLSBs: std_logic_vector(3 downto 0);
-	signal doutWaitingLSBs: std_logic_vector(3 downto 0);
+--	signal dinLSBs: std_logic_vector(3 downto 0);
+--	signal nextDinLSBs : std_logic_vector(3 downto 0);
+--	signal doutLSBs: std_logic_vector(3 downto 0);
+--	signal doutWaitingLSBs: std_logic_vector(3 downto 0);
 	
 	signal IOpinsA : std_logic_vector(3 downto 0);
 	signal IOpinsB : std_logic_vector(3 downto 0);
@@ -573,7 +573,7 @@ process (clk250MHz)
 	end process;
 
 ------------------------------------------COMBINATORIAL:
-	process (slowReadData, slownextclockenablereaddelayed5,slowdqstristate, clk125MHz,  clockEnableRead, capturedData, dqsTristate, delayedDataForOutput, dataAssertedToOutput, clockEnableWrite, clockEnableRefillWriteData, refillTheShiftRegister)
+	process (slowReadData, slownextclockenablereaddelayed5,slowdqstristate, clk125MHz,  clockEnableRead, capturedData, dqsTristate, delayedDataForOutput, dataAssertedToOutput, clockEnableWrite, clockEnableRefillWriteData)
 		begin
 
 		nextClk125MHz <= not clk125MHz;
@@ -664,7 +664,7 @@ process (clk250MHz)
 	LEDBUS7 <= LEDBUSvec(7);
 	LEDBUS8  <= '0';
 
-	process (dataArrivedToggleSlowed, SPIdataInSlowed, lastDataArrivedToggle, requestedAddress, requestWriteToggle, requestReadToggle, SPIdataIn, SPIFIFOdin, readBurstCount, fastwriteaddress, empty, nextwritepulsetrain, doutwaiting, dout, clockEnableCommand,  capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount)
+	process (dataArrivedToggleSlowed, SPIdataInSlowed, lastDataArrivedToggle, requestedAddress, requestWriteToggle, requestReadToggle, SPIdataIn, SPIFIFOdin, readBurstCount, fastwriteaddress, empty, nextwritepulsetrain, doutwaiting, dout, clockEnableCommand,  capturedData, addrOut, switchRegister, lastSwitchRegister, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount)
 		begin
 		nextSPIFIFOdin <= SPIFIFOdin;
 		
