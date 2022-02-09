@@ -1,33 +1,7 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date:    00:29:57 01/16/2022 
--- Design Name: 
--- Module Name:    SlowByEightBus - Behavioral 
--- Project Name: 
--- Target Devices: 
--- Tool versions: 
--- Description: 
---
--- Dependencies: 
---
--- Revision: 
--- Revision 0.01 - File Created
--- Additional Comments: 
---
-----------------------------------------------------------------------------------
+
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx primitives in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
 use work.common.all;
 
 entity SlowByEightBus is
@@ -41,7 +15,6 @@ end SlowByEightBus;
 
 architecture Behavioral of SlowByEightBus is
 
-
 	COMPONENT SlowByEight
 	PORT(
 		DataToPins : IN std_logic_vector(31 downto 0);
@@ -51,16 +24,13 @@ architecture Behavioral of SlowByEightBus is
 		IOpins : INOUT std_logic_vector(3 downto 0)
 		);
 	END COMPONENT;
-
 	
 	signal vec1 : std_logic_vector(31 downto 0);
 	signal vec2 : std_logic_vector(31 downto 0);
 	signal vec3 : std_logic_vector(31 downto 0);
 	signal vec4 : std_logic_vector(31 downto 0);
 
-
 begin
-
 
 Inst1: SlowByEight PORT MAP(
 		IOpins => IOpins(3 downto 0) ,
@@ -69,7 +39,6 @@ Inst1: SlowByEight PORT MAP(
 		MediumClock => MediumClock,
 		SlowClockEnable => SlowClockEnable
 	);
-
 
 vec1(0) <= DataToPins(0)(0);
 vec1(1) <= DataToPins(1)(0);
@@ -103,8 +72,6 @@ vec1(28) <= DataToPins(4)(3);
 vec1(29) <= DataToPins(5)(3);
 vec1(30) <= DataToPins(6)(3);
 vec1(31) <= DataToPins(7)(3);
-
-
 
 Inst2: SlowByEight PORT MAP(
 		IOpins => IOpins(7 downto 4) ,
@@ -147,9 +114,6 @@ vec2(29) <= DataToPins(5)(7);
 vec2(30) <= DataToPins(6)(7);
 vec2(31) <= DataToPins(7)(7);
 
-
-
-
 Inst3: SlowByEight PORT MAP(
 		IOpins => IOpins(11 downto 8) ,
 		DataToPins => vec3,
@@ -190,9 +154,6 @@ vec3(28) <= DataToPins(4)(11);
 vec3(29) <= DataToPins(5)(11);
 vec3(30) <= DataToPins(6)(11);
 vec3(31) <= DataToPins(7)(11);
-
-
-
 
 Inst4: SlowByEight PORT MAP(
 		IOpins => IOpins(15 downto 12) ,
@@ -235,8 +196,4 @@ vec4(29) <= DataToPins(5)(15);
 vec4(30) <= DataToPins(6)(15);
 vec4(31) <= DataToPins(7)(15);
 
-
-
-
 end Behavioral;
-
