@@ -480,10 +480,10 @@ COMPONENT DelayWideBus
 
 	signal nextSPIFIFOdin : std_logic_vector(143 downto 0);
 
-	signal immediatelyPullFIFOtoggle : std_logic := '0';
-	signal nextImmediatelyPullFIFOtoggle : std_logic;
-	signal immediatelyPullFIFO : std_logic := '0';
-	signal nextImmediatelyPullFIFO : std_logic ;
+--	signal immediatelyPullFIFOtoggle : std_logic := '0';
+--	signal nextImmediatelyPullFIFOtoggle : std_logic;
+--	signal immediatelyPullFIFO : std_logic := '0';
+--	signal nextImmediatelyPullFIFO : std_logic ;
 
 --	signal IncomingDelayedA : std_logic_vector(3 downto 0);
 --	signal OutgoingDelayedA : std_logic_vector(3 downto 0);
@@ -612,7 +612,7 @@ fifoInstance : FIFOphil2
 			lastFIFOpushToggle <= FIFOpushToggle;
 			FIFOpushEnable <= nextFIFOpushEnable;
 			
-			immediatelyPullFIFO <= nextImmediatelyPullFIFO;
+--			immediatelyPullFIFO <= nextImmediatelyPullFIFO;
 
 			empty <= nextEmpty;
 			
@@ -622,7 +622,7 @@ fifoInstance : FIFOphil2
 	
 		------------------------------------------COMBINATORIAL:
 	
-	nextImmediatelyPullFIFO <= '1' when nextImmediatelyPullFIFOtoggle /= immediatelyPullFIFOtoggle and slowClockVector(1) = '1' else '0';  
+	--nextImmediatelyPullFIFO <= '1' when nextImmediatelyPullFIFOtoggle /= immediatelyPullFIFOtoggle and slowClockVector(1) = '1' else '0';  
 	-- this is a very subtle piece of timing; the slowClockVector(1) pulses one cycle earlier than slowClockEnable, so nextImmediatelyPullFIFOtoggle 
 	-- must settle in 7 cycles rather than 8 cycles like the other slowClockEnabled combinatorial logic
 	
@@ -1210,7 +1210,7 @@ process (clk31M25Hz, slowClockEnable)
 
 			readBurstCount <= nextReadBurstCount;
 			
-			immediatelyPullFIFOtoggle <= nextImmediatelyPullFIFOtoggle;
+	--		immediatelyPullFIFOtoggle <= nextImmediatelyPullFIFOtoggle;
 
 		end if;
    end process;
@@ -1225,7 +1225,7 @@ process (clk31M25Hz, slowClockEnable)
 	slowWriteAddress(6) <= addr;
 	slowWriteAddress(7) <= addr;
 
-process (slowwritingdatatrain1, dout, requestreset, lastrequestwritetoggle, lastrequestreadtoggle, requestedaddress, requestwritetoggle, requestedaddress, requestreadtoggle, empty, immediatelypullfifotoggle, readburstcount, slowfifopulltoggle, addr, slowBA,  currentState, slowCount, burstCount, nextState, slowWritingPulseTrain)
+process (slowwritingdatatrain1, dout, requestreset, lastrequestwritetoggle, lastrequestreadtoggle, requestedaddress, requestwritetoggle, requestedaddress, requestreadtoggle, empty, readburstcount, slowfifopulltoggle, addr, slowBA,  currentState, slowCount, burstCount, nextState, slowWritingPulseTrain)
 	begin
 	nextState <= currentState;
 	clkOutSlow <= "01010101";
@@ -1256,7 +1256,7 @@ process (slowwritingdatatrain1, dout, requestreset, lastrequestwritetoggle, last
 		
 	nextReadBurstCount <= readBurstCount ;
 
-	nextImmediatelyPullFIFOtoggle <= immediatelyPullFIFOtoggle;
+--	nextImmediatelyPullFIFOtoggle <= immediatelyPullFIFOtoggle;
 	slowFIFOpull <= '0';
 	
 	case currentState is
@@ -1286,7 +1286,7 @@ process (slowwritingdatatrain1, dout, requestreset, lastrequestwritetoggle, last
 				nextBurstCount <= "00000000";
 			else
 				nextSlowWritingPulseTrain(0) <= '1';
-				nextImmediatelyPullFIFOtoggle <= not immediatelyPullFIFOtoggle;
+--				nextImmediatelyPullFIFOtoggle <= not immediatelyPullFIFOtoggle;
 				slowFIFOpull <= '1';
 	
 				rasSlow <= "11111111";
