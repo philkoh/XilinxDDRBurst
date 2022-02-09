@@ -504,6 +504,7 @@ COMPONENT DelayWideBus
 	signal testBlink : std_logic := '1';
 	
 	signal slowFIFOpull : std_logic;
+	signal slowFIFOpush : std_logic;
 
 begin
 
@@ -584,10 +585,10 @@ Inst_SlowInputByEight: SlowInputByEight PORT MAP(
 fifoInstance : FIFOphil2
   PORT MAP (
     rst => slowFIFOrst,--rst,
-     wr_clk => clk250MHz,
+     wr_clk => clk31M25Hz,--     clk250MHz,
     rd_clk => clk31M25Hz,--     clk250MHz,
     din => SPIFIFOdin,--din,
-    wr_en => FIFOpushEnable,-- sharpenFIFOpushEnable(5) ,--
+    wr_en => slowFIFOpush,--     FIFOpushEnable,-- sharpenFIFOpushEnable(5) ,--
     rd_en => slowFIFOpull,--      immediatelyPullFIFO,--slowFIFOpullPulse(9) ,--
     dout => dout,
 --    full => full,
@@ -1047,7 +1048,8 @@ LEDBUS8  <= testBlink;
 		
 		nextFIFOpushToggle <= FIFOpushToggle;
 --		nextdin <= din;
-		
+		slowFIFOpush <= '0';
+
 		if lastDataArrivedToggle /= dataArrivedToggleSlowed then  -- an SPI message has arrived
 			if SPIdataInSlowed(15 downto 8) = "00000011" then -- command 3 means advance the switchCount
 				nextSwitchCount <= switchCount + 1;
@@ -1064,6 +1066,7 @@ LEDBUS8  <= testBlink;
 
 			if SPIdataInSlowed(15 downto 8) = "00000111" then -- command 7 means push into FIFO
 				nextFIFOpushToggle <= not FIFOpushToggle;
+				slowFIFOpush <= '1';
 			end if;
 			if SPIdataInSlowed(15 downto 8) = "00001000" then -- command 8 means set nextSPIFIFOdin values
 				nextSPIFIFOdin(63 downto 0)   <= "1111111111111111111111111111111111111111111111101111111111111111";
