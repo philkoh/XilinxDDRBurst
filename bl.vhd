@@ -208,8 +208,8 @@ END COMPONENT;
 	signal nextDataCount :   unsigned (3 downto 0):= "1111";
 	signal data :   std_logic_vector(15 downto 0) := "1111111111111111";
 	signal nextData :   std_logic_vector(15 downto 0):= "1111111111111111";
-	signal inData :   std_logic_vector(15 downto 0);
-	signal inDataB :   std_logic_vector(15 downto 0);
+	--signal inData :   std_logic_vector(15 downto 0);
+	--signal inDataB :   std_logic_vector(15 downto 0);
 	
 	type philArr is array (20 downto 0) of std_logic_vector(15 downto 0);
 	signal requestedDataToWrite : philArr;
@@ -342,8 +342,8 @@ END COMPONENT;
 
 	signal slowDQStristate : std_logic;
 	
-	signal requestReset :  std_logic   := '0';
-	signal nextRequestReset : std_logic;
+--	signal requestReset :  std_logic   := '0';
+--	signal nextRequestReset : std_logic;
 	
 	signal LEDBUSvec : std_logic_vector(8 downto 0)  ;
 	
@@ -560,7 +560,7 @@ process (clk250MHz)
 ------------------------------------------SEQUENTIAL :	
 		if rising_edge(clk250MHz) then
 			clk125MHz <=  nextClk125MHz  ;  --clk125MHz changes on rising edge of 250MHz clock; this is sent out as external clock *and* as dqs
-			inData (15 downto 0) <= delayedDataPort (15 downto 0);  -- data uses the 250 MHz clock
+	--		inData (15 downto 0) <= delayedDataPort (15 downto 0);  -- data uses the 250 MHz clock
 
 			capturedData(11 downto 1) <= nextCapturedData(11 downto 1);
 		
@@ -573,7 +573,7 @@ process (clk250MHz)
 	end process;
 
 ------------------------------------------COMBINATORIAL:
-	process (slowReadData, slownextclockenablereaddelayed4,slowdqstristate, clk125MHz,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData,  clockEnableRead, capturedData, dqsTristate, delayedDataForOutput, dataAssertedToOutput, clockEnableWrite, clockEnableRefillWriteData, refillTheShiftRegister)
+	process (slowReadData, slownextclockenablereaddelayed5,slowdqstristate, clk125MHz,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,  clockEnableRead, capturedData, dqsTristate, delayedDataForOutput, dataAssertedToOutput, clockEnableWrite, clockEnableRefillWriteData, refillTheShiftRegister)
 		begin
 
 		nextClk125MHz <= not clk125MHz;
@@ -856,7 +856,7 @@ process (clk250MHz)
 			blinker <= nextBlinker;
 			odt <= nextODT;
 			din <= nextdin;
-			requestReset <= nextRequestReset;
+	--		requestReset <= nextRequestReset;
 
 			end if;
    end process;
@@ -877,7 +877,7 @@ process (clk250MHz)
 	
 	nextdin <= din;
 	
-	nextRequestReset <= '0';
+--	nextRequestReset <= '0';
 
 process (clk250MHz)
 		begin
@@ -925,7 +925,7 @@ process (clk31M25Hz, slowClockEnable)
 	slowWriteAddress(6) <= addr;
 	slowWriteAddress(7) <= addr;
 
-process (slowwritingdatatrain1, dout, requestreset, lastrequestwritetoggle, lastrequestreadtoggle, requestedaddress, requestwritetoggle, requestedaddress, requestreadtoggle, empty, readburstcount,  addr, slowBA,  currentState, slowCount, burstCount, nextState, slowWritingPulseTrain)
+process (slowwritingdatatrain1, dout,  lastrequestwritetoggle, lastrequestreadtoggle, requestedaddress, requestwritetoggle, requestedaddress, requestreadtoggle, empty, readburstcount,  addr, slowBA,  currentState, slowCount, burstCount, nextState, slowWritingPulseTrain)
 	begin
 	nextState <= currentState;
 	clkOutSlow <= "01010101";

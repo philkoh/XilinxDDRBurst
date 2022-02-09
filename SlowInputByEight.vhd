@@ -16,8 +16,8 @@ architecture Behavioral of SlowInputByEight is
 
 signal shiftRegisters : std_logic_vector (31 downto 0) := "00000000000000000000000000000000";
 signal nextShiftRegisters : std_logic_vector (31 downto 0);
-signal dataStrobe : std_logic := '0';
-signal lastDataStrobe : std_logic := '0';
+--signal dataStrobe : std_logic := '0';
+--signal lastDataStrobe : std_logic := '0';
 	
 begin
 
@@ -25,7 +25,7 @@ process (FastClock, MediumClock, slowClockEnable)
 	begin
 	if rising_edge(MediumClock)  and slowClockEnable = '1' then
 		DataToPins <= shiftRegisters; 
-		dataStrobe <= not dataStrobe;  -- this toggles on every new set of data arriving
+	--	dataStrobe <= not dataStrobe;  -- this toggles on every new set of data arriving
 	end if;
 	
 end process;
@@ -33,7 +33,7 @@ end process;
 process (FastClock)
 begin
 	if rising_edge(FastClock) then
-		lastDataStrobe <= dataStrobe;
+	--	lastDataStrobe <= dataStrobe;
 		shiftRegisters <= nextShiftRegisters;
 	end if;
 	
