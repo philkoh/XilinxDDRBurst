@@ -50,7 +50,6 @@ entity bl is
 			ck_nPORT : inout std_logic;
 
    		dqs0_pPORT : inout std_logic;
---			dqs0_pPORT : inout std_logic; 
 			dqs0_nPORT : inout std_logic;
 			dqs1_pPORT : inout std_logic; 
 			dqs1_nPORT : inout std_logic;
@@ -400,10 +399,6 @@ COMPONENT DelayWideBus
 
 	signal slowDQStristate : std_logic;
 	
---	signal slowFIFOpullToggle :  std_logic   := '0';
---	signal nextSlowFIFOpullToggle :  std_logic  ;
---	signal slowFIFOpullPulse :  std_logic_vector(9 downto 0) := "0000000000";
-
 	signal requestReset :  std_logic   := '0';
 	signal nextRequestReset : std_logic;
 	
@@ -995,21 +990,12 @@ process (clk250MHz)
 		if rising_edge(clk250MHz) then  
 			slowClockVector(6 downto 0) <= slowClockVector(7 downto 1);
 			slowClockVector(7) <= slowClockVector(0);
---			verySlowClockEnable(30 downto 0) <= verySlowClockEnable(31 downto 1);
-	--		verySlowClockEnable(31) <= verySlowClockEnable(0);
-			
-			
-			
-	--		slowFIFOpullPulse( 1) <= slowFIFOpullPulse( 0);  -- shift delay for FIFO pull enable pulse
-	--		slowFIFOpullPulse(9 downto 3) <= slowFIFOpullPulse(8 downto 2);  -- shift delay for FIFO pull enable pulse
 		 
 		end if;
    end process;
 ------------------------------------------COMBINATORIAL:
 	slowClockEnable <= slowClockVector(0);
 	
---	slowFIFOpullPulse(0) <= slowFIFOpullToggle; -- remember the last state of toggle
---	slowFIFOpullPulse(2) <= '0' when slowFIFOpullPulse(0) = slowFIFOpullPulse(1) else '1';  -- bit 2 pulses when bit 0 toggles
 
 
 
@@ -1019,10 +1005,8 @@ process (clk250MHz)
 process (clk31M25Hz, slowClockEnable)
 		begin
 ------------------------------------------SEQUENTIAL :			
-	if rising_edge(clk31M25Hz)  then  -- the slowClockEnable is one-eighth speed, so the below logic 
-	--	if rising_edge(clk62M5Hz) and slowClockEnable = '1' then  -- the slowClockEnable is one-eighth speed, so the below logic 
-	--	if rising_edge(clk250MHz) and slowClockEnable = '1' then  -- the slowClockEnable is one-eighth speed, so the below logic 
-																					--can do very complicated count math, FIFO operations, etc, without hitting timing issues
+	if rising_edge(clk31M25Hz)  then  -- the clock is one-eighth speed, so the below logic 
+												--can do very complicated count math, FIFO operations, etc, without hitting timing issues
 			currentState <= nextState;
 			slowCount <= nextSlowCount;
 			burstCount <= nextBurstCount;
@@ -1034,15 +1018,12 @@ process (clk31M25Hz, slowClockEnable)
 
 			addr <= nextAddr;
 			slowBA <= nextSlowBA;
-	--		slowFIFOpullToggle <= nextSlowFIFOpullToggle;
 			
 			lastRequestReadToggle <= requestReadToggle; -- keep track of last toggle value so we can detect a change within this process
 			lastRequestWriteToggle <= requestWriteToggle; -- keep track of last toggle value so we can detect a change within this process
 
 
 			readBurstCount <= nextReadBurstCount;
-			
-	--		immediatelyPullFIFOtoggle <= nextImmediatelyPullFIFOtoggle;
 
 		end if;
    end process;
@@ -1083,12 +1064,9 @@ process (slowwritingdatatrain1, dout, requestreset, lastrequestwritetoggle, last
 	slowNextClockEnableRead <= '0';
 	
 	slowDQStristate <= '1';
-	
---	nextSlowFIFOpullToggle <= slowFIFOpullToggle;
 		
 	nextReadBurstCount <= readBurstCount ;
 
---	nextImmediatelyPullFIFOtoggle <= immediatelyPullFIFOtoggle;
 	slowFIFOpull <= '0';
 	
 	case currentState is
@@ -1118,7 +1096,6 @@ process (slowwritingdatatrain1, dout, requestreset, lastrequestwritetoggle, last
 				nextBurstCount <= "00000000";
 			else
 				nextSlowWritingPulseTrain(0) <= '1';
---				nextImmediatelyPullFIFOtoggle <= not immediatelyPullFIFOtoggle;
 				slowFIFOpull <= '1';
 	
 				rasSlow <= "11111111";
@@ -1134,12 +1111,10 @@ process (slowwritingdatatrain1, dout, requestreset, lastrequestwritetoggle, last
 				nextState <= idle;
 			end if;
 		when idle => 
---			if slowCount = 2 * 16 - 7 then
 			if requestReadToggle /= lastRequestReadToggle then
 				nextState <= reading;
 			
 				nextSlowBa <= "000";
-			--	nextAddr <= "0000000000010000";  --"000000000011000";  -- A10 must be LOW to turn off AutoPrecharge
 				nextAddr <= requestedAddress; 
 			end if;
 
@@ -1252,11 +1227,7 @@ process (slowwritingdatatrain1, dout, requestreset, lastrequestwritetoggle, last
 	
 	end case;	
 	
-	if requestReset = '1'  then
---		nextState <= slowReset;
-	end if;
-
-
+	
 	slowWriteData(0)<= "ZZZZZZZZZZZZZZZZ"; 
 	slowWriteData(1)<= "ZZZZZZZZZZZZZZZZ"; 
 	slowWriteData(2)<= "ZZZZZZZZZZZZZZZZ"; 
@@ -1268,24 +1239,6 @@ process (slowwritingdatatrain1, dout, requestreset, lastrequestwritetoggle, last
 
 	if slowWritingPulseTrain(1) = '1' or slowWritingPulseTrain(2) = '1' then
 		
-		slowWriteData(0)<= "1111111111110001"; 
-		slowWriteData(1)<= "0000000000000010"; 
-		slowWriteData(2)<= "1111111111110100"; 
-		slowWriteData(3)<= "0000000000001000"; 
-		slowWriteData(4)<= "1111111111111100"; 
-		slowWriteData(5)<= "0000000000000110"; 
-		slowWriteData(6)<= "1111111111110011"; 
-		slowWriteData(7)<= "0000000000000111"; 
-	
-	
-		slowWriteData(0)<= dout(15 downto 0); 
-		slowWriteData(1)<= dout(31 downto 16); 
-		slowWriteData(2)<= dout(47 downto 32); 
-		slowWriteData(3)<= dout(63 downto 48); 
-		slowWriteData(4)<= dout(79 downto 64); 
-		slowWriteData(5)<= dout(95 downto 80); 
-		slowWriteData(6)<= dout(111 downto 96); 
-		slowWriteData(7)<= dout(127 downto 112); 
 	
 		slowWriteData(0)<= slowWritingDataTrain1(15 downto 0); 
 		slowWriteData(1)<= slowWritingDataTrain1(31 downto 16); 
@@ -1297,11 +1250,6 @@ process (slowwritingdatatrain1, dout, requestreset, lastrequestwritetoggle, last
 		slowWriteData(7)<= slowWritingDataTrain1(127 downto 112); 
 
 	end if;
-	if slowWritingPulseTrain(0) = '1' then
-		
---		nextSlowFIFOpullToggle <= not slowFIFOpullToggle ;--toggle this to advance the FIFO (after some delay)
-	end if;
-		
 	
 	
 		
