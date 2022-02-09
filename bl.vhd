@@ -1,22 +1,4 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date:    22:25:50 02/28/2019 
--- Design Name: 
--- Module Name:    bl - Behavioral 
--- Project Name: 
--- Target Devices: 
--- Tool versions: 
--- Description: 
---
--- Dependencies: 
---
--- Revision: 
--- Revision 0.01 - File Created
--- Additional Comments: 
---
-----------------------------------------------------------------------------------
+
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
@@ -110,15 +92,15 @@ end component;
 
 
 
-	COMPONENT SlowByEightBus
+COMPONENT SlowByEightBus
 	PORT(
 		DataToPins : in  burstArr;
 		FastClock : IN std_logic;
 		MediumClock : IN std_logic;
 		SlowClockEnable : IN std_logic;       
 		IOpins : INOUT std_logic_vector(15 downto 0)
-		);
-	END COMPONENT;
+	);
+END COMPONENT;
 
 
 
@@ -127,17 +109,15 @@ COMPONENT SlowInputByEight
 		IOpins : IN std_logic_vector(3 downto 0);
 		FastClock : IN std_logic;
 		SlowClockEnable : IN std_logic;   
-	--	originalSlowClockEnable : in STD_LOGIC;      
 		MediumClock : IN std_logic;
 		SlowClock : IN std_logic;
 		DataToPins : OUT std_logic_vector(31 downto 0)
-		);
-	END COMPONENT;
+	);
+END COMPONENT;
 
 
 
 
-------------- Begin Cut here for COMPONENT Declaration ------ COMP_TAG
 COMPONENT FIFOphil2
   PORT (
     rst : IN STD_LOGIC;
@@ -151,13 +131,12 @@ COMPONENT FIFOphil2
     empty : OUT STD_LOGIC
   );
 END COMPONENT;
--- COMP_TAG_END ------ End COMPONENT Declaration ------------
 
 
 
 
 
-	COMPONENT SlowByEight
+COMPONENT SlowByEight
 	PORT(
 		DataToPins : IN std_logic_vector(31 downto 0);
 		FastClock : IN std_logic;
@@ -165,11 +144,11 @@ END COMPONENT;
 		SlowClockEnable : IN std_logic;       
 		IOpins : INOUT std_logic_vector(3 downto 0)
 		);
-	END COMPONENT;
+END COMPONENT;
 
 	
 
-	COMPONENT SPIinterface
+COMPONENT SPIinterface
 	PORT(
 		clk : IN std_logic;
 		dataout : IN std_logic_vector(15 downto 0);
@@ -180,7 +159,7 @@ END COMPONENT;
 		dataarrivedtoggle : OUT std_logic;
 		MISOpin : OUT std_logic
 		);
-	END COMPONENT;
+END COMPONENT;
 
 
 
@@ -207,24 +186,17 @@ COMPONENT DelayWideBus
 	signal nextClk125MHz : std_logic := '0';
 	signal nextClk125MHz_n : std_logic := '0';
 
---	signal clk250MHz_n : std_logic := '0';
-	
 	signal ck_p : std_logic := '0';
-
 
 	signal blinker  : std_logic := '0';
 	signal nextBlinker  : std_logic := '0';
 	signal clockEnableBeginning : std_logic := '0';
 	signal clockEnableCommand : std_logic := '0';
---	signal clockEnableLoadWriteData : std_logic := '0';
 	signal clockEnableRefillWriteData : std_logic := '0';
---	signal writeAndRefillThisCycle : std_logic := '0';
---	signal nextwriteAndRefillThisCycle : std_logic := '0';
 	signal clockEnableRead : std_logic := '0';
 	signal clockEnableWrite : std_logic := '0';
 	signal nextClockEnableBeginning : std_logic := '0';
 	signal nextClockEnableCommand : std_logic := '0';
---	signal nextClockEnableLoadWriteData : std_logic := '0';
 	signal nextClockEnableRefillWriteData : std_logic := '0';
 	signal nextClockEnableRead : std_logic := '0';
 	signal nextClockEnableWrite : std_logic := '0';
@@ -261,12 +233,8 @@ COMPONENT DelayWideBus
 -------------------------------------------------------------------------------------------------------------------------
 
    signal nextCount : unsigned (17 downto 0);
---	signal dqszero : std_logic := '0';
---	signal dqsone : std_logic := '1';
 	signal dqs0 : std_logic := '0'; 
---	signal dqs0T : std_logic := '0'; 
 	signal dqs1 : std_logic := '0'; 
---	signal dqs1T : std_logic := '0'; 
 	signal dqs0Incoming : std_logic := '0';
 	signal dqs1Incoming : std_logic := '0';
 
@@ -365,10 +333,6 @@ COMPONENT DelayWideBus
 	signal nextDoutWaiting : std_logic_vector(143 downto 0);
 	signal rst : std_logic ;
 	signal empty : std_logic := '1';
---	signal nextEmpty : std_logic;
-	
---	signal sharpenFIFOpushEnable : std_logic_vector (5 downto 0) := "000000";
---	signal sharpenFIFOpullEnable : std_logic_vector (5 downto 0) := "000000";
 	
 	signal dinLSBs: std_logic_vector(3 downto 0);
 	signal nextDinLSBs : std_logic_vector(3 downto 0);
@@ -467,12 +431,6 @@ COMPONENT DelayWideBus
 	signal requestedAddress : std_logic_vector (15 downto 0) := "0000000000010000" ;
 	signal nextRequestedAddress : std_logic_vector (15 downto 0) ;
 	
---	signal FIFOpushEnable : std_logic := '0';
---	signal nextFIFOpushEnable : std_logic;
---	signal FIFOpushToggle : std_logic := '0';
---	signal lastFIFOpushToggle : std_logic := '0';
---	signal nextFIFOpushToggle : std_logic;
-
    signal readBurstCount : unsigned (7 downto 0) := "00000000";
 	signal nextReadBurstCount : unsigned (7 downto 0) ;
 
@@ -480,28 +438,16 @@ COMPONENT DelayWideBus
 
 	signal nextSPIFIFOdin : std_logic_vector(143 downto 0);
 
---	signal immediatelyPullFIFOtoggle : std_logic := '0';
---	signal nextImmediatelyPullFIFOtoggle : std_logic;
---	signal immediatelyPullFIFO : std_logic := '0';
---	signal nextImmediatelyPullFIFO : std_logic ;
-
---	signal IncomingDelayedA : std_logic_vector(3 downto 0);
---	signal OutgoingDelayedA : std_logic_vector(3 downto 0);
---	signal IncomingUndelayedA : std_logic_vector(3 downto 0);
---	signal OutgoingUndelayedA : std_logic_vector(3 downto 0);
 	signal fastReadData : std_logic_vector(3 downto 0);
 	signal slowReadData :  std_logic_vector(31 downto 0);
 	 
 	signal clockShift : std_logic_vector(3 downto 0) :=  "1000";--  "0010";--
 	signal clk62M5Hz : std_logic := '0';
 	signal clk31M25Hz : std_logic := '0';
---	signal clockToggle : std_logic := '0';
 	signal useThisEdge : std_logic := '0';
 	signal nextUseThisEdge : std_logic;
 	signal snapShotOfSlowClockEnable : std_logic := '0';
 
-
---	signal testBlink : std_logic := '1';
 	
 	signal slowFIFOpull : std_logic;
 	signal slowFIFOpush : std_logic := '0';
@@ -573,16 +519,11 @@ Inst_SlowInputByEight: SlowInputByEight PORT MAP(
 	FastClock => clk250MHz,
 	MediumClock => clk62M5Hz,
 	SlowClock => clk31M25Hz,
---	originalSlowClockEnable => slowClockVector(4),-- slowClockVector(0),
 	SlowClockEnable =>   slowClockEnable
 );
 
 
 
--- The following code must appear in the VHDL architecture
--- body. Substitute your own instance name and net names.
-
-------------- Begin Cut here for INSTANTIATION Template ----- INST_TAG
 fifoInstance : FIFOphil2
   PORT MAP (
     rst => slowFIFOrst,--rst,
@@ -595,34 +536,13 @@ fifoInstance : FIFOphil2
 --    full => full,
   empty => empty--  nextEmpty
   );
--- INST_TAG_END ------ End INSTANTIATION Template ------------
 
 
-
-	
-
-
-	------------------------------------------COMBINATORIAL:
- 
---dinLSBs <= din(3 downto 0); -- for easier inspection of simulations:
---nextDinLSBs <= nextDin(3 downto 0);
---doutLSBs <= dout(3 downto 0);
---doutWaitingLSBs <= doutWaiting(3 downto 0);
-
- 
-
-
-
-
-
-------------- Begin Cut here for INSTANTIATION Template ----- INST_TAG
 your_instance_name : PhilClock
   port map
-   (-- Clock in ports
+   (
     CLK_IN1 => clk,
-    -- Clock out ports
     CLK_OUT1 => clk250MHz);
--- INST_TAG_END ------ End INSTANTIATION Template ------------
 
 
 
@@ -649,12 +569,6 @@ I => dqsFast,--clk125MHz, -- outgoing dqs is just always the 125MHz clock
 T => slowdqsTristate -- 3-state enable input, high=input, low=output
 );
 
-
-
-
--- IOBUFDS: Differential Bi-directional Buffer
--- Spartan-3/3E/3A
--- Xilinx HDL Libraries Guide, version 14.7
 IOBUFDS_dqs1 : IOBUFDS
 generic map (
 IOSTANDARD => "DIFF_SSTL15_II")
@@ -665,14 +579,7 @@ IOB => dqs1_nPORT, -- Diff_n inout (connect directly to top-level port)
 I => dqsFast,--clk125MHz, -- Buffer input
 T => slowdqsTristate -- 3-state enable input, high=input, low=output
 );
--- End of IOBUFDS_inst instantiation
 
-
-
-
--- OBUFDS: Differential Output Buffer
--- Spartan-3/3E/3A
--- Xilinx HDL Libraries Guide, version 11.2
 OBUFDS_clock : OBUFDS
 generic map (
 IOSTANDARD => "DIFF_SSTL15_II")
@@ -681,7 +588,8 @@ O => ck_pPORT, -- Diff_p output (connect directly to top-level port)
 OB => ck_nPORT, -- Diff_n output (connect directly to top-level port)
 I => clkOutFast--clk125MHz -- Buffer input
 );
--- End of OBUFDS_inst instantiation
+
+
 
 Inst_SPIinterface: SPIinterface PORT MAP(
 		clk => clk250MHz ,
@@ -697,28 +605,21 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 
 
 -- BUFGCE: Global Clock Buffer with Clock Enable
--- Spartan-6
--- Xilinx HDL Libraries Guide, version 14.7
 BUFGCE_inst : BUFGCE ----------NOTE: this is a clean way to make a slower clock and still have its rising edge well aligned with clk250MHz
 port map (
 O => clk62M5Hz, -- 1-bit output: Clock buffer output
 CE => clockShift(0), -- 1-bit input: Clock buffer select
 I => clk250MHz -- 1-bit input: Clock buffer input (S=0)
 );
--- End of BUFGCE_inst instantiation
 
 
 -- BUFGCE: Global Clock Buffer with Clock Enable
--- Spartan-6
--- Xilinx HDL Libraries Guide, version 14.7
 BUFGCE_inst2 : BUFGCE ----------NOTE: this is a clean way to make a slower clock and still have its rising edge well aligned with clk250MHz
 port map (
 O => clk31M25Hz, -- 1-bit output: Clock buffer output
 CE => useThisEdge, -- 1-bit input: Clock buffer select
 I => clk250MHz -- 1-bit input: Clock buffer input (S=0)
 );
--- End of BUFGCE_inst instantiation
-
 
 
 
@@ -738,18 +639,13 @@ nextUseThisEdge <= '1' when snapShotOfSlowClockEnable = '0' and clockShift(3) = 
 process (clk62M5Hz)
 	begin
 		if	rising_edge(clk62M5Hz) then
---			testBlink <= testBlink;
---			clockToggle <= not clockToggle;
-			
+
 			snapShotOfSlowClockEnable <= slowClockEnable;
-			
+
 		end if;
 end process;
+
 LEDBUS8  <= '0';
-
-
-
-
 
 
 	process (clk250MHz)
@@ -757,9 +653,7 @@ LEDBUS8  <= '0';
 ------------------------------------------SEQUENTIAL :	
 		if rising_edge(clk250MHz) then
 			clk125MHz <=  nextClk125MHz  ;  --clk125MHz changes on rising edge of 250MHz clock; this is sent out as external clock *and* as dqs
-		--	inData (15 downTo 8) <= dataPort (15 downTo 8);  -- data uses the 250 MHz clock
 			inData (15 downto 0) <= delayedDataPort (15 downto 0);  -- data uses the 250 MHz clock
-
 
 			capturedData(11 downto 1) <= nextCapturedData(11 downto 1);
 		
@@ -771,7 +665,7 @@ LEDBUS8  <= '0';
 		end if;
 	end process;
 
-		------------------------------------------COMBINATORIAL:
+------------------------------------------COMBINATORIAL:
 	process (slownextclockenablereaddelayed4,slowdqstristate, clk125MHz,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData,  clockEnableRead, capturedData, dqsTristate, delayedDataForOutput, dataAssertedToOutput, clockEnableWrite, clockEnableRefillWriteData, refillTheShiftRegister)
 		begin
 
@@ -779,10 +673,6 @@ LEDBUS8  <= '0';
 		
 		nextCapturedData(11 downto 1) <= capturedData(11 downto 1); --unless overridden below, hold and remember the captured values
 	
-		if slowNextClockEnableReadDelayed4 = '1'  then
-	--		nextCapturedData(1) <= inData;
-	--		nextCapturedData(11 downto 2) <= capturedData(10 downto 1);
-		end if;
 		if slowNextClockEnableReadDelayed5 = '1'  then
 			nextCapturedData(8)(0) <= slowReadData(0);
 			nextCapturedData(7)(0) <= slowReadData(1);
@@ -831,7 +721,6 @@ LEDBUS8  <= '0';
 			dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');	
 		else
 			dataPort(15 downto 0) <= delayedDataForOutput(15 downto 0);
-		--	dataPort(15 downto 8) <= dataAssertedToOutput (15 downto 8);
 		end if;
 		
 	end process;
@@ -840,29 +729,19 @@ LEDBUS8  <= '0';
 	process (clk250MHz, slowClockEnable, clk31M25Hz)
 		begin
 ------------------------------------------SEQUENTIAL :	
-	--	if rising_edge(clk250MHz) and verySlowClockEnable(0) = '1' then 
-	--	if rising_edge(clk250MHz) and slowClockEnable = '1' then 
 			if rising_edge(clk31M25Hz)  then 
---			count2 <= nextCount2;    
 
 			switchRegister <= nextSwitchRegister;
 			switchCount <= nextSwitchCount;
 			lastSwitchRegister <= switchRegister;
-
-
-			
 			
 			requestReadToggle <= nextRequestReadToggle ;
 			requestWriteToggle <= nextRequestWriteToggle ;
 			requestedAddress <= nextRequestedAddress  ;
-			
-	--		FIFOpushToggle <= nextFIFOpushToggle;
 
---			din <= nextdin;
 			SPIdataInSlowed <= SPIdataIn ;
 			dataArrivedToggleSlowed <= dataArrivedToggle ;
 			lastDataArrivedToggle <= dataArrivedToggleSlowed;
-
 
 			SPIFIFOdin <= nextSPIFIFOdin;
 			
@@ -884,7 +763,6 @@ LEDBUS8  <= '0';
 	LEDBUS6 <= LEDBUSvec(6);
 	LEDBUS7 <= LEDBUSvec(7);
 	--LEDBUS8 <= LEDBUSvec(8);
-
 
 	process (dataArrivedToggleSlowed, SPIdataInSlowed, lastDataArrivedToggle, requestedAddress, requestWriteToggle, requestReadToggle, SPIdataIn, SPIFIFOdin, readBurstCount, fastwriteaddress, empty, nextwritepulsetrain, doutwaiting, dout, saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount)
 	
@@ -909,8 +787,6 @@ LEDBUS8  <= '0';
 		LED1 <= switchCount(1);
  		LED2 <= switchCount(2);
 		LED3 <= switchCount(3);
-
---		nextCount2 <= count2 + 1;  -- count2 increments at 125 MHz, not 250 MHz
 	
 		if switchCount = 0 then
 			LED0 <=   capturedData(1)(0);
@@ -1015,8 +891,6 @@ LEDBUS8  <= '0';
 		nextRequestWriteToggle <= requestWriteToggle ;
 		nextRequestedAddress <= requestedAddress  ;
 		
---		nextFIFOpushToggle <= FIFOpushToggle;
---		nextdin <= din;
 		nextSlowFIFOpush <= '0';
 
 		if lastDataArrivedToggle /= dataArrivedToggleSlowed then  -- an SPI message has arrived
@@ -1034,7 +908,6 @@ LEDBUS8  <= '0';
 			end if; 
 
 			if SPIdataInSlowed(15 downto 8) = "00000111" then -- command 7 means push into FIFO
-	--			nextFIFOpushToggle <= not FIFOpushToggle;
 				nextSlowFIFOpush <= '1';
 			end if;
 			if SPIdataInSlowed(15 downto 8) = "00001000" then -- command 8 means set nextSPIFIFOdin values
@@ -1087,17 +960,11 @@ LEDBUS8  <= '0';
 ------------------------------------------SEQUENTIAL :	
 	process (clk250MHz,  ClockEnableBeginning, slowClockEnable, clk31M25Hz)
 		begin
-	--	if rising_edge(clk250MHz) and verySlowClockEnable(0) = '1' then 
---	if rising_edge(clk250MHz) and slowClockEnable = '1' then 
 	if rising_edge(clk31M25Hz)  then 
 
-	--		count <= nextcount;  
 			blinker <= nextBlinker;
-
 			odt <= nextODT;
-
 			din <= nextdin;
-			
 			requestReset <= nextRequestReset;
 
 			end if;
@@ -1115,15 +982,11 @@ LEDBUS8  <= '0';
 	
 	nextBlinker <= not blinker; --when count = 0 else blinker;
 
-
 	nextODT <= '1';  -- On Die Termination is normally on
 	
 	nextdin <= din;
 	
 	nextRequestReset <= '0';
-
-		
-		
 			
 
 process (clk250MHz)
