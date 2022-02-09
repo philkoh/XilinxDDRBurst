@@ -501,7 +501,7 @@ COMPONENT DelayWideBus
 	signal snapShotOfSlowClockEnable : std_logic := '0';
 
 
-	signal testBlink : std_logic := '1';
+--	signal testBlink : std_logic := '1';
 	
 	signal slowFIFOpull : std_logic;
 	signal slowFIFOpush : std_logic := '0';
@@ -599,49 +599,15 @@ fifoInstance : FIFOphil2
 
 
 
-
-	process (clk250MHz)  -- FIFOenable sharpener; it will turn any rising edge into a two cycle-pulse, then further sharpen to a one-cycle pulse at 250 MHz.
-		begin
-	------------------------------------------SEQUENTIAL :	
-		if rising_edge(clk250MHz) then
-		--	sharpenFIFOpushEnable(4) <= sharpenFIFOpushEnable(3) and (not sharpenFIFOpushEnable(4));  -- only on rising edge of sharpenFIFOpushEnable(2) 
-		--	sharpenFIFOpushEnable(5) <= sharpenFIFOpushEnable(4);
-
---			sharpenFIFOpullEnable(4) <= sharpenFIFOpullEnable(3) and (not sharpenFIFOpullEnable(4));  -- only on rising edge of sharpenFIFOpushEnable(2) 
---			sharpenFIFOpullEnable(5) <= sharpenFIFOpullEnable(4);
-
---			lastFIFOpushToggle <= FIFOpushToggle;
---			FIFOpushEnable <= nextFIFOpushEnable;
-			
---			immediatelyPullFIFO <= nextImmediatelyPullFIFO;
-
---			empty <= nextEmpty;
-			
-		end if;
-	end process;
-		
-	
-		------------------------------------------COMBINATORIAL:
-	
-	--nextImmediatelyPullFIFO <= '1' when nextImmediatelyPullFIFOtoggle /= immediatelyPullFIFOtoggle and slowClockVector(1) = '1' else '0';  
-	-- this is a very subtle piece of timing; the slowClockVector(1) pulses one cycle earlier than slowClockEnable, so nextImmediatelyPullFIFOtoggle 
-	-- must settle in 7 cycles rather than 8 cycles like the other slowClockEnabled combinatorial logic
-	
-	
-	
-	
---	nextFIFOpushEnable <= '1' when FIFOpushToggle /= lastFIFOpushToggle else '0';
-	
-
 	
 
 
 	------------------------------------------COMBINATORIAL:
  
-dinLSBs <= din(3 downto 0); -- for easier inspection of simulations:
-nextDinLSBs <= nextDin(3 downto 0);
-doutLSBs <= dout(3 downto 0);
-doutWaitingLSBs <= doutWaiting(3 downto 0);
+--dinLSBs <= din(3 downto 0); -- for easier inspection of simulations:
+--nextDinLSBs <= nextDin(3 downto 0);
+--doutLSBs <= dout(3 downto 0);
+--doutWaitingLSBs <= doutWaiting(3 downto 0);
 
  
 
@@ -772,14 +738,14 @@ nextUseThisEdge <= '1' when snapShotOfSlowClockEnable = '0' and clockShift(3) = 
 process (clk62M5Hz)
 	begin
 		if	rising_edge(clk62M5Hz) then
-			testBlink <= testBlink;
+--			testBlink <= testBlink;
 --			clockToggle <= not clockToggle;
 			
 			snapShotOfSlowClockEnable <= slowClockEnable;
 			
 		end if;
 end process;
-LEDBUS8  <= testBlink;
+LEDBUS8  <= '0';
 
 
 
