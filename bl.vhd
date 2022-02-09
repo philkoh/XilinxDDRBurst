@@ -504,7 +504,8 @@ COMPONENT DelayWideBus
 	signal testBlink : std_logic := '1';
 	
 	signal slowFIFOpull : std_logic;
-	signal slowFIFOpush : std_logic;
+	signal slowFIFOpush : std_logic := '0';
+	signal nextSlowFIFOpush : std_logic;
 
 begin
 
@@ -898,6 +899,8 @@ LEDBUS8  <= testBlink;
 
 
 			SPIFIFOdin <= nextSPIFIFOdin;
+			
+			slowFIFOpush <= nextSlowFIFOpush;
 		end if;
    end process;
 	
@@ -1048,7 +1051,7 @@ LEDBUS8  <= testBlink;
 		
 --		nextFIFOpushToggle <= FIFOpushToggle;
 --		nextdin <= din;
-		slowFIFOpush <= '0';
+		nextSlowFIFOpush <= '0';
 
 		if lastDataArrivedToggle /= dataArrivedToggleSlowed then  -- an SPI message has arrived
 			if SPIdataInSlowed(15 downto 8) = "00000011" then -- command 3 means advance the switchCount
@@ -1066,7 +1069,7 @@ LEDBUS8  <= testBlink;
 
 			if SPIdataInSlowed(15 downto 8) = "00000111" then -- command 7 means push into FIFO
 	--			nextFIFOpushToggle <= not FIFOpushToggle;
-				slowFIFOpush <= '1';
+				nextSlowFIFOpush <= '1';
 			end if;
 			if SPIdataInSlowed(15 downto 8) = "00001000" then -- command 8 means set nextSPIFIFOdin values
 				nextSPIFIFOdin(63 downto 0)   <= "1111111111111111111111111111111111111111111111101111111111111111";
