@@ -467,8 +467,8 @@ COMPONENT DelayWideBus
 	signal requestedAddress : std_logic_vector (15 downto 0) := "0000000000010000" ;
 	signal nextRequestedAddress : std_logic_vector (15 downto 0) ;
 	
-	signal FIFOpushEnable : std_logic := '0';
-	signal nextFIFOpushEnable : std_logic;
+--	signal FIFOpushEnable : std_logic := '0';
+--	signal nextFIFOpushEnable : std_logic;
 --	signal FIFOpushToggle : std_logic := '0';
 --	signal lastFIFOpushToggle : std_logic := '0';
 --	signal nextFIFOpushToggle : std_logic;
@@ -610,7 +610,7 @@ fifoInstance : FIFOphil2
 --			sharpenFIFOpullEnable(5) <= sharpenFIFOpullEnable(4);
 
 --			lastFIFOpushToggle <= FIFOpushToggle;
-			FIFOpushEnable <= nextFIFOpushEnable;
+--			FIFOpushEnable <= nextFIFOpushEnable;
 			
 --			immediatelyPullFIFO <= nextImmediatelyPullFIFO;
 
