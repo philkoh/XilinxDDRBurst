@@ -25,13 +25,11 @@ entity bl is
 			LEDBUS6 : out STD_LOGIC;
 			LEDBUS7 : out STD_LOGIC;
 			LEDBUS8 : out STD_LOGIC;
-
 			
 			PIN0 : in  STD_LOGIC;
 			PIN1 : out  STD_LOGIC;
 			PIN26 : in  STD_LOGIC;
 			PIN27 : in  STD_LOGIC;
-			
 			
 			baPORT : out std_logic_vector(2 downto 0);
 			addrPORT : out std_logic_vector(14 downto 0);
@@ -42,9 +40,6 @@ entity bl is
 			wePORT : out std_logic;
 			resetPort : out std_logic;
 			ckePort : out std_logic;
-
-
-			
 
 			ck_pPORT : inout std_logic; 
 			ck_nPORT : inout std_logic;
@@ -58,25 +53,12 @@ entity bl is
 			dqm1PORT : out std_logic; 
 			odtPORT : out std_logic; 
 			
-
-			
 			switch2PORT : in std_logic;
 			switch3PORT : in std_logic;
-			
-
 
 			dummyOut : out std_logic  -- just used to eliminate annoying warning
-
-
-
-
 			  );
 end bl;
-
-
-
-
-
 
 architecture Behavioral of bl is
 component PhilClock
@@ -89,8 +71,6 @@ port
  );
 end component;
 
-
-
 COMPONENT SlowByEightBus
 	PORT(
 		DataToPins : in  burstArr;
@@ -100,8 +80,6 @@ COMPONENT SlowByEightBus
 		IOpins : INOUT std_logic_vector(15 downto 0)
 	);
 END COMPONENT;
-
-
 
 COMPONENT SlowInputByEight
 	PORT(
@@ -113,9 +91,6 @@ COMPONENT SlowInputByEight
 		DataToPins : OUT std_logic_vector(31 downto 0)
 	);
 END COMPONENT;
-
-
-
 
 COMPONENT FIFOphil2
   PORT (
@@ -131,10 +106,6 @@ COMPONENT FIFOphil2
   );
 END COMPONENT;
 
-
-
-
-
 COMPONENT SlowByEight
 	PORT(
 		DataToPins : IN std_logic_vector(31 downto 0);
@@ -144,8 +115,6 @@ COMPONENT SlowByEight
 		IOpins : INOUT std_logic_vector(3 downto 0)
 		);
 END COMPONENT;
-
-	
 
 COMPONENT SPIinterface
 	PORT(
@@ -160,10 +129,6 @@ COMPONENT SPIinterface
 		);
 END COMPONENT;
 
-
-
-	 
-
 COMPONENT DelayWideBus
 	PORT(
 		IncomingUndelayed : IN std_logic_vector(15 downto 0);
@@ -172,12 +137,7 @@ COMPONENT DelayWideBus
 		IncomingDelayed : OUT std_logic_vector(15 downto 0);
 		OutgoingDelayed : OUT std_logic_vector(15 downto 0)
 		);
-	END COMPONENT;
-
-	
-
-
-
+END COMPONENT;
 
 	signal clk250MHz : std_logic := '0';
 	signal clk125MHz : std_logic := '0';
@@ -208,9 +168,6 @@ COMPONENT DelayWideBus
 
 	signal refillTheShiftRegister : std_logic := '0';
 	signal nextRefillTheShiftRegister : std_logic;
-
-
-
 -------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
@@ -230,7 +187,6 @@ COMPONENT DelayWideBus
 -------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
-
    signal nextCount : unsigned (17 downto 0);
 	signal dqs0 : std_logic := '0'; 
 	signal dqs1 : std_logic := '0'; 
@@ -261,7 +217,6 @@ COMPONENT DelayWideBus
 	
 	signal writeRefill :  philArr;
 	signal nextWriteRefill :  philArr;
-	
 	 
 	signal capturedData :   philArr;
 	signal nextCapturedData :   philArr;
@@ -269,18 +224,14 @@ COMPONENT DelayWideBus
 	signal shiftRegister : philArr;
 	signal nextShiftRegister : philArr;
 	
-	
 	signal writePulseTrain :    std_logic_vector(15 downto 1) := "000000000000000";
 	signal nextWritePulseTrain :    std_logic_vector(15 downto 1) ;
-	
 	
 	signal dataAssertedToOutput : std_logic_vector(15 downto 0);
 	signal nextdataAssertedToOutput : std_logic_vector(15 downto 0);
 	signal delayedDataForOutput : std_logic_vector(15 downto 0);
 	
 	signal delayedDataPort : std_logic_vector(15 downto 0);
-
-	
 
 	signal reset : std_logic := '1';
 	signal nextReset : std_logic := '1';
@@ -301,7 +252,6 @@ COMPONENT DelayWideBus
 	signal nextWe : std_logic := '1';
 	signal weRequest : std_logic := '1';
 	signal nextWeRequest : std_logic := '1';
-
 	
 	signal writeRequest : std_logic := '0';
 	signal nextWriteRequest : std_logic := '0';
@@ -314,8 +264,6 @@ COMPONENT DelayWideBus
 	signal nextSaveRequest3 : std_logic := '0';
 	signal saveRequest4 : std_logic := '0';
 	signal nextSaveRequest4 : std_logic := '0';
-	
-	
 
 	signal switchRegister : std_logic := '0';
 	signal nextSwitchRegister : std_logic := '0';
@@ -323,7 +271,6 @@ COMPONENT DelayWideBus
 
    signal switchCount : unsigned (3 downto 0) := "0000";
    signal nextSwitchCount : unsigned (3 downto 0) := "0000";
-   
 	
 	signal din : std_logic_vector(143 downto 0);
 	signal nextdin : std_logic_vector(143 downto 0);
@@ -338,7 +285,6 @@ COMPONENT DelayWideBus
 	signal doutLSBs: std_logic_vector(3 downto 0);
 	signal doutWaitingLSBs: std_logic_vector(3 downto 0);
 	
-	
 	signal IOpinsA : std_logic_vector(3 downto 0);
 	signal IOpinsB : std_logic_vector(3 downto 0);
  
@@ -347,7 +293,6 @@ COMPONENT DelayWideBus
 	
 	signal slowClockEnable : std_logic;
 	signal slowClockVector : std_logic_vector(7 downto 0) := "00100000";
-
 
 	type stateTypes IS (slowReset, ckeLOW, startWriting,   stopWriting, idle, activate, writeMRS, reading, stopReading, stop);
 	signal currentState : stateTypes := slowReset;
@@ -358,7 +303,6 @@ COMPONENT DelayWideBus
 
 	signal clkOutFast, dqsFast : std_logic;
 	signal clkOutSlow, dqsSlow : std_logic_vector(7 downto 0);
-
 
 	signal slowCount : unsigned (17 downto 0) := "000000000000000000";
 	signal nextSlowCount : unsigned (17 downto 0) ;
@@ -395,13 +339,11 @@ COMPONENT DelayWideBus
 	signal slowNextClockEnableReadDelayed3 : std_logic;
 	signal slowNextClockEnableReadDelayed4 : std_logic;
 	signal slowNextClockEnableReadDelayed5 : std_logic;
-	
 
 	signal slowDQStristate : std_logic;
 	
 	signal requestReset :  std_logic   := '0';
 	signal nextRequestReset : std_logic;
-	
 	
 	signal LEDBUSvec : std_logic_vector(8 downto 0)  ;
 	
@@ -442,14 +384,12 @@ COMPONENT DelayWideBus
 	signal useThisEdge : std_logic := '0';
 	signal nextUseThisEdge : std_logic;
 	signal snapShotOfSlowClockEnable : std_logic := '0';
-
 	
 	signal slowFIFOpull : std_logic;
 	signal slowFIFOpush : std_logic := '0';
 	signal nextSlowFIFOpush : std_logic;
 
 begin
-
 
 MainControlOutputsA: SlowByEight PORT MAP(
 		IOpins => IOpinsA ,
@@ -469,10 +409,6 @@ dataToPinsA(15 downto 8) <= rasSlow ;
 dataToPinsA(23 downto 16) <= casSlow;
 dataToPinsA(31 downto 24) <= weSlow ;
 
-
-
-
-
 ClockAndDQSB: SlowByEight PORT MAP(
 		IOpins => IOpinsB ,
 		DataToPins => dataToPinsB,
@@ -484,11 +420,8 @@ ClockAndDQSB: SlowByEight PORT MAP(
 clkOutFast <= IOpinsB(0);
 dqsFast <= IOpinsB(1);
  
-
 dataToPinsB(7 downto 0) <= clkOutSlow;
 dataToPinsB(15 downto 8) <= dqsSlow ;
-
-
 
 DataBus: SlowByEightBus PORT MAP(
 	IOpins => fastWriteData ,
@@ -498,7 +431,6 @@ DataBus: SlowByEightBus PORT MAP(
 	SlowClockEnable =>  slowClockEnable
 );
 
-
 AddressBus: SlowByEightBus PORT MAP(
 	IOpins => fastWriteAddress ,
 	DataToPins => slowWriteAddress,
@@ -506,7 +438,6 @@ AddressBus: SlowByEightBus PORT MAP(
 	MediumClock => clk62M5Hz,
 	SlowClockEnable =>  slowClockEnable
 );
-
 
 Inst_SlowInputByEight: SlowInputByEight PORT MAP(
 	IOpins => delayeddataPort(3 downto 0),
@@ -516,8 +447,6 @@ Inst_SlowInputByEight: SlowInputByEight PORT MAP(
 	SlowClock => clk31M25Hz,
 	SlowClockEnable =>   slowClockEnable
 );
-
-
 
 fifoInstance : FIFOphil2
   PORT MAP (
@@ -532,14 +461,11 @@ fifoInstance : FIFOphil2
   empty => empty--  nextEmpty
   );
 
-
 your_instance_name : PhilClock
   port map
    (
     CLK_IN1 => clk,
     CLK_OUT1 => clk250MHz);
-
-
 
 Inst_DelayWideBus: DelayWideBus PORT MAP(
 		IncomingDelayed => delayedDataPort(15 downto 0),
@@ -548,10 +474,6 @@ Inst_DelayWideBus: DelayWideBus PORT MAP(
 		OutgoingUndelayed => fastWriteData(15 downto 0),
 		Tristate => slowdqsTristate
 	);
-
-
-
-
 
 IOBUFDS_dqs0 : IOBUFDS
 generic map (
@@ -584,8 +506,6 @@ OB => ck_nPORT, -- Diff_n output (connect directly to top-level port)
 I => clkOutFast--clk125MHz -- Buffer input
 );
 
-
-
 Inst_SPIinterface: SPIinterface PORT MAP(
 		clk => clk250MHz ,
 		dataout => SPIdataOut,
@@ -597,8 +517,6 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 		sckPin => PIN27 
 	);
 
-
-
 -- BUFGCE: Global Clock Buffer with Clock Enable
 BUFGCE_inst : BUFGCE ----------NOTE: this is a clean way to make a slower clock and still have its rising edge well aligned with clk250MHz
 port map (
@@ -607,7 +525,6 @@ CE => clockShift(0), -- 1-bit input: Clock buffer select
 I => clk250MHz -- 1-bit input: Clock buffer input (S=0)
 );
 
-
 -- BUFGCE: Global Clock Buffer with Clock Enable
 BUFGCE_inst2 : BUFGCE ----------NOTE: this is a clean way to make a slower clock and still have its rising edge well aligned with clk250MHz
 port map (
@@ -615,8 +532,6 @@ O => clk31M25Hz, -- 1-bit output: Clock buffer output
 CE => useThisEdge, -- 1-bit input: Clock buffer select
 I => clk250MHz -- 1-bit input: Clock buffer input (S=0)
 );
-
-
 
 process (clk250MHz)
 	begin
@@ -640,10 +555,7 @@ process (clk62M5Hz)
 		end if;
 end process;
 
-LEDBUS8  <= '0';
-
-
-	process (clk250MHz)
+process (clk250MHz)
 		begin
 ------------------------------------------SEQUENTIAL :	
 		if rising_edge(clk250MHz) then
@@ -695,7 +607,6 @@ LEDBUS8  <= '0';
 			nextCapturedData(3)(2) <= slowReadData(21);
 			nextCapturedData(2)(2) <= slowReadData(22);
 			nextCapturedData(1)(2) <= slowReadData(23);
-	
 
 			nextCapturedData(8)(3) <= slowReadData(24);
 			nextCapturedData(7)(3) <= slowReadData(25);
@@ -705,21 +616,15 @@ LEDBUS8  <= '0';
 			nextCapturedData(3)(3) <= slowReadData(29);
 			nextCapturedData(2)(3) <= slowReadData(30);
 			nextCapturedData(1)(3) <= slowReadData(31);
-	
-
 	end if;
-		
-
-
 	
-		if slowdqsTristate = '1' then
+	if slowdqsTristate = '1' then
 			dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');	
 		else
 			dataPort(15 downto 0) <= delayedDataForOutput(15 downto 0);
 		end if;
 		
 	end process;
-		
 		
 	process (clk250MHz, slowClockEnable, clk31M25Hz)
 		begin
@@ -757,10 +662,9 @@ LEDBUS8  <= '0';
 	LEDBUS5 <= LEDBUSvec(5);
 	LEDBUS6 <= LEDBUSvec(6);
 	LEDBUS7 <= LEDBUSvec(7);
-	--LEDBUS8 <= LEDBUSvec(8);
+	LEDBUS8  <= '0';
 
 	process (dataArrivedToggleSlowed, SPIdataInSlowed, lastDataArrivedToggle, requestedAddress, requestWriteToggle, requestReadToggle, SPIdataIn, SPIFIFOdin, readBurstCount, fastwriteaddress, empty, nextwritepulsetrain, doutwaiting, dout, saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount)
-	
 		begin
 		nextSPIFIFOdin <= SPIFIFOdin;
 		
@@ -868,7 +772,6 @@ LEDBUS8  <= '0';
 		LED1 <= dout(1);
 		LED2 <= dout(2);
 		LED3 <= dout(3);
-		
 
 		LEDBUSvec(8 downto 0) <= SPIdataIn(8 downto 0);
 		LEDBUSvec(3 downto 0) <= std_logic_vector(switchCount);
@@ -880,7 +783,6 @@ LEDBUS8  <= '0';
 		SPIdataOut(15 downto 0) <= "0000000000000000";
 		SPIdataOut(11 downto 8) <= std_logic_vector(switchCount);
 		SPIdataOut(7 downto 0) <= capturedData(to_integer(switchCount + 1))(7 downto 0);
-
 
 		nextRequestReadToggle <= requestReadToggle ;
 		nextRequestWriteToggle <= requestWriteToggle ;
@@ -942,15 +844,9 @@ LEDBUS8  <= '0';
 --				nextdin(119 downto 112) <= SPIdataInSlowed(7 downto 0);
 			end if;
 
-		
-
 		end if;
 			
    end process;
-	
-	
-	
-	
 	
 ------------------------------------------SEQUENTIAL :	
 	process (clk250MHz,  ClockEnableBeginning, slowClockEnable, clk31M25Hz)
@@ -982,7 +878,6 @@ LEDBUS8  <= '0';
 	nextdin <= din;
 	
 	nextRequestReset <= '0';
-			
 
 process (clk250MHz)
 		begin
@@ -995,12 +890,6 @@ process (clk250MHz)
    end process;
 ------------------------------------------COMBINATORIAL:
 	slowClockEnable <= slowClockVector(0);
-	
-
-
-
-
-
 	
 process (clk31M25Hz, slowClockEnable)
 		begin
@@ -1022,9 +911,7 @@ process (clk31M25Hz, slowClockEnable)
 			lastRequestReadToggle <= requestReadToggle; -- keep track of last toggle value so we can detect a change within this process
 			lastRequestWriteToggle <= requestWriteToggle; -- keep track of last toggle value so we can detect a change within this process
 
-
 			readBurstCount <= nextReadBurstCount;
-
 		end if;
    end process;
 ------------------------------------------COMBINATORIAL:
@@ -1124,8 +1011,6 @@ process (slowwritingdatatrain1, dout, requestreset, lastrequestwritetoggle, last
 				nextAddr <= requestedAddress; 
 			end if;
 
-
-
 		when reading =>
 				rasSlow <= "11111111";
 				casSlow <= "00111111"; --"11111100";  --"11110011";
@@ -1137,7 +1022,6 @@ process (slowwritingdatatrain1, dout, requestreset, lastrequestwritetoggle, last
 				slowNextClockEnableRead <= '1';
 				nextState <= idle;
 			end if;
-		 
 
 		when writeMRS =>
 			if slowCount = 0  then
@@ -1182,8 +1066,6 @@ process (slowwritingdatatrain1, dout, requestreset, lastrequestwritetoggle, last
 				weSlow <= "11110011";
 			end if;
 
-
-
 			if slowCount =  64   then
 				--ZQCL
 				nextSlowBa <= "000";				
@@ -1203,7 +1085,6 @@ process (slowwritingdatatrain1, dout, requestreset, lastrequestwritetoggle, last
 				casSlow <= "11110011";
 				weSlow <= "11110011";
 			end if;
-		
 			
 			if slowCount =  389   then
 				nextState <= activate;
@@ -1227,7 +1108,6 @@ process (slowwritingdatatrain1, dout, requestreset, lastrequestwritetoggle, last
 	
 	end case;	
 	
-	
 	slowWriteData(0)<= "ZZZZZZZZZZZZZZZZ"; 
 	slowWriteData(1)<= "ZZZZZZZZZZZZZZZZ"; 
 	slowWriteData(2)<= "ZZZZZZZZZZZZZZZZ"; 
@@ -1238,8 +1118,6 @@ process (slowwritingdatatrain1, dout, requestreset, lastrequestwritetoggle, last
 	slowWriteData(7)<= "ZZZZZZZZZZZZZZZZ"; 
 
 	if slowWritingPulseTrain(1) = '1' or slowWritingPulseTrain(2) = '1' then
-		
-	
 		slowWriteData(0)<= slowWritingDataTrain1(15 downto 0); 
 		slowWriteData(1)<= slowWritingDataTrain1(31 downto 16); 
 		slowWriteData(2)<= slowWritingDataTrain1(47 downto 32); 
@@ -1248,13 +1126,8 @@ process (slowwritingdatatrain1, dout, requestreset, lastrequestwritetoggle, last
 		slowWriteData(5)<= slowWritingDataTrain1(95 downto 80); 
 		slowWriteData(6)<= slowWritingDataTrain1(111 downto 96); 
 		slowWriteData(7)<= slowWritingDataTrain1(127 downto 112); 
-
 	end if;
-	
-	
 		
 end process;
 
-
 end Behavioral;
-
