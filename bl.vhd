@@ -562,7 +562,7 @@ process (clk250MHz)
 			clk125MHz <=  nextClk125MHz  ;  --clk125MHz changes on rising edge of 250MHz clock; this is sent out as external clock *and* as dqs
 	--		inData (15 downto 0) <= delayedDataPort (15 downto 0);  -- data uses the 250 MHz clock
 
-			capturedData(11 downto 1) <= nextCapturedData(11 downto 1);
+			capturedData(7 downto 0) <= nextCapturedData(7 downto 0);
 		
 			slowNextClockEnableReadDelayed1 <= slowNextClockEnableRead;
 			slowNextClockEnableReadDelayed2 <= slowNextClockEnableReadDelayed1;
@@ -578,44 +578,44 @@ process (clk250MHz)
 
 		nextClk125MHz <= not clk125MHz;
 		
-		nextCapturedData(11 downto 1) <= capturedData(11 downto 1); --unless overridden below, hold and remember the captured values
+		nextCapturedData(7 downto 0) <= capturedData(7 downto 0); --unless overridden below, hold and remember the captured values
 	
 		if slowNextClockEnableReadDelayed5 = '1'  then
-			nextCapturedData(8)(0) <= slowReadData(0);
-			nextCapturedData(7)(0) <= slowReadData(1);
-			nextCapturedData(6)(0) <= slowReadData(2);
-			nextCapturedData(5)(0) <= slowReadData(3);
-			nextCapturedData(4)(0) <= slowReadData(4);
-			nextCapturedData(3)(0) <= slowReadData(5);
-			nextCapturedData(2)(0) <= slowReadData(6);
-			nextCapturedData(1)(0) <= slowReadData(7);
+			nextCapturedData(7)(0) <= slowReadData(0);
+			nextCapturedData(6)(0) <= slowReadData(1);
+			nextCapturedData(5)(0) <= slowReadData(2);
+			nextCapturedData(4)(0) <= slowReadData(3);
+			nextCapturedData(3)(0) <= slowReadData(4);
+			nextCapturedData(2)(0) <= slowReadData(5);
+			nextCapturedData(1)(0) <= slowReadData(6);
+			nextCapturedData(0)(0) <= slowReadData(7);
 
-			nextCapturedData(8)(1) <= slowReadData(8);
-			nextCapturedData(7)(1) <= slowReadData(9);
-			nextCapturedData(6)(1) <= slowReadData(10);
-			nextCapturedData(5)(1) <= slowReadData(11);
-			nextCapturedData(4)(1) <= slowReadData(12);
-			nextCapturedData(3)(1) <= slowReadData(13);
-			nextCapturedData(2)(1) <= slowReadData(14);
-			nextCapturedData(1)(1) <= slowReadData(15);
+			nextCapturedData(7)(1) <= slowReadData(8);
+			nextCapturedData(6)(1) <= slowReadData(9);
+			nextCapturedData(5)(1) <= slowReadData(10);
+			nextCapturedData(4)(1) <= slowReadData(11);
+			nextCapturedData(3)(1) <= slowReadData(12);
+			nextCapturedData(2)(1) <= slowReadData(13);
+			nextCapturedData(1)(1) <= slowReadData(14);
+			nextCapturedData(0)(1) <= slowReadData(15);
 	
-			nextCapturedData(8)(2) <= slowReadData(16);
-			nextCapturedData(7)(2) <= slowReadData(17);
-			nextCapturedData(6)(2) <= slowReadData(18);
-			nextCapturedData(5)(2) <= slowReadData(19);
-			nextCapturedData(4)(2) <= slowReadData(20);
-			nextCapturedData(3)(2) <= slowReadData(21);
-			nextCapturedData(2)(2) <= slowReadData(22);
-			nextCapturedData(1)(2) <= slowReadData(23);
+			nextCapturedData(7)(2) <= slowReadData(16);
+			nextCapturedData(6)(2) <= slowReadData(17);
+			nextCapturedData(5)(2) <= slowReadData(18);
+			nextCapturedData(4)(2) <= slowReadData(19);
+			nextCapturedData(3)(2) <= slowReadData(20);
+			nextCapturedData(2)(2) <= slowReadData(21);
+			nextCapturedData(1)(2) <= slowReadData(22);
+			nextCapturedData(0)(2) <= slowReadData(23);
 
-			nextCapturedData(8)(3) <= slowReadData(24);
-			nextCapturedData(7)(3) <= slowReadData(25);
-			nextCapturedData(6)(3) <= slowReadData(26);
-			nextCapturedData(5)(3) <= slowReadData(27);
-			nextCapturedData(4)(3) <= slowReadData(28);
-			nextCapturedData(3)(3) <= slowReadData(29);
-			nextCapturedData(2)(3) <= slowReadData(30);
-			nextCapturedData(1)(3) <= slowReadData(31);
+			nextCapturedData(7)(3) <= slowReadData(24);
+			nextCapturedData(6)(3) <= slowReadData(25);
+			nextCapturedData(5)(3) <= slowReadData(26);
+			nextCapturedData(4)(3) <= slowReadData(27);
+			nextCapturedData(3)(3) <= slowReadData(28);
+			nextCapturedData(2)(3) <= slowReadData(29);
+			nextCapturedData(1)(3) <= slowReadData(30);
+			nextCapturedData(0)(3) <= slowReadData(31);
 	end if;
 	
 	if slowdqsTristate = '1' then
@@ -688,85 +688,62 @@ process (clk250MHz)
 		LED3 <= switchCount(3);
 	
 		if switchCount = 0 then
+			LED0 <=   capturedData(0)(0);
+			LED1 <=    capturedData(0)(1);
+			LED2 <=    capturedData(0)(2);
+			LED3 <=    capturedData(0)(3);
+			LEDBUSvec <= capturedData(0)(8 downto 0);
+	   end if;
+		if switchCount = 1 then
 			LED0 <=   capturedData(1)(0);
 			LED1 <=    capturedData(1)(1);
 			LED2 <=    capturedData(1)(2);
 			LED3 <=    capturedData(1)(3);
 			LEDBUSvec <= capturedData(1)(8 downto 0);
-	   end if;
-		if switchCount = 1 then
+		end if;
+		if switchCount = 2 then
 			LED0 <=   capturedData(2)(0);
 			LED1 <=    capturedData(2)(1);
 			LED2 <=    capturedData(2)(2);
 			LED3 <=    capturedData(2)(3);
 			LEDBUSvec <= capturedData(2)(8 downto 0);
-		end if;
-		if switchCount = 2 then
+	end if;
+		if switchCount = 3 then
 			LED0 <=   capturedData(3)(0);
 			LED1 <=    capturedData(3)(1);
 			LED2 <=    capturedData(3)(2);
 			LED3 <=    capturedData(3)(3);
 			LEDBUSvec <= capturedData(3)(8 downto 0);
-	end if;
-		if switchCount = 3 then
+		end if;
+		if switchCount = 4 then
 			LED0 <=   capturedData(4)(0);
 			LED1 <=    capturedData(4)(1);
 			LED2 <=    capturedData(4)(2);
 			LED3 <=    capturedData(4)(3);
 			LEDBUSvec <= capturedData(4)(8 downto 0);
 		end if;
-		if switchCount = 4 then
+		if switchCount = 5 then
 			LED0 <=   capturedData(5)(0);
 			LED1 <=    capturedData(5)(1);
 			LED2 <=    capturedData(5)(2);
 			LED3 <=    capturedData(5)(3);
 			LEDBUSvec <= capturedData(5)(8 downto 0);
 		end if;
-		if switchCount = 5 then
+		if switchCount = 6 then
 			LED0 <=   capturedData(6)(0);
 			LED1 <=    capturedData(6)(1);
 			LED2 <=    capturedData(6)(2);
 			LED3 <=    capturedData(6)(3);
 			LEDBUSvec <= capturedData(6)(8 downto 0);
 		end if;
-		if switchCount = 6 then
+		if switchCount = 7 then
 			LED0 <=   capturedData(7)(0);
 			LED1 <=    capturedData(7)(1);
 			LED2 <=    capturedData(7)(2);
 			LED3 <=    capturedData(7)(3);
 			LEDBUSvec <= capturedData(7)(8 downto 0);
 		end if;
-		if switchCount = 7 then
-			LED0 <=   capturedData(8)(0);
-			LED1 <=    capturedData(8)(1);
-			LED2 <=    capturedData(8)(2);
-			LED3 <=    capturedData(8)(3);
-			LEDBUSvec <= capturedData(8)(8 downto 0);
-		end if;
 
-		if switchCount = 8 then
-				LED0 <=   capturedData(9)(0);
-				LED1 <=    capturedData(9)(1);
-				LED2 <=    capturedData(9)(2);
-				LED3 <=    capturedData(9)(3);
-			LEDBUSvec <= capturedData(9)(8 downto 0);
-		end if;
-
-	   if switchCount = 9 then
-				LED0 <=   capturedData(10)(0);
-				LED1 <=    capturedData(10)(1);
-				LED2 <=    capturedData(10)(2);
-				LED3 <=    capturedData(10)(3);
-			LEDBUSvec <= capturedData(10)(8 downto 0);
-		end if;
-
-		if switchCount = 10 then
-				LED0 <=   capturedData(11)(0);
-				LED1 <=    capturedData(11)(1);
-				LED2 <=    capturedData(11)(2);
-				LED3 <=    capturedData(11)(3);
-			LEDBUSvec <= capturedData(11)(8 downto 0);
-		end if;
 
 		LED0 <= dout(0);
 		LED1 <= dout(1);
@@ -782,7 +759,7 @@ process (clk250MHz)
 		
 		SPIdataOut(15 downto 0) <= "0000000000000000";
 		SPIdataOut(11 downto 8) <= std_logic_vector(switchCount);
-		SPIdataOut(7 downto 0) <= capturedData(to_integer(switchCount + 1))(7 downto 0);
+		SPIdataOut(7 downto 0) <= capturedData(to_integer(switchCount + 0))(7 downto 0);
 
 		nextRequestReadToggle <= requestReadToggle ;
 		nextRequestWriteToggle <= requestWriteToggle ;
