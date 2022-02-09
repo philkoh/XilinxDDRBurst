@@ -233,37 +233,37 @@ END COMPONENT;
 	
 	signal delayedDataPort : std_logic_vector(15 downto 0);
 
-	signal reset : std_logic := '1';
-	signal nextReset : std_logic := '1';
-	signal cke : std_logic := '1';
-	signal nextCke : std_logic := '1';
+--	signal reset : std_logic := '1';
+--	signal nextReset : std_logic := '1';
+--	signal cke : std_logic := '1';
+--	signal nextCke : std_logic := '1';
 
-	signal cas : std_logic := '1';
-	signal nextCas : std_logic := '1';
-	signal casRequest : std_logic := '1';
-	signal nextCasRequest : std_logic := '1';
+--	signal cas : std_logic := '1';
+--	signal nextCas : std_logic := '1';
+--	signal casRequest : std_logic := '1';
+--	signal nextCasRequest : std_logic := '1';
 
-	signal ras : std_logic := '1';
-	signal nextRas : std_logic := '1';
-	signal rasRequest : std_logic := '1';
-	signal nextRasRequest : std_logic := '1';
+--	signal ras : std_logic := '1';
+--	signal nextRas : std_logic := '1';
+--	signal rasRequest : std_logic := '1';
+--	signal nextRasRequest : std_logic := '1';
 
-	signal we : std_logic := '1';
-	signal nextWe : std_logic := '1';
-	signal weRequest : std_logic := '1';
-	signal nextWeRequest : std_logic := '1';
+--	signal we : std_logic := '1';
+--	signal nextWe : std_logic := '1';
+--	signal weRequest : std_logic := '1';
+--	signal nextWeRequest : std_logic := '1';
 	
-	signal writeRequest : std_logic := '0';
-	signal nextWriteRequest : std_logic := '0';
+--	signal writeRequest : std_logic := '0';
+--	signal nextWriteRequest : std_logic := '0';
 	
-	signal saveRequest : std_logic := '0';
-	signal nextSaveRequest : std_logic := '0';
-	signal saveRequest2 : std_logic := '0';
-	signal nextSaveRequest2 : std_logic := '0';
-	signal saveRequest3 : std_logic := '0';
-	signal nextSaveRequest3 : std_logic := '0';
-	signal saveRequest4 : std_logic := '0';
-	signal nextSaveRequest4 : std_logic := '0';
+--	signal saveRequest : std_logic := '0';
+--	signal nextSaveRequest : std_logic := '0';
+--	signal saveRequest2 : std_logic := '0';
+--	signal nextSaveRequest2 : std_logic := '0';
+--	signal saveRequest3 : std_logic := '0';
+--	signal nextSaveRequest3 : std_logic := '0';
+--	signal saveRequest4 : std_logic := '0';
+--	signal nextSaveRequest4 : std_logic := '0';
 
 	signal switchRegister : std_logic := '0';
 	signal nextSwitchRegister : std_logic := '0';
@@ -312,8 +312,8 @@ END COMPONENT;
 	signal slowWritingPulseTrain : std_logic_vector (3 downto 0)  := "0000";
 	signal slowWritingDataTrain0 : std_logic_vector (143 downto 0) ;
 	signal slowWritingDataTrain1 : std_logic_vector (143 downto 0) ;
-	signal slowWritingDataTrain2 : std_logic_vector (143 downto 0) ;
-	signal slowWritingDataTrain3 : std_logic_vector (143 downto 0) ;
+--	signal slowWritingDataTrain2 : std_logic_vector (143 downto 0) ;
+--	signal slowWritingDataTrain3 : std_logic_vector (143 downto 0) ;
 	signal nextSlowWritingPulseTrain : std_logic_vector  (3 downto 0);
 	
 	signal slowWriteData, slowWriteAddress : burstArr;
@@ -573,7 +573,7 @@ process (clk250MHz)
 	end process;
 
 ------------------------------------------COMBINATORIAL:
-	process (slowReadData, slownextclockenablereaddelayed5,slowdqstristate, clk125MHz,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,  clockEnableRead, capturedData, dqsTristate, delayedDataForOutput, dataAssertedToOutput, clockEnableWrite, clockEnableRefillWriteData, refillTheShiftRegister)
+	process (slowReadData, slownextclockenablereaddelayed5,slowdqstristate, clk125MHz,  clockEnableRead, capturedData, dqsTristate, delayedDataForOutput, dataAssertedToOutput, clockEnableWrite, clockEnableRefillWriteData, refillTheShiftRegister)
 		begin
 
 		nextClk125MHz <= not clk125MHz;
@@ -664,7 +664,7 @@ process (clk250MHz)
 	LEDBUS7 <= LEDBUSvec(7);
 	LEDBUS8  <= '0';
 
-	process (dataArrivedToggleSlowed, SPIdataInSlowed, lastDataArrivedToggle, requestedAddress, requestWriteToggle, requestReadToggle, SPIdataIn, SPIFIFOdin, readBurstCount, fastwriteaddress, empty, nextwritepulsetrain, doutwaiting, dout, saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount)
+	process (dataArrivedToggleSlowed, SPIdataInSlowed, lastDataArrivedToggle, requestedAddress, requestWriteToggle, requestReadToggle, SPIdataIn, SPIFIFOdin, readBurstCount, fastwriteaddress, empty, nextwritepulsetrain, doutwaiting, dout, clockEnableCommand,  capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount)
 		begin
 		nextSPIFIFOdin <= SPIFIFOdin;
 		
@@ -902,8 +902,8 @@ process (clk31M25Hz, slowClockEnable)
 			slowWritingPulseTrain  <= nextSlowWritingPulseTrain;
 			slowWritingDataTrain0  <= dout ;
 			slowWritingDataTrain1  <= slowWritingDataTrain0  ;
-			slowWritingDataTrain2  <= slowWritingDataTrain1  ;
-			slowWritingDataTrain3  <= slowWritingDataTrain2  ;
+--			slowWritingDataTrain2  <= slowWritingDataTrain1  ;
+--			slowWritingDataTrain3  <= slowWritingDataTrain2  ;
 
 			addr <= nextAddr;
 			slowBA <= nextSlowBA;
