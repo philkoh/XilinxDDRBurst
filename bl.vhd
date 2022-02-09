@@ -585,10 +585,10 @@ fifoInstance : FIFOphil2
   PORT MAP (
     rst => slowFIFOrst,--rst,
      wr_clk => clk250MHz,
-    rd_clk => clk250MHz,
+    rd_clk => clk31M25Hz,--     clk250MHz,
     din => SPIFIFOdin,--din,
     wr_en => FIFOpushEnable,-- sharpenFIFOpushEnable(5) ,--
-    rd_en => immediatelyPullFIFO,--slowFIFOpullPulse(9) ,--
+    rd_en => slowFIFOpull,--      immediatelyPullFIFO,--slowFIFOpullPulse(9) ,--
     dout => dout,
 --    full => full,
   empty => nextEmpty
