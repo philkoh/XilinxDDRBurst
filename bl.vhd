@@ -399,7 +399,7 @@ MainControlOutputsA: SlowByEight PORT MAP(
 		SlowClockEnable => slowClockEnable
 	);
 	
-csFast <= IOpinsA(0);
+--csFast <= IOpinsA(0);
 rasFast <= IOpinsA(1);
 casFast <= IOpinsA(2);
 weFast <= IOpinsA(3);
@@ -573,7 +573,7 @@ process (clk250MHz)
 	end process;
 
 ------------------------------------------COMBINATORIAL:
-	process (slownextclockenablereaddelayed4,slowdqstristate, clk125MHz,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData,  clockEnableRead, capturedData, dqsTristate, delayedDataForOutput, dataAssertedToOutput, clockEnableWrite, clockEnableRefillWriteData, refillTheShiftRegister)
+	process (slowReadData, slownextclockenablereaddelayed4,slowdqstristate, clk125MHz,cas,casRequest,ras,rasRequest,we,weRequest,saveRequest,inData,  clockEnableRead, capturedData, dqsTristate, delayedDataForOutput, dataAssertedToOutput, clockEnableWrite, clockEnableRefillWriteData, refillTheShiftRegister)
 		begin
 
 		nextClk125MHz <= not clk125MHz;

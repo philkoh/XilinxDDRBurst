@@ -46,8 +46,8 @@ signal shiftRegisters : std_logic_vector (31 downto 0) := "000000000000000000000
 signal nextShiftRegisters : std_logic_vector (31 downto 0);
 signal dataStrobe : std_logic := '0';
 signal lastDataStrobe : std_logic := '0';
-signal preloadPulse : std_logic := '0';
-signal nextPreloadPulse : std_logic := '0';
+--signal preloadPulse : std_logic := '0';
+--signal nextPreloadPulse : std_logic := '0';
 
 --signal slowClockDelay : std_logic_vector (7 downto 0) := "00000000";
 
@@ -69,7 +69,7 @@ process (FastClock)
 begin
 	if rising_edge(FastClock) then
 		lastDataStrobe <= dataStrobe;
-		preloadPulse <= nextPreloadPulse;
+--		preloadPulse <= nextPreloadPulse;
 		shiftRegisters <= nextShiftRegisters;
 		
 --		slowClockDelay(7 downto 1) <= slowClockDelay(6 downto 0);
@@ -79,15 +79,11 @@ begin
 end process;
 
 ------------------------------------------COMBINATORIAL:
-nextPreloadPulse <= '0' when lastDataStrobe = dataStrobe else '1';  -- a one-cycle pulse is generated after the dataStrobe toggles
+--nextPreloadPulse <= '0' when lastDataStrobe = dataStrobe else '1';  -- a one-cycle pulse is generated after the dataStrobe toggles
 
-process (iopins, preloadPulse, shiftRegisters)
+process (iopins,  shiftRegisters)
 	begin
---	if preloadPulse = '1' then
---		outgoingData <= shiftRegisters;
---	else
 		nextShiftRegisters(31 downto 1) <= shiftRegisters(30 downto 0); 
---	end if;
 
 
 	nextShiftRegisters(0) <= IOpins(0);

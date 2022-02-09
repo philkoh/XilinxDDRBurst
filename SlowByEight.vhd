@@ -45,11 +45,11 @@ architecture Behavioral of SlowByEight is
 	signal lastDataStrobe : std_logic := '0';
 	signal preloadPulse : std_logic := '0';
 	signal nextPreloadPulse : std_logic := '0';
-	signal dummy : std_logic;
+--	signal dummy : std_logic;
 begin
 	
 
-process (FastClock, SlowClockEnable)
+process (MediumClock, SlowClockEnable)
 	begin
 	if rising_edge(MediumClock) and SlowClockEnable = '1' then
 		incomingData <= DataToPins;
@@ -88,7 +88,7 @@ IOpins(3) <= shiftRegisters(31);
 
 	
 	
-dummy <= MediumClock;
+--dummy <= MediumClock;
 
 end Behavioral;
 
