@@ -469,9 +469,9 @@ COMPONENT DelayWideBus
 	
 	signal FIFOpushEnable : std_logic := '0';
 	signal nextFIFOpushEnable : std_logic;
-	signal FIFOpushToggle : std_logic := '0';
-	signal lastFIFOpushToggle : std_logic := '0';
-	signal nextFIFOpushToggle : std_logic;
+--	signal FIFOpushToggle : std_logic := '0';
+--	signal lastFIFOpushToggle : std_logic := '0';
+--	signal nextFIFOpushToggle : std_logic;
 
    signal readBurstCount : unsigned (7 downto 0) := "00000000";
 	signal nextReadBurstCount : unsigned (7 downto 0) ;
@@ -609,7 +609,7 @@ fifoInstance : FIFOphil2
 --			sharpenFIFOpullEnable(4) <= sharpenFIFOpullEnable(3) and (not sharpenFIFOpullEnable(4));  -- only on rising edge of sharpenFIFOpushEnable(2) 
 --			sharpenFIFOpullEnable(5) <= sharpenFIFOpullEnable(4);
 
-			lastFIFOpushToggle <= FIFOpushToggle;
+--			lastFIFOpushToggle <= FIFOpushToggle;
 			FIFOpushEnable <= nextFIFOpushEnable;
 			
 --			immediatelyPullFIFO <= nextImmediatelyPullFIFO;
@@ -629,7 +629,7 @@ fifoInstance : FIFOphil2
 	
 	
 	
-	nextFIFOpushEnable <= '1' when FIFOpushToggle /= lastFIFOpushToggle else '0';
+--	nextFIFOpushEnable <= '1' when FIFOpushToggle /= lastFIFOpushToggle else '0';
 	
 
 	
@@ -889,7 +889,7 @@ LEDBUS8  <= testBlink;
 			requestWriteToggle <= nextRequestWriteToggle ;
 			requestedAddress <= nextRequestedAddress  ;
 			
-			FIFOpushToggle <= nextFIFOpushToggle;
+	--		FIFOpushToggle <= nextFIFOpushToggle;
 
 --			din <= nextdin;
 			SPIdataInSlowed <= SPIdataIn ;
@@ -917,7 +917,7 @@ LEDBUS8  <= testBlink;
 	--LEDBUS8 <= LEDBUSvec(8);
 
 
-	process (dataArrivedToggleSlowed, SPIdataInSlowed, lastDataArrivedToggle, FIFOpushToggle, requestedAddress, requestWriteToggle, requestReadToggle, SPIdataIn, SPIFIFOdin, readBurstCount, fastwriteaddress, empty, nextwritepulsetrain, doutwaiting, dout, saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount)
+	process (dataArrivedToggleSlowed, SPIdataInSlowed, lastDataArrivedToggle, requestedAddress, requestWriteToggle, requestReadToggle, SPIdataIn, SPIFIFOdin, readBurstCount, fastwriteaddress, empty, nextwritepulsetrain, doutwaiting, dout, saveRequest, clockEnableCommand, casRequest, rasRequest, weRequest, capturedData, writeRefill, addrOut, switchRegister, lastSwitchRegister, writeRequest, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount)
 	
 		begin
 		nextSPIFIFOdin <= SPIFIFOdin;
@@ -1046,7 +1046,7 @@ LEDBUS8  <= testBlink;
 		nextRequestWriteToggle <= requestWriteToggle ;
 		nextRequestedAddress <= requestedAddress  ;
 		
-		nextFIFOpushToggle <= FIFOpushToggle;
+--		nextFIFOpushToggle <= FIFOpushToggle;
 --		nextdin <= din;
 		slowFIFOpush <= '0';
 
@@ -1065,7 +1065,7 @@ LEDBUS8  <= testBlink;
 			end if; 
 
 			if SPIdataInSlowed(15 downto 8) = "00000111" then -- command 7 means push into FIFO
-				nextFIFOpushToggle <= not FIFOpushToggle;
+	--			nextFIFOpushToggle <= not FIFOpushToggle;
 				slowFIFOpush <= '1';
 			end if;
 			if SPIdataInSlowed(15 downto 8) = "00001000" then -- command 8 means set nextSPIFIFOdin values
