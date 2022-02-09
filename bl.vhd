@@ -187,7 +187,7 @@ END COMPONENT;
 -------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
-   signal nextCount : unsigned (17 downto 0);
+ --  signal nextCount : unsigned (17 downto 0);
 	signal dqs0 : std_logic := '0'; 
 	signal dqs1 : std_logic := '0'; 
 	signal dqs0Incoming : std_logic := '0';
@@ -198,16 +198,16 @@ END COMPONENT;
 	
 	signal odt : std_logic := '1';
 	signal nextOdt : std_logic := '1';
-	signal ba :   std_logic_vector(2 downto 0);
-	signal nextBa :   std_logic_vector(2 downto 0);
-	signal addrOut :   std_logic_vector(14 downto 0);
-	signal nextAddrOut :   std_logic_vector(14 downto 0);
-	signal addrRequest :   std_logic_vector(14 downto 0);
-	signal nextAddrRequest :   std_logic_vector(14 downto 0);
-	signal dataCount :   unsigned (3 downto 0)  := "1111";
-	signal nextDataCount :   unsigned (3 downto 0):= "1111";
-	signal data :   std_logic_vector(15 downto 0) := "1111111111111111";
-	signal nextData :   std_logic_vector(15 downto 0):= "1111111111111111";
+--	signal ba :   std_logic_vector(2 downto 0);
+--	signal nextBa :   std_logic_vector(2 downto 0);
+--	signal addrOut :   std_logic_vector(14 downto 0);
+--	signal nextAddrOut :   std_logic_vector(14 downto 0);
+--	signal addrRequest :   std_logic_vector(14 downto 0);
+--	signal nextAddrRequest :   std_logic_vector(14 downto 0);
+--	signal dataCount :   unsigned (3 downto 0)  := "1111";
+--	signal nextDataCount :   unsigned (3 downto 0):= "1111";
+--	signal data :   std_logic_vector(15 downto 0) := "1111111111111111";
+--	signal nextData :   std_logic_vector(15 downto 0):= "1111111111111111";
 	--signal inData :   std_logic_vector(15 downto 0);
 	--signal inDataB :   std_logic_vector(15 downto 0);
 	
@@ -227,8 +227,8 @@ END COMPONENT;
 	signal writePulseTrain :    std_logic_vector(15 downto 1) := "000000000000000";
 	signal nextWritePulseTrain :    std_logic_vector(15 downto 1) ;
 	
-	signal dataAssertedToOutput : std_logic_vector(15 downto 0);
-	signal nextdataAssertedToOutput : std_logic_vector(15 downto 0);
+--	signal dataAssertedToOutput : std_logic_vector(15 downto 0);
+--	signal nextdataAssertedToOutput : std_logic_vector(15 downto 0);
 	signal delayedDataForOutput : std_logic_vector(15 downto 0);
 	
 	signal delayedDataPort : std_logic_vector(15 downto 0);
@@ -573,7 +573,7 @@ process (clk250MHz)
 	end process;
 
 ------------------------------------------COMBINATORIAL:
-	process (slowReadData, slownextclockenablereaddelayed5,slowdqstristate, clk125MHz,  clockEnableRead, capturedData, dqsTristate, delayedDataForOutput, dataAssertedToOutput, clockEnableWrite, clockEnableRefillWriteData)
+	process (slowReadData, slownextclockenablereaddelayed5,slowdqstristate, clk125MHz,  clockEnableRead, capturedData, dqsTristate, delayedDataForOutput, clockEnableWrite, clockEnableRefillWriteData)
 		begin
 
 		nextClk125MHz <= not clk125MHz;
@@ -664,11 +664,11 @@ process (clk250MHz)
 	LEDBUS7 <= LEDBUSvec(7);
 	LEDBUS8  <= '0';
 
-	process (dataArrivedToggleSlowed, SPIdataInSlowed, lastDataArrivedToggle, requestedAddress, requestWriteToggle, requestReadToggle, SPIdataIn, SPIFIFOdin, readBurstCount, fastwriteaddress, empty, nextwritepulsetrain, doutwaiting, dout, clockEnableCommand,  capturedData, addrOut, switchRegister, lastSwitchRegister, writePulseTrain,  addrRequest, switch2port, switch3Port, switchCount)
+	process (dataArrivedToggleSlowed, SPIdataInSlowed, lastDataArrivedToggle, requestedAddress, requestWriteToggle, requestReadToggle, SPIdataIn, SPIFIFOdin, readBurstCount, fastwriteaddress, empty, nextwritepulsetrain, doutwaiting, dout, clockEnableCommand,  capturedData, switchRegister, lastSwitchRegister, writePulseTrain,  switch2port, switch3Port, switchCount)
 		begin
 		nextSPIFIFOdin <= SPIFIFOdin;
 		
-		addrPort <= fastWriteAddress(14 downto 0);-- addrOut;
+		addrPort <= fastWriteAddress(14 downto 0);
 	
 		nextSwitchRegister <= switchRegister;
 		if switch2PORT = '0' then
@@ -1024,7 +1024,7 @@ process (slowwritingdatatrain1, dout,  lastrequestwritetoggle, lastrequestreadto
 			if slowCount =  32     then
 				nextSlowBA <= "001"; --MRS MR1  
 				nextAddr <= "0000000000000101";  -- DLL disable     RZQ/4 (60O NOM)
---				nextAddrRequest <= "000000000000100";  -- DLL enable     RZQ/4 (60O NOM)
+--				nextAddr <= "000000000000100";  -- DLL enable     RZQ/4 (60O NOM)
 			end if;
 			if slowCount =  35 then 
 				rasSlow <= "11110011";
@@ -1035,7 +1035,7 @@ process (slowwritingdatatrain1, dout,  lastrequestwritetoggle, lastrequestreadto
 			if slowCount =  48   then
 				nextSlowBa <= "000";		--MRS MR0
 				nextAddr <= (9 => '1', 8 => '0', 5 => '1', others => '0'); --CAS latency = 6, Don'treset DLL  , WriteRecovery = 5, FixedBurstLength = 8
---				nextAddrRequest <= (9 => '1', 8 => '1', 4 => '1', others => '0'); --CAS latency = 5, reset DLL  , WriteRecovery = 5
+--				nextAddr <= (9 => '1', 8 => '1', 4 => '1', others => '0'); --CAS latency = 5, reset DLL  , WriteRecovery = 5
 			end if;
 			if slowCount =  51 then 
 				rasSlow <= "11110011";
