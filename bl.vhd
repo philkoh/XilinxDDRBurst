@@ -365,10 +365,10 @@ COMPONENT DelayWideBus
 	signal nextDoutWaiting : std_logic_vector(143 downto 0);
 	signal rst : std_logic ;
 	signal empty : std_logic := '1';
-	signal nextEmpty : std_logic;
+--	signal nextEmpty : std_logic;
 	
 --	signal sharpenFIFOpushEnable : std_logic_vector (5 downto 0) := "000000";
-	signal sharpenFIFOpullEnable : std_logic_vector (5 downto 0) := "000000";
+--	signal sharpenFIFOpullEnable : std_logic_vector (5 downto 0) := "000000";
 	
 	signal dinLSBs: std_logic_vector(3 downto 0);
 	signal nextDinLSBs : std_logic_vector(3 downto 0);
@@ -593,7 +593,7 @@ fifoInstance : FIFOphil2
     rd_en => slowFIFOpull,--      immediatelyPullFIFO,--slowFIFOpullPulse(9) ,--
     dout => dout,
 --    full => full,
-  empty => nextEmpty
+  empty => empty--  nextEmpty
   );
 -- INST_TAG_END ------ End INSTANTIATION Template ------------
 
@@ -615,7 +615,7 @@ fifoInstance : FIFOphil2
 			
 --			immediatelyPullFIFO <= nextImmediatelyPullFIFO;
 
-			empty <= nextEmpty;
+--			empty <= nextEmpty;
 			
 		end if;
 	end process;

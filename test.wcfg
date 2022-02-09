@@ -19,11 +19,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="61" />
-   <wvobject fp_name="/spitest/uut/currentstate" type="other" db_ref_id="1">
-      <obj_property name="ElementShortName">currentstate</obj_property>
-      <obj_property name="ObjectShortName">currentstate</obj_property>
-   </wvobject>
+   <WVObjectSize size="53" />
    <wvobject fp_name="/spitest/pin0" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">pin0</obj_property>
       <obj_property name="ObjectShortName">pin0</obj_property>
@@ -48,14 +44,6 @@
       <obj_property name="ElementShortName">spidatain[15:0]</obj_property>
       <obj_property name="ObjectShortName">spidatain[15:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/spitest/uut/fifopushtoggle" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">fifopushtoggle</obj_property>
-      <obj_property name="ObjectShortName">fifopushtoggle</obj_property>
-   </wvobject>
-   <wvobject fp_name="/spitest/uut/empty" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">empty</obj_property>
-      <obj_property name="ObjectShortName">empty</obj_property>
-   </wvobject>
    <wvobject fp_name="/spitest/uut/requestwritetoggle" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">requestwritetoggle</obj_property>
       <obj_property name="ObjectShortName">requestwritetoggle</obj_property>
@@ -79,26 +67,6 @@
    <wvobject fp_name="/spitest/uut/slowwritedata[0]" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">[0]</obj_property>
       <obj_property name="ObjectShortName">slowwritedata[0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/spitest/uut/immediatelypullfifotoggle" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">immediatelypullfifotoggle</obj_property>
-      <obj_property name="ObjectShortName">immediatelypullfifotoggle</obj_property>
-   </wvobject>
-   <wvobject fp_name="/spitest/uut/nextimmediatelypullfifotoggle" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">nextimmediatelypullfifotoggle</obj_property>
-      <obj_property name="ObjectShortName">nextimmediatelypullfifotoggle</obj_property>
-   </wvobject>
-   <wvobject fp_name="/spitest/uut/immediatelypullfifo" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">immediatelypullfifo</obj_property>
-      <obj_property name="ObjectShortName">immediatelypullfifo</obj_property>
-   </wvobject>
-   <wvobject fp_name="/spitest/uut/slowfifopull" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">slowfifopull</obj_property>
-      <obj_property name="ObjectShortName">slowfifopull</obj_property>
-   </wvobject>
-   <wvobject fp_name="/spitest/uut/nextimmediatelypullfifo" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">nextimmediatelypullfifo</obj_property>
-      <obj_property name="ObjectShortName">nextimmediatelypullfifo</obj_property>
    </wvobject>
    <wvobject fp_name="/spitest/uut/slowwritingdatatrain0[80]" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">[80]</obj_property>
@@ -232,36 +200,36 @@
       <obj_property name="ElementShortName">snapshotofslowclockenable</obj_property>
       <obj_property name="ObjectShortName">snapshotofslowclockenable</obj_property>
    </wvobject>
+   <wvobject fp_name="/spitest/uut/slowfifopull" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">slowfifopull</obj_property>
+      <obj_property name="ObjectShortName">slowfifopull</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/nextempty" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">nextempty</obj_property>
+      <obj_property name="ObjectShortName">nextempty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/empty" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">empty</obj_property>
+      <obj_property name="ObjectShortName">empty</obj_property>
+   </wvobject>
    <wvobject fp_name="/spitest/uut/clk250mhz" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk250mhz</obj_property>
       <obj_property name="ObjectShortName">clk250mhz</obj_property>
-   </wvobject>
-   <wvobject fp_name="/spitest/uut/fifopushenable" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">fifopushenable</obj_property>
-      <obj_property name="ObjectShortName">fifopushenable</obj_property>
-   </wvobject>
-   <wvobject fp_name="/spitest/uut/nextfifopushenable" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">nextfifopushenable</obj_property>
-      <obj_property name="ObjectShortName">nextfifopushenable</obj_property>
-   </wvobject>
-   <wvobject fp_name="/spitest/uut/fifopushtoggle" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">fifopushtoggle</obj_property>
-      <obj_property name="ObjectShortName">fifopushtoggle</obj_property>
-   </wvobject>
-   <wvobject fp_name="/spitest/uut/lastfifopushtoggle" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">lastfifopushtoggle</obj_property>
-      <obj_property name="ObjectShortName">lastfifopushtoggle</obj_property>
-   </wvobject>
-   <wvobject fp_name="/spitest/uut/nextfifopushtoggle" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">nextfifopushtoggle</obj_property>
-      <obj_property name="ObjectShortName">nextfifopushtoggle</obj_property>
    </wvobject>
    <wvobject fp_name="/spitest/uut/clk31m25hz" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk31m25hz</obj_property>
       <obj_property name="ObjectShortName">clk31m25hz</obj_property>
    </wvobject>
+   <wvobject fp_name="/spitest/uut/currentstate" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">currentstate</obj_property>
+      <obj_property name="ObjectShortName">currentstate</obj_property>
+   </wvobject>
    <wvobject fp_name="/spitest/uut/slowfifopush" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">slowfifopush</obj_property>
       <obj_property name="ObjectShortName">slowfifopush</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/nextstate" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">nextstate</obj_property>
+      <obj_property name="ObjectShortName">nextstate</obj_property>
    </wvobject>
 </wave_config>

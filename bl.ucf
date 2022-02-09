@@ -7,7 +7,7 @@ NET slowClockVector(0) TNM = slow_exception;  # slowClockVector(0) is the true n
 NET CLK62M5HZ TNM = slow_exception;
 NET CLK31M25HZ TNM = slow_exception;
 #NET verySlowClockEnable(0) TNM = very_slow_exception;
-INST empty TNM = slow_exception;
+#INST empty TNM = slow_exception;
 NET "slowCount*" TNM = slow_exception;
 
 
