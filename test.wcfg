@@ -92,6 +92,18 @@
       <obj_property name="ElementShortName">immediatelypullfifo</obj_property>
       <obj_property name="ObjectShortName">immediatelypullfifo</obj_property>
    </wvobject>
+   <wvobject fp_name="/spitest/uut/clk250mhz" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk250mhz</obj_property>
+      <obj_property name="ObjectShortName">clk250mhz</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/clk31m25hz" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk31m25hz</obj_property>
+      <obj_property name="ObjectShortName">clk31m25hz</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/slowfifopull" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">slowfifopull</obj_property>
+      <obj_property name="ObjectShortName">slowfifopull</obj_property>
+   </wvobject>
    <wvobject fp_name="/spitest/uut/nextimmediatelypullfifo" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">nextimmediatelypullfifo</obj_property>
       <obj_property name="ObjectShortName">nextimmediatelypullfifo</obj_property>
@@ -216,21 +228,9 @@
       <obj_property name="ElementShortName">captureddata[20:0]</obj_property>
       <obj_property name="ObjectShortName">captureddata[20:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/spitest/uut/clk250mhz" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">clk250mhz</obj_property>
-      <obj_property name="ObjectShortName">clk250mhz</obj_property>
-   </wvobject>
    <wvobject fp_name="/spitest/uut/clk62m5hz" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk62m5hz</obj_property>
       <obj_property name="ObjectShortName">clk62m5hz</obj_property>
-   </wvobject>
-   <wvobject fp_name="/spitest/uut/clk31m25hz" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">clk31m25hz</obj_property>
-      <obj_property name="ObjectShortName">clk31m25hz</obj_property>
-   </wvobject>
-   <wvobject fp_name="/spitest/uut/clocktoggle" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">clocktoggle</obj_property>
-      <obj_property name="ObjectShortName">clocktoggle</obj_property>
    </wvobject>
    <wvobject fp_name="/spitest/uut/usethisedge" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">usethisedge</obj_property>

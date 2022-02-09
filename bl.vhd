@@ -502,6 +502,8 @@ COMPONENT DelayWideBus
 
 
 	signal testBlink : std_logic := '1';
+	
+	signal slowFIFOpull : std_logic;
 
 begin
 
@@ -1252,6 +1254,7 @@ process (slowwritingdatatrain1, dout, requestreset, lastrequestwritetoggle, last
 	nextReadBurstCount <= readBurstCount ;
 
 	nextImmediatelyPullFIFOtoggle <= immediatelyPullFIFOtoggle;
+	slowFIFOpull <= '0';
 	
 	case currentState is
 		when slowReset =>
@@ -1281,6 +1284,7 @@ process (slowwritingdatatrain1, dout, requestreset, lastrequestwritetoggle, last
 			else
 				nextSlowWritingPulseTrain(0) <= '1';
 				nextImmediatelyPullFIFOtoggle <= not immediatelyPullFIFOtoggle;
+				slowFIFOpull <= '1';
 	
 				rasSlow <= "11111111";
 				casSlow <= "11110011";
