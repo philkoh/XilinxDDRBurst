@@ -293,8 +293,9 @@ END COMPONENT;
 	signal dataToPinsA : std_logic_vector(31 downto 0);
 	signal dataToPinsB : std_logic_vector(31 downto 0);
 	
-	signal slowClockEnable : std_logic;
+--	signal slowClockEnable : std_logic;
 	signal slowClockVector : std_logic_vector(7 downto 0) := "00100000";
+	alias slowClockEnable : std_logic is slowClockVector(0);
 
 	type stateTypes IS (slowReset, ckeLOW, startWriting,   stopWriting, idle, activate, writeMRS, reading, stopReading, stop);
 	signal currentState : stateTypes := slowReset;
