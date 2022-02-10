@@ -185,10 +185,10 @@ END COMPONENT;
 	signal odt : std_logic := '1';
 	signal nextOdt : std_logic := '1';
 	
-	type philArr is array (7 downto 0) of std_logic_vector(15 downto 0);
+--	type philArr is array (7 downto 0) of std_logic_vector(15 downto 0);
 	 
-	signal capturedDataB :   philArr;
-	signal nextCapturedDataB : philArr;
+	signal capturedDataB :   burstArr;
+	signal nextCapturedDataB : burstArr;
 	
 	signal writePulseTrain :    std_logic_vector(15 downto 1) := "000000000000000";
 	signal nextWritePulseTrain :    std_logic_vector(15 downto 1) ;
