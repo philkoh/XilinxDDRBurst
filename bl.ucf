@@ -8,8 +8,8 @@ NET CLK62M5HZ TNM = slow_exception;
 NET CLK31M25HZ TNM = slow_exception;
 
 
-INST eightCycleToggle_0* TNM = risingEdgeTog;
-INST fallingEdgeToggle* TNM = fallingEdgeTog;
+INST slowClockVector_0* TNM = risingEdgeEn;
+INST fallingEdgeSlowClockEnable* TNM = fallingEdgeEn;
 
 
 #NET verySlowClockEnable(0) TNM = very_slow_exception;
@@ -19,8 +19,9 @@ NET "slowCount*" TNM = slow_exception;
 
 TIMESPEC TS01 = PERIOD normalTiming 3.7 ns;
 TIMESPEC TS02 = PERIOD slow_exception 7.5 ns;
-#TIMESPEC TS03 = PERIOD very_slow_exception 8.5 ns;
-TIMESPEC TS03 = FROM : risingEdgeTog : TO : fallingEdgeTog : 1.6 ns ;
+
+
+TIMESPEC TS03 = FROM : risingEdgeEn : TO : fallingEdgeEn : 1.6 ns ;
 
 
 
