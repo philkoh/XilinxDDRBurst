@@ -4,7 +4,7 @@
 
 NET CLK250MHz TNM = normalTiming;
 NET slowClockVector(0) TNM = slow_exception;  # slowClockVector(0) is the true name of slowClockEnable
-NET CLK62M5HZ TNM = slow_exception;
+#NET CLK62M5HZ TNM = slow_exception;
 NET CLK31M25HZ TNM = slow_exception;
 
 
