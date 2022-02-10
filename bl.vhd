@@ -90,6 +90,19 @@ COMPONENT SlowInputByEight
 	);
 END COMPONENT;
 
+
+COMPONENT SlowInputByEightBus
+PORT(
+	IOpins : IN std_logic_vector(15 downto 0);
+	FastClock : IN std_logic;
+	SlowClock : IN std_logic;
+	SlowClockEnable : IN std_logic;          
+	DataToPins : burstArr
+	);
+END COMPONENT;
+
+
+
 COMPONENT FIFOphil2
   PORT (
     rst : IN STD_LOGIC;
@@ -241,6 +254,7 @@ END COMPONENT;
 	signal slowWritingDataTrain1 : std_logic_vector (143 downto 0) ;
 	signal nextSlowWritingPulseTrain : std_logic_vector  (3 downto 0);
 	
+	signal slowReadDataArr : burstArr;
 	signal slowWriteData, slowWriteAddress : burstArr;
 	signal fastWriteData, fastWriteAddress : std_logic_vector(15 downto 0);
 	signal addr : std_logic_vector(15 downto 0) := "0000000000010000";
@@ -381,6 +395,15 @@ Inst_SlowInputByEight: SlowInputByEight PORT MAP(
 	SlowClock => clk31M25Hz,
 	SlowClockEnable =>   slowClockEnable
 );
+
+Inst_SlowInputByEightBus: SlowInputByEightBus PORT MAP(
+	IOpins => delayeddataPort(15 downto 0),
+	DataToPins => slowReadDataArr,
+	FastClock => clk250MHz,
+	SlowClock => clk31M25Hz,
+	SlowClockEnable =>  slowClockEnable
+);
+
 
 fifoInstance : FIFOphil2
   PORT MAP (

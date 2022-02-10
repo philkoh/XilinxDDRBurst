@@ -1,46 +1,42 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date:    12:46:58 02/10/2022 
--- Design Name: 
--- Module Name:    SlowInputByEightBus - Behavioral 
--- Project Name: 
--- Target Devices: 
--- Tool versions: 
--- Description: 
---
--- Dependencies: 
---
--- Revision: 
--- Revision 0.01 - File Created
--- Additional Comments: 
---
-----------------------------------------------------------------------------------
+
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx primitives in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
+use work.common.all;
 
 entity SlowInputByEightBus is
-    Port ( IOpins : in  STD_LOGIC_VECTOR (3 downto 0);
-           DataToPins : out  STD_LOGIC_VECTOR (31 downto 0);
+    Port ( IOpins : in  STD_LOGIC_VECTOR (15 downto 0);
+           DataToPins : out  burstArr;
            FastClock : in  STD_LOGIC;
 			  SlowClock : IN std_logic;
            SlowClockEnable : in  STD_LOGIC);
 end SlowInputByEightBus;
 
 architecture Behavioral of SlowInputByEightBus is
+COMPONENT SlowInputByEight
+	PORT(
+		IOpins : IN std_logic_vector(3 downto 0);
+		FastClock : IN std_logic;
+		SlowClockEnable : IN std_logic;   
+		SlowClock : IN std_logic;
+		DataToPins : OUT std_logic_vector(31 downto 0)
+	);
+END COMPONENT;
+
+	signal vec1 : std_logic_vector(31 downto 0);
+	signal vec2 : std_logic_vector(31 downto 0);
+	signal vec3 : std_logic_vector(31 downto 0);
+	signal vec4 : std_logic_vector(31 downto 0);
 
 begin
 
+Inst_SlowInputByEight: SlowInputByEight PORT MAP(
+	IOpins => IOpins(3 downto 0),
+	DataToPins => vec1,
+	FastClock => FastClock,
+	SlowClock => SlowClock,
+	SlowClockEnable =>   SlowClockEnable
+);
 
 end Behavioral;
 
