@@ -6,7 +6,7 @@ entity SlowByEight is
     Port ( IOpins : inout  STD_LOGIC_VECTOR (3 downto 0);
            DataToPins : in  STD_LOGIC_VECTOR (31 downto 0);
            FastClock : in  STD_LOGIC;
-			  MediumClock : in  STD_LOGIC;
+	--		  MediumClock : in  STD_LOGIC;
            SlowClockEnable : in  STD_LOGIC);
 		end SlowByEight;
 

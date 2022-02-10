@@ -8,7 +8,7 @@ entity SlowByEightBus is
      Port ( IOpins : inout  STD_LOGIC_VECTOR (15 downto 0);
            DataToPins : in  burstArr;
            FastClock : in  STD_LOGIC;
-			  MediumClock: in  STD_LOGIC;
+	--		  MediumClock: in  STD_LOGIC;
            SlowClockEnable : in  STD_LOGIC);
 	
 end SlowByEightBus;
@@ -19,7 +19,7 @@ architecture Behavioral of SlowByEightBus is
 	PORT(
 		DataToPins : IN std_logic_vector(31 downto 0);
 		FastClock : IN std_logic;
-		MediumClock : IN std_logic;
+--		MediumClock : IN std_logic;
 		SlowClockEnable : IN std_logic;       
 		IOpins : INOUT std_logic_vector(3 downto 0)
 		);
@@ -36,7 +36,7 @@ Inst1: SlowByEight PORT MAP(
 		IOpins => IOpins(3 downto 0) ,
 		DataToPins => vec1,
 		FastClock => FastClock ,
-		MediumClock => MediumClock,
+	--	MediumClock => MediumClock,
 		SlowClockEnable => SlowClockEnable
 	);
 
@@ -77,7 +77,7 @@ Inst2: SlowByEight PORT MAP(
 		IOpins => IOpins(7 downto 4) ,
 		DataToPins => vec2,
 		FastClock => FastClock ,
-		MediumClock => MediumClock,
+--		MediumClock => MediumClock,
 		SlowClockEnable => SlowClockEnable
 	);
 
@@ -118,7 +118,7 @@ Inst3: SlowByEight PORT MAP(
 		IOpins => IOpins(11 downto 8) ,
 		DataToPins => vec3,
 		FastClock => FastClock ,
-		MediumClock => MediumClock,
+--		MediumClock => MediumClock,
 		SlowClockEnable => SlowClockEnable
 	);
 
@@ -159,7 +159,7 @@ Inst4: SlowByEight PORT MAP(
 		IOpins => IOpins(15 downto 12) ,
 		DataToPins => vec4,
 		FastClock => FastClock ,
-		MediumClock => MediumClock,
+--		MediumClock => MediumClock,
 		SlowClockEnable => SlowClockEnable
 	);
 
