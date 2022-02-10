@@ -6,6 +6,12 @@ NET CLK250MHz TNM = normalTiming;
 NET slowClockVector(0) TNM = slow_exception;  # slowClockVector(0) is the true name of slowClockEnable
 NET CLK62M5HZ TNM = slow_exception;
 NET CLK31M25HZ TNM = slow_exception;
+
+
+INST eightCycleToggle_0* TNM = risingEdgeTog;
+INST fallingEdgeToggle* TNM = fallingEdgeTog;
+
+
 #NET verySlowClockEnable(0) TNM = very_slow_exception;
 #INST empty TNM = slow_exception;
 NET "slowCount*" TNM = slow_exception;
@@ -14,7 +20,7 @@ NET "slowCount*" TNM = slow_exception;
 TIMESPEC TS01 = PERIOD normalTiming 3.7 ns;
 TIMESPEC TS02 = PERIOD slow_exception 7.5 ns;
 #TIMESPEC TS03 = PERIOD very_slow_exception 8.5 ns;
-
+TIMESPEC TS03 = FROM : risingEdgeTog : TO : fallingEdgeTog : 1.6 ns ;
 
 
 

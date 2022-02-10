@@ -391,8 +391,30 @@ END COMPONENT;
 	signal slowFIFOpull : std_logic;
 	signal slowFIFOpush : std_logic := '0';
 	signal nextSlowFIFOpush : std_logic;
-
+	
+	
+	signal eightCycleToggle : std_logic_vector(15 downto 0) := "0000000011111111";
+	signal fallingEdgeToggle : std_logic := '0';
 begin
+
+process (clk250MHz)
+	begin
+	if rising_edge(clk250MHz) then
+		 eightCycleToggle(15 downto 1) <= eightCycleToggle(14 downto 0);
+		 eightCycleToggle(0) <= eightCycleToggle(15);
+	end if;
+end process;
+
+process (clk250MHz)
+	begin
+	if falling_edge(clk250MHz) then
+		fallingEdgeToggle <= eightCycleToggle(0);
+	end if;
+end process;
+
+LEDBUS8 <= fallingEdgeToggle;
+
+
 
 MainControlOutputsA: SlowByEight PORT MAP(
 		IOpins => IOpinsA ,
@@ -734,7 +756,7 @@ end process;
 	LEDBUS5 <= LEDBUSvec(5);
 	LEDBUS6 <= LEDBUSvec(6);
 	LEDBUS7 <= LEDBUSvec(7);
-	LEDBUS8  <= '0';
+--	LEDBUS8  <= '0';
 
 	process (dataArrivedToggleSlowed, SPIdataInSlowed, lastDataArrivedToggle, requestedAddress, requestWriteToggle, requestReadToggle, SPIdataIn, SPIFIFOdin, readBurstCount, fastwriteaddress, empty, nextwritepulsetrain, doutwaiting, dout, clockEnableCommand,  capturedData, switchRegister, lastSwitchRegister, writePulseTrain,  switch2port, switch3Port, switchCount)
 		begin
