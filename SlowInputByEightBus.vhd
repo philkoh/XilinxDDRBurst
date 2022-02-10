@@ -30,14 +30,13 @@ END COMPONENT;
 
 begin
 
-Inst_SlowInputByEight: SlowInputByEight PORT MAP(
+Inst_SlowInputByEight1: SlowInputByEight PORT MAP(
 	IOpins => IOpins(3 downto 0),
 	DataToPins => vec1,
 	FastClock => FastClock,
 	SlowClock => SlowClock,
 	SlowClockEnable =>   SlowClockEnable
 );
-
 
 			DataToPins(7)(0) <= vec1(0);
 			DataToPins(6)(0) <= vec1(1);
@@ -74,5 +73,52 @@ Inst_SlowInputByEight: SlowInputByEight PORT MAP(
 			DataToPins(2)(3) <= vec1(29);
 			DataToPins(1)(3) <= vec1(30);
 			DataToPins(0)(3) <= vec1(31);
+			
+			
+			
+Inst_SlowInputByEight2: SlowInputByEight PORT MAP(
+	IOpins => IOpins(7 downto 4),
+	DataToPins => vec2,
+	FastClock => FastClock,
+	SlowClock => SlowClock,
+	SlowClockEnable =>   SlowClockEnable
+);
+
+			DataToPins(7)(4) <= vec2(0);
+			DataToPins(6)(4) <= vec2(1);
+			DataToPins(5)(4) <= vec2(2);
+			DataToPins(4)(4) <= vec2(3);
+			DataToPins(3)(4) <= vec2(4);
+			DataToPins(2)(4) <= vec2(5);
+			DataToPins(1)(4) <= vec2(6);
+			DataToPins(0)(4) <= vec2(7);
+
+			DataToPins(7)(5) <= vec2(8);
+			DataToPins(6)(5) <= vec2(9);
+			DataToPins(5)(5) <= vec2(10);
+			DataToPins(4)(5) <= vec2(11);
+			DataToPins(3)(5) <= vec2(12);
+			DataToPins(2)(5) <= vec2(13);
+			DataToPins(1)(5) <= vec2(14);
+			DataToPins(0)(5) <= vec2(15);
+	
+			DataToPins(7)(6) <= vec2(16);
+			DataToPins(6)(6) <= vec2(17);
+			DataToPins(5)(6) <= vec2(18);
+			DataToPins(4)(6) <= vec2(19);
+			DataToPins(3)(6) <= vec2(20);
+			DataToPins(2)(6) <= vec2(21);
+			DataToPins(1)(6) <= vec2(22);
+			DataToPins(0)(6) <= vec2(23);
+
+			DataToPins(7)(7) <= vec2(24);
+			DataToPins(6)(7) <= vec2(25);
+			DataToPins(5)(7) <= vec2(26);
+			DataToPins(4)(7) <= vec2(27);
+			DataToPins(3)(7) <= vec2(28);
+			DataToPins(2)(7) <= vec2(29);
+			DataToPins(1)(7) <= vec2(30);
+			DataToPins(0)(7) <= vec2(31);
+			
 end Behavioral;
 
