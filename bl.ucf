@@ -29,7 +29,7 @@ TIMESPEC TS04 = FROM : fallingEdgeEn : TO : BUFGCE : 1.6 ns ;
 
 
 
-PIN "BUFGCE_inst.O" CLOCK_DEDICATED_ROUTE = FALSE;
+#PIN "BUFGCE_inst.O" CLOCK_DEDICATED_ROUTE = FALSE;
 PIN "your_instance_name/clkout1_buf.O" CLOCK_DEDICATED_ROUTE = FALSE;
 
 

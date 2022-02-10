@@ -311,11 +311,11 @@ END COMPONENT;
 	signal slowReadData :  std_logic_vector(31 downto 0);
 	 
 	signal clockShift : std_logic_vector(3 downto 0) :=  "1000";--  "0010";--
-	signal clk62M5Hz : std_logic := '0';
+--	signal clk62M5Hz : std_logic := '0';
 	signal clk31M25Hz : std_logic := '0';
-	signal useThisEdge : std_logic := '0';
-	signal nextUseThisEdge : std_logic;
-	signal snapShotOfSlowClockEnable : std_logic := '0';
+--	signal useThisEdge : std_logic := '0';
+--	signal nextUseThisEdge : std_logic;
+--	signal snapShotOfSlowClockEnable : std_logic := '0';
 	
 	signal slowFIFOpull : std_logic;
 	signal slowFIFOpush : std_logic := '0';
@@ -349,7 +349,6 @@ MainControlOutputsA: SlowByEight PORT MAP(
 		IOpins => IOpinsA ,
 		DataToPins => dataToPinsA,
 		FastClock => clk250MHz ,
-	--	MediumClock => clk62M5Hz,
 		SlowClockEnable => slowClockEnable
 	);
 	
@@ -468,34 +467,34 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 	);
 
 -- BUFGCE: Global Clock Buffer with Clock Enable
-BUFGCE_inst : BUFGCE ----------NOTE: this is a clean way to make a slower clock and still have its rising edge well aligned with clk250MHz
-port map (
-O => clk62M5Hz, -- 1-bit output: Clock buffer output
-CE => clockShift(0), -- 1-bit input: Clock buffer select
-I => clk250MHz -- 1-bit input: Clock buffer input (S=0)
-);
+--BUFGCE_inst : BUFGCE ----------NOTE: this is a clean way to make a slower clock and still have its rising edge well aligned with clk250MHz
+--port map (
+--O => clk62M5Hz, -- 1-bit output: Clock buffer output
+--CE => clockShift(0), -- 1-bit input: Clock buffer select
+--I => clk250MHz -- 1-bit input: Clock buffer input (S=0)
+--);
 
 process (clk250MHz)
 	begin
 	if falling_edge(clk250MHz) then
 		clockShift(3 downto 1) <= clockShift(2 downto 0);
 		clockShift(0) <= clockShift(3);
-		useThisEdge <= nextUseThisEdge;
+--		useThisEdge <= nextUseThisEdge;
 	end if;
 end process;
 
-nextUseThisEdge <= '1' when snapShotOfSlowClockEnable = '0' and clockShift(3) = '1' else '0';  -- on the next cycle, clockShift(0) will be '1', 
+--nextUseThisEdge <= '1' when snapShotOfSlowClockEnable = '0' and clockShift(3) = '1' else '0';  -- on the next cycle, clockShift(0) will be '1', 
 ------------ so the clk62M5Hz will rise; on every other of these clk62M5Hz rising edges, useThisEdge will be '1', so the clk32M25Hz
 ------------ will also have a simultaneous rising edge.
 
-process (clk62M5Hz)
-	begin
-		if	rising_edge(clk62M5Hz) then
+--process (clk62M5Hz)
+--	begin
+--		if	rising_edge(clk62M5Hz) then
 
-			snapShotOfSlowClockEnable <= slowClockEnable;
+--			snapShotOfSlowClockEnable <= slowClockEnable;
 
-		end if;
-end process;
+--		end if;
+--end process;
 
 process (clk250MHz)
 		begin
