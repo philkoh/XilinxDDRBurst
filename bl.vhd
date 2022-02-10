@@ -831,7 +831,7 @@ end process;
 		
 		SPIdataOut(15 downto 0) <= "0000000000000000";
 		SPIdataOut(11 downto 8) <= std_logic_vector(switchCount);
-		SPIdataOut(7 downto 0) <= capturedData(to_integer(switchCount + 0))(7 downto 0);
+		SPIdataOut(7 downto 0) <= capturedDataB(to_integer(switchCount + 0))(7 downto 0);
 
 		nextRequestReadToggle <= requestReadToggle ;
 		nextRequestWriteToggle <= requestWriteToggle ;
