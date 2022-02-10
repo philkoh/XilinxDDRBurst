@@ -88,22 +88,6 @@
       <obj_property name="ElementShortName">wefast</obj_property>
       <obj_property name="ObjectShortName">wefast</obj_property>
    </wvobject>
-   <wvobject fp_name="/spitest/uut/nextcaptureddata[1][0]" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">[0]</obj_property>
-      <obj_property name="ObjectShortName">nextcaptureddata[1][0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/spitest/uut/nextcaptureddata[1][1]" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">[1]</obj_property>
-      <obj_property name="ObjectShortName">nextcaptureddata[1][1]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/spitest/uut/captureddata[1][0]" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">[0]</obj_property>
-      <obj_property name="ObjectShortName">captureddata[1][0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/spitest/uut/captureddata[1][1]" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">[1]</obj_property>
-      <obj_property name="ObjectShortName">captureddata[1][1]</obj_property>
-   </wvobject>
    <wvobject fp_name="/spitest/uut/fastreaddata[0]" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">[0]</obj_property>
       <obj_property name="ObjectShortName">fastreaddata[0]</obj_property>
@@ -127,10 +111,6 @@
    <wvobject fp_name="/spitest/uut/Inst_SlowInputByEight/slowclockenable" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">slowclockenable</obj_property>
       <obj_property name="ObjectShortName">slowclockenable</obj_property>
-   </wvobject>
-   <wvobject fp_name="/spitest/uut/captureddata" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">captureddata[20:0]</obj_property>
-      <obj_property name="ObjectShortName">captureddata[20:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/spitest/uut/clk62m5hz" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk62m5hz</obj_property>
@@ -223,5 +203,25 @@
    <wvobject fp_name="/spitest/uut/slowreaddata" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">slowreaddata[31:0]</obj_property>
       <obj_property name="ObjectShortName">slowreaddata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/nextcaptureddata[1][0]" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">[0]</obj_property>
+      <obj_property name="ObjectShortName">nextcaptureddata[1][0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/nextcaptureddata[1][1]" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">[1]</obj_property>
+      <obj_property name="ObjectShortName">nextcaptureddata[1][1]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/captureddata[1][0]" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">[0]</obj_property>
+      <obj_property name="ObjectShortName">captureddata[1][0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/captureddata[1][1]" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">[1]</obj_property>
+      <obj_property name="ObjectShortName">captureddata[1][1]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/captureddata" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">captureddata[20:0]</obj_property>
+      <obj_property name="ObjectShortName">captureddata[20:0]</obj_property>
    </wvobject>
 </wave_config>
