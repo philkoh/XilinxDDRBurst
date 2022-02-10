@@ -16,8 +16,8 @@ Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/bl.vhd" into library work
 Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/SPItest.vhd" into library work
 Starting static elaboration
 Completed static elaboration
-Fuse Memory Usage: 173004 KB
-Fuse CPU Usage: 327 ms
+Fuse Memory Usage: 173388 KB
+Fuse CPU Usage: 280 ms
 Compiling package standard
 Compiling package std_logic_1164
 Compiling package numeric_std
@@ -25,6 +25,12 @@ Compiling package vcomponents
 Compiling package common
 Compiling package std_logic_arith
 Compiling package std_logic_unsigned
+Compiling package textio
+Compiling package vital_timing
+Compiling package vital_primitives
+Compiling architecture bufgmux_v of entity BUFGMUX [\BUFGMUX("SYNC")(1,4)\]
+Compiling architecture inv_v of entity INV [inv_default]
+Compiling architecture bufgce_v of entity BUFGCE [bufgce_default]
 Compiling architecture behavioral of entity SlowByEight [slowbyeight_default]
 Compiling architecture behavioral of entity SlowByEightBus [slowbyeightbus_default]
 Compiling architecture behavioral of entity SlowInputByEight [slowinputbyeight_default]
@@ -33,9 +39,6 @@ Compiling architecture behavioral of entity fifo_generator_v9_3_bhv_preload0 [\f
 Compiling architecture behavioral of entity fifo_generator_v9_3_conv [\fifo_generator_v9_3_conv(0,0,10...]
 Compiling architecture behavioral of entity fifo_generator_v9_3 [\fifo_generator_v9_3(0,0,10,"Bla...]
 Compiling architecture fifophil2_a of entity FIFOphil2 [fifophil2_default]
-Compiling package textio
-Compiling package vital_timing
-Compiling package vital_primitives
 Compiling package vpkg
 Compiling architecture ibufg_v of entity IBUFG [\IBUFG("DONT_CARE","0",true,"DEF...]
 Compiling architecture dcm_sp_clock_divide_by_2_v of entity dcm_sp_clock_divide_by_2 [dcm_sp_clock_divide_by_2_default]
@@ -51,13 +54,10 @@ Compiling architecture behavioral of entity DelayWideBus [delaywidebus_default]
 Compiling architecture iobufds_v of entity IOBUFDS [\IOBUFDS("DONT_CARE",false,"FALS...]
 Compiling architecture obufds_v of entity OBUFDS [\OBUFDS("DONT_CARE","DIFF_SSTL15...]
 Compiling architecture behavioral of entity SPIinterface [spiinterface_default]
-Compiling architecture bufgmux_v of entity BUFGMUX [\BUFGMUX("SYNC")(1,4)\]
-Compiling architecture inv_v of entity INV [inv_default]
-Compiling architecture bufgce_v of entity BUFGCE [bufgce_default]
 Compiling architecture behavioral of entity bl [bl_default]
 Compiling architecture behavior of entity spitest
 Time Resolution for simulation is 1ps.
 Compiled 64 VHDL Units
 Built simulation executable C:/GitRepos/XilinxDDRBurst/SPItest_isim_beh.exe
-Fuse Memory Usage: 215264 KB
-Fuse CPU Usage: 890 ms
+Fuse Memory Usage: 215648 KB
+Fuse CPU Usage: 843 ms

@@ -21,8 +21,8 @@ char *IEEE_P_3499444699;
 char *IEEE_P_1242562249;
 char *UNISIM_P_0947159679;
 char *WORK_P_2188849903;
-char *STD_TEXTIO;
 char *IEEE_P_2717149903;
+char *STD_TEXTIO;
 char *IEEE_P_1367372525;
 char *UNISIM_P_3222816464;
 
@@ -39,6 +39,12 @@ int main(int argc, char **argv)
     work_p_2188849903_init();
     ieee_p_3499444699_init();
     ieee_p_3620187407_init();
+    std_textio_init();
+    ieee_p_2717149903_init();
+    ieee_p_1367372525_init();
+    unisim_a_4293072594_0620071320_init();
+    unisim_a_3055263662_1392679692_init();
+    unisim_a_1633934995_3910058065_init();
     work_a_3947161695_3212880686_init();
     work_a_0355882158_3212880686_init();
     work_a_0484181881_3212880686_init();
@@ -47,9 +53,6 @@ int main(int argc, char **argv)
     xilinxcorelib_a_2870606753_3212880686_init();
     xilinxcorelib_a_2490228359_3212880686_init();
     work_a_2626316033_1566875532_init();
-    std_textio_init();
-    ieee_p_2717149903_init();
-    ieee_p_1367372525_init();
     unisim_p_3222816464_init();
     unisim_a_0780662263_2014779070_init();
     unisim_a_0850834979_2152628908_init();
@@ -65,9 +68,6 @@ int main(int argc, char **argv)
     unisim_a_2070619658_1655329583_init();
     unisim_a_3529968766_3979135294_init();
     work_a_1946541565_3212880686_init();
-    unisim_a_4293072594_0620071320_init();
-    unisim_a_3055263662_1392679692_init();
-    unisim_a_1633934995_3910058065_init();
     work_a_2320697599_3212880686_init();
     work_a_2115784149_2372691052_init();
 
@@ -82,8 +82,8 @@ int main(int argc, char **argv)
     IEEE_P_1242562249 = xsi_get_engine_memory("ieee_p_1242562249");
     UNISIM_P_0947159679 = xsi_get_engine_memory("unisim_p_0947159679");
     WORK_P_2188849903 = xsi_get_engine_memory("work_p_2188849903");
-    STD_TEXTIO = xsi_get_engine_memory("std_textio");
     IEEE_P_2717149903 = xsi_get_engine_memory("ieee_p_2717149903");
+    STD_TEXTIO = xsi_get_engine_memory("std_textio");
     IEEE_P_1367372525 = xsi_get_engine_memory("ieee_p_1367372525");
     UNISIM_P_3222816464 = xsi_get_engine_memory("unisim_p_3222816464");
 

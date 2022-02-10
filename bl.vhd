@@ -409,6 +409,14 @@ end process;
 
 LEDBUS8 <= fallingEdgeSlowClockEnable;
 
+-- BUFGCE: Global Clock Buffer with Clock Enable
+BUFGCE_inst2 : BUFGCE ----------NOTE: this is a clean way to make a slower clock and still have its rising edge well aligned with clk250MHz
+port map (
+O => clk31M25Hz, -- 1-bit output: Clock buffer output
+CE => useThisEdge, -- 1-bit input: Clock buffer select
+I => clk250MHz -- 1-bit input: Clock buffer input (S=0)
+);
+
 
 
 MainControlOutputsA: SlowByEight PORT MAP(
@@ -542,14 +550,6 @@ BUFGCE_inst : BUFGCE ----------NOTE: this is a clean way to make a slower clock 
 port map (
 O => clk62M5Hz, -- 1-bit output: Clock buffer output
 CE => clockShift(0), -- 1-bit input: Clock buffer select
-I => clk250MHz -- 1-bit input: Clock buffer input (S=0)
-);
-
--- BUFGCE: Global Clock Buffer with Clock Enable
-BUFGCE_inst2 : BUFGCE ----------NOTE: this is a clean way to make a slower clock and still have its rising edge well aligned with clk250MHz
-port map (
-O => clk31M25Hz, -- 1-bit output: Clock buffer output
-CE => useThisEdge, -- 1-bit input: Clock buffer select
 I => clk250MHz -- 1-bit input: Clock buffer input (S=0)
 );
 
@@ -955,7 +955,7 @@ process (clk250MHz)
 		end if;
    end process;
 ------------------------------------------COMBINATORIAL:
-	slowClockEnable <= slowClockVector(0);
+--	slowClockEnable <= slowClockVector(0);
 	
 process (clk31M25Hz, slowClockEnable)
 		begin

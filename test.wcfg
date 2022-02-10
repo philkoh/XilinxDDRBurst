@@ -104,10 +104,6 @@
       <obj_property name="ElementShortName">fastclock</obj_property>
       <obj_property name="ObjectShortName">fastclock</obj_property>
    </wvobject>
-   <wvobject fp_name="/spitest/uut/slowclockenable" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">slowclockenable</obj_property>
-      <obj_property name="ObjectShortName">slowclockenable</obj_property>
-   </wvobject>
    <wvobject fp_name="/spitest/uut/Inst_SlowInputByEight/slowclockenable" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">slowclockenable</obj_property>
       <obj_property name="ObjectShortName">slowclockenable</obj_property>
@@ -119,6 +115,10 @@
    <wvobject fp_name="/spitest/uut/usethisedge" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">usethisedge</obj_property>
       <obj_property name="ObjectShortName">usethisedge</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/fallingedgeslowclockenable" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">fallingedgeslowclockenable</obj_property>
+      <obj_property name="ObjectShortName">fallingedgeslowclockenable</obj_property>
    </wvobject>
    <wvobject fp_name="/spitest/uut/snapshotofslowclockenable" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">snapshotofslowclockenable</obj_property>
