@@ -19,7 +19,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="51" />
+   <WVObjectSize size="63" />
    <wvobject fp_name="/spitest/pin0" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">pin0</obj_property>
       <obj_property name="ObjectShortName">pin0</obj_property>
@@ -128,10 +128,6 @@
       <obj_property name="ElementShortName">slowfifopull</obj_property>
       <obj_property name="ObjectShortName">slowfifopull</obj_property>
    </wvobject>
-   <wvobject fp_name="/spitest/uut/clk250mhz" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">clk250mhz</obj_property>
-      <obj_property name="ObjectShortName">clk250mhz</obj_property>
-   </wvobject>
    <wvobject fp_name="/spitest/uut/empty" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">empty</obj_property>
       <obj_property name="ObjectShortName">empty</obj_property>
@@ -192,10 +188,6 @@
       <obj_property name="ElementShortName">[1]</obj_property>
       <obj_property name="ObjectShortName">delayeddataport[1]</obj_property>
    </wvobject>
-   <wvobject fp_name="/spitest/uut/clk31m25hz" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">clk31m25hz</obj_property>
-      <obj_property name="ObjectShortName">clk31m25hz</obj_property>
-   </wvobject>
    <wvobject fp_name="/spitest/uut/Inst_SlowInputByEight/shiftregisters" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">shiftregisters[31:0]</obj_property>
       <obj_property name="ObjectShortName">shiftregisters[31:0]</obj_property>
@@ -223,5 +215,61 @@
    <wvobject fp_name="/spitest/uut/captureddata" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">captureddata[20:0]</obj_property>
       <obj_property name="ObjectShortName">captureddata[20:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/clk250mhz" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk250mhz</obj_property>
+      <obj_property name="ObjectShortName">clk250mhz</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/clk31m25hz" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk31m25hz</obj_property>
+      <obj_property name="ObjectShortName">clk31m25hz</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/MainControlOutputsA/datastrobe" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">datastrobe</obj_property>
+      <obj_property name="ObjectShortName">datastrobe</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/MainControlOutputsA/lastdatastrobe" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">lastdatastrobe</obj_property>
+      <obj_property name="ObjectShortName">lastdatastrobe</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/MainControlOutputsA/preloadpulse" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">preloadpulse</obj_property>
+      <obj_property name="ObjectShortName">preloadpulse</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/MainControlOutputsA/nextpreloadpulse" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">nextpreloadpulse</obj_property>
+      <obj_property name="ObjectShortName">nextpreloadpulse</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/MainControlOutputsA/fastclock" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">fastclock</obj_property>
+      <obj_property name="ObjectShortName">fastclock</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/MainControlOutputsA/datatopins" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">datatopins[31:0]</obj_property>
+      <obj_property name="ObjectShortName">datatopins[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/MainControlOutputsA/incomingdata" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">incomingdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">incomingdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/MainControlOutputsA/nextshiftregisters" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">nextshiftregisters[31:0]</obj_property>
+      <obj_property name="ObjectShortName">nextshiftregisters[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/MainControlOutputsA/shiftregisters" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">shiftregisters[31:0]</obj_property>
+      <obj_property name="ObjectShortName">shiftregisters[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/MainControlOutputsA/iopins" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">iopins[3:0]</obj_property>
+      <obj_property name="ObjectShortName">iopins[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/MainControlOutputsA/slowclockenable" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">slowclockenable</obj_property>
+      <obj_property name="ObjectShortName">slowclockenable</obj_property>
+   </wvobject>
+   <wvobject fp_name="/spitest/uut/MainControlOutputsA/delayedenable" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">delayedenable[7:0]</obj_property>
+      <obj_property name="ObjectShortName">delayedenable[7:0]</obj_property>
    </wvobject>
 </wave_config>

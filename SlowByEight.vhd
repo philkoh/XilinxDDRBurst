@@ -18,13 +18,28 @@ architecture Behavioral of SlowByEight is
 	signal lastDataStrobe : std_logic := '0';
 	signal preloadPulse : std_logic := '0';
 	signal nextPreloadPulse : std_logic := '0';
+	signal delayedEnable : std_logic_vector (7 downto 0) := "00000000";
 begin
 
 process (FastClock, SlowClockEnable)
 	begin
 	if rising_edge(FastClock) and SlowClockEnable = '1' then
-		incomingData <= DataToPins;
+	--	incomingData <= DataToPins;
 		dataStrobe <= not dataStrobe;  -- this toggles on every new set of data arriving
+	end if;
+	
+end process;
+
+-------------------------------------- NOTE: The timing is currently a bit weird; the iopins do not present the first bit of the input data group
+-------------------------------------- until the next clk32M25Hz pulse PLUS two additional 250MHz period delays.  Perhaps in the future, I will
+-------------------------------------- get rid of the two additional 250MHz period delays to align the output with the clk32M25Hz pulse, as would be
+-------------------------------------- more intuitive.  However, that will require adjusting a bunch of timings
+
+process (FastClock, delayedEnable)
+	begin
+	if rising_edge(FastClock) and delayedEnable(6) = '1' then  -- capture the incoming data one cycle BEFORE the clk31M25Hz pulse, to help make the system
+																					-- less sensitive to clock skew between the clk250MHz and clk31M25Hz
+		incomingData <= DataToPins;
 	end if;
 	
 end process;
@@ -35,6 +50,8 @@ begin
 		lastDataStrobe <= dataStrobe;
 		preloadPulse <= nextPreloadPulse;
 		shiftRegisters <= nextShiftRegisters;
+		delayedEnable(0) <= slowClockEnable;
+		delayedEnable(7 downto 1) <= delayedEnable(6 downto 0);
 	end if;
 	
 end process;
