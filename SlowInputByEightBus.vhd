@@ -120,5 +120,102 @@ Inst_SlowInputByEight2: SlowInputByEight PORT MAP(
 			DataToPins(1)(7) <= vec2(30);
 			DataToPins(0)(7) <= vec2(31);
 			
+			
+			
+			
+					
+			
+Inst_SlowInputByEight3: SlowInputByEight PORT MAP(
+	IOpins => IOpins(11 downto 8),
+	DataToPins => vec3,
+	FastClock => FastClock,
+	SlowClock => SlowClock,
+	SlowClockEnable =>   SlowClockEnable
+);
+
+			DataToPins(7)(8) <= vec3(0);
+			DataToPins(6)(8) <= vec3(1);
+			DataToPins(5)(8) <= vec3(2);
+			DataToPins(4)(8) <= vec3(3);
+			DataToPins(3)(8) <= vec3(4);
+			DataToPins(2)(8) <= vec3(5);
+			DataToPins(1)(8) <= vec3(6);
+			DataToPins(0)(8) <= vec3(7);
+
+			DataToPins(7)(9) <= vec3(8);
+			DataToPins(6)(9) <= vec3(9);
+			DataToPins(5)(9) <= vec3(10);
+			DataToPins(4)(9) <= vec3(11);
+			DataToPins(3)(9) <= vec3(12);
+			DataToPins(2)(9) <= vec3(13);
+			DataToPins(1)(9) <= vec3(14);
+			DataToPins(0)(9) <= vec3(15);
+	
+			DataToPins(7)(10) <= vec3(16);
+			DataToPins(6)(10) <= vec3(17);
+			DataToPins(5)(10) <= vec3(18);
+			DataToPins(4)(10) <= vec3(19);
+			DataToPins(3)(10) <= vec3(20);
+			DataToPins(2)(10) <= vec3(21);
+			DataToPins(1)(10) <= vec3(22);
+			DataToPins(0)(10) <= vec3(23);
+
+			DataToPins(7)(11) <= vec3(24);
+			DataToPins(6)(11) <= vec3(25);
+			DataToPins(5)(11) <= vec3(26);
+			DataToPins(4)(11) <= vec3(27);
+			DataToPins(3)(11) <= vec3(28);
+			DataToPins(2)(11) <= vec3(29);
+			DataToPins(1)(11) <= vec3(30);
+			DataToPins(0)(11) <= vec3(31);
+			
+			
+			
+			
+						
+Inst_SlowInputByEight4: SlowInputByEight PORT MAP(
+	IOpins => IOpins(15 downto 12),
+	DataToPins => vec4,
+	FastClock => FastClock,
+	SlowClock => SlowClock,
+	SlowClockEnable =>   SlowClockEnable
+);
+
+			DataToPins(7)(12) <= vec4(0);
+			DataToPins(6)(12) <= vec4(1);
+			DataToPins(5)(12) <= vec4(2);
+			DataToPins(4)(12) <= vec4(3);
+			DataToPins(3)(12) <= vec4(4);
+			DataToPins(2)(12) <= vec4(5);
+			DataToPins(1)(12) <= vec4(6);
+			DataToPins(0)(12) <= vec4(7);
+
+			DataToPins(7)(13) <= vec4(8);
+			DataToPins(6)(13) <= vec4(9);
+			DataToPins(5)(13) <= vec4(10);
+			DataToPins(4)(13) <= vec4(11);
+			DataToPins(3)(13) <= vec4(12);
+			DataToPins(2)(13) <= vec4(13);
+			DataToPins(1)(13) <= vec4(14);
+			DataToPins(0)(13) <= vec4(15);
+	
+			DataToPins(7)(14) <= vec4(16);
+			DataToPins(6)(14) <= vec4(17);
+			DataToPins(5)(14) <= vec4(18);
+			DataToPins(4)(14) <= vec4(19);
+			DataToPins(3)(14) <= vec4(20);
+			DataToPins(2)(14) <= vec4(21);
+			DataToPins(1)(14) <= vec4(22);
+			DataToPins(0)(14) <= vec4(23);
+
+			DataToPins(7)(15) <= vec4(24);
+			DataToPins(6)(15) <= vec4(25);
+			DataToPins(5)(15) <= vec4(26);
+			DataToPins(4)(15) <= vec4(27);
+			DataToPins(3)(15) <= vec4(28);
+			DataToPins(2)(15) <= vec4(29);
+			DataToPins(1)(15) <= vec4(30);
+			DataToPins(0)(15) <= vec4(31);
+			
 end Behavioral;
 
