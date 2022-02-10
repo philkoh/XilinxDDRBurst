@@ -75,7 +75,6 @@ COMPONENT SlowByEightBus
 	PORT(
 		DataToPins : in  burstArr;
 		FastClock : IN std_logic;
-	--	MediumClock : IN std_logic;
 		SlowClockEnable : IN std_logic;       
 		IOpins : INOUT std_logic_vector(15 downto 0)
 	);
@@ -86,7 +85,6 @@ COMPONENT SlowInputByEight
 		IOpins : IN std_logic_vector(3 downto 0);
 		FastClock : IN std_logic;
 		SlowClockEnable : IN std_logic;   
-	--	MediumClock : IN std_logic;
 		SlowClock : IN std_logic;
 		DataToPins : OUT std_logic_vector(31 downto 0)
 	);
@@ -110,7 +108,6 @@ COMPONENT SlowByEight
 	PORT(
 		DataToPins : IN std_logic_vector(31 downto 0);
 		FastClock : IN std_logic;
-	--	MediumClock : IN std_logic;
 		SlowClockEnable : IN std_logic;       
 		IOpins : INOUT std_logic_vector(3 downto 0)
 		);
@@ -140,10 +137,6 @@ COMPONENT DelayWideBus
 END COMPONENT;
 
 	signal clk250MHz : std_logic := '0';
---	signal clk125MHz : std_logic := '0';
---	signal clk125MHz_n : std_logic := '0';
---	signal nextClk125MHz : std_logic := '0';
---	signal nextClk125MHz_n : std_logic := '0';
 
 	signal ck_p : std_logic := '0';
 
@@ -194,8 +187,6 @@ END COMPONENT;
 	
 	type philArr is array (7 downto 0) of std_logic_vector(15 downto 0);
 	 
---	signal capturedData :   philArr;
---	signal nextCapturedData :   philArr;
 	signal capturedDataB :   philArr;
 	signal nextCapturedDataB : philArr;
 	
@@ -311,17 +302,11 @@ END COMPONENT;
 	signal slowReadData :  std_logic_vector(31 downto 0);
 	 
 	signal clockShift : std_logic_vector(3 downto 0) :=  "1000";--  "0010";--
---	signal clk62M5Hz : std_logic := '0';
 	signal clk31M25Hz : std_logic := '0';
---	signal useThisEdge : std_logic := '0';
---	signal nextUseThisEdge : std_logic;
---	signal snapShotOfSlowClockEnable : std_logic := '0';
 	
 	signal slowFIFOpull : std_logic;
 	signal slowFIFOpush : std_logic := '0';
 	signal nextSlowFIFOpush : std_logic;
-	
-	
 	
 	signal fallingEdgeSlowClockEnable : std_logic := '0';
 begin
