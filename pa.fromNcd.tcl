@@ -1,7 +1,7 @@
 
 # PlanAhead Launch Script for Post PAR Floorplanning, created by Project Navigator
 
-create_project -name XilinxBurst -dir "C:/GitRepos/XilinxDDRBurst/planAhead_run_1" -part xc6slx16ftg256-2
+create_project -name XilinxBurst -dir "C:/GitRepos/XilinxDDRBurst/planAhead_run_3" -part xc6slx16ftg256-2
 set srcset [get_property srcset [current_run -impl]]
 set_property design_mode GateLvl $srcset
 set_property edif_top_file "C:/GitRepos/XilinxDDRBurst/bl_cs.ngc" [ get_property srcset [ current_run ] ]

@@ -1,0 +1,1128 @@
+Release 14.7 - xst P.20131013 (nt)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+--> 
+
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.08 secs
+ 
+--> Reading design: bl.prj
+
+TABLE OF CONTENTS
+  1) Synthesis Options Summary
+  2) HDL Parsing
+  3) HDL Elaboration
+  4) HDL Synthesis
+       4.1) HDL Synthesis Report
+  5) Advanced HDL Synthesis
+       5.1) Advanced HDL Synthesis Report
+  6) Low Level Synthesis
+  7) Partition Report
+  8) Design Summary
+       8.1) Primitive and Black Box Usage
+       8.2) Device utilization summary
+       8.3) Partition Resource Summary
+       8.4) Timing Report
+            8.4.1) Clock Information
+            8.4.2) Asynchronous Control Signals Information
+            8.4.3) Timing Summary
+            8.4.4) Timing Details
+            8.4.5) Cross Clock Domains Report
+
+
+=========================================================================
+*                      Synthesis Options Summary                        *
+=========================================================================
+---- Source Parameters
+Input File Name                    : "bl.prj"
+
+---- Target Parameters
+Target Device                      : xc6slx16ftg256-2
+Output File Name                   : "bl.ngc"
+
+---- Source Options
+Top Module Name                    : bl
+
+---- Target Options
+LUT Combining                      : auto
+Add Generic Clock Buffer(BUFG)     : 16
+
+---- General Options
+Optimization Goal                  : speed
+Optimization Effort                : 1
+
+---- Other Options
+Cores Search Directories           : {c:/GitRepos/XilinxDDRBurst/ipcore_dir}
+
+=========================================================================
+
+
+=========================================================================
+*                          HDL Parsing                                  *
+=========================================================================
+Parsing VHDL file "c:/GitRepos/XilinxDDRBurst/ipcore_dir/PhilClock.vhd" into library work
+Parsing entity <PhilClock>.
+Parsing architecture <xilinx> of entity <philclock>.
+Parsing VHDL file "c:/GitRepos/XilinxDDRBurst/ipcore_dir/FIFOphil2.vhd" into library work
+Parsing entity <FIFOphil2>.
+Parsing architecture <FIFOphil2_a> of entity <fifophil2>.
+Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/SlowByEight.vhd" into library work
+Parsing entity <SlowByEight>.
+Parsing architecture <Behavioral> of entity <slowbyeight>.
+Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/Delay.vhd" into library work
+Parsing entity <Delay>.
+Parsing architecture <Behavioral> of entity <delay>.
+Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/common.vhd" into library work
+Parsing package <common>.
+Parsing package body <common>.
+Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/SPIbus.vhd" into library work
+Parsing entity <SPIinterface>.
+Parsing architecture <Behavioral> of entity <spiinterface>.
+Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/SlowInputByEight.vhd" into library work
+Parsing entity <SlowInputByEight>.
+Parsing architecture <Behavioral> of entity <slowinputbyeight>.
+Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/SlowByEightBus.vhd" into library work
+Parsing entity <SlowByEightBus>.
+Parsing architecture <Behavioral> of entity <slowbyeightbus>.
+Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/DelayWideBus.vhd" into library work
+Parsing entity <DelayWideBus>.
+Parsing architecture <Behavioral> of entity <delaywidebus>.
+Parsing VHDL file "C:/GitRepos/XilinxDDRBurst/bl.vhd" into library work
+Parsing entity <bl>.
+Parsing architecture <Behavioral> of entity <bl>.
+
+=========================================================================
+*                            HDL Elaboration                            *
+=========================================================================
+
+Elaborating entity <bl> (architecture <Behavioral>) from library <work>.
+
+Elaborating entity <SlowByEight> (architecture <Behavioral>) from library <work>.
+
+Elaborating entity <SlowByEightBus> (architecture <Behavioral>) from library <work>.
+
+Elaborating entity <SlowInputByEight> (architecture <Behavioral>) from library <work>.
+WARNING:HDLCompiler:92 - "C:/GitRepos/XilinxDDRBurst/SlowInputByEight.vhd" Line 26: slowclock should be on the sensitivity list of the process
+
+Elaborating entity <FIFOphil2> (architecture <FIFOphil2_a>) from library <work>.
+
+Elaborating entity <PhilClock> (architecture <xilinx>) from library <work>.
+
+Elaborating entity <DelayWideBus> (architecture <Behavioral>) from library <work>.
+
+Elaborating entity <Delay> (architecture <Behavioral>) from library <work>.
+
+Elaborating entity <SPIinterface> (architecture <Behavioral>) from library <work>.
+WARNING:HDLCompiler:1127 - "C:/GitRepos/XilinxDDRBurst/bl.vhd" Line 556: Assignment to usethisedge ignored, since the identifier is never used
+WARNING:HDLCompiler:92 - "C:/GitRepos/XilinxDDRBurst/bl.vhd" Line 666: captureddatab should be on the sensitivity list of the process
+WARNING:HDLCompiler:92 - "C:/GitRepos/XilinxDDRBurst/bl.vhd" Line 668: slowclockenableread should be on the sensitivity list of the process
+WARNING:HDLCompiler:92 - "C:/GitRepos/XilinxDDRBurst/bl.vhd" Line 852: captureddatab should be on the sensitivity list of the process
+WARNING:HDLCompiler:634 - "C:/GitRepos/XilinxDDRBurst/bl.vhd" Line 223: Net <capturedDataB[15][15]> does not have a driver.
+WARNING:HDLCompiler:634 - "C:/GitRepos/XilinxDDRBurst/bl.vhd" Line 294: Net <dataToPinsB[31]> does not have a driver.
+WARNING:HDLCompiler:634 - "C:/GitRepos/XilinxDDRBurst/bl.vhd" Line 305: Net <csSlow[7]> does not have a driver.
+
+=========================================================================
+*                           HDL Synthesis                               *
+=========================================================================
+
+Synthesizing Unit <bl>.
+    Related source file is "C:/GitRepos/XilinxDDRBurst/bl.vhd".
+INFO:Xst:3210 - "C:/GitRepos/XilinxDDRBurst/bl.vhd" line 479: Output port <full> of the instance <fifoInstance> is unconnected or connected to loadless signal.
+WARNING:Xst:653 - Signal <capturedDataB<15>> is used but never assigned. This sourceless signal will be automatically connected to value GND.
+WARNING:Xst:653 - Signal <capturedDataB<14>> is used but never assigned. This sourceless signal will be automatically connected to value GND.
+WARNING:Xst:653 - Signal <capturedDataB<13>> is used but never assigned. This sourceless signal will be automatically connected to value GND.
+WARNING:Xst:653 - Signal <capturedDataB<12>> is used but never assigned. This sourceless signal will be automatically connected to value GND.
+WARNING:Xst:653 - Signal <capturedDataB<11>> is used but never assigned. This sourceless signal will be automatically connected to value GND.
+WARNING:Xst:653 - Signal <capturedDataB<10>> is used but never assigned. This sourceless signal will be automatically connected to value GND.
+WARNING:Xst:653 - Signal <capturedDataB<9>> is used but never assigned. This sourceless signal will be automatically connected to value GND.
+WARNING:Xst:653 - Signal <capturedDataB<8>> is used but never assigned. This sourceless signal will be automatically connected to value GND.
+WARNING:Xst:653 - Signal <dataToPinsB<31:16>> is used but never assigned. This sourceless signal will be automatically connected to value GND.
+WARNING:Xst:653 - Signal <csSlow> is used but never assigned. This sourceless signal will be automatically connected to value GND.
+    Found 4-bit register for signal <clockShift>.
+    Found 1-bit register for signal <slowClockEnableRead>.
+    Found 1-bit register for signal <switchRegister>.
+    Found 4-bit register for signal <switchCount>.
+    Found 1-bit register for signal <lastSwitchRegister>.
+    Found 1-bit register for signal <requestReadToggle>.
+    Found 1-bit register for signal <requestWriteToggle>.
+    Found 16-bit register for signal <requestedAddress>.
+    Found 16-bit register for signal <SPIdataInSlowed>.
+    Found 1-bit register for signal <dataArrivedToggleSlowed>.
+    Found 1-bit register for signal <lastDataArrivedToggle>.
+    Found 144-bit register for signal <SPIFIFOdin>.
+    Found 1-bit register for signal <slowFIFOpush>.
+    Found 8-bit register for signal <slowClockVector>.
+    Found 4-bit register for signal <currentState>.
+    Found 18-bit register for signal <slowCount>.
+    Found 8-bit register for signal <burstCount>.
+    Found 4-bit register for signal <slowWritingPulseTrain>.
+    Found 144-bit register for signal <slowWritingDataTrain0>.
+    Found 128-bit register for signal <slowWritingDataTrain1<127:0>>.
+    Found 16-bit register for signal <addr>.
+    Found 3-bit register for signal <slowBA>.
+    Found 1-bit register for signal <lastRequestReadToggle>.
+    Found 1-bit register for signal <lastRequestWriteToggle>.
+    Found 1-bit register for signal <fallingEdgeSlowClockEnable>.
+    Found 4-bit register for signal <capturedDataB<0>[3:0]>.
+    Found 4-bit register for signal <capturedDataB<2>[3:0]>.
+    Found 4-bit register for signal <capturedDataB<5>[3:0]>.
+    Found 4-bit register for signal <capturedDataB<7>[3:0]>.
+    Found 4-bit register for signal <capturedDataB<1>[3:0]>.
+    Found 4-bit register for signal <capturedDataB<3>[3:0]>.
+    Found 4-bit register for signal <capturedDataB<6>[3:0]>.
+    Found 4-bit register for signal <capturedDataB<4>[3:0]>.
+INFO:Xst:1799 - State stop is never reached in FSM <currentState>.
+    Found finite state machine <FSM_0> for signal <currentState>.
+    -----------------------------------------------------------------------
+    | States             | 10                                             |
+    | Transitions        | 21                                             |
+    | Inputs             | 10                                             |
+    | Outputs            | 12                                             |
+    | Clock              | clk31M25Hz (rising_edge)                       |
+    | Power Up State     | slowreset                                      |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found 4-bit adder for signal <nextSwitchCount> created at line 1241.
+    Found 18-bit adder for signal <slowCount[17]_GND_6_o_add_86_OUT> created at line 1241.
+    Found 8-bit adder for signal <burstCount[7]_GND_6_o_add_95_OUT> created at line 1241.
+    Found 16-bit adder for signal <addr[15]_GND_6_o_add_96_OUT> created at line 1058.
+    Found 16-bit 9-to-1 multiplexer for signal <SPIdataOut> created at line 852.
+    Found 1-bit tristate buffer for signal <dataPORT<15>> created at line 596
+    Found 1-bit tristate buffer for signal <dataPORT<14>> created at line 596
+    Found 1-bit tristate buffer for signal <dataPORT<13>> created at line 596
+    Found 1-bit tristate buffer for signal <dataPORT<12>> created at line 596
+    Found 1-bit tristate buffer for signal <dataPORT<11>> created at line 596
+    Found 1-bit tristate buffer for signal <dataPORT<10>> created at line 596
+    Found 1-bit tristate buffer for signal <dataPORT<9>> created at line 596
+    Found 1-bit tristate buffer for signal <dataPORT<8>> created at line 596
+    Found 1-bit tristate buffer for signal <dataPORT<7>> created at line 596
+    Found 1-bit tristate buffer for signal <dataPORT<6>> created at line 596
+    Found 1-bit tristate buffer for signal <dataPORT<5>> created at line 596
+    Found 1-bit tristate buffer for signal <dataPORT<4>> created at line 596
+    Found 1-bit tristate buffer for signal <dataPORT<3>> created at line 596
+    Found 1-bit tristate buffer for signal <dataPORT<2>> created at line 596
+    Found 1-bit tristate buffer for signal <dataPORT<1>> created at line 596
+    Found 1-bit tristate buffer for signal <dataPORT<0>> created at line 596
+    Found 1-bit tristate buffer for signal <slowWriteData<7><15>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<7><14>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<7><13>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<7><12>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<7><11>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<7><10>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<7><9>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<7><8>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<7><7>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<7><6>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<7><5>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<7><4>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<7><3>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<7><2>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<7><1>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<7><0>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<6><15>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<6><14>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<6><13>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<6><12>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<6><11>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<6><10>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<6><9>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<6><8>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<6><7>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<6><6>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<6><5>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<6><4>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<6><3>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<6><2>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<6><1>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<6><0>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<5><15>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<5><14>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<5><13>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<5><12>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<5><11>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<5><10>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<5><9>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<5><8>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<5><7>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<5><6>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<5><5>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<5><4>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<5><3>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<5><2>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<5><1>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<5><0>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<4><15>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<4><14>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<4><13>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<4><12>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<4><11>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<4><10>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<4><9>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<4><8>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<4><7>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<4><6>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<4><5>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<4><4>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<4><3>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<4><2>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<4><1>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<4><0>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<3><15>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<3><14>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<3><13>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<3><12>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<3><11>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<3><10>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<3><9>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<3><8>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<3><7>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<3><6>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<3><5>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<3><4>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<3><3>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<3><2>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<3><1>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<3><0>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<2><15>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<2><14>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<2><13>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<2><12>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<2><11>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<2><10>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<2><9>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<2><8>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<2><7>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<2><6>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<2><5>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<2><4>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<2><3>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<2><2>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<2><1>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<2><0>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<1><15>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<1><14>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<1><13>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<1><12>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<1><11>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<1><10>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<1><9>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<1><8>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<1><7>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<1><6>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<1><5>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<1><4>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<1><3>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<1><2>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<1><1>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<1><0>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<0><15>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<0><14>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<0><13>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<0><12>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<0><11>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<0><10>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<0><9>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<0><8>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<0><7>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<0><6>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<0><5>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<0><4>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<0><3>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<0><2>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<0><1>> created at line 994
+    Found 1-bit tristate buffer for signal <slowWriteData<0><0>> created at line 994
+    Found 4-bit comparator equal for signal <n0284> created at line 1005
+    WARNING:Xst:2404 -  FFs/Latches <odt<0:0>> (without init value) have a constant value of 1 in block <bl>.
+    WARNING:Xst:2404 -  FFs/Latches <capturedDataB<0><15:4>> (without init value) have a constant value of 0 in block <bl>.
+    WARNING:Xst:2404 -  FFs/Latches <capturedDataB<2><15:4>> (without init value) have a constant value of 0 in block <bl>.
+    WARNING:Xst:2404 -  FFs/Latches <capturedDataB<5><15:4>> (without init value) have a constant value of 0 in block <bl>.
+    WARNING:Xst:2404 -  FFs/Latches <capturedDataB<7><15:4>> (without init value) have a constant value of 0 in block <bl>.
+    WARNING:Xst:2404 -  FFs/Latches <capturedDataB<1><15:4>> (without init value) have a constant value of 0 in block <bl>.
+    WARNING:Xst:2404 -  FFs/Latches <capturedDataB<3><15:4>> (without init value) have a constant value of 0 in block <bl>.
+    WARNING:Xst:2404 -  FFs/Latches <capturedDataB<6><15:4>> (without init value) have a constant value of 0 in block <bl>.
+    WARNING:Xst:2404 -  FFs/Latches <capturedDataB<4><15:4>> (without init value) have a constant value of 0 in block <bl>.
+    Summary:
+	inferred   4 Adder/Subtractor(s).
+	inferred 556 D-type flip-flop(s).
+	inferred   1 Comparator(s).
+	inferred  47 Multiplexer(s).
+	inferred 144 Tristate(s).
+	inferred   1 Finite State Machine(s).
+Unit <bl> synthesized.
+
+Synthesizing Unit <SlowByEight>.
+    Related source file is "C:/GitRepos/XilinxDDRBurst/SlowByEight.vhd".
+    Found 1-bit register for signal <dataStrobe>.
+    Found 1-bit register for signal <lastDataStrobe>.
+    Found 1-bit register for signal <preloadPulse>.
+    Found 32-bit register for signal <shiftRegisters>.
+    Found 32-bit register for signal <incomingData>.
+WARNING:Xst:737 - Found 1-bit latch for signal <nextShiftRegisters<0>>. Latches may be generated from incomplete case or if statements. We do not recommend the use of latches in FPGA/CPLD designs, as they may lead to timing problems.
+    Summary:
+	inferred  67 D-type flip-flop(s).
+	inferred   1 Latch(s).
+	inferred   1 Multiplexer(s).
+Unit <SlowByEight> synthesized.
+
+Synthesizing Unit <SlowByEightBus>.
+    Related source file is "C:/GitRepos/XilinxDDRBurst/SlowByEightBus.vhd".
+    Summary:
+	no macro.
+Unit <SlowByEightBus> synthesized.
+
+Synthesizing Unit <SlowInputByEight>.
+    Related source file is "C:/GitRepos/XilinxDDRBurst/SlowInputByEight.vhd".
+WARNING:Xst:647 - Input <SlowClockEnable> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+    Found 32-bit register for signal <shiftRegisters>.
+    Found 32-bit register for signal <DataToPins>.
+    Summary:
+	inferred  64 D-type flip-flop(s).
+Unit <SlowInputByEight> synthesized.
+
+Synthesizing Unit <PhilClock>.
+    Related source file is "c:/GitRepos/XilinxDDRBurst/ipcore_dir/PhilClock.vhd".
+    Summary:
+	no macro.
+Unit <PhilClock> synthesized.
+
+Synthesizing Unit <DelayWideBus>.
+    Related source file is "C:/GitRepos/XilinxDDRBurst/DelayWideBus.vhd".
+    Summary:
+	no macro.
+Unit <DelayWideBus> synthesized.
+
+Synthesizing Unit <Delay>.
+    Related source file is "C:/GitRepos/XilinxDDRBurst/Delay.vhd".
+    Summary:
+	no macro.
+Unit <Delay> synthesized.
+
+Synthesizing Unit <SPIinterface>.
+    Related source file is "C:/GitRepos/XilinxDDRBurst/SPIbus.vhd".
+    Found 8-bit register for signal <MOSIvec>.
+    Found 8-bit register for signal <SCKvec>.
+    Found 1-bit register for signal <CS>.
+    Found 1-bit register for signal <lastCS>.
+    Found 1-bit register for signal <MOSI>.
+    Found 1-bit register for signal <SCK>.
+    Found 1-bit register for signal <lastSCK>.
+    Found 16-bit register for signal <SPIdataIn>.
+    Found 16-bit register for signal <SPIdataOut>.
+    Found 1-bit register for signal <newDataToggle>.
+    Found 8-bit register for signal <CSvec>.
+    Found 1-bit tristate buffer for signal <MISOpin> created at line 99
+    Summary:
+	inferred  62 D-type flip-flop(s).
+	inferred  16 Multiplexer(s).
+	inferred   1 Tristate(s).
+Unit <SPIinterface> synthesized.
+
+=========================================================================
+HDL Synthesis Report
+
+Macro Statistics
+# Adders/Subtractors                                   : 4
+ 16-bit adder                                          : 1
+ 18-bit adder                                          : 1
+ 4-bit adder                                           : 1
+ 8-bit adder                                           : 1
+# Registers                                            : 95
+ 1-bit register                                        : 47
+ 128-bit register                                      : 1
+ 144-bit register                                      : 2
+ 16-bit register                                       : 5
+ 18-bit register                                       : 1
+ 3-bit register                                        : 1
+ 32-bit register                                       : 22
+ 4-bit register                                        : 11
+ 8-bit register                                        : 5
+# Latches                                              : 10
+ 1-bit latch                                           : 10
+# Comparators                                          : 1
+ 4-bit comparator equal                                : 1
+# Multiplexers                                         : 73
+ 1-bit 2-to-1 multiplexer                              : 32
+ 16-bit 2-to-1 multiplexer                             : 8
+ 16-bit 9-to-1 multiplexer                             : 1
+ 3-bit 2-to-1 multiplexer                              : 5
+ 32-bit 2-to-1 multiplexer                             : 10
+ 8-bit 2-to-1 multiplexer                              : 17
+# Tristates                                            : 145
+ 1-bit tristate buffer                                 : 145
+# FSMs                                                 : 1
+# Xors                                                 : 23
+ 1-bit xor2                                            : 23
+
+=========================================================================
+
+=========================================================================
+*                       Advanced HDL Synthesis                          *
+=========================================================================
+
+Reading core <c:/GitRepos/XilinxDDRBurst/ipcore_dir/FIFOphil2.ngc>.
+Loading core <FIFOphil2> for timing and area information for instance <fifoInstance>.
+
+Synthesizing (advanced) Unit <bl>.
+The following registers are absorbed into counter <slowCount>: 1 register on signal <slowCount>.
+The following registers are absorbed into counter <switchCount>: 1 register on signal <switchCount>.
+The following registers are absorbed into counter <burstCount>: 1 register on signal <burstCount>.
+Unit <bl> synthesized (advanced).
+WARNING:Xst:2677 - Node <slowWritingDataTrain0_128> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <slowWritingDataTrain0_129> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <slowWritingDataTrain0_130> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <slowWritingDataTrain0_131> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <slowWritingDataTrain0_132> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <slowWritingDataTrain0_133> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <slowWritingDataTrain0_134> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <slowWritingDataTrain0_135> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <slowWritingDataTrain0_136> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <slowWritingDataTrain0_137> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <slowWritingDataTrain0_138> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <slowWritingDataTrain0_139> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <slowWritingDataTrain0_140> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <slowWritingDataTrain0_141> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <slowWritingDataTrain0_142> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <slowWritingDataTrain0_143> of sequential type is unconnected in block <bl>.
+
+=========================================================================
+Advanced HDL Synthesis Report
+
+Macro Statistics
+# Adders/Subtractors                                   : 1
+ 16-bit adder                                          : 1
+# Counters                                             : 3
+ 18-bit up counter                                     : 1
+ 4-bit up counter                                      : 1
+ 8-bit up counter                                      : 1
+# Registers                                            : 1306
+ Flip-Flops                                            : 1306
+# Comparators                                          : 1
+ 4-bit comparator equal                                : 1
+# Multiplexers                                         : 388
+ 1-bit 2-to-1 multiplexer                              : 358
+ 16-bit 2-to-1 multiplexer                             : 7
+ 16-bit 9-to-1 multiplexer                             : 1
+ 3-bit 2-to-1 multiplexer                              : 5
+ 8-bit 2-to-1 multiplexer                              : 17
+# FSMs                                                 : 1
+# Xors                                                 : 23
+ 1-bit xor2                                            : 23
+
+=========================================================================
+
+=========================================================================
+*                         Low Level Synthesis                           *
+=========================================================================
+WARNING:Xst:1293 - FF/Latch <requestedAddress_8> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <requestedAddress_9> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <requestedAddress_10> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <requestedAddress_11> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <requestedAddress_12> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <requestedAddress_13> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <requestedAddress_14> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <requestedAddress_15> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+INFO:Xst:2261 - The FF/Latch <SPIFIFOdin_1> in Unit <bl> is equivalent to the following 71 FFs/Latches, which will be removed : <SPIFIFOdin_3> <SPIFIFOdin_5> <SPIFIFOdin_7> <SPIFIFOdin_9> <SPIFIFOdin_11> <SPIFIFOdin_13> <SPIFIFOdin_15> <SPIFIFOdin_17> <SPIFIFOdin_19> <SPIFIFOdin_21> <SPIFIFOdin_23> <SPIFIFOdin_25> <SPIFIFOdin_27> <SPIFIFOdin_29> <SPIFIFOdin_31> <SPIFIFOdin_33> <SPIFIFOdin_35> <SPIFIFOdin_37> <SPIFIFOdin_39> <SPIFIFOdin_41> <SPIFIFOdin_43> <SPIFIFOdin_45> <SPIFIFOdin_47> <SPIFIFOdin_49> <SPIFIFOdin_51> <SPIFIFOdin_53> <SPIFIFOdin_55> <SPIFIFOdin_57> <SPIFIFOdin_59> <SPIFIFOdin_61> <SPIFIFOdin_63> <SPIFIFOdin_65> <SPIFIFOdin_67> <SPIFIFOdin_69> <SPIFIFOdin_71> <SPIFIFOdin_73> <SPIFIFOdin_75> <SPIFIFOdin_77> <SPIFIFOdin_79> <SPIFIFOdin_81> <SPIFIFOdin_83> <SPIFIFOdin_85> <SPIFIFOdin_87> <SPIFIFOdin_89> <SPIFIFOdin_91> <SPIFIFOdin_93> <SPIFIFOdin_95> <SPIFIFOdin_97> <SPIFIFOdin_99> <SPIFIFOdin_101> <SPIFIFOdin_103> <SPIFIFOdin_105> <SPIFIFOdin_107> <SPIFIFOdin_109> <SPIFIFOdin_111>
+   <SPIFIFOdin_113> <SPIFIFOdin_115> <SPIFIFOdin_117> <SPIFIFOdin_119> <SPIFIFOdin_121> <SPIFIFOdin_123> <SPIFIFOdin_125> <SPIFIFOdin_127> <SPIFIFOdin_129> <SPIFIFOdin_131> <SPIFIFOdin_133> <SPIFIFOdin_135> <SPIFIFOdin_137> <SPIFIFOdin_139> <SPIFIFOdin_141> <SPIFIFOdin_143> 
+INFO:Xst:2261 - The FF/Latch <SPIFIFOdin_0> in Unit <bl> is equivalent to the following 70 FFs/Latches, which will be removed : <SPIFIFOdin_2> <SPIFIFOdin_4> <SPIFIFOdin_6> <SPIFIFOdin_8> <SPIFIFOdin_10> <SPIFIFOdin_12> <SPIFIFOdin_14> <SPIFIFOdin_18> <SPIFIFOdin_20> <SPIFIFOdin_22> <SPIFIFOdin_24> <SPIFIFOdin_26> <SPIFIFOdin_28> <SPIFIFOdin_30> <SPIFIFOdin_32> <SPIFIFOdin_34> <SPIFIFOdin_36> <SPIFIFOdin_38> <SPIFIFOdin_40> <SPIFIFOdin_42> <SPIFIFOdin_44> <SPIFIFOdin_46> <SPIFIFOdin_48> <SPIFIFOdin_50> <SPIFIFOdin_52> <SPIFIFOdin_54> <SPIFIFOdin_56> <SPIFIFOdin_58> <SPIFIFOdin_60> <SPIFIFOdin_62> <SPIFIFOdin_64> <SPIFIFOdin_66> <SPIFIFOdin_68> <SPIFIFOdin_70> <SPIFIFOdin_72> <SPIFIFOdin_74> <SPIFIFOdin_76> <SPIFIFOdin_78> <SPIFIFOdin_80> <SPIFIFOdin_82> <SPIFIFOdin_84> <SPIFIFOdin_86> <SPIFIFOdin_88> <SPIFIFOdin_90> <SPIFIFOdin_92> <SPIFIFOdin_94> <SPIFIFOdin_96> <SPIFIFOdin_98> <SPIFIFOdin_100> <SPIFIFOdin_102> <SPIFIFOdin_104> <SPIFIFOdin_106> <SPIFIFOdin_108> <SPIFIFOdin_110> <SPIFIFOdin_112>
+   <SPIFIFOdin_114> <SPIFIFOdin_116> <SPIFIFOdin_118> <SPIFIFOdin_120> <SPIFIFOdin_122> <SPIFIFOdin_124> <SPIFIFOdin_126> <SPIFIFOdin_128> <SPIFIFOdin_130> <SPIFIFOdin_132> <SPIFIFOdin_134> <SPIFIFOdin_136> <SPIFIFOdin_138> <SPIFIFOdin_140> <SPIFIFOdin_142> 
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <FSM_0> on signal <currentState[1:4]> with user encoding.
+--------------------------
+ State        | Encoding
+--------------------------
+ slowreset    | 0000
+ ckelow       | 0001
+ startwriting | 0010
+ stopwriting  | 0011
+ idle         | 0100
+ activate     | 0101
+ writemrs     | 0110
+ reading      | 0111
+ stopreading  | 1000
+ stop         | unreached
+--------------------------
+WARNING:Xst:1293 - FF/Latch <slowBA_2> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+INFO:Xst:1901 - Instance BUFGCE_inst2 in unit bl of type BUFGCE has been replaced by BUFGMUX
+INFO:Xst:1901 - Instance BUFGCE_inst in unit bl of type BUFGCE has been replaced by BUFGMUX
+WARNING:Xst:2042 - Unit bl: 128 internal tristates are replaced by logic (pull-up yes): slowWriteData<0><0>, slowWriteData<0><10>, slowWriteData<0><11>, slowWriteData<0><12>, slowWriteData<0><13>, slowWriteData<0><14>, slowWriteData<0><15>, slowWriteData<0><1>, slowWriteData<0><2>, slowWriteData<0><3>, slowWriteData<0><4>, slowWriteData<0><5>, slowWriteData<0><6>, slowWriteData<0><7>, slowWriteData<0><8>, slowWriteData<0><9>, slowWriteData<1><0>, slowWriteData<1><10>, slowWriteData<1><11>, slowWriteData<1><12>, slowWriteData<1><13>, slowWriteData<1><14>, slowWriteData<1><15>, slowWriteData<1><1>, slowWriteData<1><2>, slowWriteData<1><3>, slowWriteData<1><4>, slowWriteData<1><5>, slowWriteData<1><6>, slowWriteData<1><7>, slowWriteData<1><8>, slowWriteData<1><9>, slowWriteData<2><0>, slowWriteData<2><10>, slowWriteData<2><11>, slowWriteData<2><12>, slowWriteData<2><13>, slowWriteData<2><14>, slowWriteData<2><15>, slowWriteData<2><1>, slowWriteData<2><2>, slowWriteData<2><3>, slowWriteData<2><4>, slowWriteData<2><5>, slowWriteData<2><6>, slowWriteData<2><7>, slowWriteData<2><8>, slowWriteData<2><9>, slowWriteData<3><0>, slowWriteData<3><10>, slowWriteData<3><11>, slowWriteData<3><12>, slowWriteData<3><13>, slowWriteData<3><14>, slowWriteData<3><15>, slowWriteData<3><1>, slowWriteData<3><2>, slowWriteData<3><3>, slowWriteData<3><4>, slowWriteData<3><5>, slowWriteData<3><6>, slowWriteData<3><7>, slowWriteData<3><8>, slowWriteData<3><9>, slowWriteData<4><0>, slowWriteData<4><10>, slowWriteData<4><11>, slowWriteData<4><12>, slowWriteData<4><13>, slowWriteData<4><14>, slowWriteData<4><15>, slowWriteData<4><1>, slowWriteData<4><2>, slowWriteData<4><3>, slowWriteData<4><4>, slowWriteData<4><5>, slowWriteData<4><6>, slowWriteData<4><7>, slowWriteData<4><8>, slowWriteData<4><9>, slowWriteData<5><0>, slowWriteData<5><10>, slowWriteData<5><11>, slowWriteData<5><12>, slowWriteData<5><13>, slowWriteData<5><14>, slowWriteData<5><15>, slowWriteData<5><1>, slowWriteData<5><2>, slowWriteData<5><3>, slowWriteData<5><4>, slowWriteData<5><5>, slowWriteData<5><6>, slowWriteData<5><7>, slowWriteData<5><8>, slowWriteData<5><9>, slowWriteData<6><0>, slowWriteData<6><10>, slowWriteData<6><11>, slowWriteData<6><12>, slowWriteData<6><13>, slowWriteData<6><14>, slowWriteData<6><15>, slowWriteData<6><1>, slowWriteData<6><2>, slowWriteData<6><3>, slowWriteData<6><4>, slowWriteData<6><5>, slowWriteData<6><6>, slowWriteData<6><7>, slowWriteData<6><8>, slowWriteData<6><9>, slowWriteData<7><0>, slowWriteData<7><10>, slowWriteData<7><11>, slowWriteData<7><12>, slowWriteData<7><13>, slowWriteData<7><14>, slowWriteData<7><15>, slowWriteData<7><1>, slowWriteData<7><2>, slowWriteData<7><3>, slowWriteData<7><4>, slowWriteData<7><5>, slowWriteData<7><6>, slowWriteData<7><7>, slowWriteData<7><8>, slowWriteData<7><9>.
+
+Optimizing unit <SlowInputByEight> ...
+
+Optimizing unit <bl> ...
+
+Optimizing unit <SlowByEight> ...
+WARNING:Xst:1426 - The value init of the FF/Latch MainControlOutputsA/incomingData_8 hinder the constant cleaning in the block bl.
+   You should achieve better results by setting this init to 1.
+WARNING:Xst:1426 - The value init of the FF/Latch MainControlOutputsA/incomingData_9 hinder the constant cleaning in the block bl.
+   You should achieve better results by setting this init to 1.
+WARNING:Xst:1426 - The value init of the FF/Latch MainControlOutputsA/incomingData_12 hinder the constant cleaning in the block bl.
+   You should achieve better results by setting this init to 1.
+WARNING:Xst:1426 - The value init of the FF/Latch MainControlOutputsA/incomingData_13 hinder the constant cleaning in the block bl.
+   You should achieve better results by setting this init to 1.
+WARNING:Xst:1426 - The value init of the FF/Latch MainControlOutputsA/incomingData_14 hinder the constant cleaning in the block bl.
+   You should achieve better results by setting this init to 1.
+WARNING:Xst:1426 - The value init of the FF/Latch MainControlOutputsA/incomingData_15 hinder the constant cleaning in the block bl.
+   You should achieve better results by setting this init to 1.
+WARNING:Xst:1426 - The value init of the FF/Latch MainControlOutputsA/incomingData_16 hinder the constant cleaning in the block bl.
+   You should achieve better results by setting this init to 1.
+WARNING:Xst:1426 - The value init of the FF/Latch MainControlOutputsA/incomingData_17 hinder the constant cleaning in the block bl.
+   You should achieve better results by setting this init to 1.
+WARNING:Xst:1426 - The value init of the FF/Latch MainControlOutputsA/incomingData_20 hinder the constant cleaning in the block bl.
+   You should achieve better results by setting this init to 1.
+WARNING:Xst:1426 - The value init of the FF/Latch MainControlOutputsA/incomingData_21 hinder the constant cleaning in the block bl.
+   You should achieve better results by setting this init to 1.
+WARNING:Xst:1426 - The value init of the FF/Latch MainControlOutputsA/incomingData_24 hinder the constant cleaning in the block bl.
+   You should achieve better results by setting this init to 1.
+WARNING:Xst:1426 - The value init of the FF/Latch MainControlOutputsA/incomingData_25 hinder the constant cleaning in the block bl.
+   You should achieve better results by setting this init to 1.
+WARNING:Xst:1426 - The value init of the FF/Latch MainControlOutputsA/incomingData_28 hinder the constant cleaning in the block bl.
+   You should achieve better results by setting this init to 1.
+WARNING:Xst:1426 - The value init of the FF/Latch MainControlOutputsA/incomingData_29 hinder the constant cleaning in the block bl.
+   You should achieve better results by setting this init to 1.
+WARNING:Xst:1426 - The value init of the FF/Latch MainControlOutputsA/incomingData_30 hinder the constant cleaning in the block bl.
+   You should achieve better results by setting this init to 1.
+WARNING:Xst:1426 - The value init of the FF/Latch MainControlOutputsA/incomingData_31 hinder the constant cleaning in the block bl.
+   You should achieve better results by setting this init to 1.
+WARNING:Xst:1426 - The value init of the FF/Latch ClockAndDQSB/incomingData_0 hinder the constant cleaning in the block bl.
+   You should achieve better results by setting this init to 1.
+WARNING:Xst:1426 - The value init of the FF/Latch ClockAndDQSB/incomingData_2 hinder the constant cleaning in the block bl.
+   You should achieve better results by setting this init to 1.
+WARNING:Xst:1426 - The value init of the FF/Latch ClockAndDQSB/incomingData_4 hinder the constant cleaning in the block bl.
+   You should achieve better results by setting this init to 1.
+WARNING:Xst:1426 - The value init of the FF/Latch ClockAndDQSB/incomingData_6 hinder the constant cleaning in the block bl.
+   You should achieve better results by setting this init to 1.
+WARNING:Xst:1426 - The value init of the FF/Latch ClockAndDQSB/incomingData_8 hinder the constant cleaning in the block bl.
+   You should achieve better results by setting this init to 1.
+WARNING:Xst:1426 - The value init of the FF/Latch ClockAndDQSB/incomingData_10 hinder the constant cleaning in the block bl.
+   You should achieve better results by setting this init to 1.
+WARNING:Xst:1426 - The value init of the FF/Latch ClockAndDQSB/incomingData_12 hinder the constant cleaning in the block bl.
+   You should achieve better results by setting this init to 1.
+WARNING:Xst:1426 - The value init of the FF/Latch ClockAndDQSB/incomingData_14 hinder the constant cleaning in the block bl.
+   You should achieve better results by setting this init to 1.
+WARNING:Xst:1293 - FF/Latch <MainControlOutputsA/incomingData_0> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <MainControlOutputsA/incomingData_1> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <MainControlOutputsA/incomingData_2> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <MainControlOutputsA/incomingData_3> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <MainControlOutputsA/incomingData_4> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <MainControlOutputsA/incomingData_5> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <MainControlOutputsA/incomingData_6> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <MainControlOutputsA/incomingData_7> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <MainControlOutputsA/shiftRegisters_1> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <MainControlOutputsA/shiftRegisters_2> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <MainControlOutputsA/shiftRegisters_3> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <MainControlOutputsA/shiftRegisters_4> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <MainControlOutputsA/shiftRegisters_5> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <MainControlOutputsA/shiftRegisters_6> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <MainControlOutputsA/shiftRegisters_7> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <ClockAndDQSB/incomingData_1> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <ClockAndDQSB/incomingData_3> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <ClockAndDQSB/incomingData_5> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <ClockAndDQSB/incomingData_7> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <ClockAndDQSB/incomingData_9> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <ClockAndDQSB/incomingData_11> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <ClockAndDQSB/incomingData_13> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1293 - FF/Latch <ClockAndDQSB/incomingData_15> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <MainControlOutputsA/nextShiftRegisters_0> (without init value) has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <MainControlOutputsA/shiftRegisters_0> has a constant value of 0 in block <bl>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:2677 - Node <addr_15> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <AddressBus/Inst4/shiftRegisters_31> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <AddressBus/Inst4/shiftRegisters_30> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <AddressBus/Inst4/shiftRegisters_29> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <AddressBus/Inst4/shiftRegisters_28> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <AddressBus/Inst4/shiftRegisters_27> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <AddressBus/Inst4/shiftRegisters_26> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <AddressBus/Inst4/shiftRegisters_25> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <AddressBus/Inst4/shiftRegisters_24> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <AddressBus/Inst4/incomingData_31> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <AddressBus/Inst4/incomingData_30> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <AddressBus/Inst4/incomingData_29> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <AddressBus/Inst4/incomingData_28> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <AddressBus/Inst4/incomingData_27> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <AddressBus/Inst4/incomingData_26> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <AddressBus/Inst4/incomingData_25> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <AddressBus/Inst4/incomingData_24> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/shiftRegisters_31> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/shiftRegisters_30> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/shiftRegisters_29> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/shiftRegisters_28> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/shiftRegisters_27> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/shiftRegisters_26> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/shiftRegisters_25> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/shiftRegisters_24> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/shiftRegisters_23> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/shiftRegisters_22> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/shiftRegisters_21> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/shiftRegisters_20> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/shiftRegisters_19> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/shiftRegisters_18> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/shiftRegisters_17> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/shiftRegisters_16> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/incomingData_31> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/incomingData_30> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/incomingData_29> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/incomingData_28> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/incomingData_27> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/incomingData_26> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/incomingData_25> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/incomingData_24> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/incomingData_23> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/incomingData_22> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/incomingData_21> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/incomingData_20> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/incomingData_19> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/incomingData_18> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/incomingData_17> of sequential type is unconnected in block <bl>.
+WARNING:Xst:2677 - Node <ClockAndDQSB/incomingData_16> of sequential type is unconnected in block <bl>.
+INFO:Xst:2261 - The FF/Latch <AddressBus/Inst3/incomingData_31> in Unit <bl> is equivalent to the following 7 FFs/Latches, which will be removed : <AddressBus/Inst3/incomingData_30> <AddressBus/Inst3/incomingData_29> <AddressBus/Inst3/incomingData_28> <AddressBus/Inst3/incomingData_27> <AddressBus/Inst3/incomingData_26> <AddressBus/Inst3/incomingData_25> <AddressBus/Inst3/incomingData_24> 
+INFO:Xst:2261 - The FF/Latch <DataBus/Inst4/dataStrobe> in Unit <bl> is equivalent to the following 9 FFs/Latches, which will be removed : <DataBus/Inst3/dataStrobe> <DataBus/Inst2/dataStrobe> <DataBus/Inst1/dataStrobe> <AddressBus/Inst4/dataStrobe> <AddressBus/Inst3/dataStrobe> <AddressBus/Inst2/dataStrobe> <AddressBus/Inst1/dataStrobe> <ClockAndDQSB/dataStrobe> <MainControlOutputsA/dataStrobe> 
+INFO:Xst:2261 - The FF/Latch <MainControlOutputsA/incomingData_11> in Unit <bl> is equivalent to the following FF/Latch, which will be removed : <MainControlOutputsA/incomingData_10> 
+INFO:Xst:2261 - The FF/Latch <MainControlOutputsA/incomingData_23> in Unit <bl> is equivalent to the following FF/Latch, which will be removed : <MainControlOutputsA/incomingData_22> 
+INFO:Xst:2261 - The FF/Latch <MainControlOutputsA/incomingData_19> in Unit <bl> is equivalent to the following FF/Latch, which will be removed : <MainControlOutputsA/incomingData_18> 
+INFO:Xst:2261 - The FF/Latch <MainControlOutputsA/incomingData_27> in Unit <bl> is equivalent to the following FF/Latch, which will be removed : <MainControlOutputsA/incomingData_26> 
+INFO:Xst:2261 - The FF/Latch <AddressBus/Inst1/incomingData_15> in Unit <bl> is equivalent to the following 7 FFs/Latches, which will be removed : <AddressBus/Inst1/incomingData_14> <AddressBus/Inst1/incomingData_13> <AddressBus/Inst1/incomingData_12> <AddressBus/Inst1/incomingData_11> <AddressBus/Inst1/incomingData_10> <AddressBus/Inst1/incomingData_9> <AddressBus/Inst1/incomingData_8> 
+INFO:Xst:2261 - The FF/Latch <AddressBus/Inst1/incomingData_23> in Unit <bl> is equivalent to the following 7 FFs/Latches, which will be removed : <AddressBus/Inst1/incomingData_22> <AddressBus/Inst1/incomingData_21> <AddressBus/Inst1/incomingData_20> <AddressBus/Inst1/incomingData_19> <AddressBus/Inst1/incomingData_18> <AddressBus/Inst1/incomingData_17> <AddressBus/Inst1/incomingData_16> 
+INFO:Xst:2261 - The FF/Latch <AddressBus/Inst1/incomingData_31> in Unit <bl> is equivalent to the following 7 FFs/Latches, which will be removed : <AddressBus/Inst1/incomingData_30> <AddressBus/Inst1/incomingData_29> <AddressBus/Inst1/incomingData_28> <AddressBus/Inst1/incomingData_27> <AddressBus/Inst1/incomingData_26> <AddressBus/Inst1/incomingData_25> <AddressBus/Inst1/incomingData_24> 
+INFO:Xst:2261 - The FF/Latch <AddressBus/Inst1/incomingData_7> in Unit <bl> is equivalent to the following 7 FFs/Latches, which will be removed : <AddressBus/Inst1/incomingData_6> <AddressBus/Inst1/incomingData_5> <AddressBus/Inst1/incomingData_4> <AddressBus/Inst1/incomingData_3> <AddressBus/Inst1/incomingData_2> <AddressBus/Inst1/incomingData_1> <AddressBus/Inst1/incomingData_0> 
+INFO:Xst:2261 - The FF/Latch <AddressBus/Inst3/incomingData_7> in Unit <bl> is equivalent to the following 7 FFs/Latches, which will be removed : <AddressBus/Inst3/incomingData_6> <AddressBus/Inst3/incomingData_5> <AddressBus/Inst3/incomingData_4> <AddressBus/Inst3/incomingData_3> <AddressBus/Inst3/incomingData_2> <AddressBus/Inst3/incomingData_1> <AddressBus/Inst3/incomingData_0> 
+INFO:Xst:2261 - The FF/Latch <ClockAndDQSB/incomingData_14> in Unit <bl> is equivalent to the following 23 FFs/Latches, which will be removed : <ClockAndDQSB/incomingData_12> <ClockAndDQSB/incomingData_10> <ClockAndDQSB/incomingData_8> <ClockAndDQSB/incomingData_6> <ClockAndDQSB/incomingData_4> <ClockAndDQSB/incomingData_2> <ClockAndDQSB/incomingData_0> <MainControlOutputsA/incomingData_31> <MainControlOutputsA/incomingData_30> <MainControlOutputsA/incomingData_29> <MainControlOutputsA/incomingData_28> <MainControlOutputsA/incomingData_25> <MainControlOutputsA/incomingData_24> <MainControlOutputsA/incomingData_21> <MainControlOutputsA/incomingData_20> <MainControlOutputsA/incomingData_17> <MainControlOutputsA/incomingData_16> <MainControlOutputsA/incomingData_15> <MainControlOutputsA/incomingData_14> <MainControlOutputsA/incomingData_13> <MainControlOutputsA/incomingData_12> <MainControlOutputsA/incomingData_9> <MainControlOutputsA/incomingData_8> 
+INFO:Xst:2261 - The FF/Latch <DataBus/Inst4/preloadPulse> in Unit <bl> is equivalent to the following 9 FFs/Latches, which will be removed : <DataBus/Inst3/preloadPulse> <DataBus/Inst2/preloadPulse> <DataBus/Inst1/preloadPulse> <AddressBus/Inst4/preloadPulse> <AddressBus/Inst3/preloadPulse> <AddressBus/Inst2/preloadPulse> <AddressBus/Inst1/preloadPulse> <ClockAndDQSB/preloadPulse> <MainControlOutputsA/preloadPulse> 
+INFO:Xst:2261 - The FF/Latch <AddressBus/Inst4/incomingData_15> in Unit <bl> is equivalent to the following 7 FFs/Latches, which will be removed : <AddressBus/Inst4/incomingData_14> <AddressBus/Inst4/incomingData_13> <AddressBus/Inst4/incomingData_12> <AddressBus/Inst4/incomingData_11> <AddressBus/Inst4/incomingData_10> <AddressBus/Inst4/incomingData_9> <AddressBus/Inst4/incomingData_8> 
+INFO:Xst:2261 - The FF/Latch <AddressBus/Inst4/incomingData_23> in Unit <bl> is equivalent to the following 7 FFs/Latches, which will be removed : <AddressBus/Inst4/incomingData_22> <AddressBus/Inst4/incomingData_21> <AddressBus/Inst4/incomingData_20> <AddressBus/Inst4/incomingData_19> <AddressBus/Inst4/incomingData_18> <AddressBus/Inst4/incomingData_17> <AddressBus/Inst4/incomingData_16> 
+INFO:Xst:2261 - The FF/Latch <AddressBus/Inst2/incomingData_15> in Unit <bl> is equivalent to the following 7 FFs/Latches, which will be removed : <AddressBus/Inst2/incomingData_14> <AddressBus/Inst2/incomingData_13> <AddressBus/Inst2/incomingData_12> <AddressBus/Inst2/incomingData_11> <AddressBus/Inst2/incomingData_10> <AddressBus/Inst2/incomingData_9> <AddressBus/Inst2/incomingData_8> 
+INFO:Xst:2261 - The FF/Latch <AddressBus/Inst2/incomingData_23> in Unit <bl> is equivalent to the following 7 FFs/Latches, which will be removed : <AddressBus/Inst2/incomingData_22> <AddressBus/Inst2/incomingData_21> <AddressBus/Inst2/incomingData_20> <AddressBus/Inst2/incomingData_19> <AddressBus/Inst2/incomingData_18> <AddressBus/Inst2/incomingData_17> <AddressBus/Inst2/incomingData_16> 
+INFO:Xst:2261 - The FF/Latch <AddressBus/Inst2/incomingData_7> in Unit <bl> is equivalent to the following 7 FFs/Latches, which will be removed : <AddressBus/Inst2/incomingData_6> <AddressBus/Inst2/incomingData_5> <AddressBus/Inst2/incomingData_4> <AddressBus/Inst2/incomingData_3> <AddressBus/Inst2/incomingData_2> <AddressBus/Inst2/incomingData_1> <AddressBus/Inst2/incomingData_0> 
+INFO:Xst:2261 - The FF/Latch <AddressBus/Inst2/incomingData_31> in Unit <bl> is equivalent to the following 7 FFs/Latches, which will be removed : <AddressBus/Inst2/incomingData_30> <AddressBus/Inst2/incomingData_29> <AddressBus/Inst2/incomingData_28> <AddressBus/Inst2/incomingData_27> <AddressBus/Inst2/incomingData_26> <AddressBus/Inst2/incomingData_25> <AddressBus/Inst2/incomingData_24> 
+INFO:Xst:2261 - The FF/Latch <DataBus/Inst4/lastDataStrobe> in Unit <bl> is equivalent to the following 9 FFs/Latches, which will be removed : <DataBus/Inst3/lastDataStrobe> <DataBus/Inst2/lastDataStrobe> <DataBus/Inst1/lastDataStrobe> <AddressBus/Inst4/lastDataStrobe> <AddressBus/Inst3/lastDataStrobe> <AddressBus/Inst2/lastDataStrobe> <AddressBus/Inst1/lastDataStrobe> <ClockAndDQSB/lastDataStrobe> <MainControlOutputsA/lastDataStrobe> 
+INFO:Xst:2261 - The FF/Latch <AddressBus/Inst4/incomingData_7> in Unit <bl> is equivalent to the following 7 FFs/Latches, which will be removed : <AddressBus/Inst4/incomingData_6> <AddressBus/Inst4/incomingData_5> <AddressBus/Inst4/incomingData_4> <AddressBus/Inst4/incomingData_3> <AddressBus/Inst4/incomingData_2> <AddressBus/Inst4/incomingData_1> <AddressBus/Inst4/incomingData_0> 
+INFO:Xst:2261 - The FF/Latch <AddressBus/Inst3/incomingData_15> in Unit <bl> is equivalent to the following 7 FFs/Latches, which will be removed : <AddressBus/Inst3/incomingData_14> <AddressBus/Inst3/incomingData_13> <AddressBus/Inst3/incomingData_12> <AddressBus/Inst3/incomingData_11> <AddressBus/Inst3/incomingData_10> <AddressBus/Inst3/incomingData_9> <AddressBus/Inst3/incomingData_8> 
+INFO:Xst:2261 - The FF/Latch <AddressBus/Inst3/incomingData_23> in Unit <bl> is equivalent to the following 7 FFs/Latches, which will be removed : <AddressBus/Inst3/incomingData_22> <AddressBus/Inst3/incomingData_21> <AddressBus/Inst3/incomingData_20> <AddressBus/Inst3/incomingData_19> <AddressBus/Inst3/incomingData_18> <AddressBus/Inst3/incomingData_17> <AddressBus/Inst3/incomingData_16> 
+
+Mapping all equations...
+Building and optimizing final netlist ...
+Found area constraint ratio of 100 (+ 0) on block bl, actual ratio is 18.
+INFO:Xst:2260 - The FF/Latch <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.wr/gwas.wsts/ram_full_i> in Unit <fifoInstance> is equivalent to the following FF/Latch : <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.wr/gwas.wsts/ram_full_fb_i> 
+INFO:Xst:2260 - The FF/Latch <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.rfwft/curr_fwft_state_FSM_FFd1> in Unit <fifoInstance> is equivalent to the following 2 FFs/Latches : <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.rfwft/curr_fwft_state_FSM_FFd1_1> <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.rfwft/curr_fwft_state_FSM_FFd1_2> 
+INFO:Xst:2260 - The FF/Latch <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.rfwft/curr_fwft_state_FSM_FFd2> in Unit <fifoInstance> is equivalent to the following FF/Latch : <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.rfwft/curr_fwft_state_FSM_FFd2_1> 
+INFO:Xst:2260 - The FF/Latch <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/rstblk/ngwrdrst.grst.wr_rst_reg_1> in Unit <fifoInstance> is equivalent to the following FF/Latch : <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/rstblk/ngwrdrst.grst.wr_rst_reg_0> 
+INFO:Xst:2260 - The FF/Latch <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/rstblk/ngwrdrst.grst.rd_rst_reg_2> in Unit <fifoInstance> is equivalent to the following 4 FFs/Latches : <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/rstblk/ngwrdrst.grst.rd_rst_reg_1> <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/rstblk/ngwrdrst.grst.rd_rst_reg_0> <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/rstblk/ngwrdrst.grst.rd_rst_reg_0_1> <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/rstblk/ngwrdrst.grst.rd_rst_reg_0_2> 
+INFO:Xst:2260 - The FF/Latch <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.rfwft/empty_fwft_i> in Unit <fifoInstance> is equivalent to the following FF/Latch : <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.rfwft/empty_fwft_fb> 
+INFO:Xst:2260 - The FF/Latch <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.rfwft/curr_fwft_state_FSM_FFd1> in Unit <fifoInstance> is equivalent to the following 2 FFs/Latches : <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.rfwft/curr_fwft_state_FSM_FFd1_1> <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.rfwft/curr_fwft_state_FSM_FFd1_2> 
+INFO:Xst:2260 - The FF/Latch <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.rfwft/empty_fwft_i> in Unit <fifoInstance> is equivalent to the following FF/Latch : <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.rfwft/empty_fwft_fb> 
+INFO:Xst:2260 - The FF/Latch <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/rstblk/ngwrdrst.grst.wr_rst_reg_1> in Unit <fifoInstance> is equivalent to the following FF/Latch : <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/rstblk/ngwrdrst.grst.wr_rst_reg_0> 
+INFO:Xst:2260 - The FF/Latch <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/rstblk/ngwrdrst.grst.rd_rst_reg_2> in Unit <fifoInstance> is equivalent to the following 4 FFs/Latches : <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/rstblk/ngwrdrst.grst.rd_rst_reg_1> <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/rstblk/ngwrdrst.grst.rd_rst_reg_0> <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/rstblk/ngwrdrst.grst.rd_rst_reg_0_1> <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/rstblk/ngwrdrst.grst.rd_rst_reg_0_2> 
+INFO:Xst:2260 - The FF/Latch <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.rfwft/curr_fwft_state_FSM_FFd2> in Unit <fifoInstance> is equivalent to the following FF/Latch : <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.rd/gr1.rfwft/curr_fwft_state_FSM_FFd2_1> 
+INFO:Xst:2260 - The FF/Latch <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.wr/gwas.wsts/ram_full_i> in Unit <fifoInstance> is equivalent to the following FF/Latch : <U0/xst_fifo_generator/gconvfifo.rf/grf.rf/gntv_or_sync_fifo.gl0.wr/gwas.wsts/ram_full_fb_i> 
+FlipFlop currentState_FSM_FFd2 has been replicated 1 time(s)
+FlipFlop currentState_FSM_FFd3 has been replicated 1 time(s)
+FlipFlop slowCount_6 has been replicated 1 time(s)
+FlipFlop slowWritingPulseTrain_1 has been replicated 2 time(s)
+FlipFlop slowWritingPulseTrain_2 has been replicated 2 time(s)
+
+Final Macro Processing ...
+
+Processing Unit <bl> :
+	Found 4-bit shift register for signal <clockShift_0>.
+	Found 8-bit shift register for signal <slowClockVector_0>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_0>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_1>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_2>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_3>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_4>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_5>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_6>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_7>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_8>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_9>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_10>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_11>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_12>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_13>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_14>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_15>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_16>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_17>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_18>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_19>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_20>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_21>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_22>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_23>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_24>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_25>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_26>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_27>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_28>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_29>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_30>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_31>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_32>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_33>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_34>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_35>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_36>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_37>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_38>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_39>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_40>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_41>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_42>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_43>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_44>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_45>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_46>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_47>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_48>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_49>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_50>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_51>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_52>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_53>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_54>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_55>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_56>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_57>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_58>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_59>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_60>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_61>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_62>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_63>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_64>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_65>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_66>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_67>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_68>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_69>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_70>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_71>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_72>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_73>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_74>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_75>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_76>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_77>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_78>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_79>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_80>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_81>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_82>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_83>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_84>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_85>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_86>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_87>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_88>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_89>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_90>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_91>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_92>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_93>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_94>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_95>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_96>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_97>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_98>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_99>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_100>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_101>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_102>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_103>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_104>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_105>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_106>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_107>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_108>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_109>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_110>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_111>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_112>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_113>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_114>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_115>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_116>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_117>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_118>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_119>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_120>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_121>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_122>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_123>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_124>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_125>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_126>.
+	Found 2-bit shift register for signal <slowWritingDataTrain1_127>.
+	Found 5-bit shift register for signal <Inst_SPIinterface/CSvec_4>.
+	Found 5-bit shift register for signal <Inst_SPIinterface/MOSIvec_4>.
+	Found 5-bit shift register for signal <Inst_SPIinterface/SCKvec_4>.
+Unit <bl> processed.
+
+=========================================================================
+Final Register Report
+
+Macro Statistics
+# Registers                                            : 682
+ Flip-Flops                                            : 682
+# Shift Registers                                      : 133
+ 2-bit shift register                                  : 128
+ 4-bit shift register                                  : 1
+ 5-bit shift register                                  : 3
+ 8-bit shift register                                  : 1
+
+=========================================================================
+
+=========================================================================
+*                           Partition Report                            *
+=========================================================================
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+=========================================================================
+*                            Design Summary                             *
+=========================================================================
+
+Top Level Output File Name         : bl.ngc
+
+Primitive and Black Box Usage:
+------------------------------
+# BELS                             : 990
+#      GND                         : 3
+#      INV                         : 13
+#      LUT1                        : 35
+#      LUT2                        : 71
+#      LUT3                        : 427
+#      LUT4                        : 188
+#      LUT5                        : 57
+#      LUT6                        : 95
+#      MUXCY                       : 55
+#      MUXF7                       : 6
+#      VCC                         : 2
+#      XORCY                       : 38
+# FlipFlops/Latches                : 1117
+#      FD                          : 457
+#      FD_1                        : 1
+#      FDC                         : 87
+#      FDCE                        : 44
+#      FDE                         : 351
+#      FDP                         : 12
+#      FDPE                        : 2
+#      FDRE                        : 153
+#      FDSE                        : 1
+#      LD                          : 9
+# RAMS                             : 8
+#      RAMB16BWER                  : 8
+# Shift Registers                  : 133
+#      SRLC16E                     : 133
+# Clock Buffers                    : 4
+#      BUFG                        : 2
+#      BUFGMUX                     : 2
+# IO Buffers                       : 66
+#      IBUF                        : 5
+#      IBUFG                       : 1
+#      IOBUF                       : 16
+#      IOBUFDS                     : 2
+#      OBUF                        : 40
+#      OBUFDS                      : 1
+#      OBUFT                       : 1
+# DCMs                             : 1
+#      DCM_SP                      : 1
+# Others                           : 16
+#      IODELAY2                    : 16
+
+Device utilization summary:
+---------------------------
+
+Selected Device : 6slx16ftg256-2 
+
+
+Slice Logic Utilization: 
+ Number of Slice Registers:            1117  out of  18224     6%  
+ Number of Slice LUTs:                 1019  out of   9112    11%  
+    Number used as Logic:               886  out of   9112     9%  
+    Number used as Memory:              133  out of   2176     6%  
+       Number used as SRL:              133
+
+Slice Logic Distribution: 
+ Number of LUT Flip Flop pairs used:   1329
+   Number with an unused Flip Flop:     212  out of   1329    15%  
+   Number with an unused LUT:           310  out of   1329    23%  
+   Number of fully used LUT-FF pairs:   807  out of   1329    60%  
+   Number of unique control sets:        30
+
+IO Utilization: 
+ Number of IOs:                          70
+ Number of bonded IOBs:                  69  out of    186    37%  
+
+Specific Feature Utilization:
+ Number of Block RAM/FIFO:                8  out of     32    25%  
+    Number using Block RAM only:          8
+ Number of BUFG/BUFGCTRLs:                4  out of     16    25%  
+
+---------------------------
+Partition Resource Summary:
+---------------------------
+
+  No Partitions were found in this design.
+
+---------------------------
+
+
+=========================================================================
+Timing Report
+
+NOTE: THESE TIMING NUMBERS ARE ONLY A SYNTHESIS ESTIMATE.
+      FOR ACCURATE TIMING INFORMATION PLEASE REFER TO THE TRACE REPORT
+      GENERATED AFTER PLACE-and-ROUTE.
+
+Clock Information:
+------------------
+-----------------------------------+-----------------------------------------+-------+
+Clock Signal                       | Clock buffer(FF name)                   | Load  |
+-----------------------------------+-----------------------------------------+-------+
+clk                                | DCM_SP:CLKFX                            | 1249  |
+DataBus/Inst4/preloadPulse         | NONE(DataBus/Inst4/nextShiftRegisters_0)| 9     |
+-----------------------------------+-----------------------------------------+-------+
+INFO:Xst:2169 - HDL ADVISOR - Some clock signals were not automatically buffered by XST with BUFG/BUFR resources. Please use the buffer_type constraint in order to insert these buffers to the clock signals to help prevent skew problems.
+
+Asynchronous Control Signals Information:
+----------------------------------------
+No asynchronous control signals found in this design
+
+Timing Summary:
+---------------
+Speed Grade: -2
+
+   Minimum period: 38.735ns (Maximum Frequency: 25.816MHz)
+   Minimum input arrival time before clock: 2.442ns
+   Maximum output required time after clock: 6.733ns
+   Maximum combinational path delay: 3.593ns
+
+Timing Details:
+---------------
+All values displayed in nanoseconds (ns)
+
+=========================================================================
+Timing constraint: Default period analysis for Clock 'clk'
+  Clock period: 38.735ns (frequency: 25.816MHz)
+  Total number of paths / destination ports: 12657 / 2294
+-------------------------------------------------------------------------
+Delay:               7.747ns (Levels of Logic = 6)
+  Source:            slowCount_3 (FF)
+  Destination:       slowCount_0 (FF)
+  Source Clock:      clk rising 5.0X
+  Destination Clock: clk rising 5.0X
+
+  Data Path: slowCount_3 to slowCount_0
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FD:C->Q              11   0.525   1.469  slowCount_3 (slowCount_3)
+     LUT5:I0->O            2   0.254   0.726  slowCount[17]_GND_6_o_equal_156_o<17>_SW0_SW0 (N60)
+     LUT6:I5->O            1   0.254   0.682  slowCount[17]_GND_6_o_equal_156_o<17> (slowCount[17]_GND_6_o_equal_156_o)
+     LUT6:I5->O            1   0.254   0.790  currentState_FSM_FFd4-In9_SW0 (N110)
+     LUT6:I4->O            2   0.250   0.726  currentState_FSM_FFd4-In9 (nextState[0])
+     LUT6:I5->O           18   0.254   1.235  n0284_inv4 (n0284_inv)
+     LUT2:I1->O            1   0.254   0.000  slowCount_0_rstpot (slowCount_0_rstpot)
+     FD:D                      0.074          slowCount_0
+    ----------------------------------------
+    Total                      7.747ns (2.119ns logic, 5.628ns route)
+                                       (27.4% logic, 72.6% route)
+
+=========================================================================
+Timing constraint: Default OFFSET IN BEFORE for Clock 'clk'
+  Total number of paths / destination ports: 9 / 8
+-------------------------------------------------------------------------
+Offset:              2.442ns (Levels of Logic = 2)
+  Source:            switch2PORT (PAD)
+  Destination:       switchRegister (FF)
+  Destination Clock: clk rising 5.0X
+
+  Data Path: switch2PORT to switchRegister
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     IBUF:I->O             1   1.328   0.790  switch2PORT_IBUF (switch2PORT_IBUF)
+     LUT3:I1->O            1   0.250   0.000  switchRegister_rstpot (switchRegister_rstpot)
+     FD:D                      0.074          switchRegister
+    ----------------------------------------
+    Total                      2.442ns (1.652ns logic, 0.790ns route)
+                                       (67.6% logic, 32.4% route)
+
+=========================================================================
+Timing constraint: Default OFFSET OUT AFTER for Clock 'clk'
+  Total number of paths / destination ports: 167 / 85
+-------------------------------------------------------------------------
+Offset:              6.733ns (Levels of Logic = 2)
+  Source:            currentState_FSM_FFd3 (FF)
+  Destination:       dataPORT<15> (PAD)
+  Source Clock:      clk rising 5.0X
+
+  Data Path: currentState_FSM_FFd3 to dataPORT<15>
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FD:C->Q              43   0.525   1.812  currentState_FSM_FFd3 (currentState_FSM_FFd3)
+     LUT3:I1->O           18   0.250   1.234  currentState__n0859<1>1 (slowDQStristate)
+     IOBUFDS:T->IOB        0   2.912   0.000  IOBUFDS_dqs0 (dqs0_nPORT)
+    ----------------------------------------
+    Total                      6.733ns (3.687ns logic, 3.046ns route)
+                                       (54.8% logic, 45.2% route)
+
+=========================================================================
+Timing constraint: Default path analysis
+  Total number of paths / destination ports: 32 / 32
+-------------------------------------------------------------------------
+Delay:               3.593ns (Levels of Logic = 1)
+  Source:            Inst_DelayWideBus/Inst_Delay3/IODELAY2_inst3:DOUT (PAD)
+  Destination:       dataPORT<15> (PAD)
+
+  Data Path: Inst_DelayWideBus/Inst_Delay3/IODELAY2_inst3:DOUT to dataPORT<15>
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+    IODELAY2:DOUT          1   0.000   0.681  Inst_DelayWideBus/Inst_Delay3/IODELAY2_inst3 (delayedDataForOutput<15>)
+     IOBUF:I->IO               2.912          dataPORT_15_IOBUF (dataPORT<15>)
+    ----------------------------------------
+    Total                      3.593ns (2.912ns logic, 0.681ns route)
+                                       (81.0% logic, 19.0% route)
+
+=========================================================================
+
+Cross Clock Domains Report:
+--------------------------
+
+Clock to Setup on destination clock DataBus/Inst4/preloadPulse
+---------------+---------+---------+---------+---------+
+               | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
+Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
+---------------+---------+---------+---------+---------+
+clk            |         |         |    1.940|         |
+---------------+---------+---------+---------+---------+
+
+Clock to Setup on destination clock clk
+--------------------------+---------+---------+---------+---------+
+                          | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
+Source Clock              |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
+--------------------------+---------+---------+---------+---------+
+DataBus/Inst4/preloadPulse|         |    1.336|         |         |
+clk                       |    7.747|         |    2.962|         |
+--------------------------+---------+---------+---------+---------+
+
+=========================================================================
+
+
+Total REAL time to Xst completion: 6.00 secs
+Total CPU time to Xst completion: 5.75 secs
+ 
+--> 
+
+Total memory usage is 239060 kilobytes
+
+Number of errors   :    0 (   0 filtered)
+Number of warnings :  153 (   0 filtered)
+Number of infos    :   42 (   0 filtered)
+

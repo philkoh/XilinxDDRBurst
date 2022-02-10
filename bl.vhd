@@ -413,7 +413,7 @@ LEDBUS8 <= fallingEdgeSlowClockEnable;
 BUFGCE_inst2 : BUFGCE ----------NOTE: this is a clean way to make a slower clock and still have its rising edge well aligned with clk250MHz
 port map (
 O => clk31M25Hz, -- 1-bit output: Clock buffer output
-CE => useThisEdge, -- 1-bit input: Clock buffer select
+CE => fallingEdgeSlowClockEnable, -- 1-bit input: Clock buffer select
 I => clk250MHz -- 1-bit input: Clock buffer input (S=0)
 );
 

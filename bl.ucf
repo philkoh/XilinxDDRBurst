@@ -10,6 +10,7 @@ NET CLK31M25HZ TNM = slow_exception;
 
 INST slowClockVector_0* TNM = risingEdgeEn;
 INST fallingEdgeSlowClockEnable* TNM = fallingEdgeEn;
+INST BUFGCE_inst2* TNM = BUFGCE;
 
 
 #NET verySlowClockEnable(0) TNM = very_slow_exception;
@@ -17,11 +18,13 @@ INST fallingEdgeSlowClockEnable* TNM = fallingEdgeEn;
 NET "slowCount*" TNM = slow_exception;
 
 
-TIMESPEC TS01 = PERIOD normalTiming 3.7 ns;
+TIMESPEC TS01 = PERIOD normalTiming 3.8 ns;
 TIMESPEC TS02 = PERIOD slow_exception 7.5 ns;
 
 
+
 TIMESPEC TS03 = FROM : risingEdgeEn : TO : fallingEdgeEn : 1.6 ns ;
+TIMESPEC TS04 = FROM : fallingEdgeEn : TO : BUFGCE : 1.6 ns ;
 
 
 
