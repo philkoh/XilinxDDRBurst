@@ -339,6 +339,7 @@ END COMPONENT;
 	signal slowNextClockEnableReadDelayed3 : std_logic;
 	signal slowNextClockEnableReadDelayed4 : std_logic;
 	signal slowNextClockEnableReadDelayed5 : std_logic;
+	signal slowClockEnableRead : std_logic := '0';
 
 	signal slowDQStristate : std_logic;
 	
@@ -834,7 +835,7 @@ process (clk250MHz)
 			odt <= nextODT;
 			din <= nextdin;
 	--		requestReset <= nextRequestReset;
-
+slowClockEnableRead <= slowNextClockEnableRead;
 			end if;
    end process;
 

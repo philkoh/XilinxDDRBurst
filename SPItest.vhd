@@ -652,10 +652,14 @@ wait for clk_period*50;
       wait for clk_period*10;
 		PIN0 <= '1';
 
-      wait for clk_period*17;
-		dataPORT(0) <= '1';
-		dataPORT(1) <= '0';
-		wait for 4ns;
+
+		dataPORT(0) <= 'Z';
+		dataPORT(1) <= 'Z';
+
+
+      wait until (casport = '0' and rising_edge(ck_pport)) for 100uS;
+		wait for 6 * 8nS;  -- cas latency is 6 cycles
+		
 		dataPORT(0) <= '0';
 		dataPORT(1) <= '0';
 		wait for 4ns;
