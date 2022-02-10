@@ -513,41 +513,43 @@ process (slowReadData, capturedDataB, slowClockEnableRead)
 		nextCapturedDataB(7 downto 0) <= capturedDataB(7 downto 0); --unless overridden below, hold and remember the captured values
 	
 		if slowClockEnableRead = '1'  then
-			nextCapturedDataB(7)(0) <= slowReadData(0);
-			nextCapturedDataB(6)(0) <= slowReadData(1);
-			nextCapturedDataB(5)(0) <= slowReadData(2);
-			nextCapturedDataB(4)(0) <= slowReadData(3);
-			nextCapturedDataB(3)(0) <= slowReadData(4);
-			nextCapturedDataB(2)(0) <= slowReadData(5);
-			nextCapturedDataB(1)(0) <= slowReadData(6);
-			nextCapturedDataB(0)(0) <= slowReadData(7);
+--			nextCapturedDataB(7)(0) <= slowReadData(0);
+--			nextCapturedDataB(6)(0) <= slowReadData(1);
+--			nextCapturedDataB(5)(0) <= slowReadData(2);
+--			nextCapturedDataB(4)(0) <= slowReadData(3);
+--			nextCapturedDataB(3)(0) <= slowReadData(4);
+--			nextCapturedDataB(2)(0) <= slowReadData(5);
+--			nextCapturedDataB(1)(0) <= slowReadData(6);
+--			nextCapturedDataB(0)(0) <= slowReadData(7);
 
-			nextCapturedDataB(7)(1) <= slowReadData(8);
-			nextCapturedDataB(6)(1) <= slowReadData(9);
-			nextCapturedDataB(5)(1) <= slowReadData(10);
-			nextCapturedDataB(4)(1) <= slowReadData(11);
-			nextCapturedDataB(3)(1) <= slowReadData(12);
-			nextCapturedDataB(2)(1) <= slowReadData(13);
-			nextCapturedDataB(1)(1) <= slowReadData(14);
-			nextCapturedDataB(0)(1) <= slowReadData(15);
+--			nextCapturedDataB(7)(1) <= slowReadData(8);
+--			nextCapturedDataB(6)(1) <= slowReadData(9);
+--			nextCapturedDataB(5)(1) <= slowReadData(10);
+--			nextCapturedDataB(4)(1) <= slowReadData(11);
+--			nextCapturedDataB(3)(1) <= slowReadData(12);
+--			nextCapturedDataB(2)(1) <= slowReadData(13);
+--			nextCapturedDataB(1)(1) <= slowReadData(14);
+--			nextCapturedDataB(0)(1) <= slowReadData(15);
 	
-			nextCapturedDataB(7)(2) <= slowReadData(16);
-			nextCapturedDataB(6)(2) <= slowReadData(17);
-			nextCapturedDataB(5)(2) <= slowReadData(18);
-			nextCapturedDataB(4)(2) <= slowReadData(19);
-			nextCapturedDataB(3)(2) <= slowReadData(20);
-			nextCapturedDataB(2)(2) <= slowReadData(21);
-			nextCapturedDataB(1)(2) <= slowReadData(22);
-			nextCapturedDataB(0)(2) <= slowReadData(23);
+--			nextCapturedDataB(7)(2) <= slowReadData(16);
+--			nextCapturedDataB(6)(2) <= slowReadData(17);
+--			nextCapturedDataB(5)(2) <= slowReadData(18);
+--			nextCapturedDataB(4)(2) <= slowReadData(19);
+--			nextCapturedDataB(3)(2) <= slowReadData(20);
+--			nextCapturedDataB(2)(2) <= slowReadData(21);
+--			nextCapturedDataB(1)(2) <= slowReadData(22);
+--			nextCapturedDataB(0)(2) <= slowReadData(23);
 
-			nextCapturedDataB(7)(3) <= slowReadData(24);
-			nextCapturedDataB(6)(3) <= slowReadData(25);
-			nextCapturedDataB(5)(3) <= slowReadData(26);
-			nextCapturedDataB(4)(3) <= slowReadData(27);
-			nextCapturedDataB(3)(3) <= slowReadData(28);
-			nextCapturedDataB(2)(3) <= slowReadData(29);
-			nextCapturedDataB(1)(3) <= slowReadData(30);
-			nextCapturedDataB(0)(3) <= slowReadData(31);
+--			nextCapturedDataB(7)(3) <= slowReadData(24);
+--			nextCapturedDataB(6)(3) <= slowReadData(25);
+--			nextCapturedDataB(5)(3) <= slowReadData(26);
+--			nextCapturedDataB(4)(3) <= slowReadData(27);
+--			nextCapturedDataB(3)(3) <= slowReadData(28);
+--			nextCapturedDataB(2)(3) <= slowReadData(29);
+--			nextCapturedDataB(1)(3) <= slowReadData(30);
+--			nextCapturedDataB(0)(3) <= slowReadData(31);
+			
+			nextCapturedDataB <= slowReadDataArr;
 	end if;
 		
 end process;
