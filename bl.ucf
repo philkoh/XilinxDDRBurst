@@ -1,47 +1,21 @@
-#NET CLK PERIOD = 20 ns;
-#NET clockEnableBeginning TNM = slowGroup;
-#TIMESPEC "TS_SYS_CLK" = PERIOD "slowGroup" 40 ns HIGH 50 %;
-
 NET CLK250MHz TNM = normalTiming;
 NET slowClockVector(0) TNM = slow_exception;  # slowClockVector(0) is the true name of slowClockEnable
-#NET CLK62M5HZ TNM = slow_exception;
 NET CLK31M25HZ TNM = slow_exception;
-
 
 INST slowClockVector_0* TNM = risingEdgeEn;
 INST fallingEdgeSlowClockEnable* TNM = fallingEdgeEn;
-INST BUFGCE_inst2* TNM = BUFGCE;
+#INST BUFGCE_inst2* TNM = BUFGCE;
 
 INST *slowWritingDataTrain1* TNM = datatrain;
 INST *incomingData* TNM = incomingdat;
 
-
-
-#NET verySlowClockEnable(0) TNM = very_slow_exception;
-#INST empty TNM = slow_exception;
 NET "slowCount*" TNM = slow_exception;
-
 
 TIMESPEC TS01 = PERIOD normalTiming 3.85 ns;
 TIMESPEC TS02 = PERIOD slow_exception 7.5 ns;
 
-
-
 TIMESPEC TS03 = FROM : risingEdgeEn : TO : fallingEdgeEn : 1.6 ns ;
 TIMESPEC TS04 = FROM : datatrain : TO : incomingdat : 7.5 ns ;
-
-
-#TIMESPEC TS04 = FROM : fallingEdgeEn : TO : BUFGCE : 1.6 ns ;
-
-
-
-
-#PIN "BUFGCE_inst.O" CLOCK_DEDICATED_ROUTE = FALSE;
-#PIN "your_instance_name/clkout1_buf.O" CLOCK_DEDICATED_ROUTE = FALSE;
-
-
-
-
 
 
 NET "clk" LOC = A10;

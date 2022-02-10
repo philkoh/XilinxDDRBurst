@@ -473,36 +473,13 @@ process (clk250MHz)
 	if falling_edge(clk250MHz) then
 		clockShift(3 downto 1) <= clockShift(2 downto 0);
 		clockShift(0) <= clockShift(3);
---		useThisEdge <= nextUseThisEdge;
 	end if;
 end process;
 
---nextUseThisEdge <= '1' when snapShotOfSlowClockEnable = '0' and clockShift(3) = '1' else '0';  -- on the next cycle, clockShift(0) will be '1', 
------------- so the clk62M5Hz will rise; on every other of these clk62M5Hz rising edges, useThisEdge will be '1', so the clk32M25Hz
------------- will also have a simultaneous rising edge.
-
---process (clk62M5Hz)
---	begin
---		if	rising_edge(clk62M5Hz) then
-
---			snapShotOfSlowClockEnable <= slowClockEnable;
-
---		end if;
---end process;
-
-process (clk250MHz)
-		begin
-------------------------------------------SEQUENTIAL :	
-		if rising_edge(clk250MHz) then
-	--		clk125MHz <=  nextClk125MHz  ;  --clk125MHz changes on rising edge of 250MHz clock; this is sent out as external clock *and* as dqs
-		end if;
-	end process;
 
 ------------------------------------------COMBINATORIAL:
 	process (slowdqstristate)
 		begin
-
---		nextClk125MHz <= not clk125MHz;
 	
 	if slowdqsTristate = '1' then
 			dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');	
