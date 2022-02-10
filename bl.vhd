@@ -565,13 +565,13 @@ process (clk250MHz)
 			clk125MHz <=  nextClk125MHz  ;  --clk125MHz changes on rising edge of 250MHz clock; this is sent out as external clock *and* as dqs
 	--		inData (15 downto 0) <= delayedDataPort (15 downto 0);  -- data uses the 250 MHz clock
 
-			capturedData(7 downto 0) <= nextCapturedData(7 downto 0);
+--			capturedData(7 downto 0) <= nextCapturedData(7 downto 0);
 		
-			slowNextClockEnableReadDelayed1 <= slowNextClockEnableRead;
-			slowNextClockEnableReadDelayed2 <= slowNextClockEnableReadDelayed1;
-			slowNextClockEnableReadDelayed3 <= slowNextClockEnableReadDelayed2;
-			slowNextClockEnableReadDelayed4 <= slowNextClockEnableReadDelayed3;
-			slowNextClockEnableReadDelayed5 <= slowNextClockEnableReadDelayed4;
+--			slowNextClockEnableReadDelayed1 <= slowNextClockEnableRead;
+--			slowNextClockEnableReadDelayed2 <= slowNextClockEnableReadDelayed1;
+--			slowNextClockEnableReadDelayed3 <= slowNextClockEnableReadDelayed2;
+--			slowNextClockEnableReadDelayed4 <= slowNextClockEnableReadDelayed3;
+--			slowNextClockEnableReadDelayed5 <= slowNextClockEnableReadDelayed4;
 		end if;
 	end process;
 
@@ -581,45 +581,45 @@ process (clk250MHz)
 
 		nextClk125MHz <= not clk125MHz;
 		
-		nextCapturedData(7 downto 0) <= capturedData(7 downto 0); --unless overridden below, hold and remember the captured values
+--		nextCapturedData(7 downto 0) <= capturedData(7 downto 0); --unless overridden below, hold and remember the captured values
 	
-		if slowNextClockEnableReadDelayed5 = '1'  then
-			nextCapturedData(7)(0) <= slowReadData(0);
-			nextCapturedData(6)(0) <= slowReadData(1);
-			nextCapturedData(5)(0) <= slowReadData(2);
-			nextCapturedData(4)(0) <= slowReadData(3);
-			nextCapturedData(3)(0) <= slowReadData(4);
-			nextCapturedData(2)(0) <= slowReadData(5);
-			nextCapturedData(1)(0) <= slowReadData(6);
-			nextCapturedData(0)(0) <= slowReadData(7);
+--		if slowNextClockEnableReadDelayed5 = '1'  then
+--			nextCapturedData(7)(0) <= slowReadData(0);
+--			nextCapturedData(6)(0) <= slowReadData(1);
+--			nextCapturedData(5)(0) <= slowReadData(2);
+--			nextCapturedData(4)(0) <= slowReadData(3);
+--			nextCapturedData(3)(0) <= slowReadData(4);
+--			nextCapturedData(2)(0) <= slowReadData(5);
+--			nextCapturedData(1)(0) <= slowReadData(6);
+--			nextCapturedData(0)(0) <= slowReadData(7);
 
-			nextCapturedData(7)(1) <= slowReadData(8);
-			nextCapturedData(6)(1) <= slowReadData(9);
-			nextCapturedData(5)(1) <= slowReadData(10);
-			nextCapturedData(4)(1) <= slowReadData(11);
-			nextCapturedData(3)(1) <= slowReadData(12);
-			nextCapturedData(2)(1) <= slowReadData(13);
-			nextCapturedData(1)(1) <= slowReadData(14);
-			nextCapturedData(0)(1) <= slowReadData(15);
+--			nextCapturedData(7)(1) <= slowReadData(8);
+--			nextCapturedData(6)(1) <= slowReadData(9);
+--			nextCapturedData(5)(1) <= slowReadData(10);
+--			nextCapturedData(4)(1) <= slowReadData(11);
+--			nextCapturedData(3)(1) <= slowReadData(12);
+--			nextCapturedData(2)(1) <= slowReadData(13);
+--			nextCapturedData(1)(1) <= slowReadData(14);
+--			nextCapturedData(0)(1) <= slowReadData(15);
 	
-			nextCapturedData(7)(2) <= slowReadData(16);
-			nextCapturedData(6)(2) <= slowReadData(17);
-			nextCapturedData(5)(2) <= slowReadData(18);
-			nextCapturedData(4)(2) <= slowReadData(19);
-			nextCapturedData(3)(2) <= slowReadData(20);
-			nextCapturedData(2)(2) <= slowReadData(21);
-			nextCapturedData(1)(2) <= slowReadData(22);
-			nextCapturedData(0)(2) <= slowReadData(23);
+--			nextCapturedData(7)(2) <= slowReadData(16);
+--			nextCapturedData(6)(2) <= slowReadData(17);
+--			nextCapturedData(5)(2) <= slowReadData(18);
+--			nextCapturedData(4)(2) <= slowReadData(19);
+--			nextCapturedData(3)(2) <= slowReadData(20);
+--			nextCapturedData(2)(2) <= slowReadData(21);
+--			nextCapturedData(1)(2) <= slowReadData(22);
+--			nextCapturedData(0)(2) <= slowReadData(23);
 
-			nextCapturedData(7)(3) <= slowReadData(24);
-			nextCapturedData(6)(3) <= slowReadData(25);
-			nextCapturedData(5)(3) <= slowReadData(26);
-			nextCapturedData(4)(3) <= slowReadData(27);
-			nextCapturedData(3)(3) <= slowReadData(28);
-			nextCapturedData(2)(3) <= slowReadData(29);
-			nextCapturedData(1)(3) <= slowReadData(30);
-			nextCapturedData(0)(3) <= slowReadData(31);
-	end if;
+--			nextCapturedData(7)(3) <= slowReadData(24);
+--			nextCapturedData(6)(3) <= slowReadData(25);
+--			nextCapturedData(5)(3) <= slowReadData(26);
+--			nextCapturedData(4)(3) <= slowReadData(27);
+--			nextCapturedData(3)(3) <= slowReadData(28);
+--			nextCapturedData(2)(3) <= slowReadData(29);
+--			nextCapturedData(1)(3) <= slowReadData(30);
+--			nextCapturedData(0)(3) <= slowReadData(31);
+--	end if;
 	
 	if slowdqsTristate = '1' then
 			dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');	
