@@ -6,7 +6,7 @@ entity SlowInputByEight is
     Port ( IOpins : in  STD_LOGIC_VECTOR (3 downto 0);
            DataToPins : out  STD_LOGIC_VECTOR (31 downto 0);
            FastClock : in  STD_LOGIC;
-			  MediumClock : in  STD_LOGIC;
+		--	  MediumClock : in  STD_LOGIC;
 			  SlowClock : IN std_logic;
 		--	  originalSlowClockEnable : in STD_LOGIC;
            SlowClockEnable : in  STD_LOGIC);
@@ -21,7 +21,7 @@ signal nextShiftRegisters : std_logic_vector (31 downto 0);
 	
 begin
 
-process (FastClock, MediumClock, slowClockEnable)
+process (FastClock,  slowClockEnable)
 	begin
 	if rising_edge(SlowClock)  then
 		DataToPins <= shiftRegisters; 
