@@ -478,7 +478,7 @@ end process;
 
 
 ------------------------------------------COMBINATORIAL:
-	process (slowdqstristate)
+	process (slowdqstristate,delayedDataForOutput)
 		begin
 	
 	if slowdqsTristate = '1' then
@@ -582,7 +582,7 @@ end process;
 	LEDBUS7 <= LEDBUSvec(7);
 --	LEDBUS8  <= '0';
 
-	process (dataArrivedToggleSlowed, SPIdataInSlowed, lastDataArrivedToggle, requestedAddress, requestWriteToggle, requestReadToggle, SPIdataIn, SPIFIFOdin, readBurstCount, fastwriteaddress, empty, nextwritepulsetrain, doutwaiting, dout, clockEnableCommand,  capturedData, switchRegister, lastSwitchRegister, writePulseTrain,  switch2port, switch3Port, switchCount)
+	process (capturedDataB, dataArrivedToggleSlowed, SPIdataInSlowed, lastDataArrivedToggle, requestedAddress, requestWriteToggle, requestReadToggle, SPIdataIn, SPIFIFOdin, readBurstCount, fastwriteaddress, empty, nextwritepulsetrain, doutwaiting, dout, clockEnableCommand,  capturedData, switchRegister, lastSwitchRegister, writePulseTrain,  switch2port, switch3Port, switchCount)
 		begin
 		nextSPIFIFOdin <= SPIFIFOdin;
 		
@@ -606,62 +606,62 @@ end process;
 		LED3 <= switchCount(3);
 	
 		if switchCount = 0 then
-			LED0 <=   capturedData(0)(0);
-			LED1 <=    capturedData(0)(1);
-			LED2 <=    capturedData(0)(2);
-			LED3 <=    capturedData(0)(3);
+--			LED0 <=   capturedData(0)(0);
+--			LED1 <=    capturedData(0)(1);
+--			LED2 <=    capturedData(0)(2);
+--			LED3 <=    capturedData(0)(3);
 			LEDBUSvec <= capturedData(0)(8 downto 0);
 	   end if;
 		if switchCount = 1 then
-			LED0 <=   capturedData(1)(0);
-			LED1 <=    capturedData(1)(1);
-			LED2 <=    capturedData(1)(2);
-			LED3 <=    capturedData(1)(3);
+--			LED0 <=   capturedData(1)(0);
+--			LED1 <=    capturedData(1)(1);
+--			LED2 <=    capturedData(1)(2);
+--			LED3 <=    capturedData(1)(3);
 			LEDBUSvec <= capturedData(1)(8 downto 0);
 		end if;
 		if switchCount = 2 then
-			LED0 <=   capturedData(2)(0);
-			LED1 <=    capturedData(2)(1);
-			LED2 <=    capturedData(2)(2);
-			LED3 <=    capturedData(2)(3);
+--			LED0 <=   capturedData(2)(0);
+--			LED1 <=    capturedData(2)(1);
+--			LED2 <=    capturedData(2)(2);
+--			LED3 <=    capturedData(2)(3);
 			LEDBUSvec <= capturedData(2)(8 downto 0);
 	end if;
 		if switchCount = 3 then
-			LED0 <=   capturedData(3)(0);
-			LED1 <=    capturedData(3)(1);
-			LED2 <=    capturedData(3)(2);
-			LED3 <=    capturedData(3)(3);
+--			LED0 <=   capturedData(3)(0);
+--			LED1 <=    capturedData(3)(1);
+--			LED2 <=    capturedData(3)(2);
+--			LED3 <=    capturedData(3)(3);
 			LEDBUSvec <= capturedData(3)(8 downto 0);
 		end if;
 		if switchCount = 4 then
-			LED0 <=   capturedData(4)(0);
-			LED1 <=    capturedData(4)(1);
-			LED2 <=    capturedData(4)(2);
-			LED3 <=    capturedData(4)(3);
+--			LED0 <=   capturedData(4)(0);
+--			LED1 <=    capturedData(4)(1);
+--			LED2 <=    capturedData(4)(2);
+--			LED3 <=    capturedData(4)(3);
 			LEDBUSvec <= capturedData(4)(8 downto 0);
 		end if;
 		if switchCount = 5 then
-			LED0 <=   capturedData(5)(0);
-			LED1 <=    capturedData(5)(1);
-			LED2 <=    capturedData(5)(2);
-			LED3 <=    capturedData(5)(3);
+--			LED0 <=   capturedData(5)(0);
+--			LED1 <=    capturedData(5)(1);
+--			LED2 <=    capturedData(5)(2);
+--			LED3 <=    capturedData(5)(3);
 			LEDBUSvec <= capturedData(5)(8 downto 0);
 		end if;
 		if switchCount = 6 then
-			LED0 <=   capturedData(6)(0);
-			LED1 <=    capturedData(6)(1);
-			LED2 <=    capturedData(6)(2);
-			LED3 <=    capturedData(6)(3);
+--			LED0 <=   capturedData(6)(0);
+--			LED1 <=    capturedData(6)(1);
+--			LED2 <=    capturedData(6)(2);
+--			LED3 <=    capturedData(6)(3);
 			LEDBUSvec <= capturedData(6)(8 downto 0);
 		end if;
 		if switchCount = 7 then
-			LED0 <=   capturedData(7)(0);
-			LED1 <=    capturedData(7)(1);
-			LED2 <=    capturedData(7)(2);
-			LED3 <=    capturedData(7)(3);
+--			LED0 <=   capturedData(7)(0);
+--			LED1 <=    capturedData(7)(1);
+--			LED2 <=    capturedData(7)(2);
+--			LED3 <=    capturedData(7)(3);
 			LEDBUSvec <= capturedData(7)(8 downto 0);
 		end if;
-
+		LEDBUSvec <= capturedDataB(to_integer(switchCount))(8 downto 0);
 
 		LED0 <= dout(0);
 		LED1 <= dout(1);
@@ -993,7 +993,7 @@ process (slowwritingdatatrain1, dout,  lastrequestwritetoggle, lastrequestreadto
 				nextAddr <= "0000000000010000";   
 	end if;			
 	
-		when others => 
+		when others =>  
 	
 	end case;	
 	
