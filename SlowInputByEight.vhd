@@ -23,7 +23,7 @@ begin
 
 process (FastClock, MediumClock, slowClockEnable)
 	begin
-	if rising_edge(MediumClock)  and slowClockEnable = '1' then
+	if rising_edge(SlowClock)  then
 		DataToPins <= shiftRegisters; 
 	--	dataStrobe <= not dataStrobe;  -- this toggles on every new set of data arriving
 	end if;

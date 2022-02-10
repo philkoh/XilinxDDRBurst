@@ -822,12 +822,13 @@ end process;
 		LED2 <= dout(2);
 		LED3 <= dout(3);
 
-		LEDBUSvec(8 downto 0) <= SPIdataIn(8 downto 0);
-		LEDBUSvec(3 downto 0) <= std_logic_vector(switchCount);
-		LEDBUSvec <= "000000000";
-		LEDBUSvec(7 downto 0) <= std_logic_vector(readBurstCount);
-		LEDBUSvec(8 downto 0) <= SPIFIFOdin (8 downto 0);
+--		LEDBUSvec(8 downto 0) <= SPIdataIn(8 downto 0);
+--		LEDBUSvec(3 downto 0) <= std_logic_vector(switchCount);
+--		LEDBUSvec <= "000000000";
+--		LEDBUSvec(7 downto 0) <= std_logic_vector(readBurstCount);
+--		LEDBUSvec(8 downto 0) <= SPIFIFOdin (8 downto 0);
 		LEDBUSvec(8 downto 0) <= requestedAddress (8 downto 0);
+		LEDBUSvec(8 downto 0) <= "000000000";
 		
 		SPIdataOut(15 downto 0) <= "0000000000000000";
 		SPIdataOut(11 downto 8) <= std_logic_vector(switchCount);
