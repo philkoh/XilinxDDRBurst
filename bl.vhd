@@ -162,12 +162,6 @@ END COMPONENT;
 	
 	signal writeThisCycle : std_logic := '0';
 	signal nextWriteThisCycle : std_logic ;
-	
---	signal advanceTheShiftRegister : std_logic := '0';
---	signal nextAdvanceTheShiftRegister : std_logic;
-
---	signal refillTheShiftRegister : std_logic := '0';
---	signal nextRefillTheShiftRegister : std_logic;
 -------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
@@ -187,8 +181,7 @@ END COMPONENT;
 -------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
- --  signal nextCount : unsigned (17 downto 0);
-	signal dqs0 : std_logic := '0'; 
+ 	signal dqs0 : std_logic := '0'; 
 	signal dqs1 : std_logic := '0'; 
 	signal dqs0Incoming : std_logic := '0';
 	signal dqs1Incoming : std_logic := '0';
@@ -198,74 +191,20 @@ END COMPONENT;
 	
 	signal odt : std_logic := '1';
 	signal nextOdt : std_logic := '1';
---	signal ba :   std_logic_vector(2 downto 0);
---	signal nextBa :   std_logic_vector(2 downto 0);
---	signal addrOut :   std_logic_vector(14 downto 0);
---	signal nextAddrOut :   std_logic_vector(14 downto 0);
---	signal addrRequest :   std_logic_vector(14 downto 0);
---	signal nextAddrRequest :   std_logic_vector(14 downto 0);
---	signal dataCount :   unsigned (3 downto 0)  := "1111";
---	signal nextDataCount :   unsigned (3 downto 0):= "1111";
---	signal data :   std_logic_vector(15 downto 0) := "1111111111111111";
---	signal nextData :   std_logic_vector(15 downto 0):= "1111111111111111";
-	--signal inData :   std_logic_vector(15 downto 0);
-	--signal inDataB :   std_logic_vector(15 downto 0);
 	
 	type philArr is array (20 downto 0) of std_logic_vector(15 downto 0);
---	signal requestedDataToWrite : philArr;
---	signal nextRequestedDataToWrite : philArr;
-	
---	signal writeRefill :  philArr;
---	signal nextWriteRefill :  philArr;
 	 
 	signal capturedData :   philArr;
 	signal nextCapturedData :   philArr;
 	signal capturedDataB :   philArr;
 	signal nextCapturedDataB : philArr;
 	
---	signal shiftRegister : philArr;
---	signal nextShiftRegister : philArr;
-	
 	signal writePulseTrain :    std_logic_vector(15 downto 1) := "000000000000000";
 	signal nextWritePulseTrain :    std_logic_vector(15 downto 1) ;
-	
---	signal dataAssertedToOutput : std_logic_vector(15 downto 0);
---	signal nextdataAssertedToOutput : std_logic_vector(15 downto 0);
+
 	signal delayedDataForOutput : std_logic_vector(15 downto 0);
 	
 	signal delayedDataPort : std_logic_vector(15 downto 0);
-
---	signal reset : std_logic := '1';
---	signal nextReset : std_logic := '1';
---	signal cke : std_logic := '1';
---	signal nextCke : std_logic := '1';
-
---	signal cas : std_logic := '1';
---	signal nextCas : std_logic := '1';
---	signal casRequest : std_logic := '1';
---	signal nextCasRequest : std_logic := '1';
-
---	signal ras : std_logic := '1';
---	signal nextRas : std_logic := '1';
---	signal rasRequest : std_logic := '1';
---	signal nextRasRequest : std_logic := '1';
-
---	signal we : std_logic := '1';
---	signal nextWe : std_logic := '1';
---	signal weRequest : std_logic := '1';
---	signal nextWeRequest : std_logic := '1';
-	
---	signal writeRequest : std_logic := '0';
---	signal nextWriteRequest : std_logic := '0';
-	
---	signal saveRequest : std_logic := '0';
---	signal nextSaveRequest : std_logic := '0';
---	signal saveRequest2 : std_logic := '0';
---	signal nextSaveRequest2 : std_logic := '0';
---	signal saveRequest3 : std_logic := '0';
---	signal nextSaveRequest3 : std_logic := '0';
---	signal saveRequest4 : std_logic := '0';
---	signal nextSaveRequest4 : std_logic := '0';
 
 	signal switchRegister : std_logic := '0';
 	signal nextSwitchRegister : std_logic := '0';
@@ -282,18 +221,12 @@ END COMPONENT;
 	signal rst : std_logic ;
 	signal empty : std_logic := '1';
 	
---	signal dinLSBs: std_logic_vector(3 downto 0);
---	signal nextDinLSBs : std_logic_vector(3 downto 0);
---	signal doutLSBs: std_logic_vector(3 downto 0);
---	signal doutWaitingLSBs: std_logic_vector(3 downto 0);
-	
 	signal IOpinsA : std_logic_vector(3 downto 0);
 	signal IOpinsB : std_logic_vector(3 downto 0);
  
 	signal dataToPinsA : std_logic_vector(31 downto 0);
 	signal dataToPinsB : std_logic_vector(31 downto 0);
 	
---	signal slowClockEnable : std_logic;
 	signal slowClockVector : std_logic_vector(7 downto 0) := "00100000";
 	alias slowClockEnable : std_logic is slowClockVector(0);
 
@@ -315,8 +248,6 @@ END COMPONENT;
 	signal slowWritingPulseTrain : std_logic_vector (3 downto 0)  := "0000";
 	signal slowWritingDataTrain0 : std_logic_vector (143 downto 0) ;
 	signal slowWritingDataTrain1 : std_logic_vector (143 downto 0) ;
---	signal slowWritingDataTrain2 : std_logic_vector (143 downto 0) ;
---	signal slowWritingDataTrain3 : std_logic_vector (143 downto 0) ;
 	signal nextSlowWritingPulseTrain : std_logic_vector  (3 downto 0);
 	
 	signal slowWriteData, slowWriteAddress : burstArr;
@@ -345,9 +276,6 @@ END COMPONENT;
 	signal slowClockEnableRead : std_logic := '0';
 
 	signal slowDQStristate : std_logic;
-	
---	signal requestReset :  std_logic   := '0';
---	signal nextRequestReset : std_logic;
 	
 	signal LEDBUSvec : std_logic_vector(8 downto 0)  ;
 	
@@ -417,8 +345,6 @@ CE => fallingEdgeSlowClockEnable, -- 1-bit input: Clock buffer select
 I => clk250MHz -- 1-bit input: Clock buffer input (S=0)
 );
 
-
-
 MainControlOutputsA: SlowByEight PORT MAP(
 		IOpins => IOpinsA ,
 		DataToPins => dataToPinsA,
@@ -441,7 +367,6 @@ ClockAndDQSB: SlowByEight PORT MAP(
 		IOpins => IOpinsB ,
 		DataToPins => dataToPinsB,
 		FastClock => clk250MHz ,
---		MediumClock => clk62M5Hz,
 	SlowClockEnable => slowClockEnable
 	);
 	
@@ -455,7 +380,6 @@ DataBus: SlowByEightBus PORT MAP(
 	IOpins => fastWriteData ,
 	DataToPins => slowWriteData,
 	FastClock => clk250MHz ,
---	MediumClock => clk62M5Hz,
 	SlowClockEnable =>  slowClockEnable
 );
 
@@ -463,7 +387,6 @@ AddressBus: SlowByEightBus PORT MAP(
 	IOpins => fastWriteAddress ,
 	DataToPins => slowWriteAddress,
 	FastClock => clk250MHz ,
---	MediumClock => clk62M5Hz,
 	SlowClockEnable =>  slowClockEnable
 );
 
@@ -471,22 +394,21 @@ Inst_SlowInputByEight: SlowInputByEight PORT MAP(
 	IOpins => delayeddataPort(3 downto 0),
 	DataToPins => slowReadData,
 	FastClock => clk250MHz,
---	MediumClock => clk62M5Hz,
 	SlowClock => clk31M25Hz,
 	SlowClockEnable =>   slowClockEnable
 );
 
 fifoInstance : FIFOphil2
   PORT MAP (
-    rst => slowFIFOrst,--rst,
-     wr_clk => clk31M25Hz,--     clk250MHz,
-    rd_clk => clk31M25Hz,--     clk250MHz,
-    din => SPIFIFOdin,--din,
-    wr_en => slowFIFOpush,--     FIFOpushEnable,-- sharpenFIFOpushEnable(5) ,--
-    rd_en => slowFIFOpull,--      immediatelyPullFIFO,--slowFIFOpullPulse(9) ,--
+    rst => slowFIFOrst,
+     wr_clk => clk31M25Hz,     
+    rd_clk => clk31M25Hz,    
+    din => SPIFIFOdin,
+    wr_en => slowFIFOpush,   
+    rd_en => slowFIFOpull,     
     dout => dout,
 --    full => full,
-  empty => empty--  nextEmpty
+  empty => empty
   );
 
 your_instance_name : PhilClock
@@ -580,15 +502,6 @@ process (clk250MHz)
 ------------------------------------------SEQUENTIAL :	
 		if rising_edge(clk250MHz) then
 			clk125MHz <=  nextClk125MHz  ;  --clk125MHz changes on rising edge of 250MHz clock; this is sent out as external clock *and* as dqs
-	--		inData (15 downto 0) <= delayedDataPort (15 downto 0);  -- data uses the 250 MHz clock
-
---			capturedData(7 downto 0) <= nextCapturedData(7 downto 0);
-		
---			slowNextClockEnableReadDelayed1 <= slowNextClockEnableRead;
---			slowNextClockEnableReadDelayed2 <= slowNextClockEnableReadDelayed1;
---			slowNextClockEnableReadDelayed3 <= slowNextClockEnableReadDelayed2;
---			slowNextClockEnableReadDelayed4 <= slowNextClockEnableReadDelayed3;
---			slowNextClockEnableReadDelayed5 <= slowNextClockEnableReadDelayed4;
 		end if;
 	end process;
 
@@ -597,46 +510,6 @@ process (clk250MHz)
 		begin
 
 		nextClk125MHz <= not clk125MHz;
-		
---		nextCapturedData(7 downto 0) <= capturedData(7 downto 0); --unless overridden below, hold and remember the captured values
-	
---		if slowNextClockEnableReadDelayed5 = '1'  then
---			nextCapturedData(7)(0) <= slowReadData(0);
---			nextCapturedData(6)(0) <= slowReadData(1);
---			nextCapturedData(5)(0) <= slowReadData(2);
---			nextCapturedData(4)(0) <= slowReadData(3);
---			nextCapturedData(3)(0) <= slowReadData(4);
---			nextCapturedData(2)(0) <= slowReadData(5);
---			nextCapturedData(1)(0) <= slowReadData(6);
---			nextCapturedData(0)(0) <= slowReadData(7);
-
---			nextCapturedData(7)(1) <= slowReadData(8);
---			nextCapturedData(6)(1) <= slowReadData(9);
---			nextCapturedData(5)(1) <= slowReadData(10);
---			nextCapturedData(4)(1) <= slowReadData(11);
---			nextCapturedData(3)(1) <= slowReadData(12);
---			nextCapturedData(2)(1) <= slowReadData(13);
---			nextCapturedData(1)(1) <= slowReadData(14);
---			nextCapturedData(0)(1) <= slowReadData(15);
-	
---			nextCapturedData(7)(2) <= slowReadData(16);
---			nextCapturedData(6)(2) <= slowReadData(17);
---			nextCapturedData(5)(2) <= slowReadData(18);
---			nextCapturedData(4)(2) <= slowReadData(19);
---			nextCapturedData(3)(2) <= slowReadData(20);
---			nextCapturedData(2)(2) <= slowReadData(21);
---			nextCapturedData(1)(2) <= slowReadData(22);
---			nextCapturedData(0)(2) <= slowReadData(23);
-
---			nextCapturedData(7)(3) <= slowReadData(24);
---			nextCapturedData(6)(3) <= slowReadData(25);
---			nextCapturedData(5)(3) <= slowReadData(26);
---			nextCapturedData(4)(3) <= slowReadData(27);
---			nextCapturedData(3)(3) <= slowReadData(28);
---			nextCapturedData(2)(3) <= slowReadData(29);
---			nextCapturedData(1)(3) <= slowReadData(30);
---			nextCapturedData(0)(3) <= slowReadData(31);
---	end if;
 	
 	if slowdqsTristate = '1' then
 			dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');	
@@ -645,10 +518,6 @@ process (clk250MHz)
 		end if;
 		
 	end process;
-		
-		
-		
-		
 		
 ------------------------------------------SEQUENTIAL :	
 process (clk31M25Hz)
@@ -702,18 +571,8 @@ process (slowReadData)
 			nextCapturedDataB(1)(3) <= slowReadData(30);
 			nextCapturedDataB(0)(3) <= slowReadData(31);
 	end if;
-	
-	
 		
 end process;
-		
-		
-		
-		
-		
-		
-		
-		
 		
 	process (clk250MHz, slowClockEnable, clk31M25Hz)
 		begin
@@ -923,7 +782,6 @@ end process;
 			blinker <= nextBlinker;
 			odt <= nextODT;
 			din <= nextdin;
-	--		requestReset <= nextRequestReset;
 			end if;
    end process;
 
@@ -942,8 +800,6 @@ end process;
 	nextODT <= '1';  -- On Die Termination is normally on
 	
 	nextdin <= din;
-	
---	nextRequestReset <= '0';
 
 process (clk250MHz)
 		begin
@@ -955,7 +811,6 @@ process (clk250MHz)
 		end if;
    end process;
 ------------------------------------------COMBINATORIAL:
---	slowClockEnable <= slowClockVector(0);
 	
 process (clk31M25Hz, slowClockEnable)
 		begin
@@ -968,8 +823,6 @@ process (clk31M25Hz, slowClockEnable)
 			slowWritingPulseTrain  <= nextSlowWritingPulseTrain;
 			slowWritingDataTrain0  <= dout ;
 			slowWritingDataTrain1  <= slowWritingDataTrain0  ;
---			slowWritingDataTrain2  <= slowWritingDataTrain1  ;
---			slowWritingDataTrain3  <= slowWritingDataTrain2  ;
 
 			addr <= nextAddr;
 			slowBA <= nextSlowBA;
