@@ -97,7 +97,7 @@ PORT(
 	FastClock : IN std_logic;
 	SlowClock : IN std_logic;
 	SlowClockEnable : IN std_logic;          
-	DataToPins : burstArr
+	DataToPins : OUT burstArr
 	);
 END COMPONENT;
 
@@ -179,7 +179,7 @@ END COMPONENT;
 
 -- NOTE: SET fiveThousand to 000000000000001000 for simulation, and to 000001000000000000 for actual operation
 
-	constant fiveThousand : unsigned (17 downto 0) :=         "000000000000001000";--     "000001000000000000";--     "000000000000001000";--     "000001000000000000"; 
+	constant fiveThousand : unsigned (17 downto 0) :=         "000001000000000000";--     "000000000000001000";--     "000001000000000000"; 
 -------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
@@ -507,7 +507,7 @@ process (clk31M25Hz)
 end process;
 
 ------------------------------------------COMBINATORIAL:
-process (slowReadData, capturedDataB, slowClockEnableRead)
+process (slowReadDataArr, capturedDataB, slowClockEnableRead)
 		begin
 		
 		nextCapturedDataB(7 downto 0) <= capturedDataB(7 downto 0); --unless overridden below, hold and remember the captured values
