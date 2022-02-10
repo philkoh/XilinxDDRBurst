@@ -6,8 +6,7 @@ entity SlowByEight is
     Port ( IOpins : inout  STD_LOGIC_VECTOR (3 downto 0);
            DataToPins : in  STD_LOGIC_VECTOR (31 downto 0);
            FastClock : in  STD_LOGIC;
-	--		  MediumClock : in  STD_LOGIC;
-           SlowClockEnable : in  STD_LOGIC);
+	        SlowClockEnable : in  STD_LOGIC);
 		end SlowByEight;
 
 architecture Behavioral of SlowByEight is
@@ -24,7 +23,6 @@ begin
 process (FastClock, SlowClockEnable)
 	begin
 	if rising_edge(FastClock) and SlowClockEnable = '1' then
-	--	incomingData <= DataToPins;
 		dataStrobe <= not dataStrobe;  -- this toggles on every new set of data arriving
 	end if;
 	
