@@ -140,10 +140,10 @@ COMPONENT DelayWideBus
 END COMPONENT;
 
 	signal clk250MHz : std_logic := '0';
-	signal clk125MHz : std_logic := '0';
-	signal clk125MHz_n : std_logic := '0';
-	signal nextClk125MHz : std_logic := '0';
-	signal nextClk125MHz_n : std_logic := '0';
+--	signal clk125MHz : std_logic := '0';
+--	signal clk125MHz_n : std_logic := '0';
+--	signal nextClk125MHz : std_logic := '0';
+--	signal nextClk125MHz_n : std_logic := '0';
 
 	signal ck_p : std_logic := '0';
 
@@ -431,7 +431,7 @@ port map (
 O => dqs0Incoming, -- received dqs from DRAM
 IO => dqs0_pPORT, -- Diff_p inout (connect directly to top-level port)
 IOB => dqs0_nPORT, -- Diff_n inout (connect directly to top-level port)
-I => dqsFast,--clk125MHz, -- outgoing dqs is just always the 125MHz clock
+I => dqsFast, -- outgoing dqs is just always the 125MHz clock
 T => slowdqsTristate -- 3-state enable input, high=input, low=output
 );
 
@@ -442,7 +442,7 @@ port map (
 O => dqs1Incoming, -- Buffer output
 IO => dqs1_pPORT, -- Diff_p inout (connect directly to top-level port)
 IOB => dqs1_nPORT, -- Diff_n inout (connect directly to top-level port)
-I => dqsFast,--clk125MHz, -- Buffer input
+I => dqsFast, -- Buffer input
 T => slowdqsTristate -- 3-state enable input, high=input, low=output
 );
 
@@ -452,7 +452,7 @@ IOSTANDARD => "DIFF_SSTL15_II")
 port map (
 O => ck_pPORT, -- Diff_p output (connect directly to top-level port)
 OB => ck_nPORT, -- Diff_n output (connect directly to top-level port)
-I => clkOutFast--clk125MHz -- Buffer input
+I => clkOutFast -- Buffer input
 );
 
 Inst_SPIinterface: SPIinterface PORT MAP(
@@ -466,13 +466,7 @@ Inst_SPIinterface: SPIinterface PORT MAP(
 		sckPin => PIN27 
 	);
 
--- BUFGCE: Global Clock Buffer with Clock Enable
---BUFGCE_inst : BUFGCE ----------NOTE: this is a clean way to make a slower clock and still have its rising edge well aligned with clk250MHz
---port map (
---O => clk62M5Hz, -- 1-bit output: Clock buffer output
---CE => clockShift(0), -- 1-bit input: Clock buffer select
---I => clk250MHz -- 1-bit input: Clock buffer input (S=0)
---);
+
 
 process (clk250MHz)
 	begin
@@ -500,15 +494,15 @@ process (clk250MHz)
 		begin
 ------------------------------------------SEQUENTIAL :	
 		if rising_edge(clk250MHz) then
-			clk125MHz <=  nextClk125MHz  ;  --clk125MHz changes on rising edge of 250MHz clock; this is sent out as external clock *and* as dqs
+	--		clk125MHz <=  nextClk125MHz  ;  --clk125MHz changes on rising edge of 250MHz clock; this is sent out as external clock *and* as dqs
 		end if;
 	end process;
 
 ------------------------------------------COMBINATORIAL:
-	process (slowReadData, slownextclockenablereaddelayed5,slowdqstristate, clk125MHz,  clockEnableRead, capturedData, dqsTristate, delayedDataForOutput, clockEnableWrite, clockEnableRefillWriteData)
+	process (slowdqstristate)
 		begin
 
-		nextClk125MHz <= not clk125MHz;
+--		nextClk125MHz <= not clk125MHz;
 	
 	if slowdqsTristate = '1' then
 			dataPort (15 downTo 0) <= (15 downTo 0 => 'Z');	
@@ -528,7 +522,7 @@ process (clk31M25Hz)
 end process;
 
 ------------------------------------------COMBINATORIAL:
-process (slowReadData)
+process (slowReadData, capturedDataB, slowClockEnableRead)
 		begin
 		
 		nextCapturedDataB(7 downto 0) <= capturedDataB(7 downto 0); --unless overridden below, hold and remember the captured values
